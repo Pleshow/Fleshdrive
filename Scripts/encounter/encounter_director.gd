@@ -160,11 +160,12 @@ func _update_adaptive_pressure(elapsed: float) -> void:
 			int(enemy_spawner.get("maximum_enemies")),
 			1
 		)
-	if enemy_count >= int(float(density_limit) * 0.94):
-		next_scale = minf(next_scale, 0.62)
+	if enemy_count >= int(float(density_limit) * 0.98):
+		next_scale = minf(next_scale, 0.80)
 		next_reason = &"density_relief"
-	elif enemy_count >= int(float(density_limit) * 0.82):
-		next_scale = minf(next_scale, 0.82)
+
+	elif enemy_count >= int(float(density_limit) * 0.92):
+		next_scale = minf(next_scale, 0.92)
 		next_reason = &"density_guard"
 
 	if elapsed < 180.0:

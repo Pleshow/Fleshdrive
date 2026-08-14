@@ -1,6 +1,6 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene format=3 uid="uid://d3hk6kh3ss73n"]
 
-[ext_resource type="Script" path="res://Scripts/ui/loading_screen.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://bltknd2pp5cmb" path="res://Scripts/ui/loading_screen.gd" id="1_script"]
 
 [sub_resource type="StyleBoxFlat" id="ProgressBackground"]
 bg_color = Color(0.015, 0.035, 0.045, 0.96)
@@ -21,19 +21,19 @@ corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 
-[node name="LoadingScreen" type="Control"]
-visible = false
+[node name="LoadingScreen" type="Control" unique_id=596107562]
 process_mode = 3
-layout_mode = 1
+visible = false
+z_index = 1000
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-z_index = 1000
 script = ExtResource("1_script")
 
-[node name="Backdrop" type="ColorRect" parent="."]
+[node name="Backdrop" type="ColorRect" parent="." unique_id=1507835317]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -43,7 +43,7 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0.006, 0.012, 0.018, 0.985)
 
-[node name="Title" type="Label" parent="."]
+[node name="Title" type="Label" parent="." unique_id=1235624917]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -62,7 +62,7 @@ theme_override_font_sizes/font_size = 28
 text = "PREPARING BIOFABRICATION CHAMBER"
 horizontal_alignment = 1
 
-[node name="StatusLabel" type="Label" parent="."]
+[node name="StatusLabel" type="Label" parent="." unique_id=681860842]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
@@ -82,7 +82,7 @@ theme_override_font_sizes/font_size = 19
 text = "LOADING"
 horizontal_alignment = 1
 
-[node name="ProgressBar" type="ProgressBar" parent="."]
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=1644103564]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8

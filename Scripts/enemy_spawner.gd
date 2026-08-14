@@ -11,13 +11,25 @@ signal enemy_defeated(enemy: Node2D)
 @export var charger_scene: PackedScene
 @export var spawn_interval: float = 1.18
 @export var minimum_spawn_interval: float = 0.55
-@export var spawn_distance: float = 820.0
-@export var spawn_distance_variation: float = 100.0
+@export var spawn_distance: float = 560.0
+@export var spawn_distance_variation: float = 90.0
 @export var maximum_enemies: int = 24
 @export var maximum_enemies_end: int = 55
 @export var arena_bounds: Rect2 = Rect2(96.0, 176.0, 2368.0, 1110.0)
 @export var viewport_half_extent: Vector2 = Vector2(640.0, 296.0)
-@export var offscreen_margin: float = 80.0
+@export var offscreen_margin: float = 36.0
+@export_category("Swarm Density")
+@export var early_batch_min: int = 2
+@export var early_batch_max: int = 3
+
+@export var mid_batch_min: int = 3
+@export var mid_batch_max: int = 5
+
+@export var late_batch_min: int = 4
+@export var late_batch_max: int = 7
+
+@export var batch_spawn_spacing: float = 0.045
+
 
 @export_category("Enemy Mix")
 @export_range(0.0, 1.0) var spitter_unlock_progress: float = 0.09
@@ -34,9 +46,9 @@ signal enemy_defeated(enemy: Node2D)
 @export var elite_rush_bonus: float = 0.08
 
 @export_category("Rush")
-@export var rush_spawn_multiplier: float = 3.0
-@export var rush_enemy_budget_bonus: int = 36
-@export var rush_initial_burst: int = 12
+@export var rush_spawn_multiplier: float = 3.6
+@export var rush_enemy_budget_bonus: int = 42
+@export var rush_initial_burst: int = 18
 @export var recovery_duration: float = 7.0
 @export var recovery_interval_multiplier: float = 1.65
 @export var recovery_enemy_budget_reduction: int = 8
@@ -78,7 +90,7 @@ var threat_costs: Dictionary = {
 }
 var minimum_player_distance: float = 610.0
 var spawn_clearance_radius: float = 46.0
-var occupied_clearance_radius: float = 66.0
+var occupied_clearance_radius: float = 52.0
 var formation_queue: Array[Vector2] = []
 var formation_serial: int = 0
 var spawning_enabled: bool = true
@@ -146,7 +158,7 @@ func _ready() -> void:
 	starting_maximum_enemies = maximum_enemies
 
 	spawn_timer.wait_time = spawn_interval
-	spawn_timer.timeout.connect(spawn_enemy)
+	spawn_timer.timeout.connect(_on_spawn_timer_timeout)
 	spawn_timer.start(0.45)
 	encounter_time_remaining = encounter_duration
 	_resolve_active_arena()
@@ -258,6 +270,44 @@ func spawn_enemy() -> void:
 		_spawn_rush_crawler_partner(spawn_position)
 		_spawn_rush_crawler_partner(spawn_position)
 
+func _on_spawn_timer_timeout() -> void:
+	if not spawning_enabled:
+		return
+
+	var batch_size := _get_current_batch_size()
+
+	for index in range(batch_size):
+		if not spawning_enabled:
+			break
+
+		spawn_enemy()
+
+		if index < batch_size - 1:
+			await get_tree().create_timer(
+				batch_spawn_spacing,
+				false
+			).timeout
+
+func _get_current_batch_size() -> int:
+	if rush_active:
+		return randi_range(6, 10)
+
+	if current_run_progress < 0.25:
+		return randi_range(
+			early_batch_min,
+			early_batch_max
+		)
+
+	if current_run_progress < 0.60:
+		return randi_range(
+			mid_batch_min,
+			mid_batch_max
+		)
+
+	return randi_range(
+		late_batch_min,
+		late_batch_max
+	)
 
 func _spawn_rush_crawler_partner(anchor: Vector2) -> void:
 	if crawler_scene == null:
@@ -636,9 +686,9 @@ func _get_next_spawn_position() -> Vector2:
 
 func _queue_formation_positions(anchor: Vector2) -> void:
 	var group_size := (
-		randi_range(4, 7)
+		randi_range(7, 11)
 		if rush_active
-		else randi_range(1, 3)
+		else randi_range(3, 6)
 	)
 	if group_size <= 1:
 		return
@@ -647,7 +697,7 @@ func _queue_formation_positions(anchor: Vector2) -> void:
 	for index in range(1, group_size):
 		var side := -1.0 if index % 2 == 0 else 1.0
 		var rank := float((index + 1) / 2)
-		var candidate := anchor + tangent * side * rank * 76.0
+		var candidate := anchor + tangent * side * rank * 56.0
 		if encounter_profile in [&"assault", &"crossfire"]:
 			candidate += toward_player * rank * 28.0
 		elif encounter_profile == &"swarm":
@@ -942,12 +992,27 @@ func set_director_pressure(
 
 func get_current_threat() -> float:
 	var total := 0.0
+
 	for enemy in get_tree().get_nodes_in_group("enemies"):
-		if is_instance_valid(enemy) and not enemy.is_in_group("boss"):
-			total += float(enemy.get_meta(
+		if not is_instance_valid(enemy):
+			continue
+
+		if enemy.is_in_group("boss"):
+			continue
+
+		var enemy_type := _enemy_type_for_node(enemy)
+
+		# Crawlers are swarm population, not strategic threat.
+		if enemy_type == &"crawler":
+			continue
+
+		total += float(
+			enemy.get_meta(
 				"threat_cost",
-				threat_costs.get(_enemy_type_for_node(enemy), 1.0)
-			))
+				threat_costs.get(enemy_type, 1.0)
+			)
+		)
+
 	return total
 
 
@@ -990,9 +1055,22 @@ func set_rush_active(active: bool) -> void:
 		recovery_time_remaining = 0.0
 		spawn_timer.start(0.1)
 
-		for _enemy_index in range(rush_initial_burst):
-			spawn_enemy()
+		if rush_just_started:
+			recovery_time_remaining = 0.0
+			spawn_timer.start(0.1)
+			_spawn_rush_initial_burst.call_deferred()
 
+func _spawn_rush_initial_burst() -> void:
+	for index in range(rush_initial_burst):
+		if not spawning_enabled or not rush_active:
+			return
+
+		spawn_enemy()
+
+		await get_tree().create_timer(
+			0.035,
+			false
+		).timeout
 
 func begin_recovery(duration: float = -1.0) -> void:
 	recovery_time_remaining = (
