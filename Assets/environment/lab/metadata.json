@@ -1,0 +1,41 @@
+{
+  "group_id": "741f7044-422a-47c3-9df2-873e7345f2b2",
+  "objects": [
+    {
+      "id": "a0495df8-d3a6-4978-b2b6-145281112be4",
+      "name": "base",
+      "prompt": "biomechanical operating table. The table should look like a cruel laboratory surgery bed with metal restraints, tubes, surgical arms, stained surfaces, and subtle organic growths. The style should combine dark sci-fi and surgical body horror inspired by H.R. Giger. Use strong readability, clean silhouette, limited colors, and a disturbing but professional game-ready pixel art look",
+      "size": {
+        "width": 256,
+        "height": 256
+      },
+      "directions": 1,
+      "view": "low top-down",
+      "rotations": {
+        "unknown": "rotations/unknown.png"
+      },
+      "animations": {
+        "The_mechanical_arms_twitch_and_shift_slightly_in_a": {
+          "directions": {
+            "unknown": {
+              "frames": [
+                "animations/The_mechanical_arms_twitch_and_shift_slightly_in_a/unknown/frame_000.png",
+                "animations/The_mechanical_arms_twitch_and_shift_slightly_in_a/unknown/frame_001.png",
+                "animations/The_mechanical_arms_twitch_and_shift_slightly_in_a/unknown/frame_002.png",
+                "animations/The_mechanical_arms_twitch_and_shift_slightly_in_a/unknown/frame_003.png",
+                "animations/The_mechanical_arms_twitch_and_shift_slightly_in_a/unknown/frame_004.png",
+                "animations/The_mechanical_arms_twitch_and_shift_slightly_in_a/unknown/frame_005.png",
+                "animations/The_mechanical_arms_twitch_and_shift_slightly_in_a/unknown/frame_006.png",
+                "animations/The_mechanical_arms_twitch_and_shift_slightly_in_a/unknown/frame_007.png",
+                "animations/The_mechanical_arms_twitch_and_shift_slightly_in_a/unknown/frame_008.png"
+              ],
+              "frame_count": 9
+            }
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "1.0",
+  "export_date": "2026-08-06T21:47:55.948907"
+}

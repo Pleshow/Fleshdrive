@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3]
+
+[ext_resource type="Script" path="res://Scripts/upgrade_data.gd" id="1"]
+[ext_resource type="Texture2D" path="res://Assets/ui/items/telekinetic/inertial_lattice.png" id="2"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = &"inertial_lattice"
+display_name = "INERTIAL LATTICE"
+description = "Expands orbiting defenses and increases repeated-contact damage."
+card_texture = ExtResource("2")
+upgrade_kind = 0
+fleshdrive_affinity = "telekinetic"
+synergy_tags = Array[StringName]([&"orbit", &"defense", &"sustained"])
+max_level = 5
+minimum_player_level = 4

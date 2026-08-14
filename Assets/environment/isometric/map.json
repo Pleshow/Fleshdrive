@@ -1,0 +1,122 @@
+{
+  "version": "1.0.0",
+  "name": "Untitled Map",
+  "exportDate": "2026-08-10T19:24:43.810968Z",
+  "engine": "pixellab-map-editor",
+  "mapConfig": {
+    "tileSize": 96,
+    "dimensions": {
+      "width": 58,
+      "height": 31,
+      "pixelWidth": 5568,
+      "pixelHeight": 2976
+    },
+    "boundingBox": {
+      "maxX": 45,
+      "maxY": 19,
+      "minX": -12,
+      "minY": -11
+    }
+  },
+  "terrains": [
+    {
+      "id": 1,
+      "name": "Tile 1",
+      "color": "hsl(0, 30%, 52%)",
+      "baseTileId": null
+    },
+    {
+      "id": 2,
+      "name": "Tile 2",
+      "color": "hsl(47, 30%, 52%)",
+      "baseTileId": null
+    },
+    {
+      "id": 3,
+      "name": "Tile 3",
+      "color": "hsl(94, 30%, 52%)",
+      "baseTileId": null
+    },
+    {
+      "id": 4,
+      "name": "Tile 4",
+      "color": "hsl(141, 30%, 52%)",
+      "baseTileId": null
+    },
+    {
+      "id": 5,
+      "name": "Tile 5",
+      "color": "hsl(188, 30%, 52%)",
+      "baseTileId": null
+    },
+    {
+      "id": 6,
+      "name": "Tile 6",
+      "color": "hsl(235, 30%, 52%)",
+      "baseTileId": null
+    },
+    {
+      "id": 7,
+      "name": "Tile 7",
+      "color": "hsl(282, 30%, 52%)",
+      "baseTileId": null
+    },
+    {
+      "id": 8,
+      "name": "Tile 8",
+      "color": "hsl(329, 30%, 52%)",
+      "baseTileId": null
+    },
+    {
+      "id": 9,
+      "name": "Tile 9",
+      "color": "hsl(16, 30%, 52%)",
+      "baseTileId": null
+    },
+    {
+      "id": 10,
+      "name": "Tile 10",
+      "color": "hsl(63, 30%, 52%)",
+      "baseTileId": null
+    },
+    {
+      "id": 11,
+      "name": "Tile 11",
+      "color": "hsl(110, 30%, 52%)",
+      "baseTileId": null
+    },
+    {
+      "id": 12,
+      "name": "Tile 12",
+      "color": "hsl(157, 30%, 52%)",
+      "baseTileId": null
+    },
+    {
+      "id": 13,
+      "name": "Tile 13",
+      "color": "hsl(204, 30%, 52%)",
+      "baseTileId": null
+    },
+    {
+      "id": 14,
+      "name": "Tile 14",
+      "color": "hsl(251, 30%, 52%)",
+      "baseTileId": null
+    },
+    {
+      "id": 15,
+      "name": "Tile 15",
+      "color": "hsl(298, 30%, 52%)",
+      "baseTileId": null
+    },
+    {
+      "id": 16,
+      "name": "Tile 16",
+      "color": "hsl(345, 30%, 52%)",
+      "baseTileId": null
+    }
+  ],
+  "tilesets": [],
+  "overlays": [],
+  "background": null
+}

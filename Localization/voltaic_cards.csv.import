@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://do475kvxu57p8"
+
+[deps]
+
+files=["res://Localization/voltaic_cards.en.translation", "res://Localization/voltaic_cards.hu.translation"]
+
+source_file="res://Localization/voltaic_cards.csv"
+dest_files=["res://Localization/voltaic_cards.en.translation", "res://Localization/voltaic_cards.hu.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true

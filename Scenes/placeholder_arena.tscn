@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://Scripts/placeholder_arena.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://Assets/environment/lab/lab_floor_tile.png" id="2_background"]
+
+[node name="PlaceholderArena" type="Node2D"]
+y_sort_enabled = true
+script = ExtResource("1_script")
+
+[node name="ArenaFloor" type="TextureRect" parent="."]
+texture_filter = 1
+texture_repeat = 2
+z_index = -100
+offset_right = 2560.0
+offset_bottom = 1440.0
+mouse_filter = 2
+texture = ExtResource("2_background")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="FloorTint" type="ColorRect" parent="."]
+z_index = -99
+offset_right = 2560.0
+offset_bottom = 1440.0
+mouse_filter = 2
+color = Color(0.012, 0.028, 0.045, 0.10)

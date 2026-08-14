@@ -1,0 +1,123 @@
+[gd_scene format=3 uid="uid://b68qmoc1mpwse"]
+
+[ext_resource type="Script" uid="uid://c7fnpbrcrd1ns" path="res://Scripts/dialogue_panel.gd" id="1_script"]
+[ext_resource type="SpriteFrames" path="res://Resources/Visuals/mimichu_portrait_frames.tres" id="2_portrait"]
+[sub_resource type="StyleBoxFlat" id="Style_portrait"]
+bg_color = Color(0.035, 0.045, 0.052, 0.97)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.22, 0.62, 0.7, 0.9)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="Style_dialogue"]
+bg_color = Color(0.035, 0.045, 0.052, 0.97)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.22, 0.62, 0.7, 0.9)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="Style_accent"]
+bg_color = Color(0.08, 0.72, 0.8, 0.9)
+
+[node name="DialoguePanel" type="Control" unique_id=1237866467]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_script")
+
+[node name="PortraitFrame" type="PanelContainer" parent="." unique_id=36309992]
+layout_mode = 0
+offset_left = 835.0
+offset_top = 21.0
+offset_right = 1248.0
+offset_bottom = 211.0
+theme_override_styles/panel = SubResource("Style_portrait")
+
+[node name="Portrait" type="Control" parent="PortraitFrame" unique_id=611744294]
+clip_contents = true
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="AnimatedPortrait" type="AnimatedSprite2D" parent="PortraitFrame/Portrait"]
+z_index = 1
+position = Vector2(206, 94)
+scale = Vector2(0.69, 0.69)
+sprite_frames = ExtResource("2_portrait")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="DialogueFrame" type="PanelContainer" parent="." unique_id=450252942]
+layout_mode = 0
+offset_left = 835.0
+offset_top = 220.0
+offset_right = 1248.0
+offset_bottom = 704.0
+theme_override_styles/panel = SubResource("Style_dialogue")
+
+[node name="Margin" type="MarginContainer" parent="DialogueFrame" unique_id=1874862281]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 16
+
+[node name="Stack" type="VBoxContainer" parent="DialogueFrame/Margin" unique_id=911554930]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="SpeakerLabel" type="Label" parent="DialogueFrame/Margin/Stack" unique_id=712988216]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"SectionLabel"
+theme_override_colors/font_color = Color(0.48, 0.9, 0.96, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 18
+text = "MIMICHU"
+
+[node name="Accent" type="Panel" parent="DialogueFrame/Margin/Stack" unique_id=1244643107]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+theme_override_styles/panel = SubResource("Style_accent")
+
+[node name="BodyLabel" type="RichTextLabel" parent="DialogueFrame/Margin/Stack" unique_id=1747363216]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.88, 0.93, 0.94, 1)
+theme_override_constants/outline_size = 0
+theme_override_font_sizes/normal_font_size = 15
+bbcode_enabled = true
+text = "The body is new. The memory is not."
+scroll_active = false
+autowrap_mode = 3
+
+[node name="Choices" type="VBoxContainer" parent="DialogueFrame/Margin/Stack" unique_id=1003836539]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="ContinueButton" type="Button" parent="DialogueFrame/Margin/Stack" unique_id=1250812796]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "CONTINUE [SPACE]"
+metadata/ui_polish_skip = true

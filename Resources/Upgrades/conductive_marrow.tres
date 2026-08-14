@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3 uid="uid://cee7y664lx21g"]
+
+[ext_resource type="Script" uid="uid://cgff01swg5n6" path="res://Scripts/upgrade_data.gd" id="1_81aay"]
+[ext_resource type="Texture2D" uid="uid://c6hpttjrin8w7" path="res://Assets/ui/items/01_conductive_marrow.png" id="1_uvnd4"]
+
+[resource]
+script = ExtResource("1_81aay")
+upgrade_id = &"conductive_marrow"
+card_texture = ExtResource("1_uvnd4")
+metadata/_custom_type_script = "uid://cgff01swg5n6"

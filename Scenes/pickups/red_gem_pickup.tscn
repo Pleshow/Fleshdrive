@@ -1,0 +1,78 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="Texture2D" path="res://Assets/ui/meta/gems_spritesheet.png" id="1_gems"]
+[ext_resource type="Script" path="res://Scripts/red_gem_pickup.gd" id="2_script"]
+
+[sub_resource type="AtlasTexture" id="Atlas_red_0"]
+atlas = ExtResource("1_gems")
+region = Rect2(320, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="Atlas_red_1"]
+atlas = ExtResource("1_gems")
+region = Rect2(336, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="Atlas_red_2"]
+atlas = ExtResource("1_gems")
+region = Rect2(352, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="Atlas_red_3"]
+atlas = ExtResource("1_gems")
+region = Rect2(368, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="Atlas_red_4"]
+atlas = ExtResource("1_gems")
+region = Rect2(384, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="Atlas_red_5"]
+atlas = ExtResource("1_gems")
+region = Rect2(400, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="Atlas_red_6"]
+atlas = ExtResource("1_gems")
+region = Rect2(416, 32, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_red_gem"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Atlas_red_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_red_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_red_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_red_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_red_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_red_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("Atlas_red_6")
+}],
+"loop": true,
+"name": &"spin",
+"speed": 10.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape_red_gem"]
+radius = 13.0
+
+[node name="RedGemPickup" type="Area2D" groups=["permanent_currency_pickup"]]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("2_script")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(2.5, 2.5)
+sprite_frames = SubResource("SpriteFrames_red_gem")
+animation = &"spin"
+autoplay = "spin"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape_red_gem")

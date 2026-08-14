@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3 uid="uid://cm06r8j6sjye1"]
+
+[ext_resource type="Script" uid="uid://cgff01swg5n6" path="res://Scripts/upgrade_data.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://d0xf4h8eayqcn" path="res://Assets/ui/weapons/electric/ion_quill.png" id="2_card"]
+
+[resource]
+script = ExtResource("1_script")
+upgrade_id = &"quill_burst"
+display_name = "ION QUILL"
+description = "Charged quills seek several targets and discharge on impact."
+card_texture = ExtResource("2_card")
+upgrade_kind = 2
+fleshdrive_affinity = "electric"
+minimum_player_level = 2

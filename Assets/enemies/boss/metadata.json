@@ -1,0 +1,86 @@
+{
+  "group_id": "f57e67a8-3e4a-4e2c-adac-c4e67a612b6d",
+  "states": [
+    {
+      "character": {
+        "id": "9c77cf2b-5ffe-4a86-a1c5-0757014c64e9",
+        "name": "Idle",
+        "prompt": "",
+        "size": {
+          "width": 252,
+          "height": 252
+        },
+        "template_id": "lion",
+        "directions": 8,
+        "view": "high top-down",
+        "created_at": "2026-08-06T21:17:30.452579+00:00"
+      },
+      "folder": "Idle",
+      "frames": {
+        "rotations": {
+          "south": "Idle/rotations/south.png",
+          "south-east": "Idle/rotations/south-east.png",
+          "east": "Idle/rotations/east.png",
+          "north-east": "Idle/rotations/north-east.png",
+          "north": "Idle/rotations/north.png",
+          "north-west": "Idle/rotations/north-west.png",
+          "west": "Idle/rotations/west.png",
+          "south-west": "Idle/rotations/south-west.png"
+        },
+        "animations": {
+          "The_beast_heavy_body_collapsing_onto_the_ground_wi": {
+            "east": [
+              "Idle/animations/The_beast_heavy_body_collapsing_onto_the_ground_wi/east/frame_000.png",
+              "Idle/animations/The_beast_heavy_body_collapsing_onto_the_ground_wi/east/frame_001.png",
+              "Idle/animations/The_beast_heavy_body_collapsing_onto_the_ground_wi/east/frame_002.png",
+              "Idle/animations/The_beast_heavy_body_collapsing_onto_the_ground_wi/east/frame_003.png",
+              "Idle/animations/The_beast_heavy_body_collapsing_onto_the_ground_wi/east/frame_004.png",
+              "Idle/animations/The_beast_heavy_body_collapsing_onto_the_ground_wi/east/frame_005.png",
+              "Idle/animations/The_beast_heavy_body_collapsing_onto_the_ground_wi/east/frame_006.png",
+              "Idle/animations/The_beast_heavy_body_collapsing_onto_the_ground_wi/east/frame_007.png",
+              "Idle/animations/The_beast_heavy_body_collapsing_onto_the_ground_wi/east/frame_008.png"
+            ]
+          },
+          "the_beast_becomes_enraged_glowing_and_visibly_angr": {
+            "east": [
+              "Idle/animations/the_beast_becomes_enraged_glowing_and_visibly_angr/east/frame_000.png",
+              "Idle/animations/the_beast_becomes_enraged_glowing_and_visibly_angr/east/frame_001.png",
+              "Idle/animations/the_beast_becomes_enraged_glowing_and_visibly_angr/east/frame_002.png",
+              "Idle/animations/the_beast_becomes_enraged_glowing_and_visibly_angr/east/frame_003.png",
+              "Idle/animations/the_beast_becomes_enraged_glowing_and_visibly_angr/east/frame_004.png",
+              "Idle/animations/the_beast_becomes_enraged_glowing_and_visibly_angr/east/frame_005.png",
+              "Idle/animations/the_beast_becomes_enraged_glowing_and_visibly_angr/east/frame_006.png",
+              "Idle/animations/the_beast_becomes_enraged_glowing_and_visibly_angr/east/frame_007.png"
+            ]
+          },
+          "The_creature_lunges_forward_its_body_surging_with": {
+            "east": [
+              "Idle/animations/The_creature_lunges_forward_its_body_surging_with/east/frame_000.png",
+              "Idle/animations/The_creature_lunges_forward_its_body_surging_with/east/frame_001.png",
+              "Idle/animations/The_creature_lunges_forward_its_body_surging_with/east/frame_002.png",
+              "Idle/animations/The_creature_lunges_forward_its_body_surging_with/east/frame_003.png",
+              "Idle/animations/The_creature_lunges_forward_its_body_surging_with/east/frame_004.png",
+              "Idle/animations/The_creature_lunges_forward_its_body_surging_with/east/frame_005.png",
+              "Idle/animations/The_creature_lunges_forward_its_body_surging_with/east/frame_006.png",
+              "Idle/animations/The_creature_lunges_forward_its_body_surging_with/east/frame_007.png"
+            ]
+          },
+          "The_beast_tilts_its_head_back_and_opens_its_maw_wi": {
+            "east": [
+              "Idle/animations/The_beast_tilts_its_head_back_and_opens_its_maw_wi/east/frame_000.png",
+              "Idle/animations/The_beast_tilts_its_head_back_and_opens_its_maw_wi/east/frame_001.png",
+              "Idle/animations/The_beast_tilts_its_head_back_and_opens_its_maw_wi/east/frame_002.png",
+              "Idle/animations/The_beast_tilts_its_head_back_and_opens_its_maw_wi/east/frame_003.png",
+              "Idle/animations/The_beast_tilts_its_head_back_and_opens_its_maw_wi/east/frame_004.png",
+              "Idle/animations/The_beast_tilts_its_head_back_and_opens_its_maw_wi/east/frame_005.png",
+              "Idle/animations/The_beast_tilts_its_head_back_and_opens_its_maw_wi/east/frame_006.png",
+              "Idle/animations/The_beast_tilts_its_head_back_and_opens_its_maw_wi/east/frame_007.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.1",
+  "export_date": "2026-08-06T21:37:17.113802"
+}

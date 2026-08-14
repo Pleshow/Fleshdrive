@@ -1,0 +1,211 @@
+keys,en,hu
+REROLL - FREE,REROLL - FREE,ÚJRADOBÁS - INGYEN
+REROLL - %d BLOOD MEMORY,REROLL - %d BLOOD MEMORY,ÚJRADOBÁS - %d VÉREMLÉK
+BLOOD MEMORY: %d,BLOOD MEMORY: %d,VÉREMLÉK: %d
+UNLOCKS THE EFFECT DESCRIBED ABOVE,UNLOCKS THE EFFECT DESCRIBED ABOVE,FELOLDJA A FENT LEÍRT HATÁST
+STRENGTHENS THE PER-LEVEL VALUES DESCRIBED ABOVE,STRENGTHENS THE PER-LEVEL VALUES DESCRIBED ABOVE,NÖVELI A FENT JELZETT SZINTENKÉNTI ÉRTÉKEKET
+ORGAN TYPE: %s,ORGAN TYPE: %s,SZERV TÍPUSA: %s
+NONE,NONE,NINCS
+BRAIN,BRAIN,AGY
+MAW,MAW,ÁLLKAPOCS
+HEART,HEART,SZÍV
+LUNG,LUNG,TÜDŐ
+LEGS,LEGS,LÁB
+CLAWS,CLAWS,KAROM
+TAIL,TAIL,FAROK
+UNLOCK,UNLOCK,FELOLDÁS
+EFFECT,EFFECT,HATÁS
+2-TARGET CHAIN LIGHTNING,2-TARGET CHAIN LIGHTNING,KÉT CÉLPONTOS LÁNCVILLÁM
+DAMAGE,DAMAGE,SEBZÉS
+CHAIN DAMAGE,CHAIN DAMAGE,LÁNCSEBZÉS
+COOLDOWN,COOLDOWN,TÖLTÉSIDŐ
+WEAPON COOLDOWN,WEAPON COOLDOWN,FEGYVER TÖLTÉSIDŐ
+PIERCE,PIERCE,ÁTHATOLÁS
+MAX PROJECTILES,MAX PROJECTILES,MAX. LÖVEDÉK
+TARGETS,TARGETS,CÉLPONTOK
+KNOCKBACK,KNOCKBACK,ELLÖKÉS
+RADIUS,RADIUS,SUGÁR
+RANGE,RANGE,HATÓTÁV
+KILLS REQUIRED,KILLS REQUIRED,SZÜKSÉGES ÖLÉS
+CHAIN RANGE,CHAIN RANGE,LÁNCHATÓTÁV
+COOLDOWN REDUCTION,COOLDOWN REDUCTION,TÖLTÉSIDŐ-CSÖKKENTÉS
+DAMAGE PER TICK,DAMAGE PER TICK,SEBZÉS TICKENKÉNT
+PROJECTILE SPEED,PROJECTILE SPEED,LÖVEDÉKSEBESSÉG
+ORBIT RADIUS,ORBIT RADIUS,PÁLYASUGÁR
+BLADES,BLADES,PENGÉK
+BIOMASS CHANCE,BIOMASS CHANCE,BIOMASSZA-ESÉLY
+POOL DURATION,POOL DURATION,TÓCSA IDŐTARTAMA
+DECOY DURATION,DECOY DURATION,CSALI IDŐTARTAMA
+LURE RADIUS,LURE RADIUS,CSALOGATÁSI SUGÁR
+DISCHARGE DAMAGE,DISCHARGE DAMAGE,KISÜLÉSI SEBZÉS
+DISCHARGE RADIUS,DISCHARGE RADIUS,KISÜLÉSI SUGÁR
+BIOMASS DROP CHANCE,BIOMASS DROP CHANCE,BIOMASSZA-ESÉSI ESÉLY
+HEAL AMOUNT,HEAL AMOUNT,GYÓGYÍTÁS MENNYISÉGE
+FIRE KILLS REQUIRED,FIRE KILLS REQUIRED,SZÜKSÉGES TŰZÖLÉSEK
+EXPLOSION DAMAGE,EXPLOSION DAMAGE,ROBBANÁSI SEBZÉS
+EXPLOSION RADIUS,EXPLOSION RADIUS,ROBBANÁSI SUGÁR
+BURN DAMAGE,BURN DAMAGE,ÉGÉSI SEBZÉS
+BURN DURATION,BURN DURATION,ÉGÉS IDŐTARTAMA
+TELEKINETIC DAMAGE,TELEKINETIC DAMAGE,TELEKINETIKUS SEBZÉS
+TELEKINETIC FORCE,TELEKINETIC FORCE,TELEKINETIKUS ERŐ
+CAPTIVES,CAPTIVES,FOGLYOK
+COLLISION DAMAGE,COLLISION DAMAGE,ÜTKÖZÉSI SEBZÉS
+CAPTURE RANGE,CAPTURE RANGE,BEFOGÁSI HATÓTÁV
+DASH DAMAGE,DASH DAMAGE,DASH-SEBZÉS
+TRAIL DAMAGE PER TICK,TRAIL DAMAGE PER TICK,NYOMSEBZÉS TICKENKÉNT
+TRAIL RADIUS,TRAIL RADIUS,NYOMSUGÁR
+TRAIL DURATION,TRAIL DURATION,NYOM IDŐTARTAMA
+SPAWN INTERVAL,SPAWN INTERVAL,LÉTREHOZÁSI IDŐ
+GENERATION PER ORB,GENERATION PER ORB,TERMELÉS GÖMBÖNKÉNT
+ORB LIFETIME,ORB LIFETIME,GÖMB ÉLETTARTAMA
+ORB RADIUS,ORB RADIUS,GÖMB SUGARA
+TRAVEL SPEED,TRAVEL SPEED,HALADÁSI SEBESSÉG
+CHAIN TARGETS,CHAIN TARGETS,LÁNCCÉLPONTOK
+RELAY RANGE,RELAY RANGE,RELÉHATÓTÁV
+CONTACT DAMAGE,CONTACT DAMAGE,KONTAKTSEBZÉS
+OVERDRIVE DURATION,OVERDRIVE DURATION,OVERDRIVE IDŐTARTAMA
+ATTACK DAMAGE,ATTACK DAMAGE,TÁMADÁSI SEBZÉS
+ATTACK INTERVAL,ATTACK INTERVAL,TÁMADÁSI IDŐKÖZ
+MOVE SPEED,MOVE SPEED,MOZGÁSI SEBESSÉG
+MAX HEALTH,MAX HEALTH,MAX. ÉLETERŐ
+BIOMASS GAIN,BIOMASS GAIN,BIOMASSZA-HOZAM
+PICKUP RANGE,PICKUP RANGE,FELVÉTELI HATÓTÁV
+DASH COOLDOWN,DASH COOLDOWN,DASH TÖLTÉSIDŐ
+DAMAGE PER CHARGE,DAMAGE PER CHARGE,SEBZÉS TÖLTÉSENKÉNT
+DAMAGE PER STACK,DAMAGE PER STACK,SEBZÉS RÉTEGENKÉNT
+DAMAGE PER SECOND,DAMAGE PER SECOND,SEBZÉS MÁSODPERCENKÉNT
+SPEED AND RANGE,SPEED AND RANGE,SEBESSÉG ÉS HATÓTÁV
+WIDTH,WIDTH,SZÉLESSÉG
+CHANCE,CHANCE,ESÉLY
+CAP,CAP,FELSŐ KORLÁT
+DURATION,DURATION,IDŐTARTAM
+COOLDOWN REFUND,COOLDOWN REFUND,TÖLTÉSIDŐ-VISSZATÉRÍTÉS
+REFUND PER KILL,REFUND PER KILL,VISSZATÉRÍTÉS ÖLÉSENKÉNT
+HEAL PER HIT,HEAL PER HIT,GYÓGYÍTÁS TALÁLATONKÉNT
+PULL FORCE,PULL FORCE,HÚZÓERŐ
+DIRECT DAMAGE PENALTY,DIRECT DAMAGE PENALTY,KÖZVETLEN SEBZÉSI BÜNTETÉS
+CONTACT DAMAGE REDUCTION,CONTACT DAMAGE REDUCTION,KONTAKTSEBZÉS-CSÖKKENTÉS
+SECONDARY DAMAGE PENALTY,SECONDARY DAMAGE PENALTY,MÁSODLAGOS SEBZÉSI BÜNTETÉS
+MOVE SPEED PENALTY,MOVE SPEED PENALTY,MOZGÁSISEBESSÉG-BÜNTETÉS
+DAMAGE PENALTY,DAMAGE PENALTY,SEBZÉSI BÜNTETÉS
+"Every second level-up grants one free reroll for that offer only. Unused free rerolls never stack.","Every second level-up grants one free reroll for that offer only. Unused free rerolls never stack.","Minden második szintlépés ajánlatához jár egy ingyenes újradobás. A fel nem használt ingyenes újradobás nem halmozódik."
+VOLT_ARC_HEART_NAME,ARC HEART,ÍVSZÍV
+VOLT_ARC_HEART_DESC,"Turns the Voltaic Heart's main attack into chain lightning that jumps through two targets.","A Voltaic Heart alaptámadása láncvillámmá válik, amely két célponton ugrik végig."
+VOLT_ARC_SPEAR_NAME,ARC SPEAR,ÍVLÁNDZSA
+VOLT_ARC_SPEAR_DESC,"Launches a visible lightning spear through a line of enemies. Each level adds damage, reach and one pierce.","Jól látható villámlándzsát lő át az ellenfelek során. Minden szint növeli a sebzést, a hatótávot és az áthatolások számát."
+VOLT_BONE_SHARD_VOLLEY_NAME,VOLT SHARD VOLLEY,VOLTSZILÁNK-SOROZAT
+VOLT_BONE_SHARD_VOLLEY_DESC,"Fires travelling conductive shards at up to 5 + level enemies inside Koda's facing cone.","Repülő vezető szilánkokat lő legfeljebb 5 + szint ellenfélre Koda előre néző kúpjában."
+VOLT_KILL_SWITCH_NODES_NAME,KILL-SWITCH NODES,VÉSZLEÁLLÍTÓ CSOMÓK
+VOLT_KILL_SWITCH_NODES_DESC,"Every 15 kills releases a wide electric pulse. Each extra level reduces the requirement by one, down to 11 kills.","Minden 15. ölés széles elektromos lökéshullámot indít. Minden további szint eggyel csökkenti a küszöböt, legalább 11 ölésig."
+VOLT_OVERLOAD_VENT_NAME,OVERLOAD VENT,TÚLTERHELÉS-SZELEP
+VOLT_OVERLOAD_VENT_DESC,"Electric secondary weapons recover 15% faster per level, with a 48% total cooldown-reduction cap.","Az elektromos másodlagos fegyverek szintenként 15%-kal gyorsabban töltődnek vissza, legfeljebb 48%-os csökkentésig."
+VOLT_PULSE_CAPACITOR_NAME,PULSE CAPACITOR,IMPULZUSKONDENZÁTOR
+VOLT_PULSE_CAPACITOR_DESC,"Increases chain-lightning relay range by 20% per level.","Szintenként 20%-kal növeli a láncvillám ugrási távolságát."
+VOLT_QUILL_BURST_NAME,ION QUILL,IONTÜSKE
+VOLT_QUILL_BURST_DESC,"Fires fast homing quills at 2 + level targets. Each impact can trigger Quill build items.","Gyors, célkövető tüskéket lő 2 + szint célpontra. Minden becsapódás aktiválhatja a tüskés build itemjeit."
+VOLT_SHOCK_RAM_NAME,SHOCK RAM,SOKKROHAM
+VOLT_SHOCK_RAM_DESC,"Dashing through enemies deals electric impact damage once per target and knocks them away.","Az ellenfeleken átrohanó dash célpontonként egyszer elektromos becsapódási sebzést okoz és ellöki őket."
+VOLT_TAIL_LASH_NAME,TESLA LASH,TESLACSAPÁS
+VOLT_TAIL_LASH_DESC,"Sweeps an electrified tail around Koda, damaging and strongly repelling nearby enemies.","Koda elektromos farokcsapást mér maga köré, megsebezve és erősen ellökve a közeli ellenfeleket."
+VOLT_FORKED_ARC_NODE_NAME,FORKED ARC NODE,ELÁGAZÓ ÍVCSOMÓ
+VOLT_FORKED_ARC_NODE_DESC,"Chain hits have a 45% chance to fork to two new targets at 45% damage. Forks cannot fork again.","A lánctalálatok 45% eséllyel két új célpontra ágaznak, 45% sebzéssel. Az ágak nem ágazhatnak tovább."
+VOLT_STATIC_RESERVOIR_NAME,STATIC RESERVOIR,STATIKUS TARTÁLY
+VOLT_STATIC_RESERVOIR_DESC,"Every 10 chain hits releases a 180 px discharge for 70% base damage + 15% per item level.","Minden 10. lánctalálat 180 pixeles kisülést indít 70% alapsebzéssel, itemszintenként további 15%-kal."
+VOLT_GROUNDING_FILAMENTS_NAME,GROUNDING FILAMENTS,FÖLDELŐ SZÁLAK
+VOLT_GROUNDING_FILAMENTS_DESC,"Electric hits Ground targets for 2 seconds. A chain hit consumes Grounded to deal +7% damage per item level.","Az elektromos találatok 2 másodpercre Földelt állapotot okoznak. Egy lánctalálat elfogyasztja ezt, itemszintenként +7% sebzésért."
+VOLT_THUNDER_GAIT_NAME,THUNDER GAIT,MENNYDÖRGŐ JÁRÁS
+VOLT_THUNDER_GAIT_DESC,"A dash that hits at least two enemies refunds 45% dash cooldown and releases a 70% damage aftershock.","A legalább két ellenfelet eltaláló dash 45% dash-töltést visszaad, majd 70% sebzésű utórengést kelt."
+VOLT_KINETIC_CAPACITOR_NAME,KINETIC CAPACITOR,KINETIKUS KONDENZÁTOR
+VOLT_KINETIC_CAPACITOR_DESC,"Moving 280 px stores one charge, up to three. Shock Ram consumes them for +7% damage per charge and item level.","Minden megtett 280 pixel egy töltést tárol, legfeljebb hármat. A Sokkroham ezeket töltésenként és itemszintenként +7% sebzésért fogyasztja el."
+VOLT_GALVANIC_TENDONS_NAME,GALVANIC TENDONS,GALVANIKUS INAK
+VOLT_GALVANIC_TENDONS_DESC,"Per level: +4% move speed and +7% Shock Ram radius, but -3% damage to other electric attacks.","Szintenként: +4% mozgási sebesség és +7% Sokkroham-sugár, de -3% sebzés a többi elektromos támadásra."
+VOLT_LINEAR_INDUCTOR_NAME,LINEAR INDUCTOR,LINEÁRIS INDUKTOR
+VOLT_LINEAR_INDUCTOR_DESC,"Arc Spear gains +65% damage and +35% reach, but becomes 35% narrower and 25% slower to recover.","Az Ívlándzsa +65% sebzést és +35% hatótávot kap, de 35%-kal keskenyebb és 25%-kal lassabban töltődik vissza."
+VOLT_POLARIZED_SCAR_NAME,POLARIZED SCAR,POLARIZÁLT HEG
+VOLT_POLARIZED_SCAR_DESC,"Arc Spear marks a target for 2.5 seconds. Hitting it again consumes the mark for +8% damage per item level.","Az Ívlándzsa 2,5 másodpercre megjelöli a célpontot. Az újabb találat elfogyasztja a jelet, itemszintenként +8% sebzésért."
+VOLT_RAIL_SYNAPSES_NAME,RAIL SYNAPSES,SÍNSZINAPSZISOK
+VOLT_RAIL_SYNAPSES_DESC,"Per level Arc Spear gains +12% speed and reach, loses 6% width, and refunds 5% cooldown after piercing three targets.","Az Ívlándzsa szintenként +12% sebességet és hatótávot kap, 6% szélességet veszít, három célpont átlövése után pedig 5% töltést kap vissza."
+VOLT_CORONA_FOLLICLES_NAME,CORONA FOLLICLES,KORONATÜSZŐK
+VOLT_CORONA_FOLLICLES_DESC,"Each Ion Quill impact splits to two nearby targets for 35% damage. A proc chain can create at most eight splits.","Minden Iontüske-becsapódás két közeli célpontra hasad 35% sebzéssel. Egy procsorozat legfeljebb nyolc ágat hozhat létre."
+VOLT_IONIC_MARROW_NAME,IONIC MARROW,IONOS VELŐ
+VOLT_IONIC_MARROW_DESC,"Adds one Ion Quill projectile at item levels 1, 3 and 5. Each level reduces quill damage by 4%.","Egy Iontüske-lövedéket ad az 1., 3. és 5. itemszinten. Minden szint 4%-kal csökkenti a tüskék sebzését."
+VOLT_STORM_PLUMAGE_NAME,STORM PLUMAGE,VIHARTOLLAZAT
+VOLT_STORM_PLUMAGE_DESC,"Every sixth Ion Quill impact bursts in a 110 px radius for 35% base damage + 8% per item level.","Minden hatodik Iontüske-becsapódás 110 pixeles körben robban, 35% alapsebzéssel és itemszintenként +8%-kal."
+VOLT_BALL_LIGHTNING_NAME,BALL LIGHTNING,VILLÁMGÖMB
+VOLT_BALL_LIGHTNING_DESC,"Periodically creates a blue orb that retargets enemies and deals repeated area damage. Unique targets charge it up to three times; a full orb bursts on expiry.","Időnként kék gömböt hoz létre, amely újracélozza az ellenfeleket és ismételt területi sebzést okoz. Az egyedi célpontok háromszor feltöltik; a teli gömb lejáratkor felrobban."
+VOLT_CHAIN_REACTOR_NAME,CHAIN REACTOR,LÁNCREAKTOR
+VOLT_CHAIN_REACTOR_DESC,"Each created orb grants +2% generation speed per level for 5 seconds, stacking up to +50%.","Minden létrejött gömb szintenként +2% létrehozási sebességet ad 5 másodpercre, legfeljebb +50%-ig."
+VOLT_ELECTRIC_GRAVITY_NAME,ELECTRIC GRAVITY,ELEKTROMOS GRAVITÁCIÓ
+VOLT_ELECTRIC_GRAVITY_DESC,"Nearby orbs attract one another, making charge-sharing encounters and Storm Core fusion more reliable.","A közeli gömbök vonzzák egymást, így a töltésmegosztó találkozások és a Viharmag-fúzió megbízhatóbbá válik."
+VOLT_IONIZED_MEMBRANE_NAME,IONIZED MEMBRANE,IONIZÁLT MEMBRÁN
+VOLT_IONIZED_MEMBRANE_DESC,"Increases Ball Lightning lifetime by 35% per level.","Szintenként 35%-kal növeli a Villámgömb élettartamát."
+VOLT_ORBITAL_CHARGE_NAME,ORBITAL CHARGE,ORBITÁLIS TÖLTÉS
+VOLT_ORBITAL_CHARGE_DESC,"Every third orb circles Koda for 6 seconds, protecting close space before launching toward an enemy.","Minden harmadik gömb 6 másodpercig Koda körül kering, majd egy ellenfél felé indul."
+VOLT_PLASMA_EXPANSION_NAME,PLASMA EXPANSION,PLAZMATÁGULÁS
+VOLT_PLASMA_EXPANSION_DESC,"Per level: +25% orb radius and area coverage, with slightly lower travel speed.","Szintenként +25% gömbsugár és területlefedés, kissé alacsonyabb haladási sebességgel."
+VOLT_PLASMA_SHEPHERD_NAME,PLASMA SHEPHERD,PLAZMAPÁSZTOR
+VOLT_PLASMA_SHEPHERD_DESC,"Orbs turn 45% faster toward their current target, reducing misses against moving enemies.","A gömbök 45%-kal gyorsabban fordulnak az aktuális célpontjuk felé, ezért ritkábban tévesztik el a mozgó ellenfeleket."
+VOLT_POLARITY_SHIFT_NAME,POLARITY SHIFT,POLARITÁSVÁLTÁS
+VOLT_POLARITY_SHIFT_DESC,"Active, 8 s cooldown: pull every orb toward Koda, then launch each at a target and add one charge.","Aktív, 8 mp töltésidő: minden gömböt Kodához húz, majd célpontokra lövi őket és egy töltést ad mindegyiknek."
+VOLT_RESIDUAL_CHARGE_NAME,RESIDUAL CHARGE,MARADVÁNYTÖLTÉS
+VOLT_RESIDUAL_CHARGE_DESC,"Expired non-core orbs leave a damaging static field for 2 seconds.","A lejárt, nem maggá alakult gömbök 2 másodperces sebző statikus mezőt hagynak."
+VOLT_STAR_COLLAPSE_NAME,STAR COLLAPSE,CSILLAGÖSSZEOMLÁS
+VOLT_STAR_COLLAPSE_DESC,"Two fully charged orbs that meet fuse into a large 5-second core that deals continuous damage and births new orbs.","Két találkozó, teljesen feltöltött gömb 5 másodperces nagy maggá olvad, amely folyamatosan sebez és új gömböket szül."
+VOLT_STATIC_REPLICATION_NAME,STATIC REPLICATION,STATIKUS REPLIKÁCIÓ
+VOLT_STATIC_REPLICATION_DESC,"The first time an orb reaches three charges, it creates one offspring. Each parent can replicate only once.","Amikor egy gömb először eléri a három töltést, egy utódot hoz létre. Minden szülő csak egyszer replikálódhat."
+VOLT_ARC_RELAY_NAME,ARC RELAY,ÍVRELÉ
+VOLT_ARC_RELAY_DESC,"Adds one chain-lightning target and +18 px relay range per level, up to four levels.","Szintenként egy láncvillám-célpontot és +18 pixel ugrási távolságot ad, legfeljebb négy szintig."
+VOLT_CAPACITOR_ORGAN_NAME,CAPACITOR ORGAN,KONDENZÁTORSZERV
+VOLT_CAPACITOR_ORGAN_DESC,"Lightning hits build charge. At 20 charge, an automatic bonus chain fires; one attack can generate at most six charge.","A villámtalálatok töltést termelnek. 20 töltésnél automatikus bónuszlánc sül el; egy támadás legfeljebb hat töltést adhat."
+VOLT_CONDUCTIVE_FUR_NAME,CONDUCTIVE FUR,VEZETŐ BUNDA
+VOLT_CONDUCTIVE_FUR_DESC,"Lightning hits add Shock for 4 seconds, stacking five times. Each existing stack adds 8% lightning damage.","A villámtalálatok 4 másodperces Sokkot okoznak, legfeljebb öt rétegben. Minden meglévő réteg +8% villámsebzést ad."
+VOLT_EYE_OF_THE_STORM_NAME,EYE OF THE STORM,A VIHAR SZEME
+VOLT_EYE_OF_THE_STORM_DESC,"While five Shocked enemies are within 300 px, gain +15% move speed, 20% faster dash recovery and a rapid auto-discharge.","Ha öt Sokkolt ellenfél van 300 pixelen belül, +15% mozgási sebességet, 20%-kal gyorsabb dash-töltést és gyors automatikus kisülést kapsz."
+VOLT_FEEDBACK_LOOP_NAME,FEEDBACK LOOP,VISSZACSATOLÁSI HUROK
+VOLT_FEEDBACK_LOOP_DESC,"Each unique already-Shocked target in the main chain removes 0.03 s from the next attack, up to 20%. Minimum cooldown: 0.25 s.","A főlánc minden egyedi, már Sokkolt célpontja 0,03 mp-et levon a következő támadásból, legfeljebb 20%-ig. Minimum töltésidő: 0,25 mp."
+VOLT_IONIZED_BLOOD_NAME,IONIZED BLOOD,IONIZÁLT VÉR
+VOLT_IONIZED_BLOOD_DESC,"A Shocked enemy has a 60% chance to burst on death, dealing 50% lightning damage and spreading Shock in 120 px.","Egy Sokkolt ellenfél 60% eséllyel felrobban halálakor, 50% villámsebzést okozva és 120 pixelen belül Sokkot terjesztve."
+VOLT_NEURAL_THUNDER_NAME,NEURAL THUNDER,IDEGI MENNYDÖRGÉS
+VOLT_NEURAL_THUNDER_DESC,"Every eighth main or Capacitor jump has a 40% chance to branch to three targets for 62% damage.","Minden nyolcadik fő- vagy kondenzátorugrás 40% eséllyel három célpontra ágazik 62% sebzéssel."
+VOLT_OVERLOAD_HEART_NAME,OVERLOAD HEART,TÚLTERHELÉS-SZÍV
+VOLT_OVERLOAD_HEART_DESC,"Lightning builds Overload. Above 50, each 10 points adds +8% damage and +5% range; at 80, chain falloff disappears.","A villám Túlterhelést épít. 50 fölött minden 10 pont +8% sebzést és +5% hatótávot ad; 80-nál megszűnik a lánc sebzéscsökkenése."
+VOLT_SINGULARITY_CORE_NAME,SINGULARITY CORE,SZINGULARITÁSMAG
+VOLT_SINGULARITY_CORE_DESC,"Every 50 lightning events starts Thunderstate for 3 seconds, rapidly relaying damage between Shocked enemies.","Minden 50. villámesemény 3 másodperces Mennydörgésállapotot indít, amely gyorsan továbbít sebzést a Sokkolt ellenfelek között."
+VOLT_STORM_CORE_NAME,STORM CORE,VIHARMAG
+VOLT_STORM_CORE_DESC,"Normal chain hits have a 40% chance to fork one mini bolt for 45% damage. Mini bolts cannot fork.","A normál lánctalálatok 40% eséllyel egy 45% sebzésű minivillámot ágaztatnak le. A minivillám nem ágazhat tovább."
+VOLT_BALLISTIC_NERVOUS_SYSTEM_NAME,BALLISTIC NERVOUS SYSTEM,BALLISZTIKUS IDEGRENDSZER
+VOLT_BALLISTIC_NERVOUS_SYSTEM_DESC,"Kinetic Charge no longer decays while moving, but drains extremely quickly while Koda stands still.","A Kinetikus Töltés mozgás közben nem csökken, de Koda álló helyzetében rendkívül gyorsan lemerül."
+VOLT_CAPACITOR_MARROW_NAME,CAPACITOR MARROW,KONDENZÁTORVELŐ
+VOLT_CAPACITOR_MARROW_DESC,"Halves Kinetic Charge loss while standing still, making brief route corrections less punishing.","Felére csökkenti a Kinetikus Töltés veszteségét álló helyzetben, így a rövid útvonal-korrekció kevésbé büntet."
+VOLT_CHARGED_PAW_PADS_NAME,CHARGED PAW PADS,TÖLTÖTT TALPPÁRNÁK
+VOLT_CHARGED_PAW_PADS_DESC,"Dash travels 20% faster and farther; completing it releases a compact electric discharge.","A dash 20%-kal gyorsabban és messzebbre halad; a végén kis elektromos kisülést kelt."
+VOLT_DOUBLE_EXPOSURE_NAME,DOUBLE EXPOSURE,KETTŐS EXPOZÍCIÓ
+VOLT_DOUBLE_EXPOSURE_DESC,"Phantom Current repeats each recorded dash route twice instead of once.","A Fantomáram minden rögzített dash-útvonalat egy helyett kétszer ismétel meg."
+VOLT_FLASH_STEP_NAME,FLASH STEP,VILLÁMLÉPÉS
+VOLT_FLASH_STEP_DESC,"At 75+ Charge, dash gains +40% travel. The first pass marks targets; the return pass detonates the mark.","75+ Töltésnél a dash +40% távot kap. Az első áthaladás megjelöli, a visszatérő áthaladás felrobbantja a célpontot."
+VOLT_IONIZED_SPINE_NAME,IONIZED SPINE,IONIZÁLT GERINC
+VOLT_IONIZED_SPINE_DESC,"A sharp direction change while moving grants +3 Kinetic Charge.","Az éles irányváltás mozgás közben +3 Kinetikus Töltést ad."
+VOLT_LIGHTSPEED_NAME,LIGHTSPEED,FÉNYSEBESSÉG
+VOLT_LIGHTSPEED_DESC,"A READY dash gains +28% speed, activates Overdrive and immediately records an electric return route.","A KÉSZ dash +28% sebességet kap, aktiválja az Overdrive-ot és azonnal rögzít egy elektromos visszatérő útvonalat."
+VOLT_MAGNETIC_PREDATOR_NAME,MAGNETIC PREDATOR,MÁGNESES RAGADOZÓ
+VOLT_MAGNETIC_PREDATOR_DESC,"At 75+ Charge, nearby enemies are gently pulled behind Koda's movement for easier return passes.","75+ Töltésnél a közeli ellenfelek enyhén Koda mozgása mögé húzódnak, megkönnyítve a visszatérő áthaladást."
+VOLT_NERVE_OVERCLOCK_NAME,NERVE OVERCLOCK,IDEGI TÚLHAJTÁS
+VOLT_NERVE_OVERCLOCK_DESC,"Increases Kinetic Charge generation from movement by 25%.","25%-kal növeli a mozgásból származó Kinetikus Töltést."
+VOLT_PHANTOM_CURRENT_NAME,PHANTOM CURRENT,FANTOMÁRAM
+VOLT_PHANTOM_CURRENT_DESC,"Each Overdrive dash leaves a violet route that repeats as an electric discharge after 0.7 seconds.","Minden Overdrive-dash ibolya útvonalat hagy, amely 0,7 másodperc múlva elektromos kisülésként ismétlődik meg."
+VOLT_PREDATORS_STATIC_NAME,PREDATOR'S STATIC,RAGADOZÓ STATIKÁJA
+VOLT_PREDATORS_STATIC_DESC,"A close pass beside an enemy without taking damage triggers Near Miss: +8 Charge and a local discharge.","Az ellenfél melletti sérülésmentes közeli elhaladás Majdnem Találatot vált ki: +8 Töltés és helyi kisülés."
+VOLT_PREDATOR_COIL_NAME,PREDATOR COIL,RAGADOZÓTEKERCS
+VOLT_PREDATOR_COIL_DESC,"Near Miss requires a tighter pass, but its Kinetic Charge reward doubles.","A Majdnem Találathoz közelebbi elhaladás kell, de a Kinetikus Töltés jutalma megduplázódik."
+VOLT_PURPLE_HEART_NAME,PURPLE HEART,BÍBORSZÍV
+VOLT_PURPLE_HEART_DESC,"Extends every Kinetic Overdrive by 0.5 seconds.","Minden Kinetikus Overdrive időtartamát 0,5 másodperccel meghosszabbítja."
+VOLT_STATIC_CLAWS_NAME,STATIC CLAWS,STATIKUS KAROM
+VOLT_STATIC_CLAWS_DESC,"Unlocks Kinetic Charge. Reach 100%, then dash for 2 seconds of full invulnerability and 45 contact damage once per enemy.","Feloldja a Kinetikus Töltést. Érd el a 100%-ot, majd dash-elj 2 másodperc teljes sebezhetetlenségért és ellenfelenként egyszer 45 kontaktsebzésért."
+VOLT_VOLTAIC_TENDONS_NAME,VOLTAIC TENDONS,VOLTAIKUS INAK
+VOLT_VOLTAIC_TENDONS_DESC,"Grants +15% move speed and +35% Kinetic Charge generation while moving.","+15% mozgási sebességet és mozgás közben +35% Kinetikus Töltés-termelést ad."
+VOLT_ELECTRIC_KINETIC_EXPANDED_CAPACITOR_NAME,EXPANDED CAPACITOR,KIBŐVÍTETT KONDENZÁTOR
+VOLT_ELECTRIC_KINETIC_EXPANDED_CAPACITOR_DESC,"Extends Kinetic Overdrive by 0.4 seconds.","0,4 másodperccel meghosszabbítja a Kinetikus Overdrive-ot."
+VOLT_ELECTRIC_KINETIC_PREDATOR_CAPACITOR_NAME,PREDATOR CAPACITOR,RAGADOZÓKONDENZÁTOR
+VOLT_ELECTRIC_KINETIC_PREDATOR_CAPACITOR_DESC,"Kills during Overdrive restore 0.08 seconds, up to 1 extra second per activation.","Az Overdrive alatti ölések 0,08 másodpercet visszaadnak, aktiválásonként legfeljebb 1 extra másodpercig."
+VOLT_ELECTRIC_KINETIC_COMPRESSED_CHARGE_NAME,COMPRESSED CHARGE,SŰRÍTETT TÖLTÉS
+VOLT_ELECTRIC_KINETIC_COMPRESSED_CHARGE_DESC,"Overdrive lasts 30% less time, but its contact damage is 60% higher.","Az Overdrive 30%-kal rövidebb, de a kontaktsebzése 60%-kal nagyobb."

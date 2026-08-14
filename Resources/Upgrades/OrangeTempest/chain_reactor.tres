@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3]
+[ext_resource type="Script" path="res://Scripts/upgrade_data.gd" id="1"]
+[ext_resource type="Texture2D" path="res://Assets/ui/cards/build_items/electric.svg" id="2"]
+[resource]
+script = ExtResource("1")
+upgrade_id = &"chain_reactor"
+display_name = "CHAIN REACTOR"
+description = "Each created Ball Lightning temporarily raises generation speed by 2% per level, up to 50%."
+card_texture = ExtResource("2")
+fleshdrive_affinity = "electric"
+synergy_tags = Array[StringName]([&"orange_tempest", &"generation", &"snowball"])
+rarity = "rare"
+max_level = 3
+minimum_player_level = 10
+build_archetype = &"orange_tempest"
+required_weapons = Array[StringName]([&"static_replication"])
+

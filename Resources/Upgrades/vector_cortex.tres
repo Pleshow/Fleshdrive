@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3 uid="uid://bopkkab4wdmre"]
+
+[ext_resource type="Script" uid="uid://cgff01swg5n6" path="res://Scripts/upgrade_data.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://devt36vxfrrbu" path="res://Assets/ui/items/telekinetic/vector_cortex.png" id="2"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = &"vector_cortex"
+display_name = "VECTOR CORTEX"
+description = "All telekinetic attacks recover 9% faster, deal 8% more damage and apply 8% stronger force, including Koda's auto-attack."
+card_texture = ExtResource("2")
+fleshdrive_affinity = "telekinetic"
+synergy_tags = Array[StringName]([&"cooldown", &"force", &"control"])
+minimum_player_level = 3

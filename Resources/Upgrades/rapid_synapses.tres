@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3 uid="uid://p5gm4ursqckr"]
+
+[ext_resource type="Script" uid="uid://cgff01swg5n6" path="res://Scripts/upgrade_data.gd" id="1_iufrh"]
+[ext_resource type="Texture2D" uid="uid://gt8vtipws4at" path="res://Assets/ui/items/02_rapid_synapses.png" id="1_mxuti"]
+
+[resource]
+script = ExtResource("1_iufrh")
+upgrade_id = &"rapid_synapses"
+card_texture = ExtResource("1_mxuti")
+metadata/_custom_type_script = "uid://cgff01swg5n6"

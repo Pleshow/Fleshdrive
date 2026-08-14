@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3 uid="uid://cj0es0kykob5g"]
+
+[ext_resource type="Texture2D" uid="uid://dic236ekbs2yv" path="res://Assets/ui/organs/04_autonomic_reflex.png" id="1_texture"]
+[ext_resource type="Script" uid="uid://cgff01swg5n6" path="res://Scripts/upgrade_data.gd" id="2_script"]
+
+[resource]
+script = ExtResource("2_script")
+upgrade_id = &"autonomic_reflex"
+display_name = "AUTONOMIC REFLEX"
+description = "Evolves semi-automatic targeting into full auto-attack."
+card_texture = ExtResource("1_texture")
+upgrade_kind = 1
+organ_slot = 1
+max_level = 1
+minimum_player_level = 15
+metadata/_custom_type_script = "res://Scripts/upgrade_data.gd"

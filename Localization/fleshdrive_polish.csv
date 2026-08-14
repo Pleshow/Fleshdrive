@@ -1,0 +1,117 @@
+keys,en,hu
+DISPLAY & AUDIO,DISPLAY & AUDIO,KÉP ÉS HANG
+GAMEPLAY & ACCESSIBILITY,GAMEPLAY & ACCESSIBILITY,JÁTÉKMENET ÉS KISEGÍTÉS
+MIX & ACCESSIBILITY,MIX & ACCESSIBILITY,HANGKEVERÉS ÉS KISEGÍTÉS
+MUSIC,MUSIC,ZENE
+SFX,SFX,HANGEFFEKTEK
+CAMERA SHAKE,CAMERA SHAKE,KAMERARÁZKÓDÁS
+VFX INTENSITY,VFX INTENSITY,EFFEKTEK ERŐSSÉGE
+STICK DEADZONE,STICK DEADZONE,KAR HOLTJÁTÉKA
+CROSSHAIR SIZE,CROSSHAIR SIZE,CÉLKERESZT MÉRETE
+HIT FLASH,HIT FLASH,TALÁLATI VILLANÁS
+AIM ASSIST,AIM ASSIST,CÉLZÁSRÁSEGÍTÉS
+DAMAGE NUMBERS,DAMAGE NUMBERS,SEBZÉSSZÁMOK
+TUTORIALS,TUTORIALS,OKTATÓÜZENETEK
+MIMICHU_OPERATION_PROMPT,"MIMICHU
+
+Pick what kind of monster you want to become. I cleaned both. Mostly.","MIMICHU
+
+Válaszd ki, milyen szörnnyé akarsz válni. Mindkettőt megtisztítottam. Többnyire."
+ONBOARDING_RUN_OBJECTIVE,"SURVIVE FOR 12 MINUTES
+Collect biomass, refine your build, defeat the Warden.","ÉLJ TÚL 12 PERCIG
+Gyűjts biomasszát, fejleszd a buildedet, és győzd le az Őrzőt."
+ONBOARDING_SYSTEM_GUIDE,"MOVE  WASD / LEFT STICK    ATTACK  LMB / RIGHT STICK
+DASH  SPACE / GAMEPAD A     PAUSE   ESC / START
+
+Level-up offers always include an active Fleshdrive mutation.
+Matching synergy tags strengthen a focused build.
+Install organs on the matching anatomy slot in ORGAN SCREEN.","MOZGÁS  WASD / BAL KAR    TÁMADÁS  BAL EGÉRGOMB / JOBB KAR
+DASH  SPACE / GAMEPAD A    SZÜNET  ESC / START
+
+Szintlépéskor mindig kapsz az aktív Fleshdrive-hoz illő mutációt.
+Az egyező szinergiacímkék erősítik a kiválasztott buildet.
+A szerveket a SZERVKÉPERNYŐ megfelelő anatómiai helyére ültesd."
+BURST / MOBILITY / CHAIN LIGHTNING,BURST / MOBILITY / CHAIN LIGHTNING,KITÖRŐ SEBZÉS / MOBILITÁS / LÁNCVILLÁM
+BURN / AREA DENIAL / ATTRITION,BURN / AREA DENIAL / ATTRITION,ÉGÉS / TERÜLETLEZÁRÁS / FELŐRLÉS
+CONTROL / POSITIONING / REVERSAL,CONTROL / POSITIONING / REVERSAL,KONTROLL / POZICIONÁLÁS / VISSZAFORDÍTÁS
+CHAIN LIGHTNING / FAST COOLDOWNS / DASH IMPACTS,CHAIN LIGHTNING / FAST COOLDOWNS / DASH IMPACTS,LÁNCVILLÁM / GYORS ÚJRATÖLTÉS / DASH ÜTKÖZÉS
+BURN STACKS / FIRE ZONES / DEATH EXPLOSIONS,BURN STACKS / FIRE ZONES / DEATH EXPLOSIONS,ÉGÉS HALMOZÁSA / TŰZZÓNÁK / HALÁLROBBANÁSOK
+GRAVITY CONTROL / KNOCKBACK / PIERCING,GRAVITY CONTROL / KNOCKBACK / PIERCING,GRAVITÁCIÓS KONTROLL / HÁTRALÖKÉS / ÁTHATOLÁS
+TIME,TIME,IDŐ
+KILLS,KILLS,ÖLÉSEK
+BIOMASS,BIOMASS,BIOMASSZA
+LEVEL,LEVEL,SZINT
+TOP DAMAGE,TOP DAMAGE,LEGFŐBB SEBZÉSFORRÁSOK
+LOADOUT,LOADOUT,FELSZERELÉS
+YOU WIN,YOU WIN,GYŐZTÉL
+BACK TO MUTATIONS [ESC],BACK TO MUTATIONS [ESC],VISSZA A MUTÁCIÓKHOZ [ESC]
+BACK TO PAUSE [ESC],BACK TO PAUSE [ESC],VISSZA A SZÜNETHEZ [ESC]
+START NEW RUN,START NEW RUN,ÚJ RUN INDÍTÁSA
+ELECTRIC,ELECTRIC,ELEKTROMOS
+FIRE,FIRE,TŰZ
+NOETIC,NOETIC,NOETIKUS
+"CHAIN LIGHTNING / FAST COOLDOWNS / DASH IMPACTS
+Synergies: ARC HEART, PULSE CAPACITOR, OVERLOAD VENT","CHAIN LIGHTNING / FAST COOLDOWNS / DASH IMPACTS
+Synergies: ARC HEART, PULSE CAPACITOR, OVERLOAD VENT","LÁNCVILLÁM / GYORS ÚJRATÖLTÉS / DASH ÜTKÖZÉS
+Szinergiák: ÍVSZÍV, IMPULZUSKONDENZÁTOR, TÚLTERHELÉS-SZELEP"
+"BURN STACKS / FIRE ZONES / DEATH EXPLOSIONS
+Synergies: COMBUSTION SAC, THERMAL LATTICE, FLASHPOINT NODES","BURN STACKS / FIRE ZONES / DEATH EXPLOSIONS
+Synergies: COMBUSTION SAC, THERMAL LATTICE, FLASHPOINT NODES","ÉGÉS HALMOZÁSA / TŰZZÓNÁK / HALÁLROBBANÁSOK
+Szinergiák: ÉGÉSZACSKÓ, HŐRÁCS, GYULLADÁSPONT-CSOMÓK"
+"GRAVITY CONTROL / KNOCKBACK / PIERCING
+Synergies: GRAVITY WELL, KINETIC CAPTIVITY, PROJECTILE REVERSAL","GRAVITY CONTROL / KNOCKBACK / PIERCING
+Synergies: GRAVITY WELL, KINETIC CAPTIVITY, PROJECTILE REVERSAL","GRAVITÁCIÓS KONTROLL / HÁTRALÖKÉS / ÁTHATOLÁS
+Szinergiák: GRAVITÁCIÓS KÚT, KINETIKUS FOGSÁG, LÖVEDÉK-VISSZAFORDÍTÁS"
+WARDEN CORE RECOVERED // BLUEPRINT IMPRINTED,WARDEN CORE RECOVERED // BLUEPRINT IMPRINTED,ŐRZŐMAG MEGSZEREZVE // TERVRAJZ RÖGZÍTVE
+"Easy now. The imprint held. Most of you came back in the correct places.","Easy now. The imprint held. Most of you came back in the correct places.","Nyugalom. A lenyomat megmaradt. A legtöbb részed a megfelelő helyre került vissza."
+"Was that the twenty-third? Never mind. I made another you.","Was that the twenty-third? Never mind. I made another you.","Ez volt a huszonharmadik? Mindegy. Készítettem belőled egy másikat."
+"Again? Hold still. You always twitch before the eyes are finished.","Again? Hold still. You always twitch before the eyes are finished.","Már megint? Maradj nyugton. Mindig rángatózol, mielőtt elkészülnek a szemeid."
+"The fabricator remembered your scars. I told it not to.","The fabricator remembered your scars. I told it not to.","A fabrikátor emlékezett a hegeidre. Pedig mondtam neki, hogy ne tegye."
+"You are getting easier to print. I am not sure that is good.","You are getting easier to print. I am not sure that is good.","Egyre könnyebb kinyomtatni téged. Nem vagyok biztos benne, hogy ez jó."
+"The body is new. The memory is not. Your Blood Memory fragments are safe.","The body is new. The memory is not. Your Blood Memory fragments are safe.","A test új. Az emlék nem. A Vérmemória-töredékeid biztonságban vannak."
+SETTINGS,SETTINGS,BEÁLLÍTÁSOK
+FULLSCREEN,FULLSCREEN,TELJES KÉPERNYŐ
+LANGUAGE,LANGUAGE,NYELV
+MASTER VOLUME,MASTER VOLUME,FŐ HANGERŐ
+CRT FILTER,CRT FILTER,CRT SZŰRŐ
+BLOOM,BLOOM,FÉNYUDVAR
+CHROMATIC,CHROMATIC,SZÍNELTOLÓDÁS
+BIT REDUCER,BIT REDUCER,BITMÉLYSÉG-CSÖKKENTÉS
+BACK,BACK,VISSZA
+START RUN,START RUN,RUN INDÍTÁSA
+FLESH TREE,FLESH TREE,HÚSFA
+QUIT GAME,QUIT GAME,KILÉPÉS
+RETURN TO MAIN MENU,RETURN TO MAIN MENU,VISSZA A FŐMENÜBE
+MAIN MENU,MAIN MENU,FŐMENÜ
+PLAYABLE PROTOTYPE,PLAYABLE PROTOTYPE,JÁTSZHATÓ PROTOTÍPUS
+PAUSED,PAUSED,SZÜNET
+ORGAN SCREEN,ORGAN SCREEN,SZERVKÉPERNYŐ
+MUTATION,MUTATION,MUTÁCIÓ
+CHOOSE A MUTATION,CHOOSE A MUTATION,VÁLASSZ MUTÁCIÓT
+PHASE,PHASE,FÁZIS
+PHASE I,PHASE I,I. FÁZIS
+THE VISCERAL WARDEN,THE VISCERAL WARDEN,A ZSIGERI ŐRZŐ
+THE VISCERAL WARDEN AWAKENS,THE VISCERAL WARDEN AWAKENS,A ZSIGERI ŐRZŐ FELÉBRED
+THE WARDEN IS ENRAGED,THE WARDEN IS ENRAGED,AZ ŐRZŐ FELBŐSZÜLT
+VISCERAL WARDEN,VISCERAL WARDEN,ZSIGERI ŐRZŐ
+"No one escapes my test arena, foolish dog! Lets scrap this experiment!","No one escapes my test arena, foolish dog! Lets scrap this experiment!","Senki sem szökik meg a tesztarénámból, ostoba kutya! Szedjük szét ezt a kísérletet!"
+I need backup! The experiment is out of control!,I need backup! The experiment is out of control!,Erősítés kell! A kísérlet kicsúszott az irányítás alól!
+CONFIRM [ENTER],CONFIRM [ENTER],MEGERŐSÍTÉS [ENTER]
+BACK TO GAME [ESC],BACK TO GAME [ESC],VISSZA A JÁTÉKBA [ESC]
+"MAGMA SPEAR: Press E to aim, then Right Mouse to fire.","MAGMA SPEAR: Press E to aim, then Right Mouse to fire.","MAGMALÁNDZSA: Célzás az E gombbal, majd lövés jobb egérgombbal."
+"Press E to aim a molten spear, then Right Mouse to fire. Pierces every enemy and stops at the first obstacle.","Press E to aim a molten spear, then Right Mouse to fire. Pierces every enemy and stops at the first obstacle.","Nyomd meg az E-t a magmalándzsa célzásához, majd a jobb egérgombot a kilövéshez. Minden ellenfélen áthatol, és az első tereptárgynál megáll."
+WARDEN DESTROYED,WARDEN DESTROYED,ŐRZŐ ELPUSZTÍTVA
+ARENA SEALED // WARDEN PROTOCOL ACTIVE,ARENA SEALED // WARDEN PROTOCOL ACTIVE,ARÉNA LEZÁRVA // ŐRZŐPROTOKOLL AKTÍV
+BIOMASS SURGE DETECTED // RUSH INCOMING,BIOMASS SURGE DETECTED // RUSH INCOMING,BIOMASSZA-KITÖRÉS ÉSZLELVE // ROHAM KÖZELEG
+WARDEN SIGNAL DETECTED // CONTAINMENT SEALING,WARDEN SIGNAL DETECTED // CONTAINMENT SEALING,ŐRZŐJEL ÉSZLELVE // ELZÁRÁS FOLYAMATBAN
+WARDEN PROTOCOL,WARDEN PROTOCOL,ŐRZŐPROTOKOLL
+INITIAL INCISION,INITIAL INCISION,KEZDETI BEMETSZÉS
+RANGED ESCALATION,RANGED ESCALATION,TÁVOLSÁGI ESZKALÁCIÓ
+PRESSURE TEST,PRESSURE TEST,TERHELÉSI PRÓBA
+COMPOSITE HUNT,COMPOSITE HUNT,ÖSSZETETT VADÁSZAT
+PRE-WARDEN TRIALS,PRE-WARDEN TRIALS,ŐRZŐ ELŐTTI PRÓBÁK
+AWAKENING,AWAKENING,ÉBREDÉS
+ADAPTATION,ADAPTATION,ALKALMAZKODÁS
+SYSTEM STRESS,SYSTEM STRESS,RENDSZERTERHELÉS
+COMPOUND PRESSURE,COMPOUND PRESSURE,ÖSSZETETT NYOMÁS
+CONTAINMENT FAILURE,CONTAINMENT FAILURE,ELZÁRÁSI HIBA

@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3]
+
+[ext_resource type="Script" path="res://Scripts/upgrade_data.gd" id="1"]
+[ext_resource type="Texture2D" path="res://Assets/ui/items/05_biomass_receptors.png" id="2"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = &"scavenger_gland"
+display_name = "SCAVENGER GLAND"
+description = "Raises the chance that defeated enemies release biomass by 6% per level."
+card_texture = ExtResource("2")
+fleshdrive_affinity = "universal"
+synergy_tags = Array[StringName]([&"biomass", &"economy"])
+max_level = 5
+offer_weight = 0.9
+

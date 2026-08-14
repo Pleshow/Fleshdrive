@@ -1,0 +1,24 @@
+# Godot 4.1+ generated data
+.godot/
+*.translation
+/android/
+
+# Local agent/editor state
+/.agents/
+/.vscode/
+/.idea/
+
+# Generated exports, reports and working files
+/Builds/
+/builds/
+/dist/
+/exports/
+/outputs/
+/tmp/
+/Reports/*.json
+*.log
+
+# Operating-system metadata
+.DS_Store
+Thumbs.db
+Desktop.ini

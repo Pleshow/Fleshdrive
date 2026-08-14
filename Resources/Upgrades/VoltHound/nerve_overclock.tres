@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3 uid="uid://cm188uwnb3jmr"]
+
+[ext_resource type="Script" uid="uid://cgff01swg5n6" path="res://Scripts/upgrade_data.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://bvvls6j4g2jk" path="res://Assets/ui/cards/build_items/electric.svg" id="2"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = &"nerve_overclock"
+display_name = "NERVE OVERCLOCK"
+description = "Kinetic Charge generation is reinforced for aggressive movement; Overdrive grants improved dash recovery."
+card_texture = ExtResource("2")
+fleshdrive_affinity = "electric"
+synergy_tags = Array[StringName]([&"volt_hound", &"momentum", &"overclock"])
+rarity = "specialized"
+max_level = 1
+minimum_player_level = 10
+build_archetype = &"volt_hound"
+required_weapons = Array[StringName]([&"static_claws"])

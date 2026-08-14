@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3 uid="uid://c5gkq44d156qa"]
+
+[ext_resource type="Script" uid="uid://cgff01swg5n6" path="res://Scripts/upgrade_data.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://bvvls6j4g2jk" path="res://Assets/ui/cards/build_items/electric.svg" id="2"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = &"static_claws"
+display_name = "STATIC CLAWS"
+description = "Unlocks Kinetic Charge. Reach 100%, then Dash to activate a 2 second Overdrive that deals 45 contact damage once per enemy."
+card_texture = ExtResource("2")
+upgrade_kind = 2
+fleshdrive_affinity = "electric"
+synergy_tags = Array[StringName]([&"volt_hound", &"momentum", &"melee"])
+minimum_player_level = 2
+build_archetype = &"volt_hound"

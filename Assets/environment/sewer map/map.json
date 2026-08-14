@@ -1,0 +1,71 @@
+{
+  "version": "1.0.0",
+  "name": "Untitled Map",
+  "exportDate": "2026-08-09T06:11:00.973878Z",
+  "engine": "pixellab-map-editor",
+  "mapConfig": {
+    "tileSize": 64,
+    "dimensions": {
+      "width": 144,
+      "height": 77,
+      "pixelWidth": 9216,
+      "pixelHeight": 4928
+    },
+    "boundingBox": {
+      "maxX": 107,
+      "maxY": 28,
+      "minX": -36,
+      "minY": -48
+    }
+  },
+  "terrains": [
+    {
+      "id": 1,
+      "name": "shimmering wavy green acid liquid surface with bubbles and deep dark-green reflections",
+      "color": "#9ca3af",
+      "baseTileId": "61ac898e-fe86-47a8-a47b-ee6a88d25848"
+    },
+    {
+      "id": 2,
+      "name": "dark grey metal plated floor with varied crackes and scattered dust",
+      "color": "#9ca3af",
+      "baseTileId": "a5f116ef-9157-48c7-8c26-29923e7ea3c5"
+    },
+    {
+      "id": 3,
+      "name": "homogenous dark grey flooring ",
+      "color": "#9ca3af",
+      "baseTileId": "3950029d-0cc5-4b51-92ef-f3b880d28f89"
+    }
+  ],
+  "tilesets": [
+    {
+      "id": "c8382175-2bd7-43dd-8c2c-7c6d1842b1e4",
+      "filename": "shimmering wavy green acid liquid surface with bubbles and deep dark-green reflections-dark grey metal plated floor with varied crackes and scattered dust.png",
+      "lowerTerrain": "shimmering wavy green acid liquid surface with bubbles and deep dark-green reflections",
+      "upperTerrain": "dark grey metal plated floor with varied crackes and scattered dust",
+      "lowerTerrainId": 1,
+      "upperTerrainId": 2,
+      "transitionSize": 0.4,
+      "transitionDescription": "grey concrete",
+      "tileSize": 64,
+      "gridLayout": "4x4",
+      "wangIndexMapping": "standard"
+    },
+    {
+      "id": "6324c761-234f-47c3-9680-99a24e071e78",
+      "filename": "shimmering wavy green acid liquid surface with bubbles and deep dark-green reflections-homogenous dark grey flooring .png",
+      "lowerTerrain": "shimmering wavy green acid liquid surface with bubbles and deep dark-green reflections",
+      "upperTerrain": "homogenous dark grey flooring ",
+      "lowerTerrainId": 1,
+      "upperTerrainId": 3,
+      "transitionSize": 0.31,
+      "transitionDescription": "concrete",
+      "tileSize": 64,
+      "gridLayout": "4x4",
+      "wangIndexMapping": "standard"
+    }
+  ],
+  "overlays": [],
+  "background": null
+}

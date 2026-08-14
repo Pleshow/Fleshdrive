@@ -1,0 +1,249 @@
+[gd_scene load_steps=13 format=3]
+
+[ext_resource type="Script" path="res://Scripts/skill_tree_panel.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://Assets/ui/meta/gems_spritesheet.png" id="2_gems"]
+[ext_resource type="Texture2D" path="res://Assets/ui/screens/flesh_tree_background.png" id="3_background"]
+
+[sub_resource type="AtlasTexture" id="Gem0"]
+atlas = ExtResource("2_gems")
+region = Rect2(320, 32, 16, 16)
+[sub_resource type="AtlasTexture" id="Gem1"]
+atlas = ExtResource("2_gems")
+region = Rect2(336, 32, 16, 16)
+[sub_resource type="AtlasTexture" id="Gem2"]
+atlas = ExtResource("2_gems")
+region = Rect2(352, 32, 16, 16)
+[sub_resource type="AtlasTexture" id="Gem3"]
+atlas = ExtResource("2_gems")
+region = Rect2(368, 32, 16, 16)
+[sub_resource type="AtlasTexture" id="Gem4"]
+atlas = ExtResource("2_gems")
+region = Rect2(384, 32, 16, 16)
+[sub_resource type="AtlasTexture" id="Gem5"]
+atlas = ExtResource("2_gems")
+region = Rect2(400, 32, 16, 16)
+[sub_resource type="AtlasTexture" id="Gem6"]
+atlas = ExtResource("2_gems")
+region = Rect2(416, 32, 16, 16)
+
+[sub_resource type="SpriteFrames" id="GemFrames"]
+animations = [{
+"frames": [{
+"duration": 1.0, "texture": SubResource("Gem0")
+}, {
+"duration": 1.0, "texture": SubResource("Gem1")
+}, {
+"duration": 1.0, "texture": SubResource("Gem2")
+}, {
+"duration": 1.0, "texture": SubResource("Gem3")
+}, {
+"duration": 1.0, "texture": SubResource("Gem4")
+}, {
+"duration": 1.0, "texture": SubResource("Gem5")
+}, {
+"duration": 1.0, "texture": SubResource("Gem6")
+}],
+"loop": true,
+"name": &"spin",
+"speed": 10.0
+}]
+
+[sub_resource type="StyleBoxFlat" id="PanelStyle"]
+bg_color = Color(0.025, 0.035, 0.035, 0.97)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.26, 0.44, 0.39, 0.9)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="SkillTreePanel" type="Control"]
+unique_name_in_owner = true
+visible = false
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Backdrop" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_background")
+expand_mode = 1
+stretch_mode = 6
+modulate = Color(0.88, 0.92, 0.92, 1)
+
+[node name="BackdropShade" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0)
+
+[node name="Title" type="Label" parent="."]
+offset_left = 28.0
+offset_top = 20.0
+offset_right = 500.0
+offset_bottom = 66.0
+theme_type_variation = &"HeaderLabel"
+theme_override_font_sizes/font_size = 32
+text = "FLESH TREE"
+
+[node name="GemAnimation" type="AnimatedSprite2D" parent="."]
+position = Vector2(1040, 45)
+scale = Vector2(2.5, 2.5)
+sprite_frames = SubResource("GemFrames")
+animation = &"spin"
+autoplay = "spin"
+
+[node name="GemCountLabel" type="Label" parent="."]
+unique_name_in_owner = true
+offset_left = 1070.0
+offset_top = 32.0
+offset_right = 1245.0
+offset_bottom = 60.0
+theme_type_variation = &"MonoLabel"
+theme_override_colors/font_color = Color(1, 0.45, 0.54, 1)
+text = "0 BLOOD MEMORY"
+horizontal_alignment = 2
+
+[node name="DetailPanel" type="PanelContainer" parent="."]
+offset_left = 24.0
+offset_top = 92.0
+offset_right = 304.0
+offset_bottom = 480.0
+theme_override_styles/panel = SubResource("PanelStyle")
+
+[node name="Margin" type="MarginContainer" parent="DetailPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 18
+
+[node name="VBox" type="VBoxContainer" parent="DetailPanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="DetailTitle" type="Label" parent="DetailPanel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+theme_override_colors/font_color = Color(0.94, 0.8, 0.38, 1)
+theme_override_font_sizes/font_size = 19
+text = "HARDENED HEART"
+autowrap_mode = 2
+
+[node name="DetailDescription" type="Label" parent="DetailPanel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 15
+text = "+5 starting maximum health per level."
+autowrap_mode = 2
+
+[node name="DetailLevel" type="Label" parent="DetailPanel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MonoLabel"
+text = "LEVEL  0 / 5"
+
+[node name="DetailCost" type="Label" parent="DetailPanel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MonoLabel"
+theme_override_colors/font_color = Color(1, 0.5, 0.56, 1)
+text = "COST  2 IMPRINT FRAGMENTS"
+autowrap_mode = 2
+
+[node name="TreeViewport" type="Control" parent="."]
+unique_name_in_owner = true
+clip_contents = true
+offset_left = 326.0
+offset_top = 88.0
+offset_right = 1254.0
+offset_bottom = 626.0
+mouse_filter = 0
+
+[node name="Background" type="ColorRect" parent="TreeViewport"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0)
+
+[node name="TreeCanvas" type="Control" parent="TreeViewport"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1700, 1000)
+offset_left = -210.0
+offset_top = -155.0
+offset_right = 1490.0
+offset_bottom = 845.0
+mouse_filter = 2
+scale = Vector2(0.82, 0.82)
+
+[node name="NavigationHint" type="Label" parent="."]
+offset_left = 330.0
+offset_top = 640.0
+offset_right = 880.0
+offset_bottom = 670.0
+theme_override_colors/font_color = Color(0.58, 0.66, 0.59, 1)
+text = "DRAG TO MOVE  •  MOUSE WHEEL TO ZOOM"
+
+[node name="BackButton" type="Button" parent="."]
+unique_name_in_owner = true
+offset_left = 24.0
+offset_top = 640.0
+offset_right = 214.0
+offset_bottom = 696.0
+text = "BACK"
+
+[node name="RespecButton" type="Button" parent="."]
+unique_name_in_owner = true
+offset_left = 900.0
+offset_top = 640.0
+offset_right = 1062.0
+offset_bottom = 696.0
+text = "RESPEC"
+
+[node name="ResetButton" type="Button" parent="."]
+unique_name_in_owner = true
+offset_left = 1074.0
+offset_top = 640.0
+offset_right = 1254.0
+offset_bottom = 696.0
+text = "RESET ALL"
+
+[node name="RespecDialog" type="ConfirmationDialog" parent="."]
+unique_name_in_owner = true
+process_mode = 3
+title = "RESPEC FLESH TREE?"
+dialog_text = "Refund every spent Blood Memory fragment and clear all skill levels?\nCollected fragments and K0D4 history will remain."
+ok_button_text = "REFUND MEMORY"
+cancel_button_text = "CANCEL"
+
+[node name="ResetDialog" type="ConfirmationDialog" parent="."]
+unique_name_in_owner = true
+process_mode = 3
+title = "RESET ALL PROGRESS?"
+dialog_text = "This permanently deletes every Blood Memory fragment, Flesh Tree level, K0D4 instance and lifetime statistic.\nThis action cannot be undone."
+ok_button_text = "RESET EVERYTHING"
+cancel_button_text = "CANCEL"

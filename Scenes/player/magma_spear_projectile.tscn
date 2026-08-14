@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://Scripts/magma_spear_projectile.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://Assets/vfx/projectiles/magma_spear_sheet.png" id="2_texture"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape_magma_spear"]
+radius = 14.0
+height = 92.0
+
+[node name="MagmaSpearProjectile" type="Area2D" groups=["player_projectiles"]]
+collision_layer = 0
+collision_mask = 3
+script = ExtResource("1_script")
+projectile_texture = ExtResource("2_texture")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(0.68, 0.68)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("CapsuleShape_magma_spear")
+
+[node name="Glow" type="PointLight2D" parent="."]
+energy = 1.65
+color = Color(1, 0.12, 0.015, 1)
+texture_scale = 1.35
+shadow_enabled = false

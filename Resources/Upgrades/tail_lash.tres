@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3 uid="uid://d1q4cuir1hk22"]
+
+[ext_resource type="Script" uid="uid://cgff01swg5n6" path="res://Scripts/upgrade_data.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://cu3o7qasw432i" path="res://Assets/ui/weapons/electric/tesla_lash.png" id="2_card"]
+
+[resource]
+script = ExtResource("1_script")
+upgrade_id = &"tail_lash"
+display_name = "TESLA LASH"
+description = "An electrified tail sweep damages and repels nearby enemies."
+card_texture = ExtResource("2_card")
+upgrade_kind = 2
+fleshdrive_affinity = "electric"
+minimum_player_level = 3

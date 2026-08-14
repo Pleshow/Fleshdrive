@@ -1,0 +1,477 @@
+[gd_scene format=3 uid="uid://bfxi40ywpfm40"]
+
+[ext_resource type="Script" uid="uid://dfxmg7l437t85" path="res://Scripts/fleshdrive_operation_screen.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://cmvjru85tf3ev" path="res://Assets/ui/screens/biofabricator_lab.png" id="2_background"]
+[ext_resource type="SpriteFrames" path="res://Resources/Visuals/mimichu_portrait_frames.tres" id="3_mimichu"]
+[ext_resource type="Texture2D" uid="uid://bjshng1r1mrhw" path="res://Assets/ui/fleshdrives/electric_core.png" id="4_electric"]
+[ext_resource type="Texture2D" uid="uid://dhh0b3xwbo3ao" path="res://Assets/ui/fleshdrives/fire_core.png" id="5_fire"]
+[ext_resource type="Texture2D" path="res://Assets/ui/fleshdrives/telekinetic_core.png" id="6_telekinetic"]
+
+[sub_resource type="StyleBoxFlat" id="Style_panel"]
+bg_color = Color(0.025, 0.032, 0.038, 0.94)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.47, 0.17, 0.25, 0.94)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="Style_card"]
+bg_color = Color(0.025, 0.032, 0.038, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.42, 0.18, 0.26, 0.92)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="Style_locked_card"]
+bg_color = Color(0.12, 0.13, 0.15, 0.88)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.25, 0.14, 0.18, 0.72)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxEmpty" id="Style_card_focus"]
+
+[sub_resource type="StyleBoxFlat" id="Style_selected_frame"]
+bg_color = Color(0.68, 0.2, 0.32, 0.08)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.73, 0.24, 0.36, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0.45, 0.08, 0.16, 0.24)
+shadow_size = 7
+
+[node name="FleshdriveOperationScreen" type="Control" unique_id=1518700086]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Background" type="TextureRect" parent="." unique_id=671974010]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_background")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="DarkGrade" type="ColorRect" parent="." unique_id=792163412]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.01, 0.015, 0.02, 0.34)
+
+[node name="Header" type="Label" parent="." unique_id=563420074]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 20.0
+offset_right = 1252.0
+offset_bottom = 68.0
+theme_type_variation = &"HeaderLabel"
+theme_override_colors/font_color = Color(0.82, 0.72, 0.68, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 28
+text = "SELECT FLESHDRIVE FOR IMPLANTATION"
+horizontal_alignment = 1
+
+[node name="MimichuPanel" type="Panel" parent="." unique_id=1248997874]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 82.0
+offset_right = 310.0
+offset_bottom = 560.0
+theme_override_styles/panel = SubResource("Style_panel")
+
+[node name="Portrait" type="AnimatedSprite2D" parent="MimichuPanel" unique_id=1302428652]
+position = Vector2(141, 168)
+scale = Vector2(0.91, 0.91)
+sprite_frames = ExtResource("3_mimichu")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="Dialogue" type="Label" parent="MimichuPanel" unique_id=2128347629]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 334.0
+offset_right = 262.0
+offset_bottom = 458.0
+theme_override_colors/font_color = Color(0.88, 0.92, 0.94, 1)
+theme_override_font_sizes/font_size = 14
+text = "MIMICHU
+
+Pick what kind of monster you want to become. I cleaned both. Mostly."
+autowrap_mode = 2
+
+[node name="ElectricCard" type="Button" parent="." unique_id=921089526]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 324.0
+offset_top = 92.0
+offset_right = 492.0
+offset_bottom = 404.0
+theme_override_styles/normal = SubResource("Style_card")
+theme_override_styles/pressed = SubResource("Style_panel")
+theme_override_styles/hover = SubResource("Style_panel")
+theme_override_styles/disabled = SubResource("Style_locked_card")
+theme_override_styles/focus = SubResource("Style_card_focus")
+
+[node name="SelectedFrame" type="Panel" parent="ElectricCard"]
+visible = false
+z_index = 5
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_selected_frame")
+
+[node name="Icon" type="TextureRect" parent="ElectricCard" unique_id=365376758]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 28.0
+offset_right = 150.0
+offset_bottom = 176.0
+mouse_filter = 2
+texture = ExtResource("4_electric")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Name" type="Label" parent="ElectricCard" unique_id=302640543]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 206.0
+offset_right = 160.0
+offset_bottom = 244.0
+theme_override_colors/font_color = Color(0.25, 0.86, 1, 1)
+theme_override_font_sizes/font_size = 15
+text = "VOLTAIC HEART"
+horizontal_alignment = 1
+
+[node name="ElectricLevel" type="Label" parent="ElectricCard" unique_id=660600556]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 8.0
+offset_top = 262.0
+offset_right = 160.0
+offset_bottom = 296.0
+theme_type_variation = &"MonoLabel"
+theme_override_colors/font_color = Color(0.78, 0.84, 0.86, 1)
+theme_override_font_sizes/font_size = 10
+text = "CORE LV 1 / 5"
+horizontal_alignment = 1
+
+[node name="FireCard" type="Button" parent="." unique_id=1647454069]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 500.0
+offset_top = 92.0
+offset_right = 668.0
+offset_bottom = 404.0
+theme_override_styles/normal = SubResource("Style_card")
+theme_override_styles/pressed = SubResource("Style_panel")
+theme_override_styles/hover = SubResource("Style_card")
+theme_override_styles/disabled = SubResource("Style_locked_card")
+theme_override_styles/focus = SubResource("Style_card_focus")
+
+[node name="SelectedFrame" type="Panel" parent="FireCard"]
+visible = false
+z_index = 5
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_selected_frame")
+
+[node name="Icon" type="TextureRect" parent="FireCard" unique_id=2129465759]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 28.0
+offset_right = 150.0
+offset_bottom = 176.0
+mouse_filter = 2
+texture = ExtResource("5_fire")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Name" type="Label" parent="FireCard" unique_id=1539478370]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 206.0
+offset_right = 160.0
+offset_bottom = 244.0
+theme_override_colors/font_color = Color(0.48, 0.5, 0.52, 1)
+theme_override_font_sizes/font_size = 15
+text = "PYRE HEART"
+horizontal_alignment = 1
+
+[node name="FireLevel" type="Label" parent="FireCard" unique_id=254883282]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 8.0
+offset_top = 262.0
+offset_right = 160.0
+offset_bottom = 296.0
+theme_type_variation = &"MonoLabel"
+theme_override_colors/font_color = Color(0.62, 0.65, 0.67, 1)
+theme_override_font_sizes/font_size = 10
+text = "CORE LV 1 / 5"
+horizontal_alignment = 1
+
+[node name="TelekineticCard" type="Button" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 676.0
+offset_top = 92.0
+offset_right = 844.0
+offset_bottom = 404.0
+theme_override_styles/normal = SubResource("Style_card")
+theme_override_styles/pressed = SubResource("Style_panel")
+theme_override_styles/hover = SubResource("Style_panel")
+theme_override_styles/disabled = SubResource("Style_locked_card")
+theme_override_styles/focus = SubResource("Style_card_focus")
+
+[node name="SelectedFrame" type="Panel" parent="TelekineticCard"]
+visible = false
+z_index = 5
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_selected_frame")
+
+[node name="Icon" type="TextureRect" parent="TelekineticCard"]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 28.0
+offset_right = 150.0
+offset_bottom = 176.0
+mouse_filter = 2
+texture = ExtResource("6_telekinetic")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LockedGlyph" type="Label" parent="TelekineticCard"]
+visible = false
+layout_mode = 0
+offset_left = 18.0
+offset_top = 58.0
+offset_right = 150.0
+offset_bottom = 170.0
+theme_override_colors/font_color = Color(0.22, 0.4, 0.44, 0.72)
+theme_override_font_sizes/font_size = 54
+text = "+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Name" type="Label" parent="TelekineticCard"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 206.0
+offset_right = 160.0
+offset_bottom = 244.0
+theme_override_colors/font_color = Color(0.72, 0.42, 1, 1)
+theme_override_font_sizes/font_size = 15
+text = "NOETIC HEART"
+horizontal_alignment = 1
+
+[node name="TelekineticLevel" type="Label" parent="TelekineticCard"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 8.0
+offset_top = 262.0
+offset_right = 160.0
+offset_bottom = 300.0
+theme_type_variation = &"MonoLabel"
+theme_override_colors/font_color = Color(0.62, 0.65, 0.67, 1)
+theme_override_font_sizes/font_size = 9
+text = "LOCKED - DEFEAT THE WARDEN"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="TankSlot" type="Button" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 852.0
+offset_top = 92.0
+offset_right = 1020.0
+offset_bottom = 404.0
+mouse_default_cursor_shape = 0
+disabled = true
+focus_mode = 0
+theme_override_styles/disabled = SubResource("Style_locked_card")
+theme_override_styles/normal = SubResource("Style_locked_card")
+
+[node name="SlotGlyph" type="Label" parent="TankSlot"]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 58.0
+offset_right = 150.0
+offset_bottom = 170.0
+theme_override_colors/font_color = Color(0.22, 0.4, 0.44, 0.72)
+theme_override_font_sizes/font_size = 54
+text = "+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SlotName" type="Label" parent="TankSlot"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 206.0
+offset_right = 160.0
+offset_bottom = 244.0
+theme_override_colors/font_color = Color(0.42, 0.52, 0.54, 0.82)
+theme_override_font_sizes/font_size = 14
+text = "ADDITIONAL PROTOTYPE"
+horizontal_alignment = 1
+
+[node name="SlotState" type="Label" parent="TankSlot"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 258.0
+offset_right = 158.0
+offset_bottom = 298.0
+theme_type_variation = &"MonoLabel"
+theme_override_colors/font_color = Color(0.32, 0.42, 0.44, 0.72)
+theme_override_font_sizes/font_size = 8
+text = "IN DEVELOPMENT"
+horizontal_alignment = 1
+
+[node name="OldOnesSlot" type="Button" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 1028.0
+offset_top = 92.0
+offset_right = 1196.0
+offset_bottom = 404.0
+mouse_default_cursor_shape = 0
+disabled = true
+focus_mode = 0
+theme_override_styles/disabled = SubResource("Style_locked_card")
+theme_override_styles/normal = SubResource("Style_locked_card")
+
+[node name="SlotGlyph" type="Label" parent="OldOnesSlot"]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 58.0
+offset_right = 150.0
+offset_bottom = 170.0
+theme_override_colors/font_color = Color(0.22, 0.4, 0.44, 0.72)
+theme_override_font_sizes/font_size = 54
+text = "+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SlotName" type="Label" parent="OldOnesSlot"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 206.0
+offset_right = 160.0
+offset_bottom = 244.0
+theme_override_colors/font_color = Color(0.42, 0.52, 0.54, 0.82)
+theme_override_font_sizes/font_size = 14
+text = "ADDITIONAL PROTOTYPE"
+horizontal_alignment = 1
+
+[node name="SlotState" type="Label" parent="OldOnesSlot"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 258.0
+offset_right = 158.0
+offset_bottom = 298.0
+theme_type_variation = &"MonoLabel"
+theme_override_colors/font_color = Color(0.32, 0.42, 0.44, 0.72)
+theme_override_font_sizes/font_size = 8
+text = "IN DEVELOPMENT"
+horizontal_alignment = 1
+
+[node name="DetailsPanel" type="Panel" parent="." unique_id=432792730]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 420.0
+offset_right = 1200.0
+offset_bottom = 620.0
+theme_override_styles/panel = SubResource("Style_panel")
+
+[node name="DetailsTitle" type="Label" parent="DetailsPanel" unique_id=1588109176]
+unique_name_in_owner = true
+layout_mode = 0
+theme_type_variation = &"SectionLabel"
+theme_override_colors/font_color = Color(0.31, 0.08, 0.18, 1)
+offset_left = 22.0
+offset_top = 14.0
+offset_right = 814.0
+offset_bottom = 46.0
+theme_override_font_sizes/font_size = 20
+text = "VOLTAIC HEART"
+
+[node name="DetailsText" type="Label" parent="DetailsPanel" unique_id=1439105997]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 22.0
+offset_top = 50.0
+offset_right = 540.0
+offset_bottom = 172.0
+theme_override_colors/font_color = Color(0.86, 0.9, 0.92, 1)
+theme_override_font_sizes/font_size = 13
+text = "Build description"
+autowrap_mode = 2
+
+[node name="ImplantButton" type="Button" parent="DetailsPanel" unique_id=1945108920]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 560.0
+offset_top = 72.0
+offset_right = 860.0
+offset_bottom = 142.0
+theme_override_font_sizes/font_size = 14
+text = "IMPLANT ELECTRIC"
+
+[node name="BackButton" type="Button" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 48.0
+offset_top = 636.0
+offset_right = 286.0
+offset_bottom = 700.0
+theme_override_font_sizes/font_size = 14
+text = "BACK TO MAIN MENU  [ESC]"

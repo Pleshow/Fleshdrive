@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3]
+
+[ext_resource type="Script" path="res://Scripts/upgrade_data.gd" id="1"]
+[ext_resource type="Texture2D" path="res://Assets/ui/cards/build_items/telekinetic.svg" id="2"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = &"psychic_parallax"
+display_name = "CARD_PSYCHIC_PARALLAX_NAME"
+description = "CARD_PSYCHIC_PARALLAX_DESC"
+card_texture = ExtResource("2")
+fleshdrive_affinity = "telekinetic"
+synergy_tags = Array[StringName]([&"distance", &"projectile", &"damage"])
+rarity = "common"
+max_level = 5
+minimum_player_level = 3
+build_archetype = &"neural_executioner"
+keystone = false
+required_weapons = Array[StringName]([&"neural_lance"])
+offer_weight = 1
+excluded_upgrades = Array[StringName]([])

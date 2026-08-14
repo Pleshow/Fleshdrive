@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3 uid="uid://bep1ejheq3dg8"]
+
+[ext_resource type="Script" uid="uid://cgff01swg5n6" path="res://Scripts/upgrade_data.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://dxhkso1qpsywt" path="res://Assets/ui/organs/telekinetic/projectile_reversal.png" id="2"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = &"projectile_reversal"
+display_name = "PROJECTILE REVERSAL"
+description = "A neural shield has a 35% chance to reverse an incoming projectile, amplifying it against enemies."
+card_texture = ExtResource("2")
+upgrade_kind = 1
+organ_slot = 1
+fleshdrive_affinity = "telekinetic"
+synergy_tags = Array[StringName]([&"defense", &"projectile", &"control"])
+rarity = "rare"
+max_level = 1
+minimum_player_level = 6

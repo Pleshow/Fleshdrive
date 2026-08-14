@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3 uid="uid://1tb6pign0rus"]
+
+[ext_resource type="Texture2D" uid="uid://dbm3kovlpwokk" path="res://Assets/ui/organs/02_arc_heart.png" id="1_f7rm1"]
+[ext_resource type="Script" uid="uid://cgff01swg5n6" path="res://Scripts/upgrade_data.gd" id="1_jmx75"]
+
+[resource]
+script = ExtResource("1_jmx75")
+upgrade_id = &"arc_heart"
+display_name = "ARC HEART"
+description = "Unlocks chain lightning for the Voltaic Heart base attack."
+card_texture = ExtResource("1_f7rm1")
+upgrade_kind = 1
+organ_slot = 3
+fleshdrive_affinity = "electric"
+metadata/_custom_type_script = "uid://cgff01swg5n6"

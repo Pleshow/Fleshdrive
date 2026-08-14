@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3 uid="uid://r2kvqfwenn17"]
+
+[ext_resource type="Script" uid="uid://cgff01swg5n6" path="res://Scripts/upgrade_data.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://djvdvddwoyw5i" path="res://Assets/ui/items/09_overload_vent.png" id="2_card"]
+
+[resource]
+script = ExtResource("1_script")
+upgrade_id = &"overload_vent"
+display_name = "OVERLOAD VENT"
+description = "Electric secondary weapons recover 15% faster per level."
+card_texture = ExtResource("2_card")
+fleshdrive_affinity = "electric"
+max_level = 4
+minimum_player_level = 4

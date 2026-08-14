@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3 uid="uid://eqpmmamp547k"]
+
+[ext_resource type="Script" uid="uid://cgff01swg5n6" path="res://Scripts/upgrade_data.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://bvvls6j4g2jk" path="res://Assets/ui/cards/build_items/electric.svg" id="2"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = &"lightspeed"
+display_name = "LIGHTSPEED"
+description = "A READY Kinetic Dash becomes a white-violet energy pass and activates Overdrive with an immediate afterimage route."
+card_texture = ExtResource("2")
+fleshdrive_affinity = "electric"
+synergy_tags = Array[StringName]([&"volt_hound", &"dash", &"static_mark", &"overclock"])
+rarity = "rare"
+max_level = 1
+minimum_player_level = 14
+build_archetype = &"volt_hound"
+keystone = true
+required_weapons = Array[StringName]([&"static_claws"])
+offer_weight = 0.55

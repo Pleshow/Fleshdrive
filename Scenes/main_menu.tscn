@@ -1,0 +1,508 @@
+[gd_scene format=3 uid="uid://bd76kbucn7lu7"]
+
+[ext_resource type="Script" uid="uid://ca0wiow5qmmat" path="res://Scripts/main_menu.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://dbh3r2do0ghpi" path="res://Assets/ui/screens/mainmenu.png" id="2_background"]
+[ext_resource type="AudioStream" uid="uid://cyfexmffp7pfn" path="res://Assets/audio/music/main_menu.mp3" id="3_menu_music"]
+[ext_resource type="PackedScene" path="res://Scenes/post_process.tscn" id="4_post_process"]
+[ext_resource type="PackedScene" path="res://Scenes/ui/skill_tree_panel.tscn" id="5_skill_tree"]
+[ext_resource type="PackedScene" path="res://Scenes/ui/loading_screen.tscn" id="6_loading"]
+[ext_resource type="Script" path="res://Scripts/visual/ink_crimson_backdrop.gd" id="7_ink_backdrop"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_panel"]
+bg_color = Color(0.018, 0.024, 0.03, 0.72)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.18, 0.7, 0.82, 0.48)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0, 0, 0.24)
+shadow_size = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_button_focus"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.48, 0.92, 1, 0.9)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_settings_light"]
+bg_color = Color(0.018, 0.024, 0.03, 0.94)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.18, 0.48, 0.55, 0.82)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="MainMenu" type="Control" unique_id=1618148076]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="LoadingScreen" parent="." unique_id=412242893 instance=ExtResource("6_loading")]
+
+[node name="Music" type="AudioStreamPlayer" parent="." unique_id=1957210849]
+stream = ExtResource("3_menu_music")
+volume_db = -8.0
+autoplay = true
+bus = &"Music"
+
+[node name="Background" type="TextureRect" parent="." unique_id=1234378256]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_background")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="InkCrimsonBackdrop" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("7_ink_backdrop")
+
+[node name="LeftShade" type="ColorRect" parent="." unique_id=921099546]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.018, 0.024, 0.03, 0.16)
+
+[node name="MenuShell" type="PanelContainer" parent="." unique_id=1040152476]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 64.0
+offset_right = 516.0
+offset_bottom = 704.0
+theme_override_styles/panel = SubResource("StyleBox_panel")
+
+[node name="MarginContainer" type="MarginContainer" parent="MenuShell" unique_id=176959295]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 22
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 22
+
+[node name="Content" type="VBoxContainer" parent="MenuShell/MarginContainer" unique_id=1142088715]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="MenuShell/MarginContainer/Content" unique_id=1925662494]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+theme_override_colors/font_color = Color(0.72, 0.94, 0.98, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.85)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 3
+theme_override_font_sizes/font_size = 58
+text = "FLESHDRIVE"
+
+[node name="Subtitle" type="Label" parent="MenuShell/MarginContainer/Content" unique_id=875070736]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.8, 0.82, 1)
+theme_override_font_sizes/font_size = 15
+text = "ADAPT  •  CONSUME  •  SURVIVE"
+
+[node name="Separator" type="HSeparator" parent="MenuShell/MarginContainer/Content" unique_id=24152498]
+custom_minimum_size = Vector2(0, 26)
+layout_mode = 2
+
+[node name="MainPanel" type="VBoxContainer" parent="MenuShell/MarginContainer/Content" unique_id=1697184537]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 14
+alignment = 1
+
+[node name="PlayButton" type="Button" parent="MenuShell/MarginContainer/Content/MainPanel" unique_id=646867271]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_neighbor_bottom = NodePath("../SettingsButton")
+theme_override_colors/font_hover_color = Color(0.9, 1, 1, 1)
+theme_override_font_sizes/font_size = 22
+theme_override_styles/focus = SubResource("StyleBox_button_focus")
+text = "START RUN"
+
+[node name="SettingsButton" type="Button" parent="MenuShell/MarginContainer/Content/MainPanel" unique_id=981806745]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_neighbor_top = NodePath("../PlayButton")
+focus_neighbor_bottom = NodePath("../SkillTreeButton")
+theme_override_colors/font_hover_color = Color(0.9, 1, 1, 1)
+theme_override_font_sizes/font_size = 22
+theme_override_styles/focus = SubResource("StyleBox_button_focus")
+text = "SETTINGS"
+
+[node name="SkillTreeButton" type="Button" parent="MenuShell/MarginContainer/Content/MainPanel" unique_id=22561921]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_neighbor_top = NodePath("../SettingsButton")
+focus_neighbor_bottom = NodePath("../QuitButton")
+theme_override_colors/font_hover_color = Color(0.94, 0.82, 0.58, 1)
+theme_override_font_sizes/font_size = 22
+theme_override_styles/focus = SubResource("StyleBox_button_focus")
+text = "FLESH TREE"
+
+[node name="QuitButton" type="Button" parent="MenuShell/MarginContainer/Content/MainPanel" unique_id=1273453346]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_neighbor_top = NodePath("../SkillTreeButton")
+theme_override_colors/font_hover_color = Color(1, 0.82, 0.78, 1)
+theme_override_font_sizes/font_size = 22
+theme_override_styles/focus = SubResource("StyleBox_button_focus")
+text = "QUIT GAME"
+
+[node name="SettingsPanel" type="VBoxContainer" parent="MenuShell/MarginContainer/Content" unique_id=1740328859]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="SettingsTitle" type="Label" parent="MenuShell/MarginContainer/Content/SettingsPanel" unique_id=1816520772]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+theme_override_colors/font_color = Color(0.72, 0.94, 0.98, 1)
+theme_override_font_sizes/font_size = 26
+text = "SETTINGS"
+
+[node name="SettingsBox" type="PanelContainer" parent="MenuShell/MarginContainer/Content/SettingsPanel" unique_id=2044511972]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBox_settings_light")
+
+[node name="SettingsMargin" type="MarginContainer" parent="MenuShell/MarginContainer/Content/SettingsPanel/SettingsBox" unique_id=1929853358]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 14
+
+[node name="SettingsControls" type="VBoxContainer" parent="MenuShell/MarginContainer/Content/SettingsPanel/SettingsBox/SettingsMargin" unique_id=257942622]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="FullscreenToggle" type="CheckButton" parent="MenuShell/MarginContainer/Content/SettingsPanel/SettingsBox/SettingsMargin/SettingsControls" unique_id=1748185765]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.86, 0.92, 0.92, 1)
+theme_override_colors/font_hover_color = Color(0.96, 1, 1, 1)
+theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 19
+text = "FULLSCREEN"
+metadata/ui_polish_skip = true
+
+[node name="ResolutionRow" type="HBoxContainer" parent="MenuShell/MarginContainer/Content/SettingsPanel/SettingsBox/SettingsMargin/SettingsControls" unique_id=1318233050]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="MenuShell/MarginContainer/Content/SettingsPanel/SettingsBox/SettingsMargin/SettingsControls/ResolutionRow" unique_id=1866848659]
+custom_minimum_size = Vector2(112, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.88, 0.9, 1)
+theme_override_font_sizes/font_size = 15
+text = "RESOLUTION"
+vertical_alignment = 1
+
+[node name="ResolutionOption" type="OptionButton" parent="MenuShell/MarginContainer/Content/SettingsPanel/SettingsBox/SettingsMargin/SettingsControls/ResolutionRow" unique_id=822107908]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 42)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 14
+
+[node name="LanguageRow" type="HBoxContainer" parent="MenuShell/MarginContainer/Content/SettingsPanel/SettingsBox/SettingsMargin/SettingsControls" unique_id=1124915955]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="MenuShell/MarginContainer/Content/SettingsPanel/SettingsBox/SettingsMargin/SettingsControls/LanguageRow" unique_id=1334357623]
+custom_minimum_size = Vector2(112, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.88, 0.9, 1)
+theme_override_font_sizes/font_size = 15
+text = "LANGUAGE"
+vertical_alignment = 1
+
+[node name="LanguageOption" type="OptionButton" parent="MenuShell/MarginContainer/Content/SettingsPanel/SettingsBox/SettingsMargin/SettingsControls/LanguageRow" unique_id=1306155350]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 42)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 14
+
+[node name="VolumeTitle" type="Label" parent="MenuShell/MarginContainer/Content/SettingsPanel/SettingsBox/SettingsMargin/SettingsControls" unique_id=1587530194]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.88, 0.9, 1)
+theme_override_font_sizes/font_size = 17
+text = "MASTER VOLUME"
+
+[node name="VolumeRow" type="HBoxContainer" parent="MenuShell/MarginContainer/Content/SettingsPanel/SettingsBox/SettingsMargin/SettingsControls" unique_id=2012646329]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="VolumeSlider" type="HSlider" parent="MenuShell/MarginContainer/Content/SettingsPanel/SettingsBox/SettingsMargin/SettingsControls/VolumeRow" unique_id=569910408]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+value = 100.0
+
+[node name="VolumeValueLabel" type="Label" parent="MenuShell/MarginContainer/Content/SettingsPanel/SettingsBox/SettingsMargin/SettingsControls/VolumeRow" unique_id=695529821]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(54, 0)
+layout_mode = 2
+theme_type_variation = &"MonoLabel"
+theme_override_colors/font_color = Color(0.8, 0.88, 0.9, 1)
+theme_override_font_sizes/font_size = 16
+text = "100%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="CRTRow" type="HBoxContainer" parent="MenuShell/MarginContainer/Content/SettingsPanel/SettingsBox/SettingsMargin/SettingsControls" unique_id=1755379414]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="MenuShell/MarginContainer/Content/SettingsPanel/SettingsBox/SettingsMargin/SettingsControls/CRTRow" unique_id=208579911]
+custom_minimum_size = Vector2(112, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.88, 0.9, 1)
+theme_override_font_sizes/font_size = 14
+text = "CRT FILTER"
+vertical_alignment = 1
+
+[node name="CRTSlider" type="HSlider" parent="MenuShell/MarginContainer/Content/SettingsPanel/SettingsBox/SettingsMargin/SettingsControls/CRTRow" unique_id=2074824330]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+value = 24.0
+
+[node name="CRTValueLabel" type="Label" parent="MenuShell/MarginContainer/Content/SettingsPanel/SettingsBox/SettingsMargin/SettingsControls/CRTRow" unique_id=1002619703]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(46, 0)
+layout_mode = 2
+theme_type_variation = &"MonoLabel"
+theme_override_colors/font_color = Color(0.8, 0.88, 0.9, 1)
+theme_override_font_sizes/font_size = 14
+text = "24%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="BloomRow" type="HBoxContainer" parent="MenuShell/MarginContainer/Content/SettingsPanel/SettingsBox/SettingsMargin/SettingsControls" unique_id=889358182]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="MenuShell/MarginContainer/Content/SettingsPanel/SettingsBox/SettingsMargin/SettingsControls/BloomRow" unique_id=1960300024]
+custom_minimum_size = Vector2(112, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.88, 0.9, 1)
+theme_override_font_sizes/font_size = 14
+text = "BLOOM"
+vertical_alignment = 1
+
+[node name="BloomSlider" type="HSlider" parent="MenuShell/MarginContainer/Content/SettingsPanel/SettingsBox/SettingsMargin/SettingsControls/BloomRow" unique_id=1250220763]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+value = 9.0
+
+[node name="BloomValueLabel" type="Label" parent="MenuShell/MarginContainer/Content/SettingsPanel/SettingsBox/SettingsMargin/SettingsControls/BloomRow" unique_id=70839572]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(46, 0)
+layout_mode = 2
+theme_type_variation = &"MonoLabel"
+theme_override_colors/font_color = Color(0.8, 0.88, 0.9, 1)
+theme_override_font_sizes/font_size = 14
+text = "9%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ChromaticRow" type="HBoxContainer" parent="MenuShell/MarginContainer/Content/SettingsPanel/SettingsBox/SettingsMargin/SettingsControls" unique_id=2005131261]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="MenuShell/MarginContainer/Content/SettingsPanel/SettingsBox/SettingsMargin/SettingsControls/ChromaticRow" unique_id=46320150]
+custom_minimum_size = Vector2(112, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.88, 0.9, 1)
+theme_override_font_sizes/font_size = 14
+text = "CHROMATIC"
+vertical_alignment = 1
+
+[node name="ChromaticSlider" type="HSlider" parent="MenuShell/MarginContainer/Content/SettingsPanel/SettingsBox/SettingsMargin/SettingsControls/ChromaticRow" unique_id=1727753150]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+value = 9.0
+
+[node name="ChromaticValueLabel" type="Label" parent="MenuShell/MarginContainer/Content/SettingsPanel/SettingsBox/SettingsMargin/SettingsControls/ChromaticRow" unique_id=204058619]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(46, 0)
+layout_mode = 2
+theme_type_variation = &"MonoLabel"
+theme_override_colors/font_color = Color(0.8, 0.88, 0.9, 1)
+theme_override_font_sizes/font_size = 14
+text = "9%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="BitReducerRow" type="HBoxContainer" parent="MenuShell/MarginContainer/Content/SettingsPanel/SettingsBox/SettingsMargin/SettingsControls" unique_id=1990072552]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Label" type="Label" parent="MenuShell/MarginContainer/Content/SettingsPanel/SettingsBox/SettingsMargin/SettingsControls/BitReducerRow" unique_id=946432350]
+custom_minimum_size = Vector2(112, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.88, 0.9, 1)
+theme_override_font_sizes/font_size = 14
+text = "BIT REDUCER"
+vertical_alignment = 1
+
+[node name="BitReducerSlider" type="HSlider" parent="MenuShell/MarginContainer/Content/SettingsPanel/SettingsBox/SettingsMargin/SettingsControls/BitReducerRow" unique_id=1852204879]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+value = 42.0
+
+[node name="BitReducerValueLabel" type="Label" parent="MenuShell/MarginContainer/Content/SettingsPanel/SettingsBox/SettingsMargin/SettingsControls/BitReducerRow" unique_id=472631806]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(46, 0)
+layout_mode = 2
+theme_type_variation = &"MonoLabel"
+theme_override_colors/font_color = Color(0.8, 0.88, 0.9, 1)
+theme_override_font_sizes/font_size = 14
+text = "42%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Spacer" type="Control" parent="MenuShell/MarginContainer/Content/SettingsPanel" unique_id=723941117]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BackButton" type="Button" parent="MenuShell/MarginContainer/Content/SettingsPanel" unique_id=1594947936]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(260, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 20
+theme_override_styles/focus = SubResource("StyleBox_button_focus")
+text = "BACK"
+
+[node name="VersionLabel" type="Label" parent="." unique_id=1537970222]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -290.0
+offset_top = -54.0
+offset_right = -24.0
+offset_bottom = -20.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.82, 0.9, 0.88, 0.96)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 15
+text = "PRE-ALPHA DEMO"
+horizontal_alignment = 2
+
+[node name="PrototypeInfoPanel" type="PanelContainer" parent="." unique_id=224033705]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 575.0
+offset_top = 68.0
+offset_right = 935.0
+offset_bottom = 260.0
+theme_override_styles/panel = SubResource("StyleBox_panel")
+
+[node name="Margin" type="MarginContainer" parent="PrototypeInfoPanel" unique_id=298667028]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 12
+
+[node name="Content" type="VBoxContainer" parent="PrototypeInfoPanel/Margin" unique_id=1108808982]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Header" type="Label" parent="PrototypeInfoPanel/Margin/Content" unique_id=1582837286]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+theme_override_font_sizes/font_size = 18
+text = "RUN PROFILE"
+
+[node name="Divider" type="HSeparator" parent="PrototypeInfoPanel/Margin/Content" unique_id=990129680]
+layout_mode = 2
+
+[node name="Profile" type="Label" parent="PrototypeInfoPanel/Margin/Content" unique_id=1737118757]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "SUBJECT: K0D4"
+
+[node name="BuildHeader" type="Label" parent="PrototypeInfoPanel/Margin/Content" unique_id=670296056]
+layout_mode = 2
+theme_type_variation = &"SectionLabel"
+theme_override_colors/font_color = Color(0.36, 0.88, 0.94, 1)
+theme_override_font_sizes/font_size = 13
+text = "ACTIVE HEART"
+
+[node name="Build" type="Label" parent="PrototypeInfoPanel/Margin/Content" unique_id=1634238981]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "VOLTAIC HEART
+THUNDER GOD BUILD"
+
+[node name="Hint" type="Label" parent="PrototypeInfoPanel/Margin/Content" unique_id=1837915523]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.72, 0.74, 1)
+theme_override_font_sizes/font_size = 10
+text = "Additional hearts are in development."
+autowrap_mode = 3
+
+[node name="SkillTreePanel" parent="." unique_id=1112544274 instance=ExtResource("5_skill_tree")]
+layout_mode = 1
+
+[node name="PostProcess" parent="." unique_id=839529329 instance=ExtResource("4_post_process")]

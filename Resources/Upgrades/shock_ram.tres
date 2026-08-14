@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3 uid="uid://d23ah4hsp5up1"]
+
+[ext_resource type="Script" uid="uid://cgff01swg5n6" path="res://Scripts/upgrade_data.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://b676ievxyfbxh" path="res://Assets/ui/weapons/electric/shock_ram.png" id="2_card"]
+
+[resource]
+script = ExtResource("1_script")
+upgrade_id = &"shock_ram"
+display_name = "SHOCK RAM"
+description = "Dash impacts discharge lightning and throw enemies away."
+card_texture = ExtResource("2_card")
+upgrade_kind = 2
+fleshdrive_affinity = "electric"
+minimum_player_level = 5

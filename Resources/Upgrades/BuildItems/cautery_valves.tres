@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3]
+
+[ext_resource type="Script" path="res://Scripts/upgrade_data.gd" id="1"]
+[ext_resource type="Texture2D" path="res://Assets/ui/cards/build_items/fire.svg" id="2"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = &"cautery_valves"
+display_name = "CARD_CAUTERY_VALVES_NAME"
+description = "CARD_CAUTERY_VALVES_DESC"
+card_texture = ExtResource("2")
+fleshdrive_affinity = "fire"
+synergy_tags = Array[StringName]([&"ring", &"healing", &"sustain"])
+rarity = "common"
+max_level = 5
+minimum_player_level = 2
+build_archetype = &"furnace_halo"
+keystone = false
+required_weapons = Array[StringName]([&"inferno_ring"])
+offer_weight = 1
+excluded_upgrades = Array[StringName]([])

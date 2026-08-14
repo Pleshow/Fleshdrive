@@ -1,0 +1,117 @@
+{
+  "group_id": "b0c6c945-2e48-4b04-a9d9-6d3b9ecc10e8",
+  "states": [
+    {
+      "character": {
+        "id": "72b07c64-7f77-49d5-8cc5-eab3bac897df",
+        "name": "Idle",
+        "prompt": "Shiba inu dog with blue eyes and blue lightnings on his body",
+        "size": {
+          "width": 32,
+          "height": 32
+        },
+        "template_id": "dog",
+        "directions": 8,
+        "view": "high top-down",
+        "created_at": "2026-08-12T18:44:15.431583+00:00"
+      },
+      "folder": "Idle",
+      "frames": {
+        "rotations": {
+          "south": "Idle/rotations/south.png",
+          "south-east": "Idle/rotations/south-east.png",
+          "east": "Idle/rotations/east.png",
+          "north-east": "Idle/rotations/north-east.png",
+          "north": "Idle/rotations/north.png",
+          "north-west": "Idle/rotations/north-west.png",
+          "west": "Idle/rotations/west.png",
+          "south-west": "Idle/rotations/south-west.png"
+        },
+        "animations": {
+          "Idle": {
+            "east": [
+              "Idle/animations/Idle/east/frame_000.png",
+              "Idle/animations/Idle/east/frame_001.png",
+              "Idle/animations/Idle/east/frame_002.png",
+              "Idle/animations/Idle/east/frame_003.png",
+              "Idle/animations/Idle/east/frame_004.png",
+              "Idle/animations/Idle/east/frame_005.png",
+              "Idle/animations/Idle/east/frame_006.png",
+              "Idle/animations/Idle/east/frame_007.png"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "character": {
+        "id": "e685ad59-01d1-4722-9f43-e25d105664e4",
+        "name": "mid running",
+        "prompt": "Shiba inu dog with blue eyes and blue lightnings on his body",
+        "size": {
+          "width": 32,
+          "height": 32
+        },
+        "template_id": "dog",
+        "directions": 8,
+        "view": "high top-down",
+        "created_at": "2026-08-12T18:46:23.488694+00:00"
+      },
+      "folder": "mid_running",
+      "frames": {
+        "rotations": {
+          "south": "mid_running/rotations/south.png",
+          "south-east": "mid_running/rotations/south-east.png",
+          "east": "mid_running/rotations/east.png",
+          "north-east": "mid_running/rotations/north-east.png",
+          "north": "mid_running/rotations/north.png",
+          "north-west": "mid_running/rotations/north-west.png",
+          "west": "mid_running/rotations/west.png",
+          "south-west": "mid_running/rotations/south-west.png"
+        },
+        "animations": {
+          "Full_Sprint": {
+            "east": [
+              "mid_running/animations/Full_Sprint/east/frame_000.png",
+              "mid_running/animations/Full_Sprint/east/frame_001.png",
+              "mid_running/animations/Full_Sprint/east/frame_002.png",
+              "mid_running/animations/Full_Sprint/east/frame_003.png",
+              "mid_running/animations/Full_Sprint/east/frame_004.png",
+              "mid_running/animations/Full_Sprint/east/frame_005.png",
+              "mid_running/animations/Full_Sprint/east/frame_006.png",
+              "mid_running/animations/Full_Sprint/east/frame_007.png"
+            ]
+          },
+          "The_dog_stumbles_forward_its_legs_buckling_beneath": {
+            "east": [
+              "mid_running/animations/The_dog_stumbles_forward_its_legs_buckling_beneath/east/frame_000.png",
+              "mid_running/animations/The_dog_stumbles_forward_its_legs_buckling_beneath/east/frame_001.png",
+              "mid_running/animations/The_dog_stumbles_forward_its_legs_buckling_beneath/east/frame_002.png",
+              "mid_running/animations/The_dog_stumbles_forward_its_legs_buckling_beneath/east/frame_003.png",
+              "mid_running/animations/The_dog_stumbles_forward_its_legs_buckling_beneath/east/frame_004.png",
+              "mid_running/animations/The_dog_stumbles_forward_its_legs_buckling_beneath/east/frame_005.png",
+              "mid_running/animations/The_dog_stumbles_forward_its_legs_buckling_beneath/east/frame_006.png",
+              "mid_running/animations/The_dog_stumbles_forward_its_legs_buckling_beneath/east/frame_007.png",
+              "mid_running/animations/The_dog_stumbles_forward_its_legs_buckling_beneath/east/frame_008.png"
+            ]
+          },
+          "The_dog_leans_its_weight_forward_and_springs_off_i": {
+            "east": [
+              "mid_running/animations/The_dog_leans_its_weight_forward_and_springs_off_i/east/frame_000.png",
+              "mid_running/animations/The_dog_leans_its_weight_forward_and_springs_off_i/east/frame_001.png",
+              "mid_running/animations/The_dog_leans_its_weight_forward_and_springs_off_i/east/frame_002.png",
+              "mid_running/animations/The_dog_leans_its_weight_forward_and_springs_off_i/east/frame_003.png",
+              "mid_running/animations/The_dog_leans_its_weight_forward_and_springs_off_i/east/frame_004.png",
+              "mid_running/animations/The_dog_leans_its_weight_forward_and_springs_off_i/east/frame_005.png",
+              "mid_running/animations/The_dog_leans_its_weight_forward_and_springs_off_i/east/frame_006.png",
+              "mid_running/animations/The_dog_leans_its_weight_forward_and_springs_off_i/east/frame_007.png",
+              "mid_running/animations/The_dog_leans_its_weight_forward_and_springs_off_i/east/frame_008.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.1",
+  "export_date": "2026-08-12T19:52:33.033350"
+}

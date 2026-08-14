@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3 uid="uid://1hm1hvqffy22"]
+
+[ext_resource type="Script" uid="uid://cgff01swg5n6" path="res://Scripts/upgrade_data.gd" id="1_cmyj2"]
+[ext_resource type="Texture2D" uid="uid://sg4i1udkms2a" path="res://Assets/ui/items/03_predator_tendons.png" id="1_hxyki"]
+
+[resource]
+script = ExtResource("1_cmyj2")
+upgrade_id = &"predator_tendons"
+card_texture = ExtResource("1_hxyki")
+metadata/_custom_type_script = "uid://cgff01swg5n6"

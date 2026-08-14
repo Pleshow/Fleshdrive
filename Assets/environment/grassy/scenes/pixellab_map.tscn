@@ -1,0 +1,226 @@
+[gd_scene load_steps=24 format=3]
+[ext_resource type="Script" path="res://scripts/pixellab_map_builder.gd" id="Script_builder"]
+[ext_resource type="Texture2D" path="res://pixellab/source/objects/72f82453-c2c9-4417-8794-c967b1a01699.png" id="Texture_object_0_0"]
+[ext_resource type="Texture2D" path="res://pixellab/source/objects/3054d7e5-4a2d-4097-9bc8-771240148f9b.png" id="Texture_object_1_1"]
+[ext_resource type="Texture2D" path="res://pixellab/source/objects/e2467ec7-b4a8-49ad-bb6a-18daf5b30568.png" id="Texture_object_2_2"]
+[ext_resource type="Texture2D" path="res://pixellab/source/objects/9b4cf333-eeb7-4008-b1ab-319b0f78b310.png" id="Texture_object_3_3"]
+[ext_resource type="Texture2D" path="res://pixellab/source/objects/8dcb5dfc-fa57-4192-ab19-bb593c42d7bc.png" id="Texture_object_4_4"]
+[ext_resource type="Texture2D" path="res://pixellab/source/objects/02675ec9-1ec0-422c-b363-8748a6f3c26d.png" id="Texture_object_5_5"]
+[ext_resource type="Texture2D" path="res://pixellab/source/objects/b75164c8-36d6-463b-afcc-2360cd6030f1.png" id="Texture_object_6_6"]
+[ext_resource type="Texture2D" path="res://pixellab/source/objects/05f2d971-55f0-4727-9049-9ef31b45dead.png" id="Texture_object_7_7"]
+[ext_resource type="Texture2D" path="res://pixellab/source/objects/a223aeea-29a3-48ed-8b90-8a06e3e9f3f6.png" id="Texture_object_8_8"]
+[ext_resource type="Texture2D" path="res://pixellab/source/objects/f4704ffa-5a4c-411b-a411-bbd28a624555.png" id="Texture_object_9_9"]
+[ext_resource type="Texture2D" path="res://pixellab/source/objects/fed17739-5d04-4a24-8492-7e1b51c20bc7.png" id="Texture_object_10_10"]
+
+[sub_resource type="RectangleShape2D" id="ObjectShape_0"]
+size = Vector2(12.8, 12)
+[sub_resource type="RectangleShape2D" id="ObjectShape_1"]
+size = Vector2(12.8, 12)
+[sub_resource type="RectangleShape2D" id="ObjectShape_2"]
+size = Vector2(15.4, 19.2)
+[sub_resource type="RectangleShape2D" id="ObjectShape_3"]
+size = Vector2(43.52, 34.76)
+[sub_resource type="RectangleShape2D" id="ObjectShape_4"]
+size = Vector2(43.52, 34.76)
+[sub_resource type="RectangleShape2D" id="ObjectShape_5"]
+size = Vector2(43.52, 34.76)
+[sub_resource type="RectangleShape2D" id="ObjectShape_6"]
+size = Vector2(12.8, 12)
+[sub_resource type="RectangleShape2D" id="ObjectShape_7"]
+size = Vector2(15.4, 19.2)
+[sub_resource type="RectangleShape2D" id="ObjectShape_8"]
+size = Vector2(47.36, 35.64)
+[sub_resource type="RectangleShape2D" id="ObjectShape_9"]
+size = Vector2(12, 12)
+[sub_resource type="RectangleShape2D" id="ObjectShape_10"]
+size = Vector2(12, 12)
+
+[node name="Untitled Map" type="Node2D"]
+metadata/pixellab_format = "pixellab-engine-map"
+metadata/pixellab_version = "2.1.0"
+script = ExtResource("Script_builder")
+
+[node name="Objects" type="Node2D" parent="."]
+
+[node name="Object 0 1" type="Sprite2D" parent="Objects"]
+position = Vector2(297.333, 583.667)
+texture = ExtResource("Texture_object_0_0")
+centered = false
+z_index = 2
+visible = true
+metadata/pixellab_id = "72f82453-c2c9-4417-8794-c967b1a01699"
+metadata/pixellab_source = "{\"id\":\"72f82453-c2c9-4417-8794-c967b1a01699\",\"name\":\"Object 0\",\"filename\":\"72f82453-c2c9-4417-8794-c967b1a01699.png\",\"boundingBox\":{\"x\":393.3333333333333,\"y\":583.6666666666667,\"width\":20,\"height\":26},\"layer\":2,\"visible\":true,\"locked\":false,\"description\":\"pretty tall dry grass\",\"metadata\":{\"generatedAt\":\"2026-08-12T19:10:47.457Z\"},\"isProgress\":false}"
+
+[node name="Collider" type="StaticBody2D" parent="Objects/Object 0 1"]
+position = Vector2(10, 20)
+metadata/pixellab_id = "72f82453-c2c9-4417-8794-c967b1a01699"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Objects/Object 0 1/Collider"]
+shape = SubResource("ObjectShape_0")
+
+[node name="Object 0 (Copy) 2" type="Sprite2D" parent="Objects"]
+position = Vector2(311.333, 577.333)
+texture = ExtResource("Texture_object_1_1")
+centered = false
+z_index = 2
+visible = true
+metadata/pixellab_id = "3054d7e5-4a2d-4097-9bc8-771240148f9b"
+metadata/pixellab_source = "{\"id\":\"3054d7e5-4a2d-4097-9bc8-771240148f9b\",\"name\":\"Object 0 (Copy)\",\"filename\":\"3054d7e5-4a2d-4097-9bc8-771240148f9b.png\",\"boundingBox\":{\"x\":407.33333333333337,\"y\":577.3333333333335,\"width\":20,\"height\":26},\"layer\":2,\"visible\":true,\"locked\":false,\"description\":\"pretty tall dry grass\",\"metadata\":{\"generatedAt\":\"2026-08-12T19:12:00.073Z\",\"duplicatedFromObjectId\":\"72f82453-c2c9-4417-8794-c967b1a01699\"},\"isProgress\":false}"
+
+[node name="Collider" type="StaticBody2D" parent="Objects/Object 0 (Copy) 2"]
+position = Vector2(10, 20)
+metadata/pixellab_id = "3054d7e5-4a2d-4097-9bc8-771240148f9b"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Objects/Object 0 (Copy) 2/Collider"]
+shape = SubResource("ObjectShape_1")
+
+[node name="Object 0 3" type="Sprite2D" parent="Objects"]
+position = Vector2(284, 540.333)
+texture = ExtResource("Texture_object_2_2")
+centered = false
+z_index = 4
+visible = true
+metadata/pixellab_id = "e2467ec7-b4a8-49ad-bb6a-18daf5b30568"
+metadata/pixellab_source = "{\"id\":\"e2467ec7-b4a8-49ad-bb6a-18daf5b30568\",\"name\":\"Object 0\",\"filename\":\"e2467ec7-b4a8-49ad-bb6a-18daf5b30568.png\",\"boundingBox\":{\"x\":380,\"y\":540.3333333333333,\"width\":35,\"height\":60},\"layer\":4,\"visible\":true,\"locked\":false,\"description\":\"pretty tall dry grass \",\"metadata\":{\"generatedAt\":\"2026-08-12T19:13:52.765Z\"},\"isProgress\":false}"
+
+[node name="Collider" type="StaticBody2D" parent="Objects/Object 0 3"]
+position = Vector2(17.5, 50.4)
+metadata/pixellab_id = "e2467ec7-b4a8-49ad-bb6a-18daf5b30568"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Objects/Object 0 3/Collider"]
+shape = SubResource("ObjectShape_2")
+
+[node name="Object 0 4" type="Sprite2D" parent="Objects"]
+position = Vector2(1081, 214)
+texture = ExtResource("Texture_object_3_3")
+centered = false
+z_index = 4
+visible = true
+metadata/pixellab_id = "9b4cf333-eeb7-4008-b1ab-319b0f78b310"
+metadata/pixellab_source = "{\"id\":\"9b4cf333-eeb7-4008-b1ab-319b0f78b310\",\"name\":\"Object 0\",\"filename\":\"9b4cf333-eeb7-4008-b1ab-319b0f78b310.png\",\"boundingBox\":{\"x\":1177,\"y\":214,\"width\":68,\"height\":79},\"layer\":4,\"visible\":true,\"locked\":false,\"description\":\"dry dead twisted tree \",\"metadata\":{\"generatedAt\":\"2026-08-12T19:26:06.617Z\"},\"isProgress\":false}"
+
+[node name="Collider" type="StaticBody2D" parent="Objects/Object 0 4"]
+position = Vector2(34, 61.62)
+metadata/pixellab_id = "9b4cf333-eeb7-4008-b1ab-319b0f78b310"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Objects/Object 0 4/Collider"]
+shape = SubResource("ObjectShape_3")
+
+[node name="Object 0 (Copy 2) 5" type="Sprite2D" parent="Objects"]
+position = Vector2(293, 366)
+texture = ExtResource("Texture_object_4_4")
+centered = false
+z_index = 5
+visible = true
+metadata/pixellab_id = "8dcb5dfc-fa57-4192-ab19-bb593c42d7bc"
+metadata/pixellab_source = "{\"id\":\"8dcb5dfc-fa57-4192-ab19-bb593c42d7bc\",\"name\":\"Object 0 (Copy 2)\",\"filename\":\"8dcb5dfc-fa57-4192-ab19-bb593c42d7bc.png\",\"boundingBox\":{\"x\":389,\"y\":366,\"width\":68,\"height\":79},\"layer\":5,\"visible\":true,\"locked\":false,\"description\":\"dry dead twisted tree \",\"metadata\":{\"generatedAt\":\"2026-08-12T19:27:02.213Z\",\"duplicatedFromObjectId\":\"9b4cf333-eeb7-4008-b1ab-319b0f78b310\"},\"isProgress\":false}"
+
+[node name="Collider" type="StaticBody2D" parent="Objects/Object 0 (Copy 2) 5"]
+position = Vector2(34, 61.62)
+metadata/pixellab_id = "8dcb5dfc-fa57-4192-ab19-bb593c42d7bc"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Objects/Object 0 (Copy 2) 5/Collider"]
+shape = SubResource("ObjectShape_4")
+
+[node name="Object 0 (Copy 3) 6" type="Sprite2D" parent="Objects"]
+position = Vector2(1488, 509)
+texture = ExtResource("Texture_object_5_5")
+centered = false
+z_index = 5
+visible = true
+metadata/pixellab_id = "02675ec9-1ec0-422c-b363-8748a6f3c26d"
+metadata/pixellab_source = "{\"id\":\"02675ec9-1ec0-422c-b363-8748a6f3c26d\",\"name\":\"Object 0 (Copy 3)\",\"filename\":\"02675ec9-1ec0-422c-b363-8748a6f3c26d.png\",\"boundingBox\":{\"x\":1584,\"y\":509,\"width\":68,\"height\":79},\"layer\":5,\"visible\":true,\"locked\":false,\"description\":\"dry dead twisted tree \",\"metadata\":{\"generatedAt\":\"2026-08-12T19:33:18.623Z\",\"duplicatedFromObjectId\":\"9b4cf333-eeb7-4008-b1ab-319b0f78b310\"},\"isProgress\":false}"
+
+[node name="Collider" type="StaticBody2D" parent="Objects/Object 0 (Copy 3) 6"]
+position = Vector2(34, 61.62)
+metadata/pixellab_id = "02675ec9-1ec0-422c-b363-8748a6f3c26d"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Objects/Object 0 (Copy 3) 6/Collider"]
+shape = SubResource("ObjectShape_5")
+
+[node name="Object 0 (Copy 4) 7" type="Sprite2D" parent="Objects"]
+position = Vector2(1115.33, 273.333)
+texture = ExtResource("Texture_object_6_6")
+centered = false
+z_index = 6
+visible = true
+metadata/pixellab_id = "b75164c8-36d6-463b-afcc-2360cd6030f1"
+metadata/pixellab_source = "{\"id\":\"b75164c8-36d6-463b-afcc-2360cd6030f1\",\"name\":\"Object 0 (Copy 4)\",\"filename\":\"b75164c8-36d6-463b-afcc-2360cd6030f1.png\",\"boundingBox\":{\"x\":1211.3333333333335,\"y\":273.3333333333335,\"width\":20,\"height\":26},\"layer\":6,\"visible\":true,\"locked\":false,\"description\":\"pretty tall dry grass\",\"metadata\":{\"generatedAt\":\"2026-08-12T19:33:25.278Z\",\"duplicatedFromObjectId\":\"72f82453-c2c9-4417-8794-c967b1a01699\"},\"isProgress\":false}"
+
+[node name="Collider" type="StaticBody2D" parent="Objects/Object 0 (Copy 4) 7"]
+position = Vector2(10, 20)
+metadata/pixellab_id = "b75164c8-36d6-463b-afcc-2360cd6030f1"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Objects/Object 0 (Copy 4) 7/Collider"]
+shape = SubResource("ObjectShape_6")
+
+[node name="Object 0 (Copy 5) 8" type="Sprite2D" parent="Objects"]
+position = Vector2(955, 863.333)
+texture = ExtResource("Texture_object_7_7")
+centered = false
+z_index = 12
+visible = true
+metadata/pixellab_id = "05f2d971-55f0-4727-9049-9ef31b45dead"
+metadata/pixellab_source = "{\"id\":\"05f2d971-55f0-4727-9049-9ef31b45dead\",\"name\":\"Object 0 (Copy 5)\",\"filename\":\"05f2d971-55f0-4727-9049-9ef31b45dead.png\",\"boundingBox\":{\"x\":1051,\"y\":863.3333333333333,\"width\":35,\"height\":60},\"layer\":12,\"visible\":true,\"locked\":false,\"description\":\"pretty tall dry grass \",\"metadata\":{\"generatedAt\":\"2026-08-12T19:33:45.988Z\",\"duplicatedFromObjectId\":\"e2467ec7-b4a8-49ad-bb6a-18daf5b30568\"},\"isProgress\":false}"
+
+[node name="Collider" type="StaticBody2D" parent="Objects/Object 0 (Copy 5) 8"]
+position = Vector2(17.5, 50.4)
+metadata/pixellab_id = "05f2d971-55f0-4727-9049-9ef31b45dead"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Objects/Object 0 (Copy 5) 8/Collider"]
+shape = SubResource("ObjectShape_7")
+
+[node name="Object 0 9" type="Sprite2D" parent="Objects"]
+position = Vector2(1795, 272)
+texture = ExtResource("Texture_object_8_8")
+centered = false
+z_index = 10
+visible = true
+metadata/pixellab_id = "a223aeea-29a3-48ed-8b90-8a06e3e9f3f6"
+metadata/pixellab_source = "{\"id\":\"a223aeea-29a3-48ed-8b90-8a06e3e9f3f6\",\"name\":\"Object 0\",\"filename\":\"a223aeea-29a3-48ed-8b90-8a06e3e9f3f6.png\",\"boundingBox\":{\"x\":1891,\"y\":272,\"width\":74,\"height\":81},\"layer\":10,\"visible\":true,\"locked\":false,\"description\":\"dry broken dead twisted tree \",\"metadata\":{\"generatedAt\":\"2026-08-12T19:34:57.119Z\"},\"isProgress\":false}"
+
+[node name="Collider" type="StaticBody2D" parent="Objects/Object 0 9"]
+position = Vector2(37, 63.18)
+metadata/pixellab_id = "a223aeea-29a3-48ed-8b90-8a06e3e9f3f6"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Objects/Object 0 9/Collider"]
+shape = SubResource("ObjectShape_8")
+
+[node name="Object 0 10" type="Sprite2D" parent="Objects"]
+position = Vector2(320, 578)
+texture = ExtResource("Texture_object_9_9")
+centered = false
+z_index = 11
+visible = true
+metadata/pixellab_id = "f4704ffa-5a4c-411b-a411-bbd28a624555"
+metadata/pixellab_source = "{\"id\":\"f4704ffa-5a4c-411b-a411-bbd28a624555\",\"name\":\"Object 0\",\"filename\":\"f4704ffa-5a4c-411b-a411-bbd28a624555.png\",\"boundingBox\":{\"x\":416,\"y\":578,\"width\":18,\"height\":14},\"layer\":11,\"visible\":true,\"locked\":false,\"description\":\"and old half buried dog head skeleton\",\"metadata\":{\"generatedAt\":\"2026-08-12T19:38:28.037Z\"},\"isProgress\":false}"
+
+[node name="Collider" type="StaticBody2D" parent="Objects/Object 0 10"]
+position = Vector2(9, 8)
+metadata/pixellab_id = "f4704ffa-5a4c-411b-a411-bbd28a624555"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Objects/Object 0 10/Collider"]
+shape = SubResource("ObjectShape_9")
+
+[node name="Object 0 (Copy 7) 11" type="Sprite2D" parent="Objects"]
+position = Vector2(1835, 340)
+texture = ExtResource("Texture_object_10_10")
+centered = false
+z_index = 11
+visible = true
+metadata/pixellab_id = "fed17739-5d04-4a24-8492-7e1b51c20bc7"
+metadata/pixellab_source = "{\"id\":\"fed17739-5d04-4a24-8492-7e1b51c20bc7\",\"name\":\"Object 0 (Copy 7)\",\"filename\":\"fed17739-5d04-4a24-8492-7e1b51c20bc7.png\",\"boundingBox\":{\"x\":1931,\"y\":340,\"width\":18,\"height\":14},\"layer\":11,\"visible\":true,\"locked\":false,\"description\":\"and old half buried dog head skeleton\",\"metadata\":{\"generatedAt\":\"2026-08-12T19:41:11.160Z\",\"duplicatedFromObjectId\":\"f4704ffa-5a4c-411b-a411-bbd28a624555\"},\"isProgress\":false}"
+
+[node name="Collider" type="StaticBody2D" parent="Objects/Object 0 (Copy 7) 11"]
+position = Vector2(9, 8)
+metadata/pixellab_id = "fed17739-5d04-4a24-8492-7e1b51c20bc7"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Objects/Object 0 (Copy 7) 11/Collider"]
+shape = SubResource("ObjectShape_10")
+
+[node name="Gameplay" type="Node2D" parent="."]
+position = Vector2(0, 0)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(1264, 560)
+enabled = true

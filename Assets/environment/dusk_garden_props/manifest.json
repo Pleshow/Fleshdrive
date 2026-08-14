@@ -1,0 +1,221 @@
+{
+  "version": "1.0.0",
+  "totalObjects": 11,
+  "objects": [
+    {
+      "id": "72f82453-c2c9-4417-8794-c967b1a01699",
+      "name": "Object 0",
+      "filename": "72f82453-c2c9-4417-8794-c967b1a01699.png",
+      "boundingBox": {
+        "x": 393.3333333333333,
+        "y": 583.6666666666667,
+        "width": 20,
+        "height": 26
+      },
+      "layer": 2,
+      "visible": true,
+      "locked": false,
+      "description": "pretty tall dry grass",
+      "metadata": {
+        "generatedAt": "2026-08-12T19:10:47.457Z"
+      },
+      "isProgress": false
+    },
+    {
+      "id": "3054d7e5-4a2d-4097-9bc8-771240148f9b",
+      "name": "Object 0 (Copy)",
+      "filename": "3054d7e5-4a2d-4097-9bc8-771240148f9b.png",
+      "boundingBox": {
+        "x": 407.33333333333337,
+        "y": 577.3333333333335,
+        "width": 20,
+        "height": 26
+      },
+      "layer": 2,
+      "visible": true,
+      "locked": false,
+      "description": "pretty tall dry grass",
+      "metadata": {
+        "generatedAt": "2026-08-12T19:12:00.073Z",
+        "duplicatedFromObjectId": "72f82453-c2c9-4417-8794-c967b1a01699"
+      },
+      "isProgress": false
+    },
+    {
+      "id": "e2467ec7-b4a8-49ad-bb6a-18daf5b30568",
+      "name": "Object 0",
+      "filename": "e2467ec7-b4a8-49ad-bb6a-18daf5b30568.png",
+      "boundingBox": {
+        "x": 380,
+        "y": 540.3333333333333,
+        "width": 35,
+        "height": 60
+      },
+      "layer": 4,
+      "visible": true,
+      "locked": false,
+      "description": "pretty tall dry grass ",
+      "metadata": {
+        "generatedAt": "2026-08-12T19:13:52.765Z"
+      },
+      "isProgress": false
+    },
+    {
+      "id": "9b4cf333-eeb7-4008-b1ab-319b0f78b310",
+      "name": "Object 0",
+      "filename": "9b4cf333-eeb7-4008-b1ab-319b0f78b310.png",
+      "boundingBox": {
+        "x": 1177,
+        "y": 214,
+        "width": 68,
+        "height": 79
+      },
+      "layer": 4,
+      "visible": true,
+      "locked": false,
+      "description": "dry dead twisted tree ",
+      "metadata": {
+        "generatedAt": "2026-08-12T19:26:06.617Z"
+      },
+      "isProgress": false
+    },
+    {
+      "id": "8dcb5dfc-fa57-4192-ab19-bb593c42d7bc",
+      "name": "Object 0 (Copy 2)",
+      "filename": "8dcb5dfc-fa57-4192-ab19-bb593c42d7bc.png",
+      "boundingBox": {
+        "x": 389,
+        "y": 366,
+        "width": 68,
+        "height": 79
+      },
+      "layer": 5,
+      "visible": true,
+      "locked": false,
+      "description": "dry dead twisted tree ",
+      "metadata": {
+        "generatedAt": "2026-08-12T19:27:02.213Z",
+        "duplicatedFromObjectId": "9b4cf333-eeb7-4008-b1ab-319b0f78b310"
+      },
+      "isProgress": false
+    },
+    {
+      "id": "02675ec9-1ec0-422c-b363-8748a6f3c26d",
+      "name": "Object 0 (Copy 3)",
+      "filename": "02675ec9-1ec0-422c-b363-8748a6f3c26d.png",
+      "boundingBox": {
+        "x": 1584,
+        "y": 509,
+        "width": 68,
+        "height": 79
+      },
+      "layer": 5,
+      "visible": true,
+      "locked": false,
+      "description": "dry dead twisted tree ",
+      "metadata": {
+        "generatedAt": "2026-08-12T19:33:18.623Z",
+        "duplicatedFromObjectId": "9b4cf333-eeb7-4008-b1ab-319b0f78b310"
+      },
+      "isProgress": false
+    },
+    {
+      "id": "b75164c8-36d6-463b-afcc-2360cd6030f1",
+      "name": "Object 0 (Copy 4)",
+      "filename": "b75164c8-36d6-463b-afcc-2360cd6030f1.png",
+      "boundingBox": {
+        "x": 1211.3333333333335,
+        "y": 273.3333333333335,
+        "width": 20,
+        "height": 26
+      },
+      "layer": 6,
+      "visible": true,
+      "locked": false,
+      "description": "pretty tall dry grass",
+      "metadata": {
+        "generatedAt": "2026-08-12T19:33:25.278Z",
+        "duplicatedFromObjectId": "72f82453-c2c9-4417-8794-c967b1a01699"
+      },
+      "isProgress": false
+    },
+    {
+      "id": "05f2d971-55f0-4727-9049-9ef31b45dead",
+      "name": "Object 0 (Copy 5)",
+      "filename": "05f2d971-55f0-4727-9049-9ef31b45dead.png",
+      "boundingBox": {
+        "x": 1051,
+        "y": 863.3333333333333,
+        "width": 35,
+        "height": 60
+      },
+      "layer": 12,
+      "visible": true,
+      "locked": false,
+      "description": "pretty tall dry grass ",
+      "metadata": {
+        "generatedAt": "2026-08-12T19:33:45.988Z",
+        "duplicatedFromObjectId": "e2467ec7-b4a8-49ad-bb6a-18daf5b30568"
+      },
+      "isProgress": false
+    },
+    {
+      "id": "a223aeea-29a3-48ed-8b90-8a06e3e9f3f6",
+      "name": "Object 0",
+      "filename": "a223aeea-29a3-48ed-8b90-8a06e3e9f3f6.png",
+      "boundingBox": {
+        "x": 1891,
+        "y": 272,
+        "width": 74,
+        "height": 81
+      },
+      "layer": 10,
+      "visible": true,
+      "locked": false,
+      "description": "dry broken dead twisted tree ",
+      "metadata": {
+        "generatedAt": "2026-08-12T19:34:57.119Z"
+      },
+      "isProgress": false
+    },
+    {
+      "id": "f4704ffa-5a4c-411b-a411-bbd28a624555",
+      "name": "Object 0",
+      "filename": "f4704ffa-5a4c-411b-a411-bbd28a624555.png",
+      "boundingBox": {
+        "x": 416,
+        "y": 578,
+        "width": 18,
+        "height": 14
+      },
+      "layer": 11,
+      "visible": true,
+      "locked": false,
+      "description": "and old half buried dog head skeleton",
+      "metadata": {
+        "generatedAt": "2026-08-12T19:38:28.037Z"
+      },
+      "isProgress": false
+    },
+    {
+      "id": "fed17739-5d04-4a24-8492-7e1b51c20bc7",
+      "name": "Object 0 (Copy 7)",
+      "filename": "fed17739-5d04-4a24-8492-7e1b51c20bc7.png",
+      "boundingBox": {
+        "x": 1931,
+        "y": 340,
+        "width": 18,
+        "height": 14
+      },
+      "layer": 11,
+      "visible": true,
+      "locked": false,
+      "description": "and old half buried dog head skeleton",
+      "metadata": {
+        "generatedAt": "2026-08-12T19:41:11.160Z",
+        "duplicatedFromObjectId": "f4704ffa-5a4c-411b-a411-bbd28a624555"
+      },
+      "isProgress": false
+    }
+  ]
+}

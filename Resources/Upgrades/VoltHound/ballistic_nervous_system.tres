@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3]
+[ext_resource type="Script" path="res://Scripts/upgrade_data.gd" id="1"]
+[ext_resource type="Texture2D" path="res://Assets/ui/cards/build_items/electric.svg" id="2"]
+[resource]
+script = ExtResource("1")
+upgrade_id = &"ballistic_nervous_system"
+display_name = "BALLISTIC NERVOUS SYSTEM"
+description = "Momentum no longer decays while moving, but standing still drains it extremely quickly."
+card_texture = ExtResource("2")
+fleshdrive_affinity = "electric"
+synergy_tags = Array[StringName]([&"volt_hound", &"momentum", &"movement"])
+rarity = "rare"
+max_level = 1
+minimum_player_level = 13
+build_archetype = &"volt_hound"
+required_weapons = Array[StringName]([&"static_claws"])
+offer_weight = 0.6

@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://bglu55oqo8mtv"
+
+[deps]
+
+files=["res://Localization/fleshdrive_polish.en.translation", "res://Localization/fleshdrive_polish.hu.translation"]
+
+source_file="res://Localization/fleshdrive_polish.csv"
+dest_files=["res://Localization/fleshdrive_polish.en.translation", "res://Localization/fleshdrive_polish.hu.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true

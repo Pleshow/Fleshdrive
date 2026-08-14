@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3 uid="uid://cif5b6fynx6h8"]
+
+[ext_resource type="Script" uid="uid://cgff01swg5n6" path="res://Scripts/upgrade_data.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://bvvls6j4g2jk" path="res://Assets/ui/cards/build_items/electric.svg" id="2"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = &"ball_lightning"
+display_name = "BALL LIGHTNING"
+description = "Periodically releases a slow orange plasma sphere that passes through enemies and deals repeated area damage."
+card_texture = ExtResource("2")
+upgrade_kind = 2
+fleshdrive_affinity = "electric"
+synergy_tags = Array[StringName]([&"orange_tempest", &"projectile", &"plasma"])
+minimum_player_level = 2
+build_archetype = &"orange_tempest"

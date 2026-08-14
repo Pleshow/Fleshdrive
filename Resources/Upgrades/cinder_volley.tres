@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3]
+
+[ext_resource type="Script" path="res://Scripts/upgrade_data.gd" id="1"]
+[ext_resource type="Texture2D" path="res://Assets/ui/weapons/fire/cinder_volley.png" id="2"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = &"cinder_volley"
+display_name = "CINDER VOLLEY"
+description = "Fires embers at several targets. Each hit adds a burning stack."
+card_texture = ExtResource("2")
+upgrade_kind = 2
+fleshdrive_affinity = "fire"
+max_level = 5
+minimum_player_level = 1

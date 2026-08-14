@@ -1,0 +1,81 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://bfrlyvp8mmalh"]
+
+[ext_resource type="Texture2D" uid="uid://cck8n5kk7adkg" path="res://Assets/ui/mimichu_animation_atlas.png" id="1_atlas"]
+
+[sub_resource type="AtlasTexture" id="Idle0"]
+atlas = ExtResource("1_atlas")
+region = Rect2(0, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="Idle1"]
+atlas = ExtResource("1_atlas")
+region = Rect2(320, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="Idle3"]
+atlas = ExtResource("1_atlas")
+region = Rect2(960, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="Idle2"]
+atlas = ExtResource("1_atlas")
+region = Rect2(640, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="Talk0"]
+atlas = ExtResource("1_atlas")
+region = Rect2(0, 320, 320, 320)
+
+[sub_resource type="AtlasTexture" id="Talk1"]
+atlas = ExtResource("1_atlas")
+region = Rect2(320, 320, 320, 320)
+
+[sub_resource type="AtlasTexture" id="Talk2"]
+atlas = ExtResource("1_atlas")
+region = Rect2(640, 320, 320, 320)
+
+[sub_resource type="AtlasTexture" id="Talk3"]
+atlas = ExtResource("1_atlas")
+region = Rect2(960, 320, 320, 320)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 2.0,
+"texture": SubResource("Idle0")
+}, {
+"duration": 1.0,
+"texture": SubResource("Idle1")
+}, {
+"duration": 2.0,
+"texture": SubResource("Idle3")
+}, {
+"duration": 0.42,
+"texture": SubResource("Idle2")
+}, {
+"duration": 1.0,
+"texture": SubResource("Idle3")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 3.2
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Talk0")
+}, {
+"duration": 1.0,
+"texture": SubResource("Talk1")
+}, {
+"duration": 1.0,
+"texture": SubResource("Talk2")
+}, {
+"duration": 1.0,
+"texture": SubResource("Talk3")
+}, {
+"duration": 1.0,
+"texture": SubResource("Talk2")
+}, {
+"duration": 1.0,
+"texture": SubResource("Talk1")
+}],
+"loop": 1,
+"name": &"talk",
+"speed": 8.0
+}]

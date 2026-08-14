@@ -1,0 +1,98 @@
+{
+  "group_id": "b4606e6b-253a-49a5-852c-12d69c612a1e",
+  "states": [
+    {
+      "character": {
+        "id": "a3742a26-a4eb-4a12-80c8-9ed8685e73b5",
+        "name": "Idle",
+        "prompt": "boar like mutant charging scarry evil creature enemy",
+        "size": {
+          "width": 108,
+          "height": 108
+        },
+        "template_id": "bear",
+        "directions": 8,
+        "view": "high top-down",
+        "created_at": "2026-08-06T20:20:19.434029+00:00"
+      },
+      "folder": "Idle",
+      "frames": {
+        "rotations": {
+          "south": "Idle/rotations/south.png",
+          "south-east": "Idle/rotations/south-east.png",
+          "east": "Idle/rotations/east.png",
+          "north-east": "Idle/rotations/north-east.png",
+          "north": "Idle/rotations/north.png",
+          "north-west": "Idle/rotations/north-west.png",
+          "west": "Idle/rotations/west.png",
+          "south-west": "Idle/rotations/south-west.png"
+        },
+        "animations": {
+          "Walking": {
+            "east": [
+              "Idle/animations/Walking/east/frame_000.png",
+              "Idle/animations/Walking/east/frame_001.png",
+              "Idle/animations/Walking/east/frame_002.png",
+              "Idle/animations/Walking/east/frame_003.png",
+              "Idle/animations/Walking/east/frame_004.png",
+              "Idle/animations/Walking/east/frame_005.png",
+              "Idle/animations/Walking/east/frame_006.png",
+              "Idle/animations/Walking/east/frame_007.png"
+            ]
+          },
+          "Jump_Attack": {
+            "east": [
+              "Idle/animations/Jump_Attack/east/frame_000.png",
+              "Idle/animations/Jump_Attack/east/frame_001.png",
+              "Idle/animations/Jump_Attack/east/frame_002.png",
+              "Idle/animations/Jump_Attack/east/frame_003.png",
+              "Idle/animations/Jump_Attack/east/frame_004.png",
+              "Idle/animations/Jump_Attack/east/frame_005.png",
+              "Idle/animations/Jump_Attack/east/frame_006.png",
+              "Idle/animations/Jump_Attack/east/frame_007.png"
+            ]
+          },
+          "running_full_speed_and_crashing_head_first_into_a": {
+            "east": [
+              "Idle/animations/running_full_speed_and_crashing_head_first_into_a/east/frame_000.png",
+              "Idle/animations/running_full_speed_and_crashing_head_first_into_a/east/frame_001.png",
+              "Idle/animations/running_full_speed_and_crashing_head_first_into_a/east/frame_002.png",
+              "Idle/animations/running_full_speed_and_crashing_head_first_into_a/east/frame_003.png",
+              "Idle/animations/running_full_speed_and_crashing_head_first_into_a/east/frame_004.png",
+              "Idle/animations/running_full_speed_and_crashing_head_first_into_a/east/frame_005.png",
+              "Idle/animations/running_full_speed_and_crashing_head_first_into_a/east/frame_006.png",
+              "Idle/animations/running_full_speed_and_crashing_head_first_into_a/east/frame_007.png"
+            ]
+          },
+          "Full_Sprint": {
+            "east": [
+              "Idle/animations/Full_Sprint/east/frame_000.png",
+              "Idle/animations/Full_Sprint/east/frame_001.png",
+              "Idle/animations/Full_Sprint/east/frame_002.png",
+              "Idle/animations/Full_Sprint/east/frame_003.png",
+              "Idle/animations/Full_Sprint/east/frame_004.png",
+              "Idle/animations/Full_Sprint/east/frame_005.png",
+              "Idle/animations/Full_Sprint/east/frame_006.png",
+              "Idle/animations/Full_Sprint/east/frame_007.png"
+            ]
+          },
+          "the_beast_dies_by_blowing_up_into_red_blood_partic": {
+            "east": [
+              "Idle/animations/the_beast_dies_by_blowing_up_into_red_blood_partic/east/frame_000.png",
+              "Idle/animations/the_beast_dies_by_blowing_up_into_red_blood_partic/east/frame_001.png",
+              "Idle/animations/the_beast_dies_by_blowing_up_into_red_blood_partic/east/frame_002.png",
+              "Idle/animations/the_beast_dies_by_blowing_up_into_red_blood_partic/east/frame_003.png",
+              "Idle/animations/the_beast_dies_by_blowing_up_into_red_blood_partic/east/frame_004.png",
+              "Idle/animations/the_beast_dies_by_blowing_up_into_red_blood_partic/east/frame_005.png",
+              "Idle/animations/the_beast_dies_by_blowing_up_into_red_blood_partic/east/frame_006.png",
+              "Idle/animations/the_beast_dies_by_blowing_up_into_red_blood_partic/east/frame_007.png",
+              "Idle/animations/the_beast_dies_by_blowing_up_into_red_blood_partic/east/frame_008.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.1",
+  "export_date": "2026-08-06T21:08:53.422914"
+}

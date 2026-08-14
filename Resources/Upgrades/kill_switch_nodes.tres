@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3 uid="uid://cjj4fekpn12ea"]
+
+[ext_resource type="Script" uid="uid://cgff01swg5n6" path="res://Scripts/upgrade_data.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://cmveuy23yxltj" path="res://Assets/ui/items/10_kill_switch_nodes.png" id="2_card"]
+
+[resource]
+script = ExtResource("1_script")
+upgrade_id = &"kill_switch_nodes"
+display_name = "KILL-SWITCH NODES"
+description = "Scheduled kills discharge a wide electrical shock pulse."
+card_texture = ExtResource("2_card")
+fleshdrive_affinity = "electric"
+minimum_player_level = 5

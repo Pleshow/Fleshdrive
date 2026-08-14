@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3]
+
+[ext_resource type="Script" path="res://Scripts/upgrade_data.gd" id="1"]
+[ext_resource type="Texture2D" path="res://Assets/ui/cards/build_items/fire.svg" id="2"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = &"kiln_chamber"
+display_name = "CARD_KILN_CHAMBER_NAME"
+description = "CARD_KILN_CHAMBER_DESC"
+card_texture = ExtResource("2")
+fleshdrive_affinity = "fire"
+synergy_tags = Array[StringName]([&"range", &"damage", &"tradeoff"])
+rarity = "common"
+max_level = 5
+minimum_player_level = 3
+build_archetype = &"magma_artillery"
+keystone = false
+required_weapons = Array[StringName]([&"magma_spear"])
+offer_weight = 1
+excluded_upgrades = Array[StringName]([])

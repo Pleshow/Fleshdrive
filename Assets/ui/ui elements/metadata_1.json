@@ -1,0 +1,283 @@
+{
+  "ui_assets": [
+    {
+      "id": "4d580627-227d-41cf-9005-aad914b67a34",
+      "name": null,
+      "prompt": "biomechanic, flesh and metal textures intertwined",
+      "kind": "template",
+      "file": "biomechanic_flesh_and_metal_textures_intertwined/biomechanic_flesh_and_metal_textures_intertwined.png",
+      "size": {
+        "width": 688,
+        "height": 384
+      },
+      "group_id": "4d580627-227d-41cf-9005-aad914b67a34"
+    },
+    {
+      "id": "c43bb657-3cb4-446d-b278-f718cdb49524",
+      "name": "element 1",
+      "prompt": "biomechanic, flesh and metal textures intertwined",
+      "kind": "element",
+      "file": "biomechanic_flesh_and_metal_textures_intertwined/elements/element_1.png",
+      "size": {
+        "width": 121,
+        "height": 118
+      },
+      "group_id": "4d580627-227d-41cf-9005-aad914b67a34"
+    },
+    {
+      "id": "b69a4061-36fa-4294-ab7d-48e3a170e5b4",
+      "name": "element 2",
+      "prompt": "biomechanic, flesh and metal textures intertwined",
+      "kind": "element",
+      "file": "biomechanic_flesh_and_metal_textures_intertwined/elements/element_2.png",
+      "size": {
+        "width": 445,
+        "height": 105
+      },
+      "group_id": "4d580627-227d-41cf-9005-aad914b67a34"
+    },
+    {
+      "id": "584ce0c7-4ff3-42ea-a05e-266d46bc3dd8",
+      "name": "element 3",
+      "prompt": "biomechanic, flesh and metal textures intertwined",
+      "kind": "element",
+      "file": "biomechanic_flesh_and_metal_textures_intertwined/elements/element_3.png",
+      "size": {
+        "width": 376,
+        "height": 252
+      },
+      "group_id": "4d580627-227d-41cf-9005-aad914b67a34"
+    },
+    {
+      "id": "68df0149-b53c-4046-aff3-66dae7127213",
+      "name": "element 4",
+      "prompt": "biomechanic, flesh and metal textures intertwined",
+      "kind": "element",
+      "file": "biomechanic_flesh_and_metal_textures_intertwined/elements/element_4/element_4.png",
+      "size": {
+        "width": 227,
+        "height": 55
+      },
+      "group_id": "4d580627-227d-41cf-9005-aad914b67a34"
+    },
+    {
+      "id": "fd250b2c-3137-454f-abaa-8bdc9282f84d",
+      "name": "hover",
+      "prompt": "biomechanic, flesh and metal textures intertwined",
+      "kind": "state",
+      "file": "biomechanic_flesh_and_metal_textures_intertwined/elements/element_4/hover.png",
+      "size": {
+        "width": 222,
+        "height": 45
+      },
+      "group_id": "4d580627-227d-41cf-9005-aad914b67a34",
+      "parent_id": "68df0149-b53c-4046-aff3-66dae7127213"
+    },
+    {
+      "id": "3dd7f9c0-c91b-46ef-add0-97cf166ce26a",
+      "name": "pressed",
+      "prompt": "biomechanic, flesh and metal textures intertwined",
+      "kind": "state",
+      "file": "biomechanic_flesh_and_metal_textures_intertwined/elements/element_4/pressed.png",
+      "size": {
+        "width": 222,
+        "height": 45
+      },
+      "group_id": "4d580627-227d-41cf-9005-aad914b67a34",
+      "parent_id": "68df0149-b53c-4046-aff3-66dae7127213"
+    },
+    {
+      "id": "46da7993-23a7-4d9f-b3f8-a3031175a7d5",
+      "name": "disabled",
+      "prompt": "biomechanic, flesh and metal textures intertwined",
+      "kind": "state",
+      "file": "biomechanic_flesh_and_metal_textures_intertwined/elements/element_4/disabled.png",
+      "size": {
+        "width": 222,
+        "height": 45
+      },
+      "group_id": "4d580627-227d-41cf-9005-aad914b67a34",
+      "parent_id": "68df0149-b53c-4046-aff3-66dae7127213"
+    },
+    {
+      "id": "c24ef86d-37ef-4ba9-84fc-a51d577f467d",
+      "name": "selected",
+      "prompt": "biomechanic, flesh and metal textures intertwined",
+      "kind": "state",
+      "file": "biomechanic_flesh_and_metal_textures_intertwined/elements/element_4/selected.png",
+      "size": {
+        "width": 241,
+        "height": 67
+      },
+      "group_id": "4d580627-227d-41cf-9005-aad914b67a34",
+      "parent_id": "68df0149-b53c-4046-aff3-66dae7127213"
+    },
+    {
+      "id": "1e996729-978d-4dd0-a668-dc84f899b937",
+      "name": "locked",
+      "prompt": "biomechanic, flesh and metal textures intertwined",
+      "kind": "state",
+      "file": "biomechanic_flesh_and_metal_textures_intertwined/elements/element_4/locked.png",
+      "size": {
+        "width": 224,
+        "height": 61
+      },
+      "group_id": "4d580627-227d-41cf-9005-aad914b67a34",
+      "parent_id": "68df0149-b53c-4046-aff3-66dae7127213"
+    },
+    {
+      "id": "d7e65c6d-3fa3-4aa6-a98d-61bf45656506",
+      "name": "element 5",
+      "prompt": "biomechanic, flesh and metal textures intertwined",
+      "kind": "element",
+      "file": "biomechanic_flesh_and_metal_textures_intertwined/elements/element_5/element_5.png",
+      "size": {
+        "width": 230,
+        "height": 53
+      },
+      "group_id": "4d580627-227d-41cf-9005-aad914b67a34"
+    },
+    {
+      "id": "aefbb075-ef66-491b-8f5f-5dfbca8978a6",
+      "name": "hover",
+      "prompt": "biomechanic, flesh and metal textures intertwined",
+      "kind": "state",
+      "file": "biomechanic_flesh_and_metal_textures_intertwined/elements/element_5/hover.png",
+      "size": {
+        "width": 222,
+        "height": 44
+      },
+      "group_id": "4d580627-227d-41cf-9005-aad914b67a34",
+      "parent_id": "d7e65c6d-3fa3-4aa6-a98d-61bf45656506"
+    },
+    {
+      "id": "82407fab-1843-43e9-8e77-72b5b6b223c8",
+      "name": "pressed",
+      "prompt": "biomechanic, flesh and metal textures intertwined",
+      "kind": "state",
+      "file": "biomechanic_flesh_and_metal_textures_intertwined/elements/element_5/pressed.png",
+      "size": {
+        "width": 222,
+        "height": 44
+      },
+      "group_id": "4d580627-227d-41cf-9005-aad914b67a34",
+      "parent_id": "d7e65c6d-3fa3-4aa6-a98d-61bf45656506"
+    },
+    {
+      "id": "ed746854-2500-4dbf-97d3-6cf6147531bf",
+      "name": "disabled",
+      "prompt": "biomechanic, flesh and metal textures intertwined",
+      "kind": "state",
+      "file": "biomechanic_flesh_and_metal_textures_intertwined/elements/element_5/disabled.png",
+      "size": {
+        "width": 222,
+        "height": 45
+      },
+      "group_id": "4d580627-227d-41cf-9005-aad914b67a34",
+      "parent_id": "d7e65c6d-3fa3-4aa6-a98d-61bf45656506"
+    },
+    {
+      "id": "50856057-9f70-4193-a159-bc47fc604d35",
+      "name": "selected",
+      "prompt": "biomechanic, flesh and metal textures intertwined",
+      "kind": "state",
+      "file": "biomechanic_flesh_and_metal_textures_intertwined/elements/element_5/selected.png",
+      "size": {
+        "width": 242,
+        "height": 66
+      },
+      "group_id": "4d580627-227d-41cf-9005-aad914b67a34",
+      "parent_id": "d7e65c6d-3fa3-4aa6-a98d-61bf45656506"
+    },
+    {
+      "id": "2150fb45-e70a-4b6a-bd3a-5723be72f31d",
+      "name": "locked",
+      "prompt": "biomechanic, flesh and metal textures intertwined",
+      "kind": "state",
+      "file": "biomechanic_flesh_and_metal_textures_intertwined/elements/element_5/locked.png",
+      "size": {
+        "width": 224,
+        "height": 57
+      },
+      "group_id": "4d580627-227d-41cf-9005-aad914b67a34",
+      "parent_id": "d7e65c6d-3fa3-4aa6-a98d-61bf45656506"
+    },
+    {
+      "id": "1fbf7697-5935-48f0-881a-fc597511e435",
+      "name": "element 6",
+      "prompt": "biomechanic, flesh and metal textures intertwined",
+      "kind": "element",
+      "file": "biomechanic_flesh_and_metal_textures_intertwined/elements/element_6/element_6.png",
+      "size": {
+        "width": 230,
+        "height": 67
+      },
+      "group_id": "4d580627-227d-41cf-9005-aad914b67a34"
+    },
+    {
+      "id": "6fab9cf5-f7df-4627-92a3-557df9474a42",
+      "name": "hover",
+      "prompt": "biomechanic, flesh and metal textures intertwined",
+      "kind": "state",
+      "file": "biomechanic_flesh_and_metal_textures_intertwined/elements/element_6/hover.png",
+      "size": {
+        "width": 222,
+        "height": 55
+      },
+      "group_id": "4d580627-227d-41cf-9005-aad914b67a34",
+      "parent_id": "1fbf7697-5935-48f0-881a-fc597511e435"
+    },
+    {
+      "id": "3dd46878-a6d3-41ee-858f-fac3915d5c32",
+      "name": "pressed",
+      "prompt": "biomechanic, flesh and metal textures intertwined",
+      "kind": "state",
+      "file": "biomechanic_flesh_and_metal_textures_intertwined/elements/element_6/pressed.png",
+      "size": {
+        "width": 222,
+        "height": 55
+      },
+      "group_id": "4d580627-227d-41cf-9005-aad914b67a34",
+      "parent_id": "1fbf7697-5935-48f0-881a-fc597511e435"
+    },
+    {
+      "id": "36090351-cbf4-42f4-b7e3-98a40f5c49dc",
+      "name": "disabled",
+      "prompt": "biomechanic, flesh and metal textures intertwined",
+      "kind": "state",
+      "file": "biomechanic_flesh_and_metal_textures_intertwined/elements/element_6/disabled.png",
+      "size": {
+        "width": 222,
+        "height": 55
+      },
+      "group_id": "4d580627-227d-41cf-9005-aad914b67a34",
+      "parent_id": "1fbf7697-5935-48f0-881a-fc597511e435"
+    },
+    {
+      "id": "368de13e-847d-4b2a-9af1-a289628d95d6",
+      "name": "selected",
+      "prompt": "biomechanic, flesh and metal textures intertwined",
+      "kind": "state",
+      "file": "biomechanic_flesh_and_metal_textures_intertwined/elements/element_6/selected.png",
+      "size": {
+        "width": 242,
+        "height": 77
+      },
+      "group_id": "4d580627-227d-41cf-9005-aad914b67a34",
+      "parent_id": "1fbf7697-5935-48f0-881a-fc597511e435"
+    },
+    {
+      "id": "4c883bf3-848c-4ff6-bdf5-c45218c11843",
+      "name": "locked",
+      "prompt": "biomechanic, flesh and metal textures intertwined",
+      "kind": "state",
+      "file": "biomechanic_flesh_and_metal_textures_intertwined/elements/element_6/locked.png",
+      "size": {
+        "width": 223,
+        "height": 65
+      },
+      "group_id": "4d580627-227d-41cf-9005-aad914b67a34",
+      "parent_id": "1fbf7697-5935-48f0-881a-fc597511e435"
+    }
+  ]
+}

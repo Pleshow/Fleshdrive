@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3 uid="uid://bydi4h1s20jqu"]
+
+[ext_resource type="Script" uid="uid://cgff01swg5n6" path="res://Scripts/upgrade_data.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://b30mxwh6hn831" path="res://Assets/ui/weapons/electric/arc_spear.png" id="2_card"]
+
+[resource]
+script = ExtResource("1_script")
+upgrade_id = &"arc_spear"
+display_name = "ARC SPEAR"
+description = "Launches a piercing lightning spear through a line of enemies."
+card_texture = ExtResource("2_card")
+upgrade_kind = 2
+fleshdrive_affinity = "electric"
+minimum_player_level = 4

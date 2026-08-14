@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3]
+
+[ext_resource type="Script" path="res://Scripts/upgrade_data.gd" id="1"]
+[ext_resource type="Texture2D" path="res://Assets/ui/cards/build_items/electric.svg" id="2"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = &"arc_relay"
+display_name = "ARC RELAY"
+description = "+1 Chain Lightning jump and increased relay range. Maximum 4 levels."
+card_texture = ExtResource("2")
+fleshdrive_affinity = "electric"
+synergy_tags = Array[StringName]([&"thunder_god", &"chain", &"relay"])
+max_level = 4
+minimum_player_level = 2
+build_archetype = &"thunder_god"
+

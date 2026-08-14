@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3]
+
+[ext_resource type="Script" path="res://Scripts/upgrade_data.gd" id="1"]
+[ext_resource type="Texture2D" path="res://Assets/ui/items/fire/flashpoint_nodes.png" id="2"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = &"flashpoint_nodes"
+display_name = "FLASHPOINT NODES"
+description = "Burning enemies erupt on death, damaging everything around them."
+card_texture = ExtResource("2")
+fleshdrive_affinity = "fire"
+max_level = 5
+minimum_player_level = 3

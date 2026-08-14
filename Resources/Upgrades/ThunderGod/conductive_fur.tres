@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3]
+
+[ext_resource type="Script" path="res://Scripts/upgrade_data.gd" id="1"]
+[ext_resource type="Texture2D" path="res://Assets/ui/cards/build_items/electric.svg" id="2"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = &"conductive_fur"
+display_name = "CONDUCTIVE FUR"
+description = "Lightning hits apply Shock for 4 seconds. Shock stacks up to 5 times and adds 8% Lightning damage per stack."
+card_texture = ExtResource("2")
+fleshdrive_affinity = "electric"
+synergy_tags = Array[StringName]([&"thunder_god", &"shock", &"chain"])
+max_level = 1
+build_archetype = &"thunder_god"
+

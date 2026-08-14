@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3]
+
+[ext_resource type="Script" path="res://Scripts/upgrade_data.gd" id="1"]
+[ext_resource type="Texture2D" path="res://Assets/ui/items/fire/thermal_lattice.png" id="2"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = &"thermal_lattice"
+display_name = "THERMAL LATTICE"
+description = "Burns deal 18% more damage and persist 12% longer per level."
+card_texture = ExtResource("2")
+fleshdrive_affinity = "fire"
+max_level = 5
+minimum_player_level = 1

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3]
+[ext_resource type="Script" path="res://Scripts/upgrade_data.gd" id="1"]
+[ext_resource type="Texture2D" path="res://Assets/ui/organs/03_reflex_cortex.png" id="2"]
+[resource]
+script = ExtResource("1")
+upgrade_id = &"polarity_shift"
+display_name = "POLARITY SHIFT"
+description = "Active skill: pull all Ball Lightnings toward Koda, then detonate their trajectories outward."
+card_texture = ExtResource("2")
+upgrade_kind = 1
+organ_slot = 1
+fleshdrive_affinity = "electric"
+synergy_tags = Array[StringName]([&"orange_tempest", &"active", &"control"])
+max_level = 1
+minimum_player_level = 9
+build_archetype = &"orange_tempest"
+required_weapons = Array[StringName]([&"ball_lightning"])

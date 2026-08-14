@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3]
+
+[ext_resource type="Script" path="res://Scripts/upgrade_data.gd" id="1"]
+[ext_resource type="Texture2D" path="res://Assets/ui/cards/build_items/electric.svg" id="2"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = &"singularity_core"
+display_name = "SINGULARITY CORE"
+description = "Every 50 Lightning events triggers THUNDERSTATE for 3 seconds, automatically relaying between Shocked enemies."
+card_texture = ExtResource("2")
+fleshdrive_affinity = "electric"
+synergy_tags = Array[StringName]([&"thunder_god", &"network", &"capstone"])
+rarity = "rare"
+max_level = 1
+minimum_player_level = 15
+build_archetype = &"thunder_god"
+keystone = true
+required_weapons = Array[StringName]([&"neural_thunder", &"overload_heart"])
+

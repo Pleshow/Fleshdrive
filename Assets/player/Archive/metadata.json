@@ -1,0 +1,99 @@
+{
+  "group_id": "784f38fd-f181-45cf-9eeb-3b53e29e56ae",
+  "states": [
+    {
+      "character": {
+        "id": "8a84a802-7a20-4aba-88f6-e4fe7344e23c",
+        "name": "Idle",
+        "prompt": "a laboratory made shiba inu wolf like creature with agile body, recognizable shiba head and curvy shiba inu tail",
+        "size": {
+          "width": 160,
+          "height": 160
+        },
+        "template_id": "dog",
+        "directions": 8,
+        "view": "high top-down",
+        "created_at": "2026-08-08T07:44:02.393269+00:00"
+      },
+      "folder": "Idle",
+      "frames": {
+        "rotations": {
+          "south": "Idle/rotations/south.png",
+          "south-east": "Idle/rotations/south-east.png",
+          "east": "Idle/rotations/east.png",
+          "north-east": "Idle/rotations/north-east.png",
+          "north": "Idle/rotations/north.png",
+          "north-west": "Idle/rotations/north-west.png",
+          "west": "Idle/rotations/west.png",
+          "south-west": "Idle/rotations/south-west.png"
+        },
+        "animations": {
+          "powering_up_and_generating_a_blue_lightning_aura_t": {
+            "east": [
+              "Idle/animations/powering_up_and_generating_a_blue_lightning_aura_t/east/frame_000.png",
+              "Idle/animations/powering_up_and_generating_a_blue_lightning_aura_t/east/frame_001.png",
+              "Idle/animations/powering_up_and_generating_a_blue_lightning_aura_t/east/frame_002.png",
+              "Idle/animations/powering_up_and_generating_a_blue_lightning_aura_t/east/frame_003.png",
+              "Idle/animations/powering_up_and_generating_a_blue_lightning_aura_t/east/frame_004.png",
+              "Idle/animations/powering_up_and_generating_a_blue_lightning_aura_t/east/frame_005.png",
+              "Idle/animations/powering_up_and_generating_a_blue_lightning_aura_t/east/frame_006.png",
+              "Idle/animations/powering_up_and_generating_a_blue_lightning_aura_t/east/frame_007.png",
+              "Idle/animations/powering_up_and_generating_a_blue_lightning_aura_t/east/frame_008.png"
+            ]
+          },
+          "Idle": {
+            "east": [
+              "Idle/animations/Idle/east/frame_000.png",
+              "Idle/animations/Idle/east/frame_001.png",
+              "Idle/animations/Idle/east/frame_002.png",
+              "Idle/animations/Idle/east/frame_003.png",
+              "Idle/animations/Idle/east/frame_004.png",
+              "Idle/animations/Idle/east/frame_005.png",
+              "Idle/animations/Idle/east/frame_006.png",
+              "Idle/animations/Idle/east/frame_007.png"
+            ]
+          },
+          "Full_Sprint": {
+            "east": [
+              "Idle/animations/Full_Sprint/east/frame_000.png",
+              "Idle/animations/Full_Sprint/east/frame_001.png",
+              "Idle/animations/Full_Sprint/east/frame_002.png",
+              "Idle/animations/Full_Sprint/east/frame_003.png",
+              "Idle/animations/Full_Sprint/east/frame_004.png",
+              "Idle/animations/Full_Sprint/east/frame_005.png",
+              "Idle/animations/Full_Sprint/east/frame_006.png",
+              "Idle/animations/Full_Sprint/east/frame_007.png"
+            ]
+          },
+          "jumping_forfard_from_runinng_motian_and_landing_in": {
+            "east": [
+              "Idle/animations/jumping_forfard_from_runinng_motian_and_landing_in/east/frame_000.png",
+              "Idle/animations/jumping_forfard_from_runinng_motian_and_landing_in/east/frame_001.png",
+              "Idle/animations/jumping_forfard_from_runinng_motian_and_landing_in/east/frame_002.png",
+              "Idle/animations/jumping_forfard_from_runinng_motian_and_landing_in/east/frame_003.png",
+              "Idle/animations/jumping_forfard_from_runinng_motian_and_landing_in/east/frame_004.png",
+              "Idle/animations/jumping_forfard_from_runinng_motian_and_landing_in/east/frame_005.png",
+              "Idle/animations/jumping_forfard_from_runinng_motian_and_landing_in/east/frame_006.png",
+              "Idle/animations/jumping_forfard_from_runinng_motian_and_landing_in/east/frame_007.png"
+            ]
+          },
+          "the_dog_falls_to_the_ground_dying_and_stays_motion": {
+            "east": [
+              "Idle/animations/the_dog_falls_to_the_ground_dying_and_stays_motion/east/frame_000.png",
+              "Idle/animations/the_dog_falls_to_the_ground_dying_and_stays_motion/east/frame_001.png",
+              "Idle/animations/the_dog_falls_to_the_ground_dying_and_stays_motion/east/frame_002.png",
+              "Idle/animations/the_dog_falls_to_the_ground_dying_and_stays_motion/east/frame_003.png",
+              "Idle/animations/the_dog_falls_to_the_ground_dying_and_stays_motion/east/frame_004.png",
+              "Idle/animations/the_dog_falls_to_the_ground_dying_and_stays_motion/east/frame_005.png",
+              "Idle/animations/the_dog_falls_to_the_ground_dying_and_stays_motion/east/frame_006.png",
+              "Idle/animations/the_dog_falls_to_the_ground_dying_and_stays_motion/east/frame_007.png",
+              "Idle/animations/the_dog_falls_to_the_ground_dying_and_stays_motion/east/frame_008.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.1",
+  "export_date": "2026-08-08T20:50:31.933831"
+}

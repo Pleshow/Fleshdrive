@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/isometric_slime_arena.gd" id="1_script"]
+
+[node name="IsometricSlimeArena" type="Node2D" groups=["walkable_arena"]]
+script = ExtResource("1_script")
+

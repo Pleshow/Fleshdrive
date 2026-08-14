@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3 uid="uid://cc7jr43uqstcd"]
+
+[ext_resource type="Script" uid="uid://cgff01swg5n6" path="res://Scripts/upgrade_data.gd" id="1_86v7e"]
+[ext_resource type="Texture2D" uid="uid://dvlmno5xntcb7" path="res://Assets/ui/items/04_pulse_capacitor.png" id="1_my5oy"]
+
+[resource]
+script = ExtResource("1_86v7e")
+upgrade_id = &"pulse_capacitor"
+display_name = "PULSE CAPACITOR"
+description = "Extends chain-lightning range by 20% per level."
+card_texture = ExtResource("1_my5oy")
+fleshdrive_affinity = "electric"
+metadata/_custom_type_script = "uid://cgff01swg5n6"

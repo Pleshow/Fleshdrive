@@ -1,0 +1,366 @@
+[gd_scene format=3 uid="uid://dktec1dcxbp7q"]
+
+[ext_resource type="Script" uid="uid://d0q3cawtrurbg" path="res://Scripts/biofabricator_sequence.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://cmvjru85tf3ev" path="res://Assets/ui/screens/biofabricator_lab.png" id="2_background"]
+[ext_resource type="Texture2D" path="res://Assets/ui/screens/koda_body_print_6f.png" id="3_print"]
+[ext_resource type="PackedScene" uid="uid://b68qmoc1mpwse" path="res://Scenes/dialogue_panel.tscn" id="4_dialogue"]
+[ext_resource type="Texture2D" path="res://Assets/ui/screens/koda_printer_idle_8f.png" id="5_idle"]
+
+[sub_resource type="StyleBoxFlat" id="Style_stage"]
+bg_color = Color(0.01, 0.025, 0.035, 0.72)
+border_width_bottom = 2
+border_color = Color(0.18, 0.75, 0.82, 0.7)
+
+[sub_resource type="AtlasTexture" id="Print_0"]
+atlas = ExtResource("3_print")
+region = Rect2(0, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="Print_1"]
+atlas = ExtResource("3_print")
+region = Rect2(320, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="Print_2"]
+atlas = ExtResource("3_print")
+region = Rect2(640, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="Print_3"]
+atlas = ExtResource("3_print")
+region = Rect2(0, 320, 320, 320)
+
+[sub_resource type="AtlasTexture" id="Print_4"]
+atlas = ExtResource("3_print")
+region = Rect2(320, 320, 320, 320)
+
+[sub_resource type="AtlasTexture" id="Print_5"]
+atlas = ExtResource("3_print")
+region = Rect2(640, 320, 320, 320)
+
+[sub_resource type="SpriteFrames" id="PrintFrames"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Print_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("Print_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("Print_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("Print_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("Print_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("Print_5")
+}],
+"loop": 0,
+"name": &"print",
+"speed": 12.0
+}]
+
+[sub_resource type="AtlasTexture" id="Idle_0"]
+atlas = ExtResource("5_idle")
+region = Rect2(0, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="Idle_1"]
+atlas = ExtResource("5_idle")
+region = Rect2(320, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="Idle_2"]
+atlas = ExtResource("5_idle")
+region = Rect2(640, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="Idle_3"]
+atlas = ExtResource("5_idle")
+region = Rect2(960, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="Idle_4"]
+atlas = ExtResource("5_idle")
+region = Rect2(1280, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="Idle_5"]
+atlas = ExtResource("5_idle")
+region = Rect2(1600, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="Idle_6"]
+atlas = ExtResource("5_idle")
+region = Rect2(1920, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="Idle_7"]
+atlas = ExtResource("5_idle")
+region = Rect2(2240, 0, 320, 320)
+
+[sub_resource type="SpriteFrames" id="IdleFrames"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("Idle_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("Idle_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("Idle_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("Idle_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("Idle_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("Idle_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("Idle_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("Idle_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("Idle_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("Idle_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("Idle_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("Idle_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("Idle_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("Idle_1")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 7.0
+}]
+
+[sub_resource type="StyleBoxFlat" id="Style_glass"]
+bg_color = Color(0.04, 0.48, 0.6, 0.075)
+border_width_left = 2
+border_width_top = 1
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.2, 0.85, 0.92, 0.31)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0.08, 0.82, 0.92, 0.12)
+shadow_size = 10
+
+[sub_resource type="StyleBoxFlat" id="Style_terminal"]
+bg_color = Color(0.005, 0.013, 0.018, 0.74)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.13, 0.68, 0.75, 0.78)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_color = Color(0, 0, 0, 0.72)
+shadow_size = 12
+
+[node name="BiofabricatorSequence" type="Control" unique_id=1551082894]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Background" type="TextureRect" parent="." unique_id=1626533656]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_background")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="DarkGrade" type="ColorRect" parent="." unique_id=1406056890]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.005, 0.012, 0.018, 0.24)
+
+[node name="StageBanner" type="PanelContainer" parent="." unique_id=1258376331]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 24.0
+offset_right = 792.0
+offset_bottom = 78.0
+theme_override_styles/panel = SubResource("Style_stage")
+
+[node name="StageLabel" type="Label" parent="StageBanner" unique_id=102214845]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.53, 0.95, 0.96, 1)
+theme_override_font_sizes/font_size = 23
+text = "BIOFABRICATION IN PROGRESS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PrintSprite" type="AnimatedSprite2D" parent="." unique_id=1776171048]
+unique_name_in_owner = true
+texture_filter = 1
+position = Vector2(425, 470)
+scale = Vector2(0.56, 0.56)
+sprite_frames = SubResource("PrintFrames")
+animation = &"print"
+
+[node name="PrintBlendSprite" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+visible = false
+texture_filter = 1
+position = Vector2(425, 470)
+scale = Vector2(0.56, 0.56)
+sprite_frames = SubResource("PrintFrames")
+animation = &"print"
+
+[node name="IdleSprite" type="AnimatedSprite2D" parent="." unique_id=589501191]
+unique_name_in_owner = true
+visible = false
+texture_filter = 1
+position = Vector2(425, 470)
+scale = Vector2(0.56, 0.56)
+sprite_frames = SubResource("IdleFrames")
+animation = &"idle"
+
+[node name="PrinterGlass" type="Panel" parent="." unique_id=169825364]
+z_index = 1
+layout_mode = 0
+offset_left = 251.0
+offset_top = 105.0
+offset_right = 555.0
+offset_bottom = 571.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_glass")
+
+[node name="LeftSheen" type="ColorRect" parent="PrinterGlass" unique_id=865341900]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 14.0
+offset_right = 47.0
+offset_bottom = 405.0
+mouse_filter = 2
+color = Color(0.42, 0.94, 1, 0.045)
+
+[node name="RightSheen" type="ColorRect" parent="PrinterGlass" unique_id=661703722]
+layout_mode = 0
+offset_left = 264.0
+offset_top = 24.0
+offset_right = 281.0
+offset_bottom = 442.0
+mouse_filter = 2
+color = Color(0.31, 0.87, 0.95, 0.035)
+
+[node name="Terminal" type="PanelContainer" parent="." unique_id=1705137925]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 94.0
+offset_right = 228.0
+offset_bottom = 342.0
+theme_override_styles/panel = SubResource("Style_terminal")
+
+[node name="Margin" type="MarginContainer" parent="Terminal" unique_id=2113116377]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 22
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 22
+
+[node name="TerminalText" type="RichTextLabel" parent="Terminal/Margin" unique_id=111795751]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.82, 0.9, 0.84, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/normal_font_size = 15
+bbcode_enabled = true
+text = "SUBJECT
+K0D4"
+scroll_active = false
+
+[node name="RunSummaryPanel" type="PanelContainer" parent="." unique_id=1845913136]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 354.0
+offset_right = 228.0
+offset_bottom = 704.0
+theme_override_styles/panel = SubResource("Style_terminal")
+
+[node name="Margin" type="MarginContainer" parent="RunSummaryPanel" unique_id=747609103]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 14
+
+[node name="SummaryColumns" type="VBoxContainer" parent="RunSummaryPanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="RunSummaryLabel" type="Label" parent="RunSummaryPanel/Margin/SummaryColumns" unique_id=2065749280]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"MonoLabel"
+theme_override_colors/font_color = Color(0.65, 0.74, 0.72, 1)
+theme_override_font_sizes/font_size = 12
+text = "LAST BODY
+TIME       00:00
+KILLS      0
+BIOMASS    0
+LEVEL      1"
+
+[node name="LifetimeSummaryLabel" type="Label" parent="RunSummaryPanel/Margin/SummaryColumns"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"MonoLabel"
+theme_override_colors/font_color = Color(0.65, 0.74, 0.72, 1)
+theme_override_font_sizes/font_size = 12
+text = "LIFETIME
+DEATHS     0
+RUNS       0
+BOSSES     0
+ALL KILLS  0
+BEST TIME  00:00"
+
+[node name="SkipButton" type="Button" parent="." unique_id=1867547810]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_left = 594.0
+offset_top = 654.0
+offset_right = 776.0
+offset_bottom = 704.0
+theme_override_font_sizes/font_size = 15
+text = "SKIP PRINTING"
+
+[node name="DialoguePanel" parent="." unique_id=120518817 instance=ExtResource("4_dialogue")]
+unique_name_in_owner = true
+layout_mode = 1
+use_right_column_layout = true

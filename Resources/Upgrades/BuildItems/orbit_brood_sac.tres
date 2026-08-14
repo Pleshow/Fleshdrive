@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3]
+
+[ext_resource type="Script" path="res://Scripts/upgrade_data.gd" id="1"]
+[ext_resource type="Texture2D" path="res://Assets/ui/cards/build_items/telekinetic.svg" id="2"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = &"orbit_brood_sac"
+display_name = "CARD_ORBIT_BROOD_SAC_NAME"
+description = "CARD_ORBIT_BROOD_SAC_DESC"
+card_texture = ExtResource("2")
+fleshdrive_affinity = "telekinetic"
+synergy_tags = Array[StringName]([&"orbit", &"capacity", &"control", &"keystone"])
+rarity = "specialized"
+max_level = 1
+minimum_player_level = 5
+build_archetype = &"captive_moon"
+keystone = true
+required_weapons = Array[StringName]([&"orbiting_debris"])
+offer_weight = 0.4
+excluded_upgrades = Array[StringName]([])

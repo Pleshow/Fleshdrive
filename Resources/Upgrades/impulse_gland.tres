@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3 uid="uid://vuhyna8iy4hr"]
+
+[ext_resource type="Texture2D" uid="uid://bf4w47phb1x4r" path="res://Assets/ui/organs/01_impulse_gland.png" id="1_0ipld"]
+[ext_resource type="Script" uid="uid://cgff01swg5n6" path="res://Scripts/upgrade_data.gd" id="1_aetxl"]
+
+[resource]
+script = ExtResource("1_aetxl")
+upgrade_id = &"impulse_gland"
+card_texture = ExtResource("1_0ipld")
+upgrade_kind = 1
+organ_slot = 5
+metadata/_custom_type_script = "uid://cgff01swg5n6"

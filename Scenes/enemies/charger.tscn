@@ -1,0 +1,172 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scripts/charger.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://Assets/enemies/charger/charger_pixel_atlas.png" id="2_atlas"]
+[ext_resource type="PackedScene" path="res://Scenes/pickups/biomass_pickup.tscn" id="6_biomass"]
+[ext_resource type="PackedScene" path="res://Scenes/enemies/enemy_death_vfx.tscn" id="13_death_vfx"]
+[ext_resource type="Texture2D" path="res://Resources/Visuals/enemy_ground_shadow.tres" id="14_shadow"]
+
+[sub_resource type="AtlasTexture" id="Normal0"]
+atlas = ExtResource("2_atlas")
+region = Rect2(0, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="Normal1"]
+atlas = ExtResource("2_atlas")
+region = Rect2(256, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="Normal2"]
+atlas = ExtResource("2_atlas")
+region = Rect2(512, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="Normal3"]
+atlas = ExtResource("2_atlas")
+region = Rect2(768, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="Windup0"]
+atlas = ExtResource("2_atlas")
+region = Rect2(0, 256, 256, 256)
+
+[sub_resource type="AtlasTexture" id="Windup1"]
+atlas = ExtResource("2_atlas")
+region = Rect2(256, 256, 256, 256)
+
+[sub_resource type="AtlasTexture" id="Windup2"]
+atlas = ExtResource("2_atlas")
+region = Rect2(512, 256, 256, 256)
+
+[sub_resource type="AtlasTexture" id="Windup3"]
+atlas = ExtResource("2_atlas")
+region = Rect2(768, 256, 256, 256)
+
+[sub_resource type="AtlasTexture" id="Charge0"]
+atlas = ExtResource("2_atlas")
+region = Rect2(0, 512, 256, 256)
+
+[sub_resource type="AtlasTexture" id="Charge1"]
+atlas = ExtResource("2_atlas")
+region = Rect2(256, 512, 256, 256)
+
+[sub_resource type="AtlasTexture" id="Charge2"]
+atlas = ExtResource("2_atlas")
+region = Rect2(512, 512, 256, 256)
+
+[sub_resource type="AtlasTexture" id="Charge3"]
+atlas = ExtResource("2_atlas")
+region = Rect2(768, 512, 256, 256)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_charger"]
+animations = [{
+"frames": [
+{"duration": 1.0, "texture": SubResource("Charge0")},
+{"duration": 1.0, "texture": SubResource("Charge1")},
+{"duration": 1.0, "texture": SubResource("Charge2")},
+{"duration": 1.0, "texture": SubResource("Charge3")}
+],
+"loop": true,
+"name": &"charge",
+"speed": 11.0
+}, {
+"frames": [
+{"duration": 1.0, "texture": SubResource("Normal0")},
+{"duration": 1.0, "texture": SubResource("Normal1")},
+{"duration": 1.0, "texture": SubResource("Normal2")},
+{"duration": 1.0, "texture": SubResource("Normal3")}
+],
+"loop": true,
+"name": &"normal",
+"speed": 5.5
+}, {
+"frames": [
+{"duration": 1.0, "texture": SubResource("Windup0")},
+{"duration": 1.0, "texture": SubResource("Windup1")},
+{"duration": 1.0, "texture": SubResource("Windup2")},
+{"duration": 1.0, "texture": SubResource("Windup3")}
+],
+"loop": true,
+"name": &"windup",
+"speed": 7.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape_charger"]
+radius = 31.0
+
+[sub_resource type="StyleBoxFlat" id="Style_health_background"]
+bg_color = Color(0.08, 0.015, 0.02, 0.9)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="Style_health_fill"]
+bg_color = Color(0.9, 0.06, 0.1, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[node name="Charger" type="CharacterBody2D" groups=["enemies"]]
+collision_layer = 2
+collision_mask = 1
+motion_mode = 1
+script = ExtResource("1_script")
+biomass_pickup_scene = ExtResource("6_biomass")
+death_vfx_scene = ExtResource("13_death_vfx")
+death_vfx_scale = 1.1
+
+[node name="GroundShadow" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.64)
+show_behind_parent = true
+z_index = -2
+position = Vector2(0, 38)
+scale = Vector2(0.78, 0.22)
+texture = ExtResource("14_shadow")
+
+[node name="ChargeTrail" type="Sprite2D" parent="."]
+visible = false
+show_behind_parent = true
+position = Vector2(-58, 0)
+modulate = Color(0.38, 0.62, 1, 0.32)
+scale = Vector2(0.44, 0.32)
+texture = SubResource("Normal0")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_charger")
+animation = &"normal"
+autoplay = "normal"
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+z_index = 12
+offset_left = -34.0
+offset_top = -58.0
+offset_right = 34.0
+offset_bottom = -51.0
+mouse_filter = 2
+theme_override_styles/background = SubResource("Style_health_background")
+theme_override_styles/fill = SubResource("Style_health_fill")
+value = 100.0
+show_percentage = false
+
+[node name="ImpactAnimation" type="AnimatedSprite2D" parent="."]
+visible = false
+scale = Vector2(0.52, 0.52)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape_charger")
+
+[node name="ChargeIndicator" type="Polygon2D" parent="."]
+show_behind_parent = true
+color = Color(0.96, 0.08, 0.05, 0.28)
+
+[node name="WindupTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="ChargeTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="RecoveryTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="CooldownTimer" type="Timer" parent="."]
+one_shot = true

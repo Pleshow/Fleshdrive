@@ -1,0 +1,40 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://Scripts/boss_projectile.gd" id="1_script"]
+
+[sub_resource type="CircleShape2D" id="Circle_projectile"]
+radius = 12.0
+
+[sub_resource type="Gradient" id="Gradient_projectile_light"]
+offsets = PackedFloat32Array(0, 0.45, 1)
+colors = PackedColorArray(0.55, 0.3, 1, 0.95, 0.18, 0.45, 1, 0.42, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture_projectile_light"]
+gradient = SubResource("Gradient_projectile_light")
+width = 128
+height = 128
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[node name="BossProjectile" type="Area2D" groups=["boss_projectiles", "enemy_projectiles"]]
+collision_layer = 8
+collision_mask = 5
+script = ExtResource("1_script")
+
+[node name="ProjectileSprite" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(0.14, 0.14)
+
+[node name="ProjectileLight" type="PointLight2D" parent="."]
+show_behind_parent = true
+texture = SubResource("GradientTexture_projectile_light")
+texture_scale = 0.82
+energy = 1.35
+color = Color(0.45, 0.6, 1, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("Circle_projectile")
+
+[node name="LifetimeTimer" type="Timer" parent="."]
+one_shot = true

@@ -1,0 +1,127 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scripts/spitter.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://Assets/enemies/spitter/flying_spider_atlas.png" id="2_atlas"]
+[ext_resource type="PackedScene" path="res://Scenes/enemies/spitter_projectile.tscn" id="4_projectile"]
+[ext_resource type="PackedScene" path="res://Scenes/pickups/biomass_pickup.tscn" id="5_biomass"]
+[ext_resource type="PackedScene" path="res://Scenes/enemies/enemy_death_vfx.tscn" id="6_death_vfx"]
+[ext_resource type="Texture2D" path="res://Resources/Visuals/enemy_ground_shadow.tres" id="7_shadow"]
+
+[sub_resource type="AtlasTexture" id="Normal0"]
+atlas = ExtResource("2_atlas")
+region = Rect2(0, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="Normal1"]
+atlas = ExtResource("2_atlas")
+region = Rect2(256, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="Normal2"]
+atlas = ExtResource("2_atlas")
+region = Rect2(512, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="Normal3"]
+atlas = ExtResource("2_atlas")
+region = Rect2(768, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="Normal4"]
+atlas = ExtResource("2_atlas")
+region = Rect2(0, 256, 256, 256)
+
+[sub_resource type="AtlasTexture" id="Normal5"]
+atlas = ExtResource("2_atlas")
+region = Rect2(256, 256, 256, 256)
+
+[sub_resource type="AtlasTexture" id="Normal6"]
+atlas = ExtResource("2_atlas")
+region = Rect2(512, 256, 256, 256)
+
+[sub_resource type="AtlasTexture" id="Normal7"]
+atlas = ExtResource("2_atlas")
+region = Rect2(768, 256, 256, 256)
+
+[sub_resource type="AtlasTexture" id="Windup0"]
+atlas = ExtResource("2_atlas")
+region = Rect2(0, 512, 256, 256)
+
+[sub_resource type="AtlasTexture" id="Windup1"]
+atlas = ExtResource("2_atlas")
+region = Rect2(256, 512, 256, 256)
+
+[sub_resource type="AtlasTexture" id="Windup2"]
+atlas = ExtResource("2_atlas")
+region = Rect2(512, 512, 256, 256)
+
+[sub_resource type="AtlasTexture" id="Windup3"]
+atlas = ExtResource("2_atlas")
+region = Rect2(768, 512, 256, 256)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_spitter"]
+animations = [{
+"frames": [
+{"duration": 1.0, "texture": SubResource("Normal0")},
+{"duration": 1.0, "texture": SubResource("Normal1")},
+{"duration": 1.0, "texture": SubResource("Normal2")},
+{"duration": 1.0, "texture": SubResource("Normal3")},
+{"duration": 1.0, "texture": SubResource("Normal4")},
+{"duration": 1.0, "texture": SubResource("Normal5")},
+{"duration": 1.0, "texture": SubResource("Normal6")},
+{"duration": 1.0, "texture": SubResource("Normal7")}
+],
+"loop": true,
+"name": &"normal",
+"speed": 10.0
+}, {
+"frames": [
+{"duration": 1.0, "texture": SubResource("Windup0")},
+{"duration": 1.0, "texture": SubResource("Windup1")},
+{"duration": 1.0, "texture": SubResource("Windup2")},
+{"duration": 1.0, "texture": SubResource("Windup3")}
+],
+"loop": true,
+"name": &"windup",
+"speed": 7.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape_spitter"]
+radius = 22.0
+
+[node name="Spitter" type="CharacterBody2D" groups=["enemies"]]
+collision_layer = 2
+collision_mask = 1
+motion_mode = 1
+script = ExtResource("1_script")
+projectile_scene = ExtResource("4_projectile")
+biomass_pickup_scene = ExtResource("5_biomass")
+death_vfx_scene = ExtResource("6_death_vfx")
+death_vfx_scale = 0.85
+
+[node name="GroundShadow" type="Sprite2D" parent="."]
+modulate = Color(0.54, 0.62, 0.72, 0.38)
+show_behind_parent = true
+z_index = -2
+position = Vector2(0, 34)
+scale = Vector2(0.62, 0.16)
+texture = ExtResource("7_shadow")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+position = Vector2(0, -26)
+scale = Vector2(0.42, 0.42)
+sprite_frames = SubResource("SpriteFrames_spitter")
+animation = &"normal"
+autoplay = "normal"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape_spitter")
+
+[node name="AimLine" type="Line2D" parent="."]
+show_behind_parent = true
+width = 2.5
+default_color = Color(0.34, 0.96, 0.84, 0.82)
+antialiased = true
+
+[node name="WindupTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="AttackCooldownTimer" type="Timer" parent="."]
+one_shot = true

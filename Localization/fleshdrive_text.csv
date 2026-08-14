@@ -1,0 +1,377 @@
+keys,en,hu
+RESOLUTION,RESOLUTION,FELBONTÁS
+NATIVE,NATIVE,NATÍV
++1 starting attack damage per level.,+1 starting attack damage per level.,Szintenként +1 kezdő támadási sebzés.
++10 biomass pickup range per level.,+10 biomass pickup range per level.,Szintenként +10 biomassza-felvételi hatótáv.
++4 starting movement speed per level.,+4 starting movement speed per level.,Szintenként +4 kezdő mozgási sebesség.
++4% chain damage per level.,+4% chain damage per level.,Szintenként +4% láncsebzés.
++5 starting maximum health per level.,+5 starting maximum health per level.,Szintenként +5 kezdő maximális életerő.
++5% biomass gained per level.,+5% biomass gained per level.,Szintenként +5% megszerzett biomassza.
++60 movement acceleration per level.,+60 movement acceleration per level.,Szintenként +60 mozgási gyorsulás.
++8 base attack range per level.,+8 base attack range per level.,Szintenként +8 alap támadási hatótáv.
++8 manual and semi-auto targeting radius per level.,+8 manual and semi-auto targeting radius per level.,Szintenként +8 kézi és félautomata célzási sugár.
+2% less biomass needed for level 2 per level.,2% less biomass needed for level 2 per level.,Szintenként 2%-kal kevesebb biomassza kell a 2. szinthez.
+3% faster secondary weapons per level.,3% faster secondary weapons per level.,Szintenként 3%-kal gyorsabb másodlagos fegyverek.
+3% faster starting attack rate per level.,3% faster starting attack rate per level.,Szintenként 3%-kal gyorsabb kezdő támadási sebesség.
+4% shorter dash cooldown per level.,4% shorter dash cooldown per level.,Szintenként 4%-kal rövidebb dash újratöltés.
+ADAPT  •  CONSUME  •  SURVIVE,ADAPT  •  CONSUME  •  SURVIVE,ALKALMAZKODJ  •  FOGYASSZ  •  ÉLJ TÚL
+ARC HEART,ARC HEART,ÍVSZÍV
+ARC SPEAR,ARC SPEAR,ÍVLÁNDZSA
+ARENA SEALED // WARDEN PROTOCOL ACTIVE,ARENA SEALED // WARDEN PROTOCOL ACTIVE,ARÉNA LEZÁRVA // ŐRZŐPROTOKOLL AKTÍV
+ASHEN ERUPTION,ASHEN ERUPTION,HAMUKITÖRÉS
+BACK,BACK,VISSZA
+BACK TO MAIN MENU  [ESC],BACK TO MAIN MENU  [ESC],VISSZA A FŐMENÜBE  [ESC]
+BACK TO PAUSE,BACK TO PAUSE,VISSZA A SZÜNETHEZ
+BASE FLAME ONLY,BASE FLAME ONLY,CSAK ALAP LÁNG
+BASE KINETIC SHARD ONLY,BASE KINETIC SHARD ONLY,CSAK ALAP KINETIKUS SZILÁNK
+BEGIN RUN,BEGIN RUN,RUN KEZDÉSE
+BIOFABRICATION IN PROGRESS,BIOFABRICATION IN PROGRESS,BIOFABRIKÁCIÓ FOLYAMATBAN
+BIOMASS RECEPTORS,BIOMASS RECEPTORS,BIOMASSZA RECEPTOROK
+BIT REDUCER,BIT REDUCER,BITMÉLYSÉG-CSÖKKENTÉS
+BLAZING STRIDE,BLAZING STRIDE,LÁNGOLÓ LÉPÉS
+BLOOM,BLOOM,FÉNYUDVAR
+BLUEPRINT NOT RECOVERED,BLUEPRINT NOT RECOVERED,TERVRAJZ NINCS MEG
+BLUEPRINT RECOVERED,BLUEPRINT RECOVERED,TERVRAJZ MEGSZEREZVE
+FLESHDRIVE RECOVERED,FLESHDRIVE RECOVERED,FLESHDRIVE MEGSZEREZVE
+FLESHDRIVE ACQUIRED,FLESHDRIVE ACQUIRED,FLESHDRIVE MEGSZEREZVE
+FLESHDRIVE EVOLVED,FLESHDRIVE EVOLVED,FLESHDRIVE FEJLŐDÖTT
+BLUEPRINT RESTORED: %s,BLUEPRINT RESTORED: %s,TERVRAJZ HELYREÁLLÍTVA: %s
+Burning enemies erupt on death, damaging everything around them.,Burning enemies erupt on death
+CAUTERIZING BLOOD,CAUTERIZING BLOOD,KAUTERIZÁLÓ VÉR
+CHOOSE A MUTATION,CHOOSE A MUTATION,VÁLASSZ MUTÁCIÓT
+CHOOSE A MUTATION - LEVEL %d,CHOOSE A MUTATION - LEVEL %d,VÁLASSZ MUTÁCIÓT - %d. SZINT
+CHROMATIC,CHROMATIC,SZÍNELTOLÓDÁS
+CINDER VOLLEY,CINDER VOLLEY,PARÁZS-SOROZAT
+COMBUSTION SAC,COMBUSTION SAC,ÉGÉSZACSKÓ
+CONDUCTIVE NERVES,CONDUCTIVE NERVES,VEZETŐ IDEGEK
+CONTINUE  >    [SPACE],CONTINUE  >    [SPACE],FOLYTATÁS  >    [SPACE]
+CORE LV %d / %d,CORE LV %d / %d,MAG SZINT %d / %d
+COST  %d IMPRINT FRAGMENTS,COST  %d IMPRINT FRAGMENTS,ÁR: %d LENYOMAT-TÖREDÉK
+CRT FILTER,CRT FILTER,CRT SZŰRŐ
+Creates a singularity that damages and pulls a dense crowd.,Creates a singularity that damages and pulls a dense crowd.,Szingularitást hoz létre
+DASH METABOLISM,DASH METABOLISM,DASH ANYAGCSERE
+DO YOU WANT TO REPLACE IT?,DO YOU WANT TO REPLACE IT?,LE AKAROD CSERÉLNI?
+DRAG TO MOVE  •  MOUSE WHEEL TO ZOOM,DRAG TO MOVE  •  MOUSE WHEEL TO ZOOM,HÚZÁS: MOZGATÁS  •  EGÉRGÖRGŐ: ZOOM
+EARLY GROWTH,EARLY GROWTH,KORAI NÖVEKEDÉS
+EMPTY ORGAN SLOT,EMPTY ORGAN SLOT,ÜRES SZERVHELY
+EMPTY SLOT,EMPTY SLOT,ÜRES HELY
+ENGLISH,ENGLISH,ANGOL
+FLASHPOINT NODES,FLASHPOINT NODES,GYULLADÁSPONT-CSOMÓK
+FLESH TREE,FLESH TREE,HÚSFA
+FLESHDRIVE,FLESHDRIVE,FLESHDRIVE
+FLESHDRIVES,FLESHDRIVES,FLESHDRIVE-OK
+FULLSCREEN,FULLSCREEN,TELJES KÉPERNYŐ
+Fires conductive bone shards in a wide facing cone.,Fires conductive bone shards in a wide facing cone.,Vezető csontszilánkokat lő széles kúpban.
+Fires embers at several targets. Each hit adds a burning stack.,Fires embers at several targets. Each hit adds a burning stack.,Parazsat lő több célpontra. Minden találat égés stacket ad.
+GRAVITY WELL,GRAVITY WELL,GRAVITÁCIÓS KÚT
+HARDENED HEART,HARDENED HEART,MEGERŐSÍTETT SZÍV
+HIDE CONTROLS & SYSTEMS,HIDE CONTROLS & SYSTEMS,IRÁNYÍTÁS ELREJTÉSE
+HP,HP,ÉLETERŐ
+HUNTER SENSE,HUNTER SENSE,VADÁSZÖSZTÖN
+IMPLANT %s [ENTER],IMPLANT %s [ENTER],%s BEÜLTETÉSE [ENTER]
+IMPLANT ELECTRIC,IMPLANT ELECTRIC,ELEKTROMOS BEÜLTETÉSE
+IMPLANT FIRE,IMPLANT FIRE,TŰZ BEÜLTETÉSE
+IMPLANT TELEKINETIC,IMPLANT TELEKINETIC,TELEKINETIKUS BEÜLTETÉSE
+INERTIAL LATTICE,INERTIAL LATTICE,INERCIARÁCS
+INFERNO RING,INFERNO RING,INFERNÓGYŰRŰ
+INSTANCE,INSTANCE,PÉLDÁNY
+ION QUILL,ION QUILL,IONTÜSKE
+ITEMS,ITEMS,TÁRGYAK
+Improves this mutation's primary effect.,Improves this mutation's primary effect.,Javítja a mutáció elsődleges hatását.
+KILL-SWITCH NODES,KILL-SWITCH NODES,VÉSZLEÁLLÍTÓ CSOMÓK
+KINETIC CAPTIVITY,KINETIC CAPTIVITY,KINETIKUS FOGSÁG
+KINETIC SHARD,KINETIC SHARD,KINETIKUS SZILÁNK
+KODA LOST,KODA LOST,KODA ELVESZETT
+KODA STATUS,KODA STATUS,KODA ÁLLAPOTA
+LANGUAGE,LANGUAGE,NYELV
+LAST BODY,LAST BODY,ELŐZŐ TEST
+LEVEL  %d / %d,LEVEL  %d / %d,SZINT  %d / %d
+LIFETIME,LIFETIME,TELJES ÉLETTARTAM
+LOADING,LOADING,BETÖLTÉS
+LOCKED - DEFEAT THE WARDEN,LOCKED - DEFEAT THE WARDEN,ZÁROLVA - GYŐZD LE AZ ŐRZŐT
+LOCKED: BUY %s FIRST,LOCKED: BUY %s FIRST,ZÁROLVA: ELŐBB VEDD MEG: %s
+LV %d > %d // %s,LV %d > %d // %s,SZINT %d > %d // %s
+Launches a piercing lightning spear through a line of enemies.,Launches a piercing lightning spear through a line of enemies.,Áthatoló villámlándzsát lő ki az ellenfelek során keresztül.
+MAGMA SPEAR,MAGMA SPEAR,MAGMALÁNDZSA
+MAGNETIC TISSUE,MAGNETIC TISSUE,MÁGNESES SZÖVET
+MAGYAR (COMING SOON),MAGYAR (COMING SOON),MAGYAR (HAMAROSAN)
+MAIN MENU,MAIN MENU,FŐMENÜ
+MASS AMPLIFIER,MASS AMPLIFIER,TÖMEGERŐSÍTŐ
+MASTER VOLUME,MASTER VOLUME,FŐ HANGERŐ
+MAXIMUM LEVEL,MAXIMUM LEVEL,MAXIMÁLIS SZINT
+MIMICHU,MIMICHU,MIMICHU
+MUTATION,MUTATION,MUTÁCIÓ
+NERVE DRIVE,NERVE DRIVE,IDEGHAJTÁS
+NEURAL IMPRINT TRANSFER COMPLETE,NEURAL IMPRINT TRANSFER COMPLETE,NEURÁLIS LENYOMAT ÁTVITELE KÉSZ
+NEURAL IMPRINT: SUCCESS,NEURAL IMPRINT: SUCCESS,NEURÁLIS LENYOMAT: SIKERES
+NEURAL LANCE,NEURAL LANCE,NEURÁLIS LÁNDZSA
+NEURAL LINK READY,NEURAL LINK READY,NEURÁLIS KAPCSOLAT KÉSZ
+NEW WEAPON,NEW WEAPON,ÚJ FEGYVER
+NEXT  >    [SPACE],NEXT  >    [SPACE],KÖVETKEZŐ  >    [SPACE]
+NEXT: %s,NEXT: %s,KÖVETKEZŐ: %s
+NO,NO,NEM
+NOETIC HEART,NOETIC HEART,NOETIKUS SZÍV
+ORGAN SCREEN,ORGAN SCREEN,SZERVKÉPERNYŐ
+OVERLOAD VENT,OVERLOAD VENT,TÚLTERHELÉS-SZELEP
+PAUSED,PAUSED,SZÜNET
+PENDING ORGAN,PENDING ORGAN,VÁRAKOZÓ SZERV
+PHASE I,PHASE I,I. FÁZIS
+PHASE II,PHASE II,II. FÁZIS
+PLAYABLE PROTOTYPE,PLAYABLE PROTOTYPE,JÁTSZHATÓ PROTOTÍPUS
+PREDATOR CORE,PREDATOR CORE,RAGADOZÓ MAG
+PREDATORY REACH,PREDATORY REACH,RAGADOZÓ HATÓTÁV
+PREPARING BIOFABRICATION CHAMBER,PREPARING BIOFABRICATION CHAMBER,BIOFABRIKÁCIÓS KAMRA ELŐKÉSZÍTÉSE
+PROJECTILE REVERSAL,PROJECTILE REVERSAL,LÖVEDÉK-VISSZAFORDÍTÁS
+PULSE CAPACITOR,PULSE CAPACITOR,IMPULZUSKONDENZÁTOR
+PYRE HEART,PYRE HEART,MÁGLYASZÍV
+QUICKENED TENDONS,QUICKENED TENDONS,GYORSÍTOTT INAK
+QUIT GAME,QUIT GAME,KILÉPÉS
+RAPID SYNAPSES,RAPID SYNAPSES,GYORS SZINAPSZISOK
+RARE,RARE,RITKA
+REPLACE ORGAN?,REPLACE ORGAN?,SZERV CSERÉJE?
+REPULSE WAVE,REPULSE WAVE,TASZÍTÓHULLÁM
+RESET ALL,RESET ALL,MINDEN TÖRLÉSE
+RESET ALL PROGRESS?,RESET ALL PROGRESS?,MINDEN HALADÁS TÖRLÉSE?
+RESPEC,RESPEC,ÚJRAOSZTÁS
+RESPEC FLESH TREE?,RESPEC FLESH TREE?,HÚSFA ÚJRAOSZTÁSA?
+RESTART RUN,RESTART RUN,RUN ÚJRAINDÍTÁSA
+RESUME,RESUME,FOLYTATÁS
+RETURN TO MAIN MENU,RETURN TO MAIN MENU,VISSZA A FŐMENÜBE
+RUN COMPLETE,RUN COMPLETE,RUN TELJESÍTVE
+RUSH %d — INCOMING,RUSH %d — INCOMING,ROHAM %d — ÉRKEZIK
+SCANNING...,SCANNING...,VIZSGÁLAT...
+SELECT FLESHDRIVE FOR IMPLANTATION,SELECT FLESHDRIVE FOR IMPLANTATION,VÁLASSZ BEÜLTETENDŐ FLESHDRIVE-OT
+SETTINGS,SETTINGS,BEÁLLÍTÁSOK
+SHOCK RAM,SHOCK RAM,SOKKROHAM
+SHOW CONTROLS & SYSTEMS,SHOW CONTROLS & SYSTEMS,IRÁNYÍTÁS ÉS RENDSZEREK
+SKIP PRINTING,SKIP PRINTING,NYOMTATÁS ÁTUGRÁSA
+STABILIZING...,STABILIZING...,STABILIZÁLÁS...
+START NEW RUN,START NEW RUN,ÚJ RUN INDÍTÁSA
+START RUN,START RUN,RUN INDÍTÁSA
+SUBJECT,SUBJECT,ALANY
+SUCCESS,SUCCESS,SIKERES
+SURVIVE FOR 12 MINUTES,SURVIVE FOR 12 MINUTES,ÉLJ TÚL 12 PERCIG
+SYNERGY,SYNERGY,SZINERGIA
+TESLA LASH,TESLA LASH,TESLA-CSAPÁS
+THE VISCERAL WARDEN,THE VISCERAL WARDEN,A ZSIGERI ŐRZŐ
+THE VISCERAL WARDEN AWAKENS,THE VISCERAL WARDEN AWAKENS,A ZSIGERI ŐRZŐ FELÉBRED
+THE WARDEN IS ENRAGED,THE WARDEN IS ENRAGED,AZ ŐRZŐ FELBŐSZÜLT
+THERMAL LATTICE,THERMAL LATTICE,HŐRÁCS
+UPGRADE,UPGRADE,FEJLESZTÉS
+Unlocks chain lightning for the Voltaic Heart base attack.,Unlocks chain lightning for the Voltaic Heart base attack.,Feloldja a láncvillámot a Voltaikus Szív alaptámadásához.
+VECTOR CORTEX,VECTOR CORTEX,VEKTORKÉREG
+VOLT SHARD VOLLEY,VOLT SHARD VOLLEY,VOLTSZILÁNK-SOROZAT
+VOLTAIC HEART,VOLTAIC HEART,VOLTAIKUS SZÍV
+VOLTAIC HEART STYLE,VOLTAIC HEART STYLE,VOLTAIKUS SZÍV STÍLUS
+WARDEN DESTROYED,WARDEN DESTROYED,ŐRZŐ ELPUSZTÍTVA
+WEAPON METABOLISM,WEAPON METABOLISM,FEGYVER ANYAGCSERE
+WEAPONS  ·  3 EXTRA SLOTS,WEAPONS  ·  3 EXTRA SLOTS,FEGYVEREK  ·  3 EXTRA HELY
+WELCOME TO FLESHDRIVE,WELCOME TO FLESHDRIVE,ÜDV A FLESHDRIVE-BAN
+XP,XP,XP
+YES,YES,IGEN
+YOU DIED,YOU DIED,MEGHALTÁL
+"A neural shield has a 35% chance to reverse an incoming projectile, amplifying it against enemies.","A neural shield has a 35% chance to reverse an incoming projectile, amplifying it against enemies.","Egy neurális pajzs 35% eséllyel visszafordít egy érkező lövedéket, amely felerősödve sebzi az ellenfeleket."
+Again? Hold still. You always twitch before the eyes are finished.,Again? Hold still. You always twitch before the eyes are finished.,"Már megint? Maradj nyugton. Mindig rángatózol, mielőtt elkészülnek a szemeid."
+"All telekinetic attacks recover 9% faster, deal 8% more damage and apply 8% stronger force, including Koda's auto-attack.","All telekinetic attacks recover 9% faster, deal 8% more damage and apply 8% stronger force, including Koda's auto-attack.","Minden telekinetikus támadás 9%-kal gyorsabban töltődik, 8%-kal többet sebez és 8%-kal nagyobb erőt fejt ki, Koda automatikus támadását is beleértve."
+"Battlefield control, forced positioning and projectile manipulation. Excels at shaping dense hordes.","Battlefield control, forced positioning and projectile manipulation. Excels at shaping dense hordes.","Csatatér-irányítás, kényszerített pozicionálás és lövedékmanipuláció. Sűrű hordák formálásában kiemelkedő."
+"Damage over time, area denial and cascading explosions. Excels at controlling dense hordes.","Damage over time, area denial and cascading explosions. Excels at controlling dense hordes.","Folyamatos sebzés, területlezárás és láncolódó robbanások. Sűrű hordák irányításában kiemelkedő."
+Easy now. The imprint held. Most of you came back in the correct places.,Easy now. The imprint held. Most of you came back in the correct places.,Nyugalom. A lenyomat megmaradt. A legtöbb részed a megfelelő helyre került vissza.
+"Immediate burst damage, precise ranged pressure and lightning chains. Excels at deleting priority targets.","Immediate burst damage, precise ranged pressure and lightning chains. Excels at deleting priority targets.","Azonnali kitörő sebzés, precíz távolsági nyomás és láncvillámok. Elsődleges célpontok gyors megsemmisítésében kiemelkedő."
+"Telekinetically captures living enemies and orbits them around Koda. Captives batter nearby targets, then collapse; higher levels hold more subjects.","Telekinetically captures living enemies and orbits them around Koda. Captives batter nearby targets, then collapse; higher levels hold more subjects.","Telekinetikusan elfog élő ellenfeleket és Koda körül keringeti őket. A foglyok sebzik a közeli célpontokat, majd összeesnek; magasabb szinten több alany tartható fogva."
+The body is new. The memory is not. Your Blood Memory fragments are safe.,The body is new. The memory is not. Your Blood Memory fragments are safe.,A test új. Az emlék nem. A Vérmemória-töredékeid biztonságban vannak.
+The fabricator remembered your scars. I told it not to.,The fabricator remembered your scars. I told it not to.,"A fabrikátor emlékezett a hegeidre. Pedig mondtam neki, hogy ne tegye."
+Was that the twenty-third? Never mind. I made another you.,Was that the twenty-third? Never mind. I made another you.,Ez volt a huszonharmadik? Mindegy. Készítettem belőled egy másikat.
+You are getting easier to print. I am not sure that is good.,You are getting easier to print. I am not sure that is good.,"Egyre könnyebb kinyomtatni téged. Nem vagyok biztos benne, hogy ez jó."
+DISPLAY & AUDIO,DISPLAY & AUDIO,KÉP ÉS HANG
+GAMEPLAY & ACCESSIBILITY,GAMEPLAY & ACCESSIBILITY,JÁTÉKMENET ÉS KISEGÍTÉS
+MIX & ACCESSIBILITY,MIX & ACCESSIBILITY,HANGKEVERÉS ÉS KISEGÍTÉS
+MUSIC,MUSIC,ZENE
+SFX,SFX,HANGEFFEKTEK
+CAMERA SHAKE,CAMERA SHAKE,KAMERARÁZKÓDÁS
+VFX INTENSITY,VFX INTENSITY,EFFEKTEK ERŐSSÉGE
+STICK DEADZONE,STICK DEADZONE,KAR HOLTJÁTÉKA
+CROSSHAIR SIZE,CROSSHAIR SIZE,CÉLKERESZT MÉRETE
+HIT FLASH,HIT FLASH,TALÁLATI VILLANÁS
+AIM ASSIST,AIM ASSIST,CÉLZÁSRÁSEGÍTÉS
+DAMAGE NUMBERS,DAMAGE NUMBERS,SEBZÉSSZÁMOK
+TUTORIALS,TUTORIALS,OKTATÓÜZENETEK
+MIMICHU_OPERATION_PROMPT,"MIMICHU
+
+Pick what kind of monster you want to become. I cleaned both. Mostly.","MIMICHU
+
+Válaszd ki, milyen szörnnyé akarsz válni. Mindkettőt megtisztítottam. Többnyire."
+ONBOARDING_RUN_OBJECTIVE,"SURVIVE FOR 12 MINUTES
+Collect biomass, refine your build, defeat the Warden.","ÉLJ TÚL 12 PERCIG
+Gyűjts biomasszát, fejleszd a buildedet, és győzd le az Őrzőt."
+ONBOARDING_SYSTEM_GUIDE,"MOVE  WASD / LEFT STICK    ATTACK  LMB / RIGHT STICK
+DASH  SPACE / GAMEPAD A     PAUSE   ESC / START
+
+Level-up offers always include an active Fleshdrive mutation.
+Matching synergy tags strengthen a focused build.
+Install organs on the matching anatomy slot in ORGAN SCREEN.","MOZGÁS  WASD / BAL KAR    TÁMADÁS  BAL EGÉRGOMB / JOBB KAR
+DASH  SPACE / GAMEPAD A    SZÜNET  ESC / START
+
+Szintlépéskor mindig kapsz az aktív Fleshdrive-hoz illő mutációt.
+Az egyező szinergiacímkék erősítik a kiválasztott buildet.
+A szerveket a SZERVKÉPERNYŐ megfelelő anatómiai helyére ültesd."
+BURST / MOBILITY / CHAIN LIGHTNING,BURST / MOBILITY / CHAIN LIGHTNING,KITÖRŐ SEBZÉS / MOBILITÁS / LÁNCVILLÁM
+BURN / AREA DENIAL / ATTRITION,BURN / AREA DENIAL / ATTRITION,ÉGÉS / TERÜLETLEZÁRÁS / FELŐRLÉS
+CONTROL / POSITIONING / REVERSAL,CONTROL / POSITIONING / REVERSAL,KONTROLL / POZICIONÁLÁS / VISSZAFORDÍTÁS
+CHAIN LIGHTNING / FAST COOLDOWNS / DASH IMPACTS,CHAIN LIGHTNING / FAST COOLDOWNS / DASH IMPACTS,LÁNCVILLÁM / GYORS ÚJRATÖLTÉS / DASH ÜTKÖZÉS
+BURN STACKS / FIRE ZONES / DEATH EXPLOSIONS,BURN STACKS / FIRE ZONES / DEATH EXPLOSIONS,ÉGÉS HALMOZÁSA / TŰZZÓNÁK / HALÁLROBBANÁSOK
+GRAVITY CONTROL / KNOCKBACK / PIERCING,GRAVITY CONTROL / KNOCKBACK / PIERCING,GRAVITÁCIÓS KONTROLL / HÁTRALÖKÉS / ÁTHATOLÁS
+TIME,TIME,IDŐ
+KILLS,KILLS,ÖLÉSEK
+BIOMASS,BIOMASS,BIOMASSZA
+LEVEL,LEVEL,SZINT
+TOP DAMAGE,TOP DAMAGE,LEGFŐBB SEBZÉSFORRÁSOK
+LOADOUT,LOADOUT,FELSZERELÉS
+YOU WIN,YOU WIN,GYŐZTÉL
+BACK TO MUTATIONS [ESC],BACK TO MUTATIONS [ESC],VISSZA A MUTÁCIÓKHOZ [ESC]
+BACK TO PAUSE [ESC],BACK TO PAUSE [ESC],VISSZA A SZÜNETHEZ [ESC]
+ELECTRIC,ELECTRIC,ELEKTROMOS
+FIRE,FIRE,TŰZ
+NOETIC,NOETIC,NOETIKUS
+"CHAIN LIGHTNING / FAST COOLDOWNS / DASH IMPACTS
+Synergies: ARC HEART, PULSE CAPACITOR, OVERLOAD VENT","CHAIN LIGHTNING / FAST COOLDOWNS / DASH IMPACTS
+Synergies: ARC HEART, PULSE CAPACITOR, OVERLOAD VENT","LÁNCVILLÁM / GYORS ÚJRATÖLTÉS / DASH ÜTKÖZÉS
+Szinergiák: ÍVSZÍV, IMPULZUSKONDENZÁTOR, TÚLTERHELÉS-SZELEP"
+"BURN STACKS / FIRE ZONES / DEATH EXPLOSIONS
+Synergies: COMBUSTION SAC, THERMAL LATTICE, FLASHPOINT NODES","BURN STACKS / FIRE ZONES / DEATH EXPLOSIONS
+Synergies: COMBUSTION SAC, THERMAL LATTICE, FLASHPOINT NODES","ÉGÉS HALMOZÁSA / TŰZZÓNÁK / HALÁLROBBANÁSOK
+Szinergiák: ÉGÉSZACSKÓ, HŐRÁCS, GYULLADÁSPONT-CSOMÓK"
+"GRAVITY CONTROL / KNOCKBACK / PIERCING
+Synergies: GRAVITY WELL, KINETIC CAPTIVITY, PROJECTILE REVERSAL","GRAVITY CONTROL / KNOCKBACK / PIERCING
+Synergies: GRAVITY WELL, KINETIC CAPTIVITY, PROJECTILE REVERSAL","GRAVITÁCIÓS KONTROLL / HÁTRALÖKÉS / ÁTHATOLÁS
+Szinergiák: GRAVITÁCIÓS KÚT, KINETIKUS FOGSÁG, LÖVEDÉK-VISSZAFORDÍTÁS"
+WARDEN CORE RECOVERED // BLUEPRINT IMPRINTED,WARDEN CORE RECOVERED // BLUEPRINT IMPRINTED,ŐRZŐMAG MEGSZEREZVE // TERVRAJZ RÖGZÍTVE
+PHASE,PHASE,FÁZIS
+BIOMASS SURGE DETECTED // RUSH INCOMING,BIOMASS SURGE DETECTED // RUSH INCOMING,BIOMASSZA-KITÖRÉS ÉSZLELVE // ROHAM KÖZELEG
+WARDEN SIGNAL DETECTED // CONTAINMENT SEALING,WARDEN SIGNAL DETECTED // CONTAINMENT SEALING,ŐRZŐJEL ÉSZLELVE // ELZÁRÁS FOLYAMATBAN
+WARDEN PROTOCOL,WARDEN PROTOCOL,ŐRZŐPROTOKOLL
+INITIAL INCISION,INITIAL INCISION,KEZDETI BEMETSZÉS
+RANGED ESCALATION,RANGED ESCALATION,TÁVOLSÁGI ESZKALÁCIÓ
+PRESSURE TEST,PRESSURE TEST,TERHELÉSI PRÓBA
+COMPOSITE HUNT,COMPOSITE HUNT,ÖSSZETETT VADÁSZAT
+PRE-WARDEN TRIALS,PRE-WARDEN TRIALS,ŐRZŐ ELŐTTI PRÓBÁK
+AWAKENING,AWAKENING,ÉBREDÉS
+ADAPTATION,ADAPTATION,ALKALMAZKODÁS
+SYSTEM STRESS,SYSTEM STRESS,RENDSZERTERHELÉS
+COMPOUND PRESSURE,COMPOUND PRESSURE,ÖSSZETETT NYOMÁS
+CONTAINMENT FAILURE,CONTAINMENT FAILURE,ELZÁRÁSI HIBA
+CARD_FORKED_ARC_NODE_NAME,FORKED ARC NODE,ELÁGAZÓ ÍVCSOMÓ
+CARD_FORKED_ARC_NODE_DESC,"Chain lightning has a 45% chance to fork once into two unhit targets for 45% damage. A chain cannot revisit a target.","A láncvillám 45% eséllyel egyszer két még el nem talált célpontra ágazik 45% sebzéssel. Egy lánc nem térhet vissza korábbi célpontra."
+CARD_STATIC_RESERVOIR_NAME,STATIC RESERVOIR,STATIKUS TÁROLÓ
+CARD_STATIC_RESERVOIR_DESC,"Every 10 chain hits releases a 180 px pulse for 70% + 15% per level attack damage.","Minden 10. lánctalálat 180 px sugarú impulzust kelt, amely a támadási sebzés 70% + szintenként 15%-át okozza."
+CARD_GROUNDING_FILAMENTS_NAME,GROUNDING FILAMENTS,FÖLDELŐ FILAMENTUMOK
+CARD_GROUNDING_FILAMENTS_DESC,"Electric hits Ground for 2 seconds. The next chain hit consumes it for +7% chain damage and +12 px chain range per level.","Az elektromos találatok 2 másodpercre Földelnek. A következő lánctalálat elfogyasztja: szintenként +7% láncsebzés és +12 px lánchatótáv."
+CARD_THUNDER_GAIT_NAME,THUNDER GAIT,MENNYDÖRGŐ JÁRÁS
+CARD_THUNDER_GAIT_DESC,"Crossing at least two enemies in one dash refunds 45% dash cooldown and triggers a 70% attack-damage aftershock once per dash.","Legalább két ellenfélen áthaladó dash 45% dash cooldown-visszatérítést és egyszer 70% támadási sebzésű utórezgést ad."
+CARD_KINETIC_CAPACITOR_NAME,KINETIC CAPACITOR,KINETIKUS KONDENZÁTOR
+CARD_KINETIC_CAPACITOR_DESC,"Every 280 px moved stores one charge up to three. Shock Ram consumes all charges for +7% damage per level and charge.","Minden megtett 280 px egy töltést tárol, legfeljebb hármat. A Shock Ram mindet elfogyasztja, töltésenként és szintenként +7% sebzésért."
+CARD_GALVANIC_TENDONS_NAME,GALVANIC TENDONS,GALVANIKUS INAK
+CARD_GALVANIC_TENDONS_DESC,"Per level: +4% move speed and +7% dash-impact radius, but -3% non-dash secondary electric damage.","Szintenként +4% mozgási sebesség és +7% dash-becsapódási sugár, de -3% nem dash eredetű másodlagos elektromos sebzés."
+CARD_SPORE_EMBER_SAC_NAME,SPORE EMBER SAC,PARÁZSSPÓRA-ZSÁK
+CARD_SPORE_EMBER_SAC_DESC,"At five burn stacks, sends one stack every 0.75 seconds to the nearest unburned enemy within 150 px. Maximum two transfers per second.","Öt égésjelzőnél 0,75 másodpercenként egy jelzőt küld a legközelebbi 150 px-en belüli, még nem égő ellenfélre. Legfeljebb két átvitel másodpercenként."
+CARD_OXYGEN_THIEF_NAME,OXYGEN THIEF,OXIGÉNTOLVAJ
+CARD_OXYGEN_THIEF_DESC,"Each burning enemy within 280 px increases burn tick rate by 0.6% per level, capped at +6% per level.","Minden 280 px-en belüli égő ellenfél szintenként 0,6%-kal gyorsítja az égési tickeket, legfeljebb szintenként +6%-ig."
+CARD_SMOLDERING_HIDE_NAME,SMOLDERING HIDE,PARÁZSLÓ IRHA
+CARD_SMOLDERING_HIDE_DESC,"Per level: +12% burn duration and burning enemies deal 2% less contact damage, but direct fire damage is reduced by 3%.","Szintenként +12% égési idő és az égő ellenfelek 2%-kal kevesebb kontaktsebzést okoznak, de a közvetlen tűzsebzés 3%-kal csökken."
+CARD_RUPTURE_VESICLE_NAME,RUPTURE VESICLE,REPESZTŐ HÓLYAG
+CARD_RUPTURE_VESICLE_DESC,"Combustion consumes all burn stacks and gains +35% explosion damage per stack, but no longer spreads burn.","A Combustion elfogyaszt minden égésjelzőt, jelzőnként +35% robbanási sebzést kap, de többé nem terjeszt égést."
+CARD_ASH_PRESSURE_CHAMBER_NAME,ASH PRESSURE CHAMBER,HAMUNYOMÁS-KAMRA
+CARD_ASH_PRESSURE_CHAMBER_DESC,"Per level: Combustion, Ashen Eruption and Flashpoint explosions gain +8% radius and +6% damage.","Szintenként a Combustion, Ashen Eruption és Flashpoint robbanások +8% sugarat és +6% sebzést kapnak."
+CARD_CHAIN_IGNITER_NAME,CHAIN IGNITER,LÁNCGYÚJTÓ
+CARD_CHAIN_IGNITER_DESC,"Explosion kills have a 12% + 4% per level chance to create a 60% secondary explosion, up to three generations.","A robbanásos ölések 12% + szintenként 4% eséllyel 60%-os másodlagos robbanást keltenek, legfeljebb három generációig."
+CARD_EVENT_HORIZON_MEMBRANE_NAME,EVENT HORIZON MEMBRANE,ESEMÉNYHORIZONT-MEMBRÁN
+CARD_EVENT_HORIZON_MEMBRANE_DESC,"Gravity Well gains +45% radius and +1.5 seconds duration, but +30% cooldown and -25% initial damage.","A Gravity Well +45% sugarat és +1,5 másodperc időtartamot kap, de +30% cooldownnal és -25% kezdeti sebzéssel."
+CARD_COMPRESSION_CORTEX_NAME,COMPRESSION CORTEX,KOMPRESSZIÓS KÉREG
+CARD_COMPRESSION_CORTEX_DESC,"Continuously held enemies take +3% damage per level and second, capped at +12% per level.","A folyamatosan fogva tartott ellenfelek másodpercenként és szintenként +3% sebzést kapnak, szintenként legfeljebb +12%-ig."
+CARD_TIDAL_LIGAMENTS_NAME,TIDAL LIGAMENTS,ÁRAPÁLYSZALAGOK
+CARD_TIDAL_LIGAMENTS_DESC,"Each kill inside a well removes 0.06 seconds per level from its cooldown. Per-cast refund is capped at 0.6 + 0.12 seconds per level.","Minden, mezőn belüli ölés szintenként 0,06 másodpercet levesz a cooldownból. A visszatérítés használatonként legfeljebb 0,6 + szintenként 0,12 másodperc."
+CARD_VECTOR_MANTLE_NAME,VECTOR MANTLE,VEKTORKÖPENY
+CARD_VECTOR_MANTLE_DESC,"Repulse creates a 1.2-second, 160 px barrier that destroys hostile projectiles, but its cooldown is 25% longer.","A Repulse 1,2 másodperces, 160 px sugarú, ellenséges lövedékeket megsemmisítő gátat hoz létre, de a cooldown 25%-kal hosszabb."
+CARD_REACTIVE_CRANIUM_NAME,REACTIVE CRANIUM,REAKTÍV KOPONYA
+CARD_REACTIVE_CRANIUM_DESC,"Taking damage has a 15% + 5% per level chance to emit a 45%-damage Repulse. Three-second internal cooldown.","Sebződéskor 15% + szintenként 5% eséllyel 45% sebzésű Repulse aktiválódik. Belső cooldown: 3 másodperc."
+CARD_MIRROR_PRISM_NAME,MIRROR PRISM,TÜKÖRPRIZMA
+CARD_MIRROR_PRISM_DESC,"A reversed projectile splits into two copies dealing 45% + 6% per level damage. Maximum six splits per second.","A visszafordított lövedék két, 45% + szintenként 6% sebzésű másolatra válik. Legfeljebb hat osztódás másodpercenként."
+CARD_LINEAR_INDUCTOR_NAME,LINEAR INDUCTOR,LINEÁRIS INDUKTOR
+CARD_LINEAR_INDUCTOR_DESC,"Arc Spear becomes a narrow rail shot: +65% damage, +35% range and +25% cooldown.","Az Arc Spear keskeny rail-lövéssé válik: +65% sebzés, +35% hatótáv és +25% cooldown."
+CARD_POLARIZED_SCAR_NAME,POLARIZED SCAR,POLARIZÁLT HEG
+CARD_POLARIZED_SCAR_DESC,"Arc Spear marks targets for 2.5 seconds. The next Arc Spear consumes the mark for +8% damage per level.","Az Arc Spear 2,5 másodpercre megjelöli a célpontot. A következő Arc Spear elfogyasztja a jelet szintenként +8% sebzésért."
+CARD_RAIL_SYNAPSES_NAME,RAIL SYNAPSES,RAIL SZINAPSZISOK
+CARD_RAIL_SYNAPSES_DESC,"Per level: +12% Arc Spear speed and range, -6% width. Hitting at least three enemies refunds 5% cooldown.","Szintenként +12% Arc Spear-sebesség és -hatótáv, -6% szélesség. Legalább három találat 5% cooldown-visszatérítést ad."
+CARD_CORONA_FOLLICLES_NAME,CORONA FOLLICLES,KORONA-TÜSZŐK
+CARD_CORONA_FOLLICLES_DESC,"Ion Quill splits into two microshards on first impact. Each deals 35% damage; maximum eight splits per cast.","Az Ion Quill az első találatkor két mikroszilánkra hasad. Mindegyik 35% sebzést okoz; használatonként legfeljebb nyolc hasadás."
+CARD_IONIC_MARROW_NAME,IONIC MARROW,IONOS VELŐ
+CARD_IONIC_MARROW_DESC,"Gain one projectile at levels 1, 3 and 5, but lose 4% projectile damage per level.","Az 1., 3. és 5. szinten egy új lövedéket kapsz, de szintenként 4%-kal csökken a lövedéksebzés."
+CARD_STORM_PLUMAGE_NAME,STORM PLUMAGE,VIHARTOLLAZAT
+CARD_STORM_PLUMAGE_DESC,"Every sixth electric secondary-projectile impact bursts in 110 px for 35% + 8% attack damage per level.","Minden hatodik elektromos másodlagos lövedéktalálat 110 px sugarú kitörést okoz, 35% + szintenként 8% támadási sebzéssel."
+CARD_FURNACE_CARAPACE_NAME,FURNACE CARAPACE,KOHÓPÁNCÉL
+CARD_FURNACE_CARAPACE_DESC,"With three burning enemies within 190 px: 22% damage reduction and +20% Inferno Ring tick rate, but -10% move speed.","Három, 190 px-en belüli égő ellenfélnél: 22% sebzéscsökkentés és +20% Inferno Ring ticksebesség, de -10% mozgási sebesség."
+CARD_CAUTERY_VALVES_NAME,CAUTERY VALVES,KAUTERIZÁLÓ SZELEPEK
+CARD_CAUTERY_VALVES_DESC,"Inferno Ring hits heal 0.08 HP per level, capped at 0.8 + 0.2 HP per second per level.","Az Inferno Ring találatai szintenként 0,08 HP-t gyógyítanak, másodpercenként legfeljebb 0,8 + szintenként 0,2 HP-t."
+CARD_THERMAL_PULSE_GLAND_NAME,THERMAL PULSE GLAND,HŐIMPULZUS-MIRIGY
+CARD_THERMAL_PULSE_GLAND_DESC,"Every fourth Inferno Ring tick pulls enemies 35 + 8 px per level inward and adds one burn stack. Elites resist half.","Minden negyedik Inferno Ring tick 35 + szintenként 8 px-lel befelé húzza az ellenfeleket és egy égésjelzőt ad. Az elitek félig ellenállnak."
+CARD_OBSIDIAN_THROAT_NAME,OBSIDIAN THROAT,OBSZIDIÁN TOROK
+CARD_OBSIDIAN_THROAT_DESC,"Magma Spear gains +90% damage and +35% cooldown, leaving a 3-second burning lane for 22% attack damage per second.","A Magma Spear +90% sebzést és +35% cooldownt kap, és 3 másodperces égő sávot hagy, másodpercenként 22% támadási sebzéssel."
+CARD_KILN_CHAMBER_NAME,KILN CHAMBER,ÉGETŐKAMRA
+CARD_KILN_CHAMBER_DESC,"Per level: Magma Spear gains +10% range and +7% damage, but Koda loses 2% move speed.","Szintenként a Magma Spear +10% hatótávot és +7% sebzést kap, de Koda 2% mozgási sebességet veszít."
+CARD_PRESSURE_CRUCIBLE_NAME,PRESSURE CRUCIBLE,NYOMÁSTÉGELY
+CARD_PRESSURE_CRUCIBLE_DESC,"Every 1.5 seconds without a fire hit stores Pressure, up to three. The next Magma attack gains +8% damage per level and stack.","Minden tűztalálat nélküli 1,5 másodperc egy Nyomást tárol, legfeljebb hármat. A következő Magma-támadás szintenként és jelzőnként +8% sebzést kap."
+CARD_ORBIT_BROOD_SAC_NAME,ORBIT BROOD SAC,ORBITÁLIS KÖLTŐZSÁK
+CARD_ORBIT_BROOD_SAC_DESC,"Kinetic Captivity gains +2 capacity and +25% orbit radius, but its collapse cooldown is 2 seconds longer.","A Kinetic Captivity +2 kapacitást és +25% keringési sugarat kap, de az összeomlási cooldown 2 másodperccel hosszabb."
+CARD_COLLISION_NUCLEUS_NAME,COLLISION NUCLEUS,ÜTKÖZÉSMAG
+CARD_COLLISION_NUCLEUS_DESC,"Per level: captive collision damage +16%, captive duration -4%.","Szintenként +16% fogoly-ütközési sebzés és -4% fogságidő."
+CARD_EXECUTION_FOLD_NAME,EXECUTION FOLD,KIVÉGZÉSI REDŐ
+CARD_EXECUTION_FOLD_DESC,"A captive below 20% health collapses early and explodes in 130 px for 70% + 20% attack damage per level.","A 20% életerő alatti fogoly korán összeomlik és 130 px sugarú robbanást okoz, 70% + szintenként 20% támadási sebzéssel."
+CARD_SYNAPTIC_RAIL_NAME,SYNAPTIC RAIL,SZINAPTIKUS SÍN
+CARD_SYNAPTIC_RAIL_DESC,"Neural Lance becomes 30% narrower with +100% damage, +50% force and +35% cooldown.","A Neural Lance 30%-kal keskenyebb lesz, +100% sebzéssel, +50% erővel és +35% cooldownnal."
+CARD_PSYCHIC_PARALLAX_NAME,PSYCHIC PARALLAX,PSZICHIKUS PARALLAXIS
+CARD_PSYCHIC_PARALLAX_DESC,"Kinetic Shard and Neural Lance gain +5% damage per level for every 220 px traveled, capped at +15% per level.","A Kinetic Shard és Neural Lance minden megtett 220 px után szintenként +5% sebzést kap, legfeljebb szintenként +15%-ig."
+CARD_THOUGHT_ECHO_NAME,THOUGHT ECHO,GONDOLATVISSZHANG
+CARD_THOUGHT_ECHO_DESC,"A line attack hitting at least three enemies repeats after 0.45 seconds for 25% + 8% damage per level, once per cast.","A legalább három ellenfelet eltaláló vonaltámadás 0,45 másodperc után megismétlődik, 25% + szintenként 8% sebzéssel, használatonként egyszer."
+REROLL - %d BIOMASS,REROLL - %d BIOMASS,ÚJRA - %d BIOMASSZA
+SKIP,SKIP,KIHAGYÁS
+BIOFABRICATOR CACHE // FINAL MUTATION AND REPAIR,BIOFABRICATOR CACHE // FINAL MUTATION AND REPAIR,BIOFABRIKÁTOR-TARTALÉK // UTOLSÓ MUTÁCIÓ ÉS JAVÍTÁS
+ACTIVE SKILL,ACTIVE SKILL,AKTÍV KÉPESSÉG
+PRESS A KEY - ESC TO CANCEL,PRESS A KEY - ESC TO CANCEL,NYOMJ LE EGY GOMBOT - ESC: MÉGSE
+ONBOARDING_ACTIVE_ELECTRIC,"ACTIVE: Voltaic Overdrive discharges around Koda and can interrupt the Warden. Press the Active Skill key when enemies are close.","AKTÍV: A Voltaic Overdrive Koda körül sül ki, és megszakíthatja az Őrzőt. Nyomd meg az Aktív képesség gombját, ha ellenfelek vannak közel."
+ONBOARDING_ACTIVE_FIRE,"ACTIVE: Pyre Burst burns nearby enemies. After unlocking Magma Spear, press Active Skill to aim, confirm to fire, or Cancel to leave aim mode.","AKTÍV: A Pyre Burst felgyújtja a közeli ellenfeleket. A Magma Spear feloldása után az Aktív képességgel célozz, megerősítéssel lőj, vagy a Mégse gombbal lépj ki a célzásból."
+ONBOARDING_ACTIVE_TELEKINETIC,"ACTIVE: Repulse Wave throws enemies away and can interrupt the Warden's wind-up.","AKTÍV: A Repulse Wave messzire löki az ellenfeleket, és megszakíthatja az Őrző támadásának előkészítését."
+ACTIVE SKILL // USE THE HUD KEY // AIMED SKILLS CAN BE CANCELLED,ACTIVE SKILL // USE THE HUD KEY // AIMED SKILLS CAN BE CANCELLED,AKTÍV KÉPESSÉG // HASZNÁLD A HUD-ON JELZETT GOMBOT // A CÉLZÁS MEGSZAKÍTHATÓ
+PROFILE_HEADER,RUN PROFILE,FUTAMPROFIL
+PROFILE_SUBJECT,SUBJECT,ALANY
+PROFILE_MODE,MODE,MÓD
+PROFILE_MODE_VALUE,PLAYABLE PROTOTYPE,JÁTSZHATÓ PROTOTÍPUS
+PROFILE_INSTANCE_RECORD,INSTANCE RECORD,PÉLDÁNY-NYILVÁNTARTÁS
+PROFILE_INSTANCE,KODA INSTANCE,KODA-PÉLDÁNY
+PROFILE_REPRINTS,REPRINTS,ÚJRANYOMTATÁSOK
+PROFILE_RUNS,RUNS,FUTAMOK
+PROFILE_LIFETIME_KILLS,LIFETIME KILLS,ÖSSZES KIIRTÁS
+PROFILE_BOSS_VICTORIES,BOSS VICTORIES,FŐELLENSÉG-GYŐZELMEK
+PROFILE_BEST_SURVIVAL,BEST SURVIVAL,LEGHOSSZABB TÚLÉLÉS
+PRE-ALPHA DEMO,PRE-ALPHA DEMO,PRE-ALFA DEMÓ
+NEW EFFECT,NEW EFFECT,ÚJ HATÁS
+NEXT LEVEL,NEXT LEVEL,KÖVETKEZŐ SZINT
+PERMANENT BLOOD MEMORY: %d,PERMANENT BLOOD MEMORY: %d,ÁLLANDÓ VÉREMLÉK: %d
+REROLL LIMIT REACHED,REROLL LIMIT REACHED,ELÉRTED AZ ÚJRAHÚZÁSI LIMITET
+"Permanent meta currency. Paid rerolls cost more each time.","Permanent meta currency. Paid rerolls cost more each time.","Állandó metapénz. A fizetett újrahúzás minden alkalommal drágább."
+BRAIN,BRAIN,AGY
+HEART,HEART,SZÍV
+LEGS,LEGS,LÁBAK
+BRAIN SLOT,BRAIN SLOT,FEJ SLOT
+HEART SLOT,HEART SLOT,SZÍV SLOT
+LEGS SLOT,LEGS SLOT,LÁB SLOT
+DRAG THE %s ORGAN TO THE %s SLOT,DRAG THE %s ORGAN TO THE %s SLOT,HÚZD A(Z) %s ORGANT A(Z) %s HELYRE
+NO PENDING ORGAN,NO PENDING ORGAN,NINCS VÁRAKOZÓ ORGAN
+"Installed organs remain active until replaced.","Installed organs remain active until replaced.","A beültetett organok cseréig aktívak maradnak."
+New mutation effect.,New mutation effect.,Új mutációs hatás.
+ADDITIONAL PROTOTYPE,ADDITIONAL PROTOTYPE,TOVÁBBI PROTOTÍPUS
+IN DEVELOPMENT,IN DEVELOPMENT,FEJLESZTÉS ALATT
+BASE CORE: STANDARD OUTPUT,BASE CORE: STANDARD OUTPUT,ALAP MAG: NORMÁL TELJESÍTMÉNY
+"Permanent meta currency. Paid rerolls cost 2, then 3, then 5 per offer.","Permanent meta currency. Paid rerolls cost 2, then 3, then 5 per offer.","Állandó metapénz. Egy ajánlaton belül az újrahúzás ára 2, majd 3, végül 5 Véremlék."
+DRAG THE BRAIN ORGAN TO THE HEAD SLOT,DRAG THE BRAIN ORGAN TO THE HEAD SLOT,HÚZD AZ AGY ORGAN-T A FEJ SLOTBA
+DRAG THE HEART ORGAN TO THE CHEST SLOT,DRAG THE HEART ORGAN TO THE CHEST SLOT,HÚZD A SZÍV ORGAN-T A MELLKASI SLOTBA
+DRAG THE LEGS ORGAN TO THE LEG SLOT,DRAG THE LEGS ORGAN TO THE LEG SLOT,HÚZD A LÁB ORGAN-T A LÁB SLOTBA
+DRAG THE %s ORGAN TO ITS MATCHING SLOT,DRAG THE %s ORGAN TO ITS MATCHING SLOT,HÚZD A(Z) %s ORGAN-T A HOZZÁ ILLŐ SLOTBA

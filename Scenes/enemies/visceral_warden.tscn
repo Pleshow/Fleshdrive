@@ -1,0 +1,103 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://Scripts/visceral_warden.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://Scenes/enemies/boss_projectile.tscn" id="3_projectile"]
+[ext_resource type="Texture2D" path="res://Resources/Visuals/enemy_ground_shadow.tres" id="4_shadow"]
+
+[sub_resource type="CircleShape2D" id="Circle_boss"]
+radius = 55.0
+
+[sub_resource type="Gradient" id="Gradient_boss_light"]
+offsets = PackedFloat32Array(0, 0.52, 1)
+colors = PackedColorArray(0.42, 0.32, 0.96, 0.95, 0.18, 0.1, 0.52, 0.45, 0.02, 0.03, 0.12, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture_boss_light"]
+gradient = SubResource("Gradient_boss_light")
+width = 512
+height = 512
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[node name="VisceralWarden" type="CharacterBody2D" groups=["enemies", "boss"]]
+collision_layer = 2
+collision_mask = 1
+motion_mode = 1
+script = ExtResource("1_script")
+projectile_scene = ExtResource("3_projectile")
+
+[node name="GroundShadow" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.68)
+show_behind_parent = true
+z_index = -2
+position = Vector2(4, 64)
+scale = Vector2(1.1, 0.32)
+texture = ExtResource("4_shadow")
+
+[node name="BossLight" type="PointLight2D" parent="."]
+show_behind_parent = true
+texture = SubResource("GradientTexture_boss_light")
+texture_scale = 1.35
+energy = 0.92
+color = Color(0.56, 0.35, 1, 1)
+shadow_enabled = false
+
+[node name="WardenSpotlight" type="PointLight2D" parent="."]
+show_behind_parent = true
+texture = SubResource("GradientTexture_boss_light")
+texture_scale = 2.55
+energy = 1.9
+color = Color(0.72, 0.9, 1, 1)
+shadow_enabled = false
+
+[node name="SlamFill" type="Polygon2D" parent="."]
+show_behind_parent = true
+color = Color(0.42, 0.18, 0.9, 0.22)
+
+[node name="SlamTelegraph" type="Line2D" parent="."]
+show_behind_parent = true
+width = 7.0
+default_color = Color(0.75, 0.32, 1, 0.92)
+closed = true
+antialiased = true
+
+[node name="AimLine" type="Line2D" parent="."]
+visible = false
+show_behind_parent = true
+width = 4.0
+default_color = Color(0.62, 0.3, 1, 0)
+antialiased = true
+
+[node name="ChargeLine" type="Line2D" parent="."]
+visible = false
+show_behind_parent = true
+width = 10.0
+default_color = Color(1, 0.18, 0.62, 0)
+antialiased = true
+
+[node name="VolleyArea" type="Polygon2D" parent="."]
+show_behind_parent = true
+color = Color(0.95, 0.12, 0.2, 0.22)
+
+[node name="ChargeArea" type="Polygon2D" parent="."]
+show_behind_parent = true
+color = Color(1, 0.08, 0.12, 0.28)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+z_index = 2
+scale = Vector2(0.68, 0.68)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(4, 18)
+shape = SubResource("Circle_boss")
+
+[node name="StateTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="AttackCooldownTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="ContactDamageTimer" type="Timer" parent="."]
+wait_time = 0.7
+one_shot = true

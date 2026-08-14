@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3 uid="uid://bkbr87wtgrysd"]
+
+[ext_resource type="Script" uid="uid://cgff01swg5n6" path="res://Scripts/upgrade_data.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://dg14b7d86mx3" path="res://Assets/ui/weapons/telekinetic/orbiting_debris.png" id="2"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = &"orbiting_debris"
+display_name = "KINETIC CAPTIVITY"
+description = "Telekinetically captures living enemies and orbits them around Koda. Captives batter nearby targets, then collapse; higher levels hold more subjects."
+card_texture = ExtResource("2")
+upgrade_kind = 2
+fleshdrive_affinity = "telekinetic"
+synergy_tags = Array[StringName]([&"orbit", &"control", &"execution"])
+minimum_player_level = 4

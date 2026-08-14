@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3]
+
+[ext_resource type="Script" path="res://Scripts/upgrade_data.gd" id="1"]
+[ext_resource type="Texture2D" path="res://Assets/ui/cards/build_items/electric.svg" id="2"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = &"storm_plumage"
+display_name = "CARD_STORM_PLUMAGE_NAME"
+description = "CARD_STORM_PLUMAGE_DESC"
+card_texture = ExtResource("2")
+fleshdrive_affinity = "electric"
+synergy_tags = Array[StringName]([&"projectile", &"burst", &"area"])
+rarity = "rare"
+max_level = 5
+minimum_player_level = 4
+build_archetype = &"quill_tempest"
+keystone = false
+required_weapons = Array[StringName]([&"quill_burst"])
+offer_weight = 0.65
+excluded_upgrades = Array[StringName]([])

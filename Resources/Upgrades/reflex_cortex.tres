@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3 uid="uid://lsqx6mls5fys"]
+
+[ext_resource type="Texture2D" uid="uid://ckmcg7pcy0jco" path="res://Assets/ui/organs/03_reflex_cortex.png" id="1_f3bmg"]
+[ext_resource type="Script" uid="uid://cgff01swg5n6" path="res://Scripts/upgrade_data.gd" id="1_m773n"]
+
+[resource]
+script = ExtResource("1_m773n")
+upgrade_id = &"reflex_cortex"
+display_name = "REFLEX CORTEX"
+description = "Unlocks semi-automatic targeting."
+card_texture = ExtResource("1_f3bmg")
+upgrade_kind = 1
+organ_slot = 1
+max_level = 1
+metadata/_custom_type_script = "uid://cgff01swg5n6"

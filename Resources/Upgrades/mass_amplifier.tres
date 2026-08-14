@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3 uid="uid://do3o0x2fw247c"]
+
+[ext_resource type="Script" uid="uid://cgff01swg5n6" path="res://Scripts/upgrade_data.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://bwvixmvatsquq" path="res://Assets/ui/items/telekinetic/mass_amplifier.png" id="2"]
+
+[resource]
+script = ExtResource("1")
+upgrade_id = &"mass_amplifier"
+display_name = "MASS AMPLIFIER"
+description = "All telekinetic attacks deal 14% more damage and apply 12% stronger knockback, including Koda's auto-attack."
+card_texture = ExtResource("2")
+fleshdrive_affinity = "telekinetic"
+synergy_tags = Array[StringName]([&"gravity", &"force", &"damage"])
+minimum_player_level = 2

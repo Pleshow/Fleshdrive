@@ -1,0 +1,1451 @@
+[gd_scene format=3 uid="uid://cahxtcria5jev"]
+
+[ext_resource type="PackedScene" uid="uid://tmywkju6a3a5" path="res://Scenes/player/koda.tscn" id="1_ebmjs"]
+[ext_resource type="PackedScene" path="res://Scenes/placeholder_arena.tscn" id="1_nfavm"]
+[ext_resource type="PackedScene" uid="uid://diujfajd5ocm1" path="res://Scenes/enemies/crawler.tscn" id="1_qxrlw"]
+[ext_resource type="Script" uid="uid://b71damtrhupib" path="res://Scripts/enemy_spawner.gd" id="3_3dryh"]
+[ext_resource type="Script" uid="uid://b3kyfjhaipisd" path="res://Scripts/hud.gd" id="3_wrm1d"]
+[ext_resource type="Script" uid="uid://cgff01swg5n6" path="res://Scripts/upgrade_data.gd" id="5_rfjv2"]
+[ext_resource type="Resource" uid="uid://dkms4r236r1m1" path="res://Resources/Upgrades/biomass_receptors.tres" id="6_1phco"]
+[ext_resource type="Resource" uid="uid://cee7y664lx21g" path="res://Resources/Upgrades/conductive_marrow.tres" id="7_nb51f"]
+[ext_resource type="Resource" uid="uid://1hm1hvqffy22" path="res://Resources/Upgrades/predator_tendons.tres" id="8_nnt18"]
+[ext_resource type="Resource" uid="uid://p5gm4ursqckr" path="res://Resources/Upgrades/rapid_synapses.tres" id="9_ewbju"]
+[ext_resource type="Resource" uid="uid://cxs4or5q8v4ke" path="res://Resources/Upgrades/reinforced_carapace.tres" id="10_85qyi"]
+[ext_resource type="Resource" uid="uid://cc7jr43uqstcd" path="res://Resources/Upgrades/pulse_capacitor.tres" id="11_1phco"]
+[ext_resource type="Resource" uid="uid://vuhyna8iy4hr" path="res://Resources/Upgrades/impulse_gland.tres" id="12_85qyi"]
+[ext_resource type="Resource" uid="uid://1tb6pign0rus" path="res://Resources/Upgrades/arc_heart.tres" id="13_iivbl"]
+[ext_resource type="Resource" uid="uid://lsqx6mls5fys" path="res://Resources/Upgrades/reflex_cortex.tres" id="14_7nbq1"]
+[ext_resource type="Texture2D" uid="uid://dvwntngm1bnhv" path="res://Assets/ui/screens/organs.png" id="15_nb51f"]
+[ext_resource type="Script" uid="uid://d41t3t6f443p" path="res://Scripts/organ_slot_control.gd" id="16_ewbju"]
+[ext_resource type="Script" uid="uid://b41kqm7ow570f" path="res://Scripts/organ_drag_card.gd" id="16_nnt18"]
+[ext_resource type="Script" uid="uid://67hsv1g40a48" path="res://Scripts/run_manager.gd" id="17_run_manager"]
+[ext_resource type="Resource" uid="uid://cj0es0kykob5g" path="res://Resources/Upgrades/autonomic_reflex.tres" id="18_auto_attack"]
+[ext_resource type="PackedScene" path="res://Scenes/enemies/spitter.tscn" id="19_spitter"]
+[ext_resource type="PackedScene" path="res://Scenes/enemies/charger.tscn" id="20_charger"]
+[ext_resource type="Script" uid="uid://d7w16p01w0jh" path="res://Scripts/combat_feedback.gd" id="21_combat_feedback"]
+[ext_resource type="AudioStream" uid="uid://cr8fev2ntj5ov" path="res://Assets/audio/music/gameplay_loop.ogg" id="23_game_music"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/biomass_lure.tres" id="24_biomass_lure"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/hemo_recycler.tres" id="25_hemo_recycler"]
+[ext_resource type="Resource" uid="uid://r2kvqfwenn17" path="res://Resources/Upgrades/overload_vent.tres" id="26_overload_vent"]
+[ext_resource type="Resource" uid="uid://cjj4fekpn12ea" path="res://Resources/Upgrades/kill_switch_nodes.tres" id="27_kill_switch"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/reflex_spurs.tres" id="28_reflex_spurs"]
+[ext_resource type="Resource" uid="uid://cm06r8j6sjye1" path="res://Resources/Upgrades/quill_burst.tres" id="29_quill_burst"]
+[ext_resource type="Resource" uid="uid://d23ah4hsp5up1" path="res://Resources/Upgrades/shock_ram.tres" id="30_shock_ram"]
+[ext_resource type="Resource" uid="uid://d1q4cuir1hk22" path="res://Resources/Upgrades/tail_lash.tres" id="31_tail_lash"]
+[ext_resource type="Resource" uid="uid://bydi4h1s20jqu" path="res://Resources/Upgrades/arc_spear.tres" id="32_arc_spear"]
+[ext_resource type="Resource" uid="uid://btcbiejn1c4hn" path="res://Resources/Upgrades/bone_shard_volley.tres" id="33_bone_volley"]
+[ext_resource type="PackedScene" path="res://Scenes/post_process.tscn" id="34_post_process"]
+[ext_resource type="PackedScene" path="res://Scenes/pickups/red_gem_pickup.tscn" id="35_red_gem"]
+[ext_resource type="PackedScene" path="res://Scenes/enemies/visceral_warden.tscn" id="41_boss"]
+[ext_resource type="PackedScene" uid="uid://dktec1dcxbp7q" path="res://Scenes/biofabricator_sequence.tscn" id="42_bio"]
+[ext_resource type="PackedScene" uid="uid://bfxi40ywpfm40" path="res://Scenes/fleshdrive_operation_screen.tscn" id="43_operation"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/cinder_volley.tres" id="44_cinder"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/blazing_stride.tres" id="45_stride"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/inferno_ring.tres" id="46_inferno"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/magma_spear.tres" id="47_magma"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/ashen_eruption.tres" id="48_ashen"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/combustion_sac.tres" id="49_combustion"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/thermal_lattice.tres" id="50_thermal"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/cauterizing_blood.tres" id="51_cauterize"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/flashpoint_nodes.tres" id="52_flashpoint"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/kinetic_shard.tres" id="53_kinetic"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/gravity_well.tres" id="54_gravity"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/repulse_wave.tres" id="55_repulse"]
+[ext_resource type="Resource" uid="uid://bkbr87wtgrysd" path="res://Resources/Upgrades/orbiting_debris.tres" id="56_orbit"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/neural_lance.tres" id="57_lance"]
+[ext_resource type="Resource" uid="uid://bep1ejheq3dg8" path="res://Resources/Upgrades/projectile_reversal.tres" id="58_reversal"]
+[ext_resource type="Resource" uid="uid://do3o0x2fw247c" path="res://Resources/Upgrades/mass_amplifier.tres" id="59_mass"]
+[ext_resource type="Resource" uid="uid://bopkkab4wdmre" path="res://Resources/Upgrades/vector_cortex.tres" id="60_vector"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/inertial_lattice.tres" id="61_inertial"]
+[ext_resource type="Texture2D" uid="uid://djb1iixxmwpu2" path="res://Assets/player/idle.png" id="62_koda_portrait"]
+[ext_resource type="Script" uid="uid://fhr4wlppj35t" path="res://Scripts/ui/gameplay_crosshair.gd" id="63_crosshair"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/ThunderGod/conductive_fur.tres" id="67_conductive_fur"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/ThunderGod/arc_relay.tres" id="68_arc_relay"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/ThunderGod/capacitor_organ.tres" id="69_capacitor"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/ThunderGod/storm_core.tres" id="70_storm_core"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/ThunderGod/ionized_blood.tres" id="71_ionized"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/ThunderGod/neural_thunder.tres" id="72_neural"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/ThunderGod/feedback_loop.tres" id="73_feedback"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/ThunderGod/overload_heart.tres" id="74_overload"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/ThunderGod/eye_of_the_storm.tres" id="75_eye"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/ThunderGod/singularity_core.tres" id="76_singularity"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/scavenger_gland.tres" id="77_scavenger"]
+[ext_resource type="Resource" uid="uid://cif5b6fynx6h8" path="res://Resources/Upgrades/OrangeTempest/ball_lightning.tres" id="78_ball"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/OrangeTempest/ionized_membrane.tres" id="79_membrane"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/OrangeTempest/plasma_expansion.tres" id="80_expansion"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/OrangeTempest/static_replication.tres" id="81_replication"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/OrangeTempest/residual_charge.tres" id="82_residual"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/OrangeTempest/orbital_charge.tres" id="83_orbital"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/OrangeTempest/electric_gravity.tres" id="84_gravity"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/OrangeTempest/plasma_shepherd.tres" id="85_shepherd"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/OrangeTempest/star_collapse.tres" id="86_collapse"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/OrangeTempest/chain_reactor.tres" id="87_reactor"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/OrangeTempest/polarity_shift.tres" id="88_polarity"]
+[ext_resource type="Resource" uid="uid://c5gkq44d156qa" path="res://Resources/Upgrades/VoltHound/static_claws.tres" id="89_static_claws"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/VoltHound/voltaic_tendons.tres" id="90_voltaic_tendons"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/VoltHound/phantom_current.tres" id="91_phantom_current"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/VoltHound/predators_static.tres" id="92_predators_static"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/VoltHound/flash_step.tres" id="93_flash_step"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/VoltHound/magnetic_predator.tres" id="94_magnetic_predator"]
+[ext_resource type="Resource" uid="uid://cm188uwnb3jmr" path="res://Resources/Upgrades/VoltHound/nerve_overclock.tres" id="95_nerve_overclock"]
+[ext_resource type="Resource" uid="uid://eqpmmamp547k" path="res://Resources/Upgrades/VoltHound/lightspeed.tres" id="96_lightspeed"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/VoltHound/capacitor_marrow.tres" id="97_capacitor_marrow"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/VoltHound/predator_coil.tres" id="98_predator_coil"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/VoltHound/charged_paw_pads.tres" id="99_charged_paw_pads"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/VoltHound/ionized_spine.tres" id="100_ionized_spine"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/VoltHound/purple_heart.tres" id="101_purple_heart"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/VoltHound/double_exposure.tres" id="102_double_exposure"]
+[ext_resource type="Resource" path="res://Resources/Upgrades/VoltHound/ballistic_nervous_system.tres" id="103_ballistic_nervous_system"]
+[ext_resource type="Script" uid="uid://d0pvl10qf01yd" path="res://Scripts/game_arena_controller.gd" id="104_arena_controller"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_player_status"]
+bg_color = Color(0.008, 0.016, 0.024, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.13, 0.33, 0.4, 0.9)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_portrait"]
+bg_color = Color(0.018, 0.035, 0.048, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.25, 0.58, 0.66, 0.92)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="AtlasTexture" id="Atlas_koda_portrait"]
+atlas = ExtResource("62_koda_portrait")
+region = Rect2(0, 0, 96, 96)
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_status_under"]
+bg_color = Color(0.018, 0.029, 0.04, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.2, 0.35, 0.4, 0.9)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_health_fill"]
+bg_color = Color(0.76, 0.075, 0.16, 1)
+border_width_top = 2
+border_width_bottom = 2
+border_color = Color(1, 0.28, 0.32, 0.82)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_xp_fill"]
+bg_color = Color(0.055, 0.38, 0.88, 1)
+border_width_top = 2
+border_width_bottom = 2
+border_color = Color(0.16, 0.82, 1, 0.88)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_boss_panel"]
+bg_color = Color(0.015, 0.02, 0.032, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.16, 0.72, 0.86, 0.82)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_boss_bar_background"]
+bg_color = Color(0.035, 0.045, 0.065, 0.96)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.32, 0.38, 0.46, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_boss_bar_fill"]
+bg_color = Color(0.72, 0.08, 0.18, 1)
+border_width_top = 2
+border_width_bottom = 2
+border_color = Color(0.18, 0.86, 1, 0.86)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_organ_stats"]
+bg_color = Color(0.018, 0.018, 0.024, 0.94)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.17, 0.45, 0.46, 0.72)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="Game" type="Node2D" unique_id=84223692]
+y_sort_enabled = true
+script = ExtResource("104_arena_controller")
+
+[node name="Arena" parent="." unique_id=1607695595 instance=ExtResource("1_nfavm")]
+
+[node name="Music" type="AudioStreamPlayer" parent="." unique_id=397399926]
+process_mode = 3
+stream = ExtResource("23_game_music")
+volume_db = -10.0
+autoplay = true
+bus = &"Music"
+
+[node name="WorldDarkness" type="CanvasModulate" parent="." unique_id=1642917229]
+color = Color(0.13, 0.16, 0.24, 1)
+
+[node name="Entities" type="Node2D" parent="." unique_id=814852430]
+y_sort_enabled = true
+
+[node name="Enemies" type="Node2D" parent="Entities" unique_id=539195038 groups=["enemies_container"]]
+y_sort_enabled = true
+
+[node name="Attacks" type="Node2D" parent="Entities" unique_id=1784187603 groups=["attack_container"]]
+y_sort_enabled = true
+
+[node name="Pickups" type="Node2D" parent="Entities" unique_id=700923904 groups=["pickup_container"]]
+y_sort_enabled = true
+
+[node name="Effects" type="Node2D" parent="Entities" unique_id=1245002272 groups=["effects_container"]]
+y_sort_enabled = true
+
+[node name="Koda" parent="Entities" unique_id=1718074588 instance=ExtResource("1_ebmjs")]
+position = Vector2(1280, 720)
+starting_biomass_required = 35.0
+biomass_requirement_multiplier = 1.22
+
+[node name="EnemySpawner" type="Node" parent="." unique_id=1193665044]
+script = ExtResource("3_3dryh")
+crawler_scene = ExtResource("1_qxrlw")
+spitter_scene = ExtResource("19_spitter")
+charger_scene = ExtResource("20_charger")
+
+[node name="SpawnTimer" type="Timer" parent="EnemySpawner" unique_id=1398725377]
+wait_time = 0.45
+autostart = true
+
+[node name="RunManager" type="Node" parent="." unique_id=1312031570 groups=["run_manager"]]
+process_mode = 3
+script = ExtResource("17_run_manager")
+red_gem_scene = ExtResource("35_red_gem")
+boss_scene = ExtResource("41_boss")
+
+[node name="CombatFeedback" type="Node" parent="." unique_id=1260986913 groups=["combat_feedback"]]
+process_mode = 3
+script = ExtResource("21_combat_feedback")
+
+[node name="PlayerSpawn" type="Marker2D" parent="." unique_id=1594736229]
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=1414963197]
+layer = 110
+
+[node name="HUD" type="Control" parent="UI" unique_id=378964625]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_wrm1d")
+upgrade_pool = Array[ExtResource("5_rfjv2")]([ExtResource("6_1phco"), ExtResource("7_nb51f"), ExtResource("8_nnt18"), ExtResource("9_ewbju"), ExtResource("10_85qyi"), ExtResource("11_1phco"), ExtResource("12_85qyi"), ExtResource("13_iivbl"), ExtResource("14_7nbq1"), ExtResource("18_auto_attack"), ExtResource("24_biomass_lure"), ExtResource("25_hemo_recycler"), ExtResource("26_overload_vent"), ExtResource("27_kill_switch"), ExtResource("28_reflex_spurs"), ExtResource("29_quill_burst"), ExtResource("30_shock_ram"), ExtResource("31_tail_lash"), ExtResource("32_arc_spear"), ExtResource("33_bone_volley"), ExtResource("44_cinder"), ExtResource("45_stride"), ExtResource("46_inferno"), ExtResource("47_magma"), ExtResource("48_ashen"), ExtResource("49_combustion"), ExtResource("50_thermal"), ExtResource("51_cauterize"), ExtResource("52_flashpoint"), ExtResource("53_kinetic"), ExtResource("54_gravity"), ExtResource("55_repulse"), ExtResource("56_orbit"), ExtResource("57_lance"), ExtResource("58_reversal"), ExtResource("59_mass"), ExtResource("60_vector"), ExtResource("61_inertial"), ExtResource("67_conductive_fur"), ExtResource("68_arc_relay"), ExtResource("69_capacitor"), ExtResource("70_storm_core"), ExtResource("71_ionized"), ExtResource("72_neural"), ExtResource("73_feedback"), ExtResource("74_overload"), ExtResource("75_eye"), ExtResource("76_singularity"), ExtResource("77_scavenger"), ExtResource("78_ball"), ExtResource("79_membrane"), ExtResource("80_expansion"), ExtResource("81_replication"), ExtResource("82_residual"), ExtResource("83_orbital"), ExtResource("84_gravity"), ExtResource("85_shepherd"), ExtResource("86_collapse"), ExtResource("87_reactor"), ExtResource("88_polarity"), ExtResource("89_static_claws"), ExtResource("90_voltaic_tendons"), ExtResource("91_phantom_current"), ExtResource("92_predators_static"), ExtResource("93_flash_step"), ExtResource("94_magnetic_predator"), ExtResource("95_nerve_overclock"), ExtResource("96_lightspeed"), ExtResource("97_capacitor_marrow"), ExtResource("98_predator_coil"), ExtResource("99_charged_paw_pads"), ExtResource("100_ionized_spine"), ExtResource("101_purple_heart"), ExtResource("102_double_exposure"), ExtResource("103_ballistic_nervous_system")])
+
+[node name="TopHudSafeArea" type="ColorRect" parent="UI/HUD" unique_id=1328807389]
+z_index = -5
+layout_mode = 0
+offset_right = 1280.0
+offset_bottom = 132.0
+mouse_filter = 2
+color = Color(0.004, 0.01, 0.016, 0.96)
+
+[node name="BottomAccent" type="ColorRect" parent="UI/HUD/TopHudSafeArea" unique_id=1066170054]
+layout_mode = 0
+offset_top = 128.0
+offset_right = 1280.0
+offset_bottom = 132.0
+mouse_filter = 2
+color = Color(0.08, 0.48, 0.58, 0.32)
+
+[node name="PlayerStatusPanel" type="Panel" parent="UI/HUD" unique_id=991761364]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 18.0
+offset_right = 422.0
+offset_bottom = 126.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBox_player_status")
+
+[node name="PortraitFrame" type="Panel" parent="UI/HUD/PlayerStatusPanel" unique_id=1492245548]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 10.0
+offset_right = 104.0
+offset_bottom = 104.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBox_portrait")
+
+[node name="KodaPortrait" type="TextureRect" parent="UI/HUD/PlayerStatusPanel" unique_id=1453207090]
+texture_filter = 1
+layout_mode = 0
+offset_left = 10.0
+offset_top = 24.0
+offset_right = 90.0
+offset_bottom = 90.0
+mouse_filter = 2
+texture = SubResource("Atlas_koda_portrait")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="HealthTitle" type="Label" parent="UI/HUD/PlayerStatusPanel" unique_id=2007412345]
+layout_mode = 0
+offset_left = 124.0
+offset_top = 8.0
+offset_right = 166.0
+offset_bottom = 31.0
+theme_type_variation = &"MonoLabel"
+theme_override_colors/font_color = Color(0.72, 0.9, 0.94, 1)
+theme_override_font_sizes/font_size = 12
+text = "HP"
+
+[node name="HealthBar" type="ProgressBar" parent="UI/HUD/PlayerStatusPanel" unique_id=1020170031]
+layout_mode = 0
+offset_left = 124.0
+offset_top = 29.0
+offset_right = 378.0
+offset_bottom = 51.0
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBox_status_under")
+theme_override_styles/fill = SubResource("StyleBox_health_fill")
+value = 100.0
+show_percentage = false
+
+[node name="HealthValueLabel" type="Label" parent="UI/HUD/PlayerStatusPanel" unique_id=424332632]
+layout_mode = 0
+offset_left = 224.0
+offset_top = 7.0
+offset_right = 378.0
+offset_bottom = 30.0
+theme_type_variation = &"MonoLabel"
+theme_override_colors/font_color = Color(0.92, 0.96, 0.98, 1)
+theme_override_font_sizes/font_size = 11
+text = "100 / 100"
+horizontal_alignment = 2
+
+[node name="LevelLabel" type="Label" parent="UI/HUD/PlayerStatusPanel" unique_id=1210600255]
+layout_mode = 0
+offset_left = 124.0
+offset_top = 70.0
+offset_right = 250.0
+offset_bottom = 98.0
+theme_type_variation = &"MonoLabel"
+theme_override_colors/font_color = Color(0.72, 0.9, 0.94, 1)
+text = "LV 1"
+
+[node name="XPFrame" type="TextureRect" parent="UI/HUD" unique_id=1953390847]
+visible = false
+layout_mode = 0
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -210.0
+offset_top = 22.0
+offset_right = 210.0
+offset_bottom = 74.0
+mouse_filter = 2
+expand_mode = 1
+
+[node name="BiomassTitle" type="Label" parent="UI/HUD" unique_id=1187024994]
+layout_mode = 0
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -194.0
+offset_top = 27.0
+offset_right = -154.0
+offset_bottom = 47.0
+theme_type_variation = &"MonoLabel"
+theme_override_colors/font_color = Color(0.35, 0.82, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "XP"
+
+[node name="BiomassBar" type="ProgressBar" parent="UI/HUD" unique_id=1586015259]
+layout_mode = 0
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -194.0
+offset_top = 49.0
+offset_right = 194.0
+offset_bottom = 65.0
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBox_status_under")
+theme_override_styles/fill = SubResource("StyleBox_xp_fill")
+show_percentage = false
+
+[node name="BiomassValueLabel" type="Label" parent="UI/HUD" unique_id=1406376177]
+layout_mode = 0
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -16.0
+offset_top = 27.0
+offset_right = 194.0
+offset_bottom = 47.0
+theme_type_variation = &"MonoLabel"
+theme_override_colors/font_color = Color(0.88, 0.94, 1, 1)
+theme_override_font_sizes/font_size = 11
+text = "0 / 40"
+horizontal_alignment = 2
+
+[node name="RunTimerLabel" type="Label" parent="UI/HUD" unique_id=684567060]
+layout_mode = 0
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -172.0
+offset_top = 78.0
+offset_right = -32.0
+offset_bottom = 116.0
+theme_type_variation = &"MonoLabel"
+theme_override_font_sizes/font_size = 26
+text = "12:00"
+horizontal_alignment = 2
+
+[node name="RunStateLabel" type="Label" parent="UI/HUD" unique_id=133871666]
+visible = false
+layout_mode = 0
+offset_left = 560.0
+offset_top = 58.0
+offset_right = 720.0
+offset_bottom = 86.0
+theme_override_colors/font_color = Color(0.3, 0.95, 0.95, 1)
+theme_override_font_sizes/font_size = 18
+text = "PAUSED"
+horizontal_alignment = 1
+
+[node name="RushLabel" type="Label" parent="UI/HUD" unique_id=914125526]
+visible = false
+layout_mode = 0
+offset_left = 490.0
+offset_top = 96.0
+offset_right = 790.0
+offset_bottom = 132.0
+theme_override_colors/font_color = Color(1, 0.3, 0.18, 1)
+theme_override_font_sizes/font_size = 24
+text = "RUSH 1 — INCOMING"
+horizontal_alignment = 1
+
+[node name="BossWarningLabel" type="Label" parent="UI/HUD" unique_id=489263692]
+visible = false
+layout_mode = 0
+offset_left = 410.0
+offset_top = 122.0
+offset_right = 870.0
+offset_bottom = 150.0
+theme_type_variation = &"HeaderLabel"
+theme_override_colors/font_color = Color(0.2, 0.92, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 18
+text = "THE VISCERAL WARDEN AWAKENS"
+horizontal_alignment = 1
+
+[node name="BossPanel" type="Panel" parent="UI/HUD" unique_id=794028270]
+visible = false
+layout_mode = 0
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -190.0
+offset_top = 132.0
+offset_right = 190.0
+offset_bottom = 182.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_boss_panel")
+
+[node name="NameLabel" type="Label" parent="UI/HUD/BossPanel" unique_id=1498148724]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 4.0
+offset_right = 274.0
+offset_bottom = 24.0
+theme_type_variation = &"MonoLabel"
+theme_override_colors/font_color = Color(0.92, 0.97, 1, 1)
+theme_override_font_sizes/font_size = 13
+text = "THE VISCERAL WARDEN"
+
+[node name="PhaseLabel" type="Label" parent="UI/HUD/BossPanel" unique_id=2048007368]
+layout_mode = 0
+offset_left = 278.0
+offset_top = 4.0
+offset_right = 368.0
+offset_bottom = 24.0
+theme_type_variation = &"MonoLabel"
+theme_override_colors/font_color = Color(0.2, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "PHASE I"
+horizontal_alignment = 2
+
+[node name="HealthBar" type="ProgressBar" parent="UI/HUD/BossPanel" unique_id=2020956179]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 29.0
+offset_right = 368.0
+offset_bottom = 41.0
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_boss_bar_background")
+theme_override_styles/fill = SubResource("StyleBoxFlat_boss_bar_fill")
+value = 100.0
+show_percentage = false
+
+[node name="LevelUpPanel" type="Control" parent="UI/HUD" unique_id=911627481]
+visible = false
+z_index = 20
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="UI/HUD/LevelUpPanel" unique_id=615447453]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.039215688, 0.039215688, 0.039215688, 0.7882353)
+
+[node name="CenterContainer" type="CenterContainer" parent="UI/HUD/LevelUpPanel" unique_id=224821979]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/HUD/LevelUpPanel/CenterContainer" unique_id=1076524591]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TitleLabel" type="Label" parent="UI/HUD/LevelUpPanel/CenterContainer/VBoxContainer" unique_id=1904049472]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+theme_override_font_sizes/font_size = 27
+text = "CHOOSE A MUTATION"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Cards" type="HBoxContainer" parent="UI/HUD/LevelUpPanel/CenterContainer/VBoxContainer" unique_id=100863175]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="UpgradeCard1" type="TextureButton" parent="UI/HUD/LevelUpPanel/CenterContainer/VBoxContainer/Cards" unique_id=1944271829]
+custom_minimum_size = Vector2(276, 396)
+clip_contents = true
+layout_mode = 2
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="UpgradeCard2" type="TextureButton" parent="UI/HUD/LevelUpPanel/CenterContainer/VBoxContainer/Cards" unique_id=83709223]
+custom_minimum_size = Vector2(276, 396)
+clip_contents = true
+layout_mode = 2
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="UpgradeCard3" type="TextureButton" parent="UI/HUD/LevelUpPanel/CenterContainer/VBoxContainer/Cards" unique_id=1070455898]
+custom_minimum_size = Vector2(276, 396)
+clip_contents = true
+layout_mode = 2
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="OrganScreen" type="Control" parent="UI/HUD" unique_id=2119096169]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="TextureRect" parent="UI/HUD/OrganScreen" unique_id=2052788357]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("15_nb51f")
+expand_mode = 1
+
+[node name="LegsSlot" type="Control" parent="UI/HUD/OrganScreen" unique_id=1193707620]
+anchors_preset = 0
+offset_left = 322.0
+offset_top = 460.0
+offset_right = 452.0
+offset_bottom = 611.0
+script = ExtResource("16_ewbju")
+
+[node name="InstalledOrgan" type="TextureRect" parent="UI/HUD/OrganScreen/LegsSlot" unique_id=1662793527]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 34.0
+offset_top = 38.0
+offset_right = -34.0
+offset_bottom = -38.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RightBackground" type="Panel" parent="UI/HUD/OrganScreen" unique_id=204602940]
+layout_mode = 0
+offset_left = 900.0
+offset_top = 20.0
+offset_right = 1264.0
+offset_bottom = 570.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_organ_stats")
+
+[node name="PendingOrganCard" type="TextureRect" parent="UI/HUD/OrganScreen" unique_id=1608382836]
+layout_mode = 0
+offset_left = 916.0
+offset_top = 72.0
+offset_right = 1056.0
+offset_bottom = 282.0
+mouse_filter = 0
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("16_nnt18")
+
+[node name="PendingLabel" type="Label" parent="UI/HUD/OrganScreen" unique_id=947093159]
+layout_mode = 0
+offset_left = 908.0
+offset_top = 38.0
+offset_right = 1064.0
+offset_bottom = 66.0
+theme_override_colors/font_color = Color(0.96, 0.98, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 16
+text = "PENDING ORGAN"
+horizontal_alignment = 1
+
+[node name="FleshdriveDivider" type="HSeparator" parent="UI/HUD/OrganScreen" unique_id=1854092519]
+layout_mode = 0
+offset_left = 916.0
+offset_top = 314.0
+offset_right = 1056.0
+offset_bottom = 318.0
+
+[node name="FleshdriveTitle" type="Label" parent="UI/HUD/OrganScreen" unique_id=1604206511]
+layout_mode = 0
+offset_left = 908.0
+offset_top = 326.0
+offset_right = 1064.0
+offset_bottom = 354.0
+theme_override_colors/font_color = Color(0.96, 0.98, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 16
+text = "FLESHDRIVES"
+horizontal_alignment = 1
+
+[node name="FleshdrivePanel" type="Panel" parent="UI/HUD/OrganScreen" unique_id=317569145]
+layout_mode = 0
+offset_left = 912.0
+offset_top = 362.0
+offset_right = 1060.0
+offset_bottom = 548.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_organ_stats")
+
+[node name="Icon" type="TextureRect" parent="UI/HUD/OrganScreen/FleshdrivePanel" unique_id=689970297]
+layout_mode = 0
+offset_left = 38.0
+offset_top = 8.0
+offset_right = 108.0
+offset_bottom = 78.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Name" type="Label" parent="UI/HUD/OrganScreen/FleshdrivePanel" unique_id=102195347]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 78.0
+offset_right = 140.0
+offset_bottom = 98.0
+theme_override_colors/font_color = Color(0.35, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 14
+text = "VOLTAIC HEART"
+horizontal_alignment = 1
+
+[node name="Level" type="Label" parent="UI/HUD/OrganScreen/FleshdrivePanel" unique_id=2106424141]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 100.0
+offset_right = 140.0
+offset_bottom = 118.0
+theme_type_variation = &"MonoLabel"
+theme_override_font_sizes/font_size = 9
+text = "CORE LEVEL 1 / 5"
+horizontal_alignment = 1
+
+[node name="Build" type="Label" parent="UI/HUD/OrganScreen/FleshdrivePanel" unique_id=57547548]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 120.0
+offset_right = 138.0
+offset_bottom = 154.0
+theme_override_colors/font_color = Color(0.72, 0.8, 0.82, 0.9)
+theme_override_font_sizes/font_size = 8
+text = "CHAIN / BURST / DASH"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="StatsBackground" type="Panel" parent="UI/HUD/OrganScreen" unique_id=619368570]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 20.0
+offset_right = 252.0
+offset_bottom = 570.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_organ_stats")
+
+[node name="StatsTitle" type="Label" parent="UI/HUD/OrganScreen" unique_id=1976278601]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 40.0
+offset_right = 238.0
+offset_bottom = 68.0
+theme_type_variation = &"HeaderLabel"
+theme_override_colors/font_color = Color(0.47, 0.94, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 17
+text = "KODA STATUS"
+
+[node name="StatsLabel" type="Label" parent="UI/HUD/OrganScreen" unique_id=688225091]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 82.0
+offset_right = 238.0
+offset_bottom = 556.0
+theme_type_variation = &"MonoLabel"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 14
+text = "LEVEL        1
+HEALTH       100 / 100
+DAMAGE       15
+ATTACK RATE  1.25 / sec
+RANGE        220
+MOVE SPEED   210"
+autowrap_mode = 2
+
+[node name="WeaponsBackground" type="Panel" parent="UI/HUD/OrganScreen" unique_id=152227128]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 590.0
+offset_right = 545.0
+offset_bottom = 710.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_organ_stats")
+
+[node name="WeaponsTitle" type="Label" parent="UI/HUD/OrganScreen" unique_id=484658449]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 596.0
+offset_right = 531.0
+offset_bottom = 622.0
+theme_override_colors/font_color = Color(0.96, 0.98, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 15
+text = "WEAPONS  ·  3 EXTRA SLOTS"
+
+[node name="WeaponSummary" type="HBoxContainer" parent="UI/HUD/OrganScreen" unique_id=837732091]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 624.0
+offset_right = 531.0
+offset_bottom = 704.0
+theme_override_constants/separation = 10
+
+[node name="ItemsBackground" type="Panel" parent="UI/HUD/OrganScreen" unique_id=244092210]
+layout_mode = 0
+offset_left = 555.0
+offset_top = 590.0
+offset_right = 1080.0
+offset_bottom = 710.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_organ_stats")
+
+[node name="ItemsTitle" type="Label" parent="UI/HUD/OrganScreen" unique_id=1063591516]
+layout_mode = 0
+offset_left = 569.0
+offset_top = 596.0
+offset_right = 1066.0
+offset_bottom = 622.0
+theme_override_colors/font_color = Color(0.96, 0.98, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 15
+text = "ITEMS"
+
+[node name="ItemScroll" type="ScrollContainer" parent="UI/HUD/OrganScreen" unique_id=1167343326]
+layout_mode = 0
+offset_left = 569.0
+offset_top = 624.0
+offset_right = 1066.0
+offset_bottom = 708.0
+horizontal_scroll_mode = 2
+vertical_scroll_mode = 0
+
+[node name="ItemSummary" type="HBoxContainer" parent="UI/HUD/OrganScreen/ItemScroll" unique_id=80075629]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="CloseButton" type="Button" parent="UI/HUD/OrganScreen" unique_id=252927345]
+visible = false
+layout_mode = 0
+offset_left = 980.0
+offset_top = 650.0
+offset_right = 1248.0
+offset_bottom = 704.0
+theme_override_colors/font_color = Color(0.96, 0.98, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "BACK TO PAUSE"
+
+[node name="HeartSlot" type="Control" parent="UI/HUD/OrganScreen" unique_id=1547096742]
+anchors_preset = 0
+offset_left = 490.0
+offset_top = 328.0
+offset_right = 622.0
+offset_bottom = 476.0
+script = ExtResource("16_ewbju")
+accepted_slot = 3
+
+[node name="InstalledOrgan" type="TextureRect" parent="UI/HUD/OrganScreen/HeartSlot" unique_id=1623658231]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 34.0
+offset_top = 36.0
+offset_right = -34.0
+offset_bottom = -36.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BrainSlot" type="Control" parent="UI/HUD/OrganScreen" unique_id=98313793]
+anchors_preset = 0
+offset_left = 342.0
+offset_top = 246.0
+offset_right = 472.0
+offset_bottom = 389.0
+script = ExtResource("16_ewbju")
+accepted_slot = 1
+
+[node name="InstalledOrgan" type="TextureRect" parent="UI/HUD/OrganScreen/BrainSlot" unique_id=1277653236]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 34.0
+offset_top = 32.0
+offset_right = -34.0
+offset_bottom = -32.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ReplacementConfirmation" type="Control" parent="UI/HUD/OrganScreen" unique_id=1708584946]
+visible = false
+z_index = 200
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Shade" type="ColorRect" parent="UI/HUD/OrganScreen/ReplacementConfirmation" unique_id=1554394548]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.006, 0.008, 0.012, 0.76)
+
+[node name="Center" type="CenterContainer" parent="UI/HUD/OrganScreen/ReplacementConfirmation" unique_id=105930906]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="UI/HUD/OrganScreen/ReplacementConfirmation/Center" unique_id=1038220426]
+custom_minimum_size = Vector2(430, 250)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_organ_stats")
+
+[node name="Margin" type="MarginContainer" parent="UI/HUD/OrganScreen/ReplacementConfirmation/Center/Panel" unique_id=300519157]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 24
+
+[node name="Content" type="VBoxContainer" parent="UI/HUD/OrganScreen/ReplacementConfirmation/Center/Panel/Margin" unique_id=1171990572]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Title" type="Label" parent="UI/HUD/OrganScreen/ReplacementConfirmation/Center/Panel/Margin/Content" unique_id=51837477]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+theme_override_colors/font_color = Color(0.47, 0.94, 1, 1)
+theme_override_font_sizes/font_size = 22
+text = "REPLACE ORGAN?"
+horizontal_alignment = 1
+
+[node name="Message" type="Label" parent="UI/HUD/OrganScreen/ReplacementConfirmation/Center/Panel/Margin/Content" unique_id=1197372904]
+custom_minimum_size = Vector2(0, 95)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.96, 0.98, 1, 1)
+theme_override_font_sizes/font_size = 16
+text = "DO YOU WANT TO REPLACE IT?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Buttons" type="HBoxContainer" parent="UI/HUD/OrganScreen/ReplacementConfirmation/Center/Panel/Margin/Content" unique_id=1846982917]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="Yes" type="Button" parent="UI/HUD/OrganScreen/ReplacementConfirmation/Center/Panel/Margin/Content/Buttons" unique_id=1776505795]
+custom_minimum_size = Vector2(150, 52)
+layout_mode = 2
+text = "YES"
+
+[node name="No" type="Button" parent="UI/HUD/OrganScreen/ReplacementConfirmation/Center/Panel/Margin/Content/Buttons" unique_id=880991244]
+custom_minimum_size = Vector2(150, 52)
+layout_mode = 2
+text = "NO"
+
+[node name="PausePanel" type="Control" parent="UI/HUD" unique_id=1037074587]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="UI/HUD/PausePanel" unique_id=1303732521]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.02, 0.025, 0.04, 0.84)
+
+[node name="CenterContainer" type="CenterContainer" parent="UI/HUD/PausePanel" unique_id=2004392021]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/HUD/PausePanel/CenterContainer" unique_id=415923241]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="TitleLabel" type="Label" parent="UI/HUD/PausePanel/CenterContainer/VBoxContainer" unique_id=959363701]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+theme_override_font_sizes/font_size = 32
+text = "PAUSED"
+horizontal_alignment = 1
+
+[node name="ResumeButton" type="Button" parent="UI/HUD/PausePanel/CenterContainer/VBoxContainer" unique_id=39054251]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "RESUME"
+
+[node name="RestartButton" type="Button" parent="UI/HUD/PausePanel/CenterContainer/VBoxContainer" unique_id=1673224857]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "START NEW RUN"
+
+[node name="SettingsButton" type="Button" parent="UI/HUD/PausePanel/CenterContainer/VBoxContainer" unique_id=585022155]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "SETTINGS"
+
+[node name="OrganScreenButton" type="Button" parent="UI/HUD/PausePanel/CenterContainer/VBoxContainer" unique_id=387394483]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "ORGAN SCREEN"
+
+[node name="MainMenuButton" type="Button" parent="UI/HUD/PausePanel/CenterContainer/VBoxContainer" unique_id=1262583971]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "RETURN TO MAIN MENU"
+
+[node name="QuitButton" type="Button" parent="UI/HUD/PausePanel/CenterContainer/VBoxContainer" unique_id=13668016]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "QUIT GAME"
+
+[node name="SettingsContainer" type="VBoxContainer" parent="UI/HUD/PausePanel/CenterContainer" unique_id=142354934]
+visible = false
+custom_minimum_size = Vector2(430, 0)
+layout_mode = 2
+theme_override_constants/separation = 9
+
+[node name="TitleLabel" type="Label" parent="UI/HUD/PausePanel/CenterContainer/SettingsContainer" unique_id=790272820]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+theme_override_font_sizes/font_size = 30
+text = "SETTINGS"
+horizontal_alignment = 1
+
+[node name="FullscreenToggle" type="CheckButton" parent="UI/HUD/PausePanel/CenterContainer/SettingsContainer" unique_id=1793389609]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_colors/font_hover_color = Color(0.9, 0.96, 1, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.9, 0.96, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "FULLSCREEN"
+metadata/ui_polish_skip = true
+
+[node name="ResolutionRow" type="HBoxContainer" parent="UI/HUD/PausePanel/CenterContainer/SettingsContainer" unique_id=549374060]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="UI/HUD/PausePanel/CenterContainer/SettingsContainer/ResolutionRow" unique_id=497989119]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.96, 1, 1)
+text = "RESOLUTION"
+vertical_alignment = 1
+
+[node name="ResolutionOption" type="OptionButton" parent="UI/HUD/PausePanel/CenterContainer/SettingsContainer/ResolutionRow" unique_id=553239249]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(230, 38)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LanguageRow" type="HBoxContainer" parent="UI/HUD/PausePanel/CenterContainer/SettingsContainer" unique_id=1045131675]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="UI/HUD/PausePanel/CenterContainer/SettingsContainer/LanguageRow" unique_id=321159913]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.96, 1, 1)
+text = "LANGUAGE"
+vertical_alignment = 1
+
+[node name="LanguageOption" type="OptionButton" parent="UI/HUD/PausePanel/CenterContainer/SettingsContainer/LanguageRow" unique_id=300947898]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(230, 38)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VolumeTitle" type="Label" parent="UI/HUD/PausePanel/CenterContainer/SettingsContainer" unique_id=684845144]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.96, 1, 1)
+theme_override_font_sizes/font_size = 17
+text = "MASTER VOLUME"
+
+[node name="VolumeRow" type="HBoxContainer" parent="UI/HUD/PausePanel/CenterContainer/SettingsContainer" unique_id=856821774]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="VolumeSlider" type="HSlider" parent="UI/HUD/PausePanel/CenterContainer/SettingsContainer/VolumeRow" unique_id=98801788]
+custom_minimum_size = Vector2(245, 36)
+layout_mode = 2
+size_flags_horizontal = 3
+value = 100.0
+
+[node name="VolumeValueLabel" type="Label" parent="UI/HUD/PausePanel/CenterContainer/SettingsContainer/VolumeRow" unique_id=799155510]
+custom_minimum_size = Vector2(54, 0)
+layout_mode = 2
+theme_type_variation = &"MonoLabel"
+theme_override_colors/font_color = Color(0.94, 0.98, 1, 1)
+theme_override_font_sizes/font_size = 16
+text = "100%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="CRTRow" type="HBoxContainer" parent="UI/HUD/PausePanel/CenterContainer/SettingsContainer" unique_id=1647572144]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="UI/HUD/PausePanel/CenterContainer/SettingsContainer/CRTRow" unique_id=880534384]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.96, 1, 1)
+text = "CRT FILTER"
+vertical_alignment = 1
+
+[node name="CRTSlider" type="HSlider" parent="UI/HUD/PausePanel/CenterContainer/SettingsContainer/CRTRow" unique_id=700860456]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 34)
+layout_mode = 2
+size_flags_horizontal = 3
+value = 24.0
+
+[node name="CRTValueLabel" type="Label" parent="UI/HUD/PausePanel/CenterContainer/SettingsContainer/CRTRow" unique_id=205793895]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(54, 0)
+layout_mode = 2
+theme_type_variation = &"MonoLabel"
+text = "24%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="BloomRow" type="HBoxContainer" parent="UI/HUD/PausePanel/CenterContainer/SettingsContainer" unique_id=579119907]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="UI/HUD/PausePanel/CenterContainer/SettingsContainer/BloomRow" unique_id=1912367064]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.96, 1, 1)
+text = "BLOOM"
+vertical_alignment = 1
+
+[node name="BloomSlider" type="HSlider" parent="UI/HUD/PausePanel/CenterContainer/SettingsContainer/BloomRow" unique_id=1316725806]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 34)
+layout_mode = 2
+size_flags_horizontal = 3
+value = 9.0
+
+[node name="BloomValueLabel" type="Label" parent="UI/HUD/PausePanel/CenterContainer/SettingsContainer/BloomRow" unique_id=584468388]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(54, 0)
+layout_mode = 2
+theme_type_variation = &"MonoLabel"
+text = "9%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ChromaticRow" type="HBoxContainer" parent="UI/HUD/PausePanel/CenterContainer/SettingsContainer" unique_id=1194742686]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="UI/HUD/PausePanel/CenterContainer/SettingsContainer/ChromaticRow" unique_id=420876567]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.96, 1, 1)
+text = "CHROMATIC"
+vertical_alignment = 1
+
+[node name="ChromaticSlider" type="HSlider" parent="UI/HUD/PausePanel/CenterContainer/SettingsContainer/ChromaticRow" unique_id=826093987]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 34)
+layout_mode = 2
+size_flags_horizontal = 3
+value = 9.0
+
+[node name="ChromaticValueLabel" type="Label" parent="UI/HUD/PausePanel/CenterContainer/SettingsContainer/ChromaticRow" unique_id=202755864]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(54, 0)
+layout_mode = 2
+theme_type_variation = &"MonoLabel"
+text = "9%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="BitReducerRow" type="HBoxContainer" parent="UI/HUD/PausePanel/CenterContainer/SettingsContainer" unique_id=1720333771]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="UI/HUD/PausePanel/CenterContainer/SettingsContainer/BitReducerRow" unique_id=961369963]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.96, 1, 1)
+text = "BIT REDUCER"
+vertical_alignment = 1
+
+[node name="BitReducerSlider" type="HSlider" parent="UI/HUD/PausePanel/CenterContainer/SettingsContainer/BitReducerRow" unique_id=617471511]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(210, 34)
+layout_mode = 2
+size_flags_horizontal = 3
+value = 42.0
+
+[node name="BitReducerValueLabel" type="Label" parent="UI/HUD/PausePanel/CenterContainer/SettingsContainer/BitReducerRow" unique_id=634493473]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(54, 0)
+layout_mode = 2
+theme_type_variation = &"MonoLabel"
+text = "42%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="BackButton" type="Button" parent="UI/HUD/PausePanel/CenterContainer/SettingsContainer" unique_id=107701050]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "BACK"
+
+[node name="DeathMessage" type="Control" parent="UI/HUD" unique_id=1705002917]
+process_mode = 3
+visible = false
+z_index = 90
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="UI/HUD/DeathMessage" unique_id=54590959]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -144.0
+offset_bottom = -144.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="UI/HUD/DeathMessage/CenterContainer" unique_id=1533349561]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+theme_override_colors/font_color = Color(0.96, 0.105, 0.16, 1)
+theme_override_colors/font_outline_color = Color(0.08, 0.006, 0.012, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 68
+text = "YOU DIED"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RunEndPanel" type="Control" parent="UI/HUD" unique_id=262319630]
+visible = false
+z_index = 100
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="UI/HUD/RunEndPanel" unique_id=937692660]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.02, 0.025, 0.04, 0.9)
+
+[node name="CenterContainer" type="CenterContainer" parent="UI/HUD/RunEndPanel" unique_id=1701582563]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/HUD/RunEndPanel/CenterContainer" unique_id=1721513589]
+custom_minimum_size = Vector2(720, 0)
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="TitleLabel" type="Label" parent="UI/HUD/RunEndPanel/CenterContainer/VBoxContainer" unique_id=112020158]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+theme_override_colors/font_color = Color(0.3, 0.95, 0.95, 1)
+theme_override_font_sizes/font_size = 34
+text = "RUN COMPLETE"
+horizontal_alignment = 1
+
+[node name="SummaryLabel" type="Label" parent="UI/HUD/RunEndPanel/CenterContainer/VBoxContainer" unique_id=152931295]
+layout_mode = 2
+theme_type_variation = &"MonoLabel"
+theme_override_font_sizes/font_size = 16
+text = "TIME  00:00
+KILLS  0
+BIOMASS  0
+LEVEL  1"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="RestartButton" type="Button" parent="UI/HUD/RunEndPanel/CenterContainer/VBoxContainer" unique_id=862307221]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "START NEW RUN"
+
+[node name="MainMenuButton" type="Button" parent="UI/HUD/RunEndPanel/CenterContainer/VBoxContainer" unique_id=280603435]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "RETURN TO MAIN MENU"
+
+[node name="QuitButton" type="Button" parent="UI/HUD/RunEndPanel/CenterContainer/VBoxContainer" unique_id=1456566104]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "QUIT GAME"
+
+[node name="OnboardingPanel" type="Control" parent="UI/HUD" unique_id=1603829791]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="UI/HUD/OnboardingPanel" unique_id=1078288852]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.015, 0.025, 0.03, 0.88)
+
+[node name="CenterContainer" type="CenterContainer" parent="UI/HUD/OnboardingPanel" unique_id=1634351574]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="UI/HUD/OnboardingPanel/CenterContainer" unique_id=128773823]
+custom_minimum_size = Vector2(650, 0)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/HUD/OnboardingPanel/CenterContainer/PanelContainer" unique_id=417410465]
+layout_mode = 2
+theme_override_constants/margin_left = 42
+theme_override_constants/margin_top = 34
+theme_override_constants/margin_right = 42
+theme_override_constants/margin_bottom = 34
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/HUD/OnboardingPanel/CenterContainer/PanelContainer/MarginContainer" unique_id=1862874252]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="TitleLabel" type="Label" parent="UI/HUD/OnboardingPanel/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1274899743]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+theme_override_colors/font_color = Color(0.38, 0.94, 0.98, 1)
+theme_override_font_sizes/font_size = 34
+text = "WELCOME TO FLESHDRIVE"
+horizontal_alignment = 1
+
+[node name="GoalLabel" type="Label" parent="UI/HUD/OnboardingPanel/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1624631151]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "SURVIVE FOR 12 MINUTES"
+horizontal_alignment = 1
+
+[node name="InstructionsLabel" type="Label" parent="UI/HUD/OnboardingPanel/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=48528448]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.88, 0.88, 1)
+theme_override_font_sizes/font_size = 17
+text = "SURVIVE FOR 12 MINUTES
+Collect biomass, refine your build, defeat the Warden."
+horizontal_alignment = 1
+
+[node name="GuideButton" type="Button" parent="UI/HUD/OnboardingPanel/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1526680009]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "SHOW CONTROLS & SYSTEMS"
+
+[node name="GuideLabel" type="Label" parent="UI/HUD/OnboardingPanel/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=387149667]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.74, 0.86, 0.88, 1)
+theme_override_font_sizes/font_size = 12
+text = "MOVE  WASD / LEFT STICK    ATTACK  LMB / RIGHT STICK
+DASH  SPACE / GAMEPAD A     PAUSE   ESC / START
+
+Level-up offers always include an active Fleshdrive mutation.
+Matching synergy tags strengthen a focused build.
+Install organs on the matching anatomy slot in ORGAN SCREEN."
+horizontal_alignment = 1
+
+[node name="StartButton" type="Button" parent="UI/HUD/OnboardingPanel/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=464260292]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "BEGIN RUN"
+
+[node name="BiofabricatorSequence" parent="UI/HUD" unique_id=1116693012 instance=ExtResource("42_bio")]
+z_index = 120
+layout_mode = 1
+
+[node name="FleshdriveOperationScreen" parent="UI/HUD" unique_id=2053555311 instance=ExtResource("43_operation")]
+z_index = 110
+layout_mode = 1
+
+[node name="GameplayCrosshair" type="Control" parent="UI/HUD" unique_id=1248174057]
+anchors_preset = 0
+offset_right = 34.0
+offset_bottom = 34.0
+mouse_filter = 2
+script = ExtResource("63_crosshair")
+
+[node name="PostProcess" parent="." unique_id=701494811 instance=ExtResource("34_post_process")]
