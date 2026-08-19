@@ -1,68 +1,26 @@
-[gd_scene format=3 uid="uid://bd76kbucn7lu7"]
+[gd_scene format=3 uid="uid://de0ljho86yvdh"]
 
-[ext_resource type="Script" uid="uid://ca0wiow5qmmat" path="res://Scripts/main_menu.gd" id="1_script"]
-[ext_resource type="AudioStream" uid="uid://cyfexmffp7pfn" path="res://Assets/audio/music/main_menu.mp3" id="3_menu_music"]
-[ext_resource type="Texture2D" uid="uid://y5drqtqrysf2" path="res://Assets/ui/screens/menu_background.png" id="4_cp0ys"]
-[ext_resource type="PackedScene" path="res://Scenes/post_process.tscn" id="4_post_process"]
-[ext_resource type="PackedScene" path="res://Scenes/ui/skill_tree_panel.tscn" id="5_skill_tree"]
-[ext_resource type="Texture2D" uid="uid://c46k4ipl4uvf1" path="res://Assets/ui/screens/fleshdrive_logo.png" id="5_yhxw7"]
-[ext_resource type="PackedScene" uid="uid://d3hk6kh3ss73n" path="res://Scenes/ui/loading_screen.tscn" id="6_loading"]
-[ext_resource type="Texture2D" uid="uid://dbtgyakhk5fao" path="res://Assets/ui/screens/koda_silhouette.png" id="6_trj04"]
-[ext_resource type="Script" uid="uid://dc34cfmipq08k" path="res://Scripts/visual/ink_crimson_backdrop.gd" id="7_ink_backdrop"]
+[ext_resource type="Script" uid="uid://ca0wiow5qmmat" path="res://Scripts/main_menu.gd" id="1_3wuop"]
+[ext_resource type="PackedScene" uid="uid://d3hk6kh3ss73n" path="res://Scenes/ui/loading_screen.tscn" id="2_7pnr4"]
+[ext_resource type="AudioStream" uid="uid://cyfexmffp7pfn" path="res://Assets/audio/music/main_menu.mp3" id="3_dw4ec"]
+[ext_resource type="Texture2D" uid="uid://dbh3r2do0ghpi" path="res://Assets/ui/screens/mainmenu.png" id="4_7p233"]
+[ext_resource type="Script" uid="uid://dc34cfmipq08k" path="res://Scripts/visual/ink_crimson_backdrop.gd" id="5_02sc6"]
+[ext_resource type="PackedScene" path="res://Scenes/ui/skill_tree_panel.tscn" id="6_3oere"]
+[ext_resource type="PackedScene" path="res://Scenes/post_process.tscn" id="7_3rmcv"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_trj04"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d6u6w"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_f8x8u"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_x8tjb"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4nkqq"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_phnxp"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gxn76"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_16hvj"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vr1f0"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vtepg"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8dnnj"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t1dhk"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_m3bi6"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wyh8j"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ujyyl"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mkpwh"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5egv6"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ehtkc"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6dk6o"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jr6u5"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6m47u"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBox_settings_light"]
-bg_color = Color(0.018, 0.024, 0.03, 0.94)
+[sub_resource type="StyleBoxFlat" id="StyleBox_panel"]
+bg_color = Color(0.018, 0.024, 0.03, 0.72)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.18, 0.48, 0.55, 0.82)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+border_color = Color(0.18, 0.7, 0.82, 0.48)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0, 0, 0.24)
+shadow_size = 12
 
 [sub_resource type="StyleBoxFlat" id="StyleBox_button_focus"]
 bg_color = Color(0, 0, 0, 0)
@@ -76,26 +34,17 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[sub_resource type="StyleBoxFlat" id="StyleBox_panel"]
-bg_color = Color(0.019607844, 0.023529412, 0.03137255, 0)
+[sub_resource type="StyleBoxFlat" id="StyleBox_settings_light"]
+bg_color = Color(0.018, 0.024, 0.03, 0.94)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.18039216, 0.69803923, 0.81960785, 0)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-shadow_color = Color(0, 0, 0, 0)
-shadow_size = 12
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_trj04"]
-content_margin_top = 1.0
-content_margin_bottom = 1.0
-bg_color = Color(0.4, 0.05882353, 0.19215687, 1)
-border_color = Color(0, 0.59607846, 0.85882354, 1)
-anti_aliasing = false
+border_color = Color(0.18, 0.48, 0.55, 0.82)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [node name="MainMenu" type="Control" unique_id=1618148076]
 process_mode = 3
@@ -105,13 +54,12 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_script")
+script = ExtResource("1_3wuop")
 
-[node name="LoadingScreen" parent="." unique_id=412242893 instance=ExtResource("6_loading")]
-layout_mode = 1
+[node name="LoadingScreen" parent="." unique_id=412242893 instance=ExtResource("2_7pnr4")]
 
 [node name="Music" type="AudioStreamPlayer" parent="." unique_id=1957210849]
-stream = ExtResource("3_menu_music")
+stream = ExtResource("3_dw4ec")
 volume_db = -8.0
 autoplay = true
 bus = &"Music"
@@ -124,27 +72,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-texture = ExtResource("4_cp0ys")
+texture = ExtResource("4_7p233")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="Logo" type="TextureRect" parent="." unique_id=1577666069]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-mouse_filter = 2
-texture = ExtResource("5_yhxw7")
-stretch_mode = 5
-
-[node name="KodaMenuArt" type="TextureRect" parent="." unique_id=1000036452]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-texture = ExtResource("6_trj04")
-stretch_mode = 5
-
-[node name="InkCrimsonBackdrop" type="Control" parent="." unique_id=1302714596]
-visible = false
+[node name="InkCrimsonBackdrop" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -152,10 +84,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-script = ExtResource("7_ink_backdrop")
+script = ExtResource("5_02sc6")
 
 [node name="LeftShade" type="ColorRect" parent="." unique_id=921099546]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -167,11 +98,11 @@ color = Color(0.018, 0.024, 0.03, 0.16)
 
 [node name="MenuShell" type="PanelContainer" parent="." unique_id=1040152476]
 layout_mode = 0
-offset_left = 16.0
-offset_top = 174.0
-offset_right = 476.0
-offset_bottom = 814.0
-theme_override_styles/panel = SubResource("StyleBoxEmpty_trj04")
+offset_left = 56.0
+offset_top = 64.0
+offset_right = 516.0
+offset_bottom = 704.0
+theme_override_styles/panel = SubResource("StyleBox_panel")
 
 [node name="MarginContainer" type="MarginContainer" parent="MenuShell" unique_id=176959295]
 layout_mode = 2
@@ -185,7 +116,6 @@ layout_mode = 2
 theme_override_constants/separation = 12
 
 [node name="Title" type="Label" parent="MenuShell/MarginContainer/Content" unique_id=1925662494]
-visible = false
 layout_mode = 2
 theme_type_variation = &"HeaderLabel"
 theme_override_colors/font_color = Color(0.72, 0.94, 0.98, 1)
@@ -196,14 +126,12 @@ theme_override_font_sizes/font_size = 58
 text = "FLESHDRIVE"
 
 [node name="Subtitle" type="Label" parent="MenuShell/MarginContainer/Content" unique_id=875070736]
-visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0.7, 0.8, 0.82, 1)
 theme_override_font_sizes/font_size = 15
 text = "ADAPT  •  CONSUME  •  SURVIVE"
 
 [node name="Separator" type="HSeparator" parent="MenuShell/MarginContainer/Content" unique_id=24152498]
-visible = false
 custom_minimum_size = Vector2(0, 26)
 layout_mode = 2
 
@@ -220,15 +148,9 @@ custom_minimum_size = Vector2(300, 60)
 layout_mode = 2
 size_flags_horizontal = 4
 focus_neighbor_bottom = NodePath("../SettingsButton")
-theme_override_colors/font_color = Color(0.4, 0.05882353, 0.19215687, 1)
-theme_override_colors/font_focus_color = Color(0.27058825, 0.011764706, 0.15294118, 1)
-theme_override_colors/font_hover_color = Color(0.6117647, 0.09019608, 0.23137255, 1)
+theme_override_colors/font_hover_color = Color(0.9, 1, 1, 1)
 theme_override_font_sizes/font_size = 22
-theme_override_styles/normal = SubResource("StyleBoxEmpty_d6u6w")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_f8x8u")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_x8tjb")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_4nkqq")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_phnxp")
+theme_override_styles/focus = SubResource("StyleBox_button_focus")
 text = "START RUN"
 
 [node name="SettingsButton" type="Button" parent="MenuShell/MarginContainer/Content/MainPanel" unique_id=981806745]
@@ -238,15 +160,9 @@ layout_mode = 2
 size_flags_horizontal = 4
 focus_neighbor_top = NodePath("../PlayButton")
 focus_neighbor_bottom = NodePath("../SkillTreeButton")
-theme_override_colors/font_color = Color(0.4, 0.05882353, 0.19215687, 1)
-theme_override_colors/font_focus_color = Color(0.27058825, 0.011764706, 0.15294118, 1)
-theme_override_colors/font_hover_color = Color(0.6117647, 0.09019608, 0.23137255, 1)
+theme_override_colors/font_hover_color = Color(0.9, 1, 1, 1)
 theme_override_font_sizes/font_size = 22
-theme_override_styles/normal = SubResource("StyleBoxEmpty_gxn76")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_16hvj")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_vr1f0")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_vtepg")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_8dnnj")
+theme_override_styles/focus = SubResource("StyleBox_button_focus")
 text = "SETTINGS"
 
 [node name="SkillTreeButton" type="Button" parent="MenuShell/MarginContainer/Content/MainPanel" unique_id=22561921]
@@ -256,15 +172,9 @@ layout_mode = 2
 size_flags_horizontal = 4
 focus_neighbor_top = NodePath("../SettingsButton")
 focus_neighbor_bottom = NodePath("../QuitButton")
-theme_override_colors/font_color = Color(0.4, 0.05882353, 0.19215687, 1)
-theme_override_colors/font_focus_color = Color(0.27058825, 0.011764706, 0.15294118, 1)
-theme_override_colors/font_hover_color = Color(0.6117647, 0.09019608, 0.23137255, 1)
+theme_override_colors/font_hover_color = Color(0.94, 0.82, 0.58, 1)
 theme_override_font_sizes/font_size = 22
-theme_override_styles/normal = SubResource("StyleBoxEmpty_t1dhk")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_m3bi6")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_wyh8j")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_ujyyl")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_mkpwh")
+theme_override_styles/focus = SubResource("StyleBox_button_focus")
 text = "FLESH TREE"
 
 [node name="QuitButton" type="Button" parent="MenuShell/MarginContainer/Content/MainPanel" unique_id=1273453346]
@@ -273,15 +183,9 @@ custom_minimum_size = Vector2(300, 60)
 layout_mode = 2
 size_flags_horizontal = 4
 focus_neighbor_top = NodePath("../SkillTreeButton")
-theme_override_colors/font_color = Color(0.4, 0.05882353, 0.19215687, 1)
-theme_override_colors/font_focus_color = Color(0.27058825, 0.011764706, 0.15294118, 1)
-theme_override_colors/font_hover_color = Color(0.6117647, 0.09019608, 0.23137255, 1)
+theme_override_colors/font_hover_color = Color(1, 0.82, 0.78, 1)
 theme_override_font_sizes/font_size = 22
-theme_override_styles/normal = SubResource("StyleBoxEmpty_5egv6")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_ehtkc")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_6dk6o")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_jr6u5")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_6m47u")
+theme_override_styles/focus = SubResource("StyleBox_button_focus")
 text = "QUIT GAME"
 
 [node name="SettingsPanel" type="VBoxContainer" parent="MenuShell/MarginContainer/Content" unique_id=1740328859]
@@ -530,10 +434,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -373.0
-offset_top = -26.0
-offset_right = -107.0
-offset_bottom = 8.0
+offset_left = -290.0
+offset_top = -54.0
+offset_right = -24.0
+offset_bottom = -20.0
 grow_horizontal = 0
 grow_vertical = 0
 theme_override_colors/font_color = Color(0.82, 0.9, 0.88, 0.96)
@@ -546,12 +450,11 @@ horizontal_alignment = 2
 
 [node name="PrototypeInfoPanel" type="PanelContainer" parent="." unique_id=224033705]
 unique_name_in_owner = true
-visible = false
 layout_mode = 0
-offset_left = 1006.0
-offset_top = 134.0
-offset_right = 1256.0
-offset_bottom = 326.0
+offset_left = 575.0
+offset_top = 68.0
+offset_right = 935.0
+offset_bottom = 260.0
 theme_override_styles/panel = SubResource("StyleBox_panel")
 
 [node name="Margin" type="MarginContainer" parent="PrototypeInfoPanel" unique_id=298667028]
@@ -568,42 +471,38 @@ theme_override_constants/separation = 6
 [node name="Header" type="Label" parent="PrototypeInfoPanel/Margin/Content" unique_id=1582837286]
 layout_mode = 2
 theme_type_variation = &"HeaderLabel"
-theme_override_colors/font_color = Color(0.4, 0.05882353, 0.19215687, 1)
 theme_override_font_sizes/font_size = 18
 text = "RUN PROFILE"
 
 [node name="Divider" type="HSeparator" parent="PrototypeInfoPanel/Margin/Content" unique_id=990129680]
 layout_mode = 2
-theme_override_styles/separator = SubResource("StyleBoxFlat_trj04")
 
 [node name="Profile" type="Label" parent="PrototypeInfoPanel/Margin/Content" unique_id=1737118757]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.4, 0.05882353, 0.19215687, 1)
 theme_override_font_sizes/font_size = 11
 text = "SUBJECT: K0D4"
 
 [node name="BuildHeader" type="Label" parent="PrototypeInfoPanel/Margin/Content" unique_id=670296056]
 layout_mode = 2
 theme_type_variation = &"SectionLabel"
-theme_override_colors/font_color = Color(0.4, 0.05882353, 0.19215687, 1)
+theme_override_colors/font_color = Color(0.36, 0.88, 0.94, 1)
 theme_override_font_sizes/font_size = 13
 text = "ACTIVE HEART"
 
 [node name="Build" type="Label" parent="PrototypeInfoPanel/Margin/Content" unique_id=1634238981]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.4, 0.05882353, 0.19215687, 1)
 theme_override_font_sizes/font_size = 12
-text = "VOLTAIC HEART"
+text = "VOLTAIC HEART
+THUNDER GOD BUILD"
 
 [node name="Hint" type="Label" parent="PrototypeInfoPanel/Margin/Content" unique_id=1837915523]
-visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0.65, 0.72, 0.74, 1)
 theme_override_font_sizes/font_size = 10
 text = "Additional hearts are in development."
 autowrap_mode = 3
 
-[node name="SkillTreePanel" parent="." unique_id=1112544274 instance=ExtResource("5_skill_tree")]
+[node name="SkillTreePanel" parent="." unique_id=1112544274 instance=ExtResource("6_3oere")]
 layout_mode = 1
 
-[node name="PostProcess" parent="." unique_id=839529329 instance=ExtResource("4_post_process")]
+[node name="PostProcess" parent="." unique_id=839529329 instance=ExtResource("7_3rmcv")]

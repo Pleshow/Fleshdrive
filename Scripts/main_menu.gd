@@ -52,8 +52,11 @@ func _ready() -> void:
 	var flow := get_tree().root.get_node_or_null("GameFlow")
 	if flow != null:
 		flow.call("force_state", &"MENU", false)
+	if flow.has_method("set_selected_arena"):
+		flow.call("set_selected_arena", &"dusk_garden")
+		
 	_raise_menu_ui_above_post_process()
-	_install_ink_crimson_icons()
+	#_install_ink_crimson_icons()
 	play_button.pressed.connect(_on_play_pressed)
 	settings_button.pressed.connect(_open_settings)
 	skill_tree_button.pressed.connect(_open_skill_tree)
@@ -68,7 +71,7 @@ func _ready() -> void:
 	bit_reducer_slider.value_changed.connect(_on_bit_reducer_changed)
 	back_button.pressed.connect(_close_settings)
 	skill_tree_panel.back_requested.connect(_close_skill_tree)
-	_install_arena_selector()
+	#_install_arena_selector()
 	_connect_button_sounds()
 	resized.connect(_update_responsive_layout)
 
@@ -129,6 +132,8 @@ func _raise_menu_ui_above_post_process() -> void:
 
 
 func _update_responsive_layout() -> void:
+	if not settings_panel.visible:
+		return
 	if not is_instance_valid(menu_shell):
 		return
 	var viewport_size := get_viewport_rect().size
