@@ -13,10 +13,16 @@ const DUSK_GARDEN_ARENA_ID: StringName = &"dusk_garden"
 
 
 func _ready() -> void:
+	var ink_system := get_tree().root.get_node_or_null("InkCrimsonVisualSystem")
+	if ink_system != null:
+		ink_system.set_enabled(true)
+
 	var flow := get_tree().root.get_node_or_null("GameFlow")
 	var selected_arena := &"bio_lab"
+
 	if flow != null:
 		selected_arena = StringName(flow.get("selected_arena_id"))
+
 	match selected_arena:
 		ISOMETRIC_ARENA_ID:
 			_activate_isometric_arena()
@@ -144,3 +150,8 @@ func _show_arena_identification(
 	tween.tween_interval(2.4)
 	tween.tween_property(panel, "modulate:a", 0.0, 0.55)
 	tween.tween_callback(layer.queue_free)
+	
+func _exit_tree() -> void:
+	var ink_system := get_tree().root.get_node_or_null("InkCrimsonVisualSystem")
+	if ink_system != null:
+		ink_system.set_enabled(false)

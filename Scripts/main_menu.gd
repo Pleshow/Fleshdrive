@@ -46,9 +46,13 @@ var game_loading: bool = false
 var arena_selector_panel: PanelContainer
 var arena_option: OptionButton
 var arena_description_label: Label
+var main_menu_shell_position: Vector2
+var main_menu_shell_size: Vector2
 
 
 func _ready() -> void:
+	main_menu_shell_position = menu_shell.position
+	main_menu_shell_size = menu_shell.size
 	var flow := get_tree().root.get_node_or_null("GameFlow")
 	if flow != null:
 		flow.call("force_state", &"MENU", false)
@@ -491,11 +495,14 @@ func _open_settings() -> void:
 
 func _close_settings() -> void:
 	settings_panel.hide()
-	title_label.show()
-	subtitle_label.show()
-	title_separator.show()
+
+	# Az új főmenüben ezeket már a háttér/logo grafika helyettesíti.
+	title_label.hide()
+	subtitle_label.hide()
+	title_separator.hide()
+
 	main_panel.show()
-	_update_responsive_layout()
+	_restore_main_menu_layout()
 	_animate_ui_in(main_panel)
 	settings_button.grab_focus()
 
@@ -510,9 +517,11 @@ func _open_skill_tree() -> void:
 func _close_skill_tree() -> void:
 	skill_tree_panel.hide()
 	menu_shell.show()
-	prototype_info_panel.show()
-	_refresh_prototype_profile()
-	_update_responsive_layout()
+
+	prototype_info_panel.hide()
+
+	_restore_main_menu_layout()
+
 	version_label.show()
 	_animate_ui_in(menu_shell)
 	skill_tree_button.grab_focus()
@@ -620,21 +629,42 @@ func _on_language_selected(index: int) -> void:
 	var settings := get_tree().root.get_node_or_null("GameSettings")
 	if settings == null:
 		return
+
 	settings.call(
 		"set_language",
 		String(language_option.get_item_metadata(index))
 	)
+
 	_refresh_dynamic_localization()
+
+	if settings_panel.visible:
+		_update_responsive_layout.call_deferred()
 
 
 func _refresh_dynamic_localization() -> void:
 	_populate_language_options()
-	var tabs := menu_shell.find_child("SettingsTabs", true, false) as TabContainer
+
+	var tabs := menu_shell.find_child(
+		"SettingsTabs",
+		true,
+		false
+	) as TabContainer
+
 	if tabs != null and tabs.get_tab_count() >= 2:
 		tabs.set_tab_title(0, tr("DISPLAY & AUDIO"))
-		tabs.set_tab_title(1, tr("GAMEPLAY & ACCESSIBILITY"))
+		tabs.set_tab_title(
+			1,
+			tr("GAMEPLAY & ACCESSIBILITY")
+		)
+
 	version_label.text = tr("PRE-ALPHA DEMO")
 	_refresh_prototype_profile()
+
+	# Az új főmenü saját grafikát használ.
+	title_label.hide()
+	subtitle_label.hide()
+	title_separator.hide()
+	prototype_info_panel.hide()
 
 
 func _refresh_prototype_profile() -> void:
@@ -719,3 +749,12 @@ func _update_effect_value_label(label: Label, value: float) -> void:
 
 func _on_quit_pressed() -> void:
 	get_tree().quit()
+
+func _restore_main_menu_layout() -> void:
+	menu_shell.position = main_menu_shell_position
+	menu_shell.size = main_menu_shell_size
+
+	title_label.hide()
+	subtitle_label.hide()
+	title_separator.hide()
+	prototype_info_panel.hide()
