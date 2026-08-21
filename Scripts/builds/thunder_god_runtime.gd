@@ -25,6 +25,7 @@ var eye_discharge_tick: float = 0.0
 var overload: float = 0.0
 var shock_visual_tick: float = 0.0
 var player_aura: Node2D
+var player_aura_sprite: AnimatedSprite2D
 var status_layer: CanvasLayer
 var status_bar: ProgressBar
 var status_label: Label
@@ -49,6 +50,12 @@ func shutdown() -> void:
 		pipeline.target_killed.disconnect(_on_target_killed)
 	if is_instance_valid(status_layer):
 		status_layer.queue_free()
+	_release_looped_vfx(player_aura_sprite)
+	player_aura_sprite = null
+	if is_instance_valid(player_aura):
+		player_aura.queue_free()
+	player_aura = null
+	status_layer = null
 
 
 func update(delta: float) -> void:
@@ -125,6 +132,7 @@ func _run_chain(
 		first_target.global_position
 	)
 	var source_anchor: Node2D = player
+	var last_target: Node2D = null
 	var target_count := BASE_CHAIN_TARGETS + mini(_level(&"arc_relay"), 4)
 	var base_damage := maxf(player.attack_damage, BASE_DAMAGE)
 	for jump_index in range(target_count):
@@ -137,6 +145,7 @@ func _run_chain(
 		var damage := base_damage * arc_heart_multiplier * falloff * _overload_damage_multiplier()
 		var was_shocked := _shock_stacks(current_target) > 0
 		_hit_target(current_target, damage, source_type, context, state, allow_capacitor)
+		last_target = current_target
 		_draw_lightning(
 			origin,
 			current_target.global_position,
@@ -157,6 +166,8 @@ func _run_chain(
 		origin = current_target.global_position
 		source_anchor = current_target
 		current_target = _nearest_unvisited(origin, _chain_range(), context.visited_targets)
+	if is_instance_valid(last_target):
+		host.play_build_vfx(&"shock_proc", last_target.global_position, 0.52)
 
 
 func _hit_target(
@@ -387,14 +398,17 @@ func _draw_lightning(
 		arc.set_meta("autoattack_lightning", true)
 		arc.set_meta("tracks_player_source", source_anchor == player)
 		if is_instance_valid(source_anchor) and is_instance_valid(target_anchor):
+			var visual_effects_generation := int(
+				arc.get_meta("vfx_generation", -1)
+			)
 			_track_lightning_asset(
 				arc,
 				source_anchor,
 				target_anchor,
 				intensity,
-				branch
+				branch,
+				visual_effects_generation
 			)
-	host.play_build_vfx(&"electric_impact", to, 0.85 + intensity * 0.45)
 
 
 func _fit_lightning_asset(
@@ -420,11 +434,13 @@ func _track_lightning_asset(
 	source_anchor: Node2D,
 	target_anchor: Node2D,
 	intensity: float,
-	branch: bool
+	branch: bool,
+	generation: int
 ) -> void:
 	while (
 		is_instance_valid(arc)
 		and arc.visible
+		and int(arc.get_meta("vfx_generation", -1)) == generation
 		and is_instance_valid(source_anchor)
 		and is_instance_valid(target_anchor)
 	):
@@ -444,73 +460,75 @@ func _track_lightning_asset(
 
 
 func _show_shock_crown(target: Node2D, stacks: int) -> void:
-	if not is_instance_valid(target):
+	if not is_instance_valid(target) or target.get("is_dead") == true:
 		return
-	var existing := target.get_node_or_null("ThunderShockCrown") as Line2D
+	var existing: AnimatedSprite2D
+	var existing_ref := (
+		target.get_meta("status_vfx_shock") as WeakRef
+		if target.has_meta("status_vfx_shock")
+		else null
+	)
+	if existing_ref != null:
+		existing = existing_ref.get_ref() as AnimatedSprite2D
 	if existing != null:
-		existing.default_color.a = 0.34 + 0.10 * float(stacks)
+		existing.modulate.a = 0.50 + 0.08 * float(stacks)
+		existing.scale = Vector2.ONE * (0.92 + 0.06 * float(stacks))
 		return
-	var crown := Line2D.new()
-	crown.name = "ThunderShockCrown"
-	crown.position = Vector2.ZERO
-	crown.set_as_top_level(false)
-	crown.width = 2.0
-	crown.default_color = Color(0.25, 0.88, 1.0, 0.58)
-	crown.material = unshaded_vfx_material
-	crown.z_index = 24
-	var points := PackedVector2Array()
-	for index in range(17):
-		var angle := TAU * float(index) / 16.0
-		var radius := 24.0 + (4.0 if index % 2 == 0 else -2.0)
-		points.append(Vector2.from_angle(angle) * radius + Vector2(0.0, -8.0))
-	crown.points = points
-	target.add_child(crown)
-	var tween := crown.create_tween().set_loops()
-	tween.tween_property(crown, "modulate:a", 0.35, 0.24)
-	tween.tween_property(crown, "modulate:a", 1.0, 0.24)
+	var visual_effects := host.get_tree().root.get_node_or_null("VisualEffects")
+	if visual_effects == null:
+		return
+	var crown := visual_effects.call(
+		"play_attached", &"shock_status", target,
+		Vector2(0.0, -7.0), 0.92 + 0.06 * float(stacks), 0.0
+	) as AnimatedSprite2D
+	if crown != null:
+		crown.name = "StatusVFX_shock"
+		crown.z_index = 24
+		target.set_meta("status_vfx_shock", weakref(crown))
 
 
 func _cleanup_shock_visuals() -> void:
 	for enemy in host.living_enemies_for_build():
-		var crown := enemy.get_node_or_null("ThunderShockCrown")
+		var crown: AnimatedSprite2D
+		var crown_ref := (
+			enemy.get_meta("status_vfx_shock") as WeakRef
+			if enemy.has_meta("status_vfx_shock")
+			else null
+		)
+		if crown_ref != null:
+			crown = crown_ref.get_ref() as AnimatedSprite2D
 		if crown != null and _shock_stacks(enemy) <= 0:
-			crown.queue_free()
+			_release_looped_vfx(crown)
+			enemy.remove_meta("status_vfx_shock")
 
 
 func _update_player_aura(active: bool) -> void:
 	if not active:
-		if is_instance_valid(player_aura):
-			player_aura.hide()
+		if is_instance_valid(player_aura_sprite):
+			player_aura_sprite.hide()
 		return
 	if not is_instance_valid(player_aura):
 		player_aura = Node2D.new()
 		player_aura.name = "ThunderGodAura"
 		player_aura.z_index = 22
 		player.add_child(player_aura)
-		for ring_index in range(2):
-			var ring := Line2D.new()
-			ring.width = 3.0 if ring_index == 0 else 7.0
-			ring.default_color = (
-				Color(0.60, 0.95, 1.0, 0.82)
-				if ring_index == 0
-				else Color(0.05, 0.62, 1.0, 0.18)
-			)
-			ring.material = unshaded_vfx_material
-			var points := PackedVector2Array()
-			for index in range(25):
-				var angle := TAU * float(index) / 24.0
-				var radius := 54.0 + float(ring_index * 12) + (5.0 if index % 3 == 0 else -2.0)
-				points.append(Vector2.from_angle(angle) * radius)
-			ring.points = points
-			player_aura.add_child(ring)
-	player_aura.show()
-	player_aura.rotation += 0.055
+		var visual_effects := host.get_tree().root.get_node_or_null("VisualEffects")
+		if visual_effects != null:
+			player_aura_sprite = visual_effects.call(
+				"play_attached", &"shock_status", player_aura,
+				Vector2(0.0, -8.0), 1.35, 0.0
+			) as AnimatedSprite2D
+			if player_aura_sprite != null:
+				player_aura_sprite.name = "ThunderGodAuraAsset"
+	if is_instance_valid(player_aura_sprite):
+		player_aura_sprite.show()
 	player_aura.scale = Vector2.ONE * (
 		1.12 if thunderstate_remaining > 0.0 else 1.0
 	)
 
 
 func _show_discharge_burst(center: Vector2) -> void:
+	host.play_build_vfx(&"shock_proc", center, 0.72)
 	host.play_build_vfx(&"electro_shock", center, 3.2)
 	host.play_build_vfx(
 		StringName("storm_strike_%02d" % randi_range(1, 6)),
@@ -621,21 +639,23 @@ func _announce_build_ready() -> void:
 	if host == null or player == null:
 		return
 	host.play_build_sound(&"capacitor_ready", -2.0)
-	var outline := Line2D.new()
-	outline.name = "BuildReadyOutline"
-	outline.width = 3.0
-	outline.default_color = Color(0.48, 0.92, 1.0, 0.94)
-	outline.material = unshaded_vfx_material
-	outline.closed = true
-	outline.antialiased = false
-	outline.points = PackedVector2Array([
-		Vector2(-24, -30), Vector2(24, -30), Vector2(32, 0),
-		Vector2(24, 30), Vector2(-24, 30), Vector2(-32, 0),
-		Vector2(-24, -30),
-	])
-	outline.z_index = 28
-	player.add_child(outline)
-	var tween := outline.create_tween()
-	tween.tween_interval(0.52)
-	tween.tween_property(outline, "modulate:a", 0.0, 0.24)
-	tween.tween_callback(outline.queue_free)
+	host.play_build_vfx(&"ui_energy_confirm", player.global_position + Vector2(0.0, -8.0), 0.86)
+
+
+func _release_looped_vfx(node: Variant) -> void:
+	if not is_instance_valid(node):
+		return
+	var live_node := node as Node
+	if live_node == null:
+		return
+	var tree := live_node.get_tree()
+	if tree == null:
+		return
+	var visual_effects := tree.root.get_node_or_null("VisualEffects")
+	if live_node is AnimatedSprite2D and visual_effects != null:
+		visual_effects.call("stop_effect", live_node)
+		return
+	for child in live_node.get_children():
+		if child is AnimatedSprite2D and visual_effects != null:
+			visual_effects.call("stop_effect", child)
+	live_node.queue_free()

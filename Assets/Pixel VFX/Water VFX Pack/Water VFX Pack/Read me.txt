@@ -1,0 +1,84 @@
+===========================================
+ Water VFX Pack – Pixel Art (64x64)
+===========================================
+
+🎨 Created by: [Fellor]
+📦 Version: 1.0
+📅 Release Date: [2026-07-28]
+🌐 Website / Itch.io: [https://fellor.itch.io/]
+
+-------------------------------------------
+📁 CONTENTS
+-------------------------------------------
+
+This VFX pack includes the following:
+
+✅ 64x64 pixel Water-themed visual effects
+✅ Provided in two formats:
+   - Sprite Sheets (PNG)
+   - Individual Frame Sequences (PNG)
+✅ Looping and non-looping animations
+
+List of effects:
+-[Water_v1 - 13 frame]
+-[Water_v2 - 22 frame]
+-[Water_v3 - 23 frame]
+-[Water_v4 - (9 frame), (13 frame), (8 frame)]
+-[Water_v5 - (4 frame), (1 frame), (11 frame)]
+-[Water_v6 - 21 frame]
+-[Water_v7 - 16 frame]
+-[Water_v8 - 17 frame]
+
+List of images:
+- Banner Image
+- Cover Image
+- WEB Image
+
+Preview GIFs are included to demonstrate each animation.
+
+-------------------------------------------
+📄 FILE STRUCTURE
+-------------------------------------------
+
+WaterVFXPack/
+​├── readme.txt
+​├── license.txt
+​├── Images/
+​│      ├──Web
+│​      ├── Cover_Image
+│      └── Banner_Image
+​├── Preview_Gif/
+​├── SpriteSheets/
+│        └── Water_v1/ ... Water_v8/
+​├── PNG_Sequences/
+         ​└── Water_v1/ ... Water_v8/
+
+-------------------------------------------
+📜 LICENSE
+-------------------------------------------
+
+This asset pack is licensed under the following terms:
+
+✅ Free to use in personal and commercial projects  
+✅ No credit required (but always appreciated!)  
+❌ You may NOT redistribute or resell the assets as-is or as part of another asset pack
+
+See `license.txt` for full details.
+
+-------------------------------------------
+📌 HOW TO USE
+-------------------------------------------
+
+You can import the sprite sheets into your engine or editor and use slicing tools to break them into frames.  
+Or use the PNG sequences if your engine supports frame-by-frame animations (e.g. Unity, Godot, GameMaker).
+
+All animations are designed at 64x64 resolution. You can upscale them as needed.
+
+-------------------------------------------
+💌 CONTACT
+-------------------------------------------
+
+If you use the VFX in your project, I'd love to see it!  
+Feel free to message me at: [Instagram or Discord (You can find the links on Itch.io)]
+
+Thank you for downloading, and have fun creating!

@@ -1,0 +1,91 @@
+===========================================
+ Earth VFX Pack – Pixel Art (64x64)
+===========================================
+
+🎨 Created by: [Fellor]
+📦 Version: 1.0
+📅 Release Date: [2025-09-20]
+🌐 Website / Itch.io: [https://fellor.itch.io/]
+
+-------------------------------------------
+📁 CONTENTS
+-------------------------------------------
+
+This VFX pack includes the following:
+
+✅ 64x64 (The rocks - 32x32) pixel Earth-themed visual effects
+✅ Provided in two formats:
+   - Sprite Sheets (PNG)
+   - Individual Frame Sequences (PNG)
+✅ Looping and non-looping animations
+
+List of effects:
+- Earth v1 [18 frame]
+- Earth v2 [(Rise: 6 frame),(Stand: 1 frame),(Hit: 4 frame),(Destroy: 5 frame)]
+- Earth v3 [13 frame]
+- Earth v4 [22 frame]
+- Earth v5 [(Fade In: 7 frame),(Idle: 12 frame),(Fade Out: 8 frame)]
+- Earth v6 [15 frame]
+- Earth v7 [9 frame]
+- Earth v8 [14x3 frame]
+- Earth v9 [(Rise: 9 frame),(Idle: 13 frame),(Destroy: 6 frame)]
+
+List of images:
+- Banner Image
+- Cover Image
+- WEB Image
+- Rock v1
+- Rock v2
+- Rock v3
+
+
+Preview GIFs are included to demonstrate each animation.
+
+-------------------------------------------
+📄 FILE STRUCTURE
+-------------------------------------------
+
+EarthVFXPack/
+​├── readme.txt
+​├── license.txt
+​├── Images/
+│      ├──Rocks
+│​             ​├── Rock_v1 ... Rock_v3/
+​│       └──Web
+│​             ├── Cover_Image
+│             ​└── Banner_Image
+​├── Preview_Gif/
+​├── SpriteSheets/
+│        └── Earth_v1/ ... Earth_v9/
+​├── PNG_Sequences/
+         ​└── Earth_v1/ ... Earth_v9/
+
+-------------------------------------------
+📜 LICENSE
+-------------------------------------------
+
+This asset pack is licensed under the following terms:
+
+✅ Free to use in personal and commercial projects  
+✅ No credit required (but always appreciated!)  
+❌ You may NOT redistribute or resell the assets as-is or as part of another asset pack
+
+See `license.txt` for full details.
+
+-------------------------------------------
+📌 HOW TO USE
+-------------------------------------------
+
+You can import the sprite sheets into your engine or editor and use slicing tools to break them into frames.  
+Or use the PNG sequences if your engine supports frame-by-frame animations (e.g. Unity, Godot, GameMaker).
+
+All animations are designed at 64x64 resolution. You can upscale them as needed.
+
+-------------------------------------------
+💌 CONTACT
+-------------------------------------------
+
+If you use the VFX in your project, I'd love to see it!  
+Feel free to message me at: [Instagram or Discord (You can find the links on Itch.io)]
+
+Thank you for downloading, and have fun creating!

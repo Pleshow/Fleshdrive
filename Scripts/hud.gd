@@ -1513,6 +1513,21 @@ func _accept_selected_upgrade() -> void:
 	# mutate the displayed array or submit a second card from the same input.
 	card_selection.finish_offer()
 	upgrade_confirm_button.disabled = true
+	var selected_card := upgrade_cards[card_selection.selected_index]
+	_play_ui_vfx_at_control(&"ui_energy_confirm", selected_card, 0.58)
+	selected_card.pivot_offset = selected_card.size * 0.5
+	var confirm_tween := selected_card.create_tween()
+	confirm_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	confirm_tween.tween_property(selected_card, "scale", Vector2.ONE * 1.04, 0.055)
+	confirm_tween.tween_property(selected_card, "scale", Vector2.ONE * 0.98, 0.045)
+	confirm_tween.tween_property(selected_card, "scale", Vector2.ONE, 0.04)
+	for card_index in range(upgrade_cards.size()):
+		if card_index == card_selection.selected_index:
+			continue
+		var other_card := upgrade_cards[card_index]
+		var fade_tween := other_card.create_tween()
+		fade_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+		fade_tween.tween_property(other_card, "modulate:a", 0.42, 0.10)
 	var telemetry := get_tree().root.get_node_or_null("RunTelemetry")
 	if telemetry != null:
 		telemetry.call(
@@ -1986,8 +2001,14 @@ func on_organ_installed(organ: UpgradeData) -> void:
 
 	player.apply_upgrade(organ.upgrade_id)
 	play_sound(&"organ_install", -2.0, 0.035)
+	var installed_slot: Control = null
+	for slot in [legs_slot, heart_slot, brain_slot]:
+		if slot.installed_organ_data == organ:
+			installed_slot = slot
+			break
+	if installed_slot != null:
+		_play_organ_install_vfx(installed_slot)
 	refresh_organ_overview()
-
 	# Az egyszer telepíthető organ kikerül a poolból.
 	upgrade_pool.erase(organ)
 
@@ -2003,6 +2024,30 @@ func on_organ_installed(organ: UpgradeData) -> void:
 	organ_close_button.text = tr("BACK TO GAME [ESC]")
 	organ_close_button.show()
 	organ_close_button.grab_focus()
+
+
+func _play_ui_vfx_at_control(
+	effect_id: StringName,
+	control: Control,
+	effect_scale: float
+) -> void:
+	if control == null:
+		return
+	var visual_effects := get_tree().root.get_node_or_null("VisualEffects")
+	if visual_effects != null and visual_effects.has_method("play_ui"):
+		visual_effects.call(
+			"play_ui", effect_id,
+			control.get_global_rect().get_center(), effect_scale
+		)
+
+
+func _play_organ_install_vfx(slot: Control) -> void:
+	_play_ui_vfx_at_control(&"organ_flesh_pulse", slot, 0.82)
+	var position := slot.get_global_rect().get_center()
+	await get_tree().create_timer(0.07, true, false, true).timeout
+	var visual_effects := get_tree().root.get_node_or_null("VisualEffects")
+	if visual_effects != null:
+		visual_effects.call("play_ui", &"organ_activation", position, 0.72)
 
 
 func _on_organ_replacement_requested(

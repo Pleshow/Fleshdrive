@@ -413,6 +413,15 @@ func _complete_telegraphed_spawn(
 	enemy.set_meta("threat_cost", threat_cost)
 	enemy.set_meta("formation_serial", formation_serial)
 	_try_apply_elite_modifier(enemy)
+	# Mass crawlers remain clean and cheap. Specials arrive through a compact
+	# smoke veil after their one-second X telegraph has completed.
+	if enemy_type != &"crawler":
+		var visual_effects := get_tree().root.get_node_or_null("VisualEffects")
+		if visual_effects != null:
+			visual_effects.call(
+				"play", &"enemy_spawn", spawn_position,
+				0.82 if enemy_type == &"charger" else 0.68
+			)
 	if enemy.has_signal("died"):
 		if not enemy.died.is_connected(_on_enemy_died):
 			enemy.died.connect(_on_enemy_died)

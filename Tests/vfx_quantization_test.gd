@@ -60,9 +60,10 @@ func _run() -> void:
 		_is_unshaded(charger.charge_indicator)
 		and _is_unshaded(charger.charge_indicator_outline)
 		and _is_unshaded(charger.health_bar_fill)
-		and _is_unshaded(charger.readability_rim)
+		and charger.readability_rim == null
+		and bool((charger.sprite.material as ShaderMaterial).get_shader_parameter("force_charger_dark"))
 		and charger.impact_animation.material is ShaderMaterial,
-		"Charger indicator, rim and generated HP bar remain readable"
+		"Charger telegraph and HP bar remain readable without a geometric rim"
 	)
 
 	var spitter := (load("res://Scenes/enemies/spitter.tscn") as PackedScene).instantiate() as Spitter

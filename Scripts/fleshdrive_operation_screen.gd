@@ -231,7 +231,20 @@ func _get_core_bonus_description(
 func _confirm_selection() -> void:
 	if not _is_unlocked(selected_fleshdrive_id):
 		return
+	implant_button.disabled = true
+	var visual_effects := get_tree().root.get_node_or_null("VisualEffects")
+	var center := implant_button.get_global_rect().get_center()
+	if visual_effects != null and visual_effects.has_method("play_ui"):
+		visual_effects.call("play_ui", &"organ_flesh_pulse", center, 0.86)
+	var pulse_tween := implant_button.create_tween()
+	pulse_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	pulse_tween.tween_property(implant_button, "scale", Vector2.ONE * 1.035, 0.055)
+	pulse_tween.tween_property(implant_button, "scale", Vector2.ONE, 0.055)
+	await get_tree().create_timer(0.07, true, false, true).timeout
+	if visual_effects != null and visual_effects.has_method("play_ui"):
+		visual_effects.call("play_ui", &"organ_activation", center, 0.78)
 	fleshdrive_selected.emit(selected_fleshdrive_id)
+	implant_button.disabled = false
 
 
 func _get_card(fleshdrive_id: StringName) -> Button:

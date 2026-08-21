@@ -14,7 +14,7 @@ const AVAILABLE_ARENAS: Array[StringName] = [
 
 const PAUSING_STATES: Array[StringName] = [
 	&"OPERATION", &"ONBOARDING", &"PAUSED", &"LEVEL_UP", &"BOSS_INTRO",
-	&"VICTORY",
+	&"DYING", &"REBIRTH", &"GAME_OVER", &"VICTORY",
 ]
 const ALLOWED_TRANSITIONS := {
 	&"MENU": [&"PLAYING"],

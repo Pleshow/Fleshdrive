@@ -269,7 +269,8 @@ func _register_feedback(
 		event.heavy_feedback or critical,
 		event.show_damage_number,
 		critical,
-		event.screen_shake
+		event.screen_shake,
+		event.source_id
 	)
 
 

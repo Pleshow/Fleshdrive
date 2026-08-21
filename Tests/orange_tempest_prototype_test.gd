@@ -78,10 +78,11 @@ func _run() -> void:
 		and String((system.orange_tempest.orbs[0]["visual"] as Node).name)
 		== "BallLightning"
 		and (system.orange_tempest.orbs[0]["visual"] as Node).get_node_or_null("PixelOrb") is AnimatedSprite2D
-		and (system.orange_tempest.orbs[0]["visual"] as Node).get_node_or_null("ElectricGlow") is Line2D
-		and (system.orange_tempest.orbs[0]["visual"] as Node).get_node_or_null("ElectricOutline") is Line2D
+		and (system.orange_tempest.orbs[0]["visual"] as Node).get_node_or_null("ElectricGlow") == null
+		and (system.orange_tempest.orbs[0]["visual"] as Node).get_node_or_null("ElectricOutline") == null
+		and ((system.orange_tempest.orbs[0]["visual"] as Node).get_node("PixelOrb") as AnimatedSprite2D).sprite_frames.get_frame_count(&"play") == 24
 		and system.orange_tempest.MAX_ORBS == 12,
-		"Ball Lightning creates a capped, crisp animated blue pixel orb"
+		"Ball Lightning uses the authored v1 idle animation without generated rings"
 	)
 	var first := system.orange_tempest.orbs[0]
 	system.orange_tempest._spawn_ball(true, Vector2(first["position"]) + Vector2(8.0, 0.0))

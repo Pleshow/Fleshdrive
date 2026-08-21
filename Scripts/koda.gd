@@ -455,6 +455,12 @@ func try_start_dash() -> void:
 	)
 	play_jump_animation(dash_direction)
 	play_sound(&"raiju_dash", -7.0, 0.045)
+	play_combat_vfx(
+		&"dash_smoke",
+		global_position - dash_direction * 24.0,
+		0.52,
+		dash_direction.angle() + PI
+	)
 
 	dash_duration_timer.start()
 	dash_cooldown_timer.start(
@@ -485,6 +491,12 @@ func update_dash_movement(delta: float) -> void:
 
 func finish_dash() -> void:
 	is_dashing = false
+	play_combat_vfx(
+		&"dash_smoke_end",
+		global_position - dash_direction * 8.0,
+		0.34,
+		dash_direction.angle() + PI
+	)
 	velocity = dash_direction * move_speed * dash_exit_speed_multiplier
 	animated_sprite.modulate.a = 1.0
 	animated_sprite.scale = normal_scale
@@ -622,31 +634,32 @@ func play_attack_animation(direction: Vector2) -> void:
 
 
 func _flash_fleshdrive_attack_aura() -> void:
-	var aura := Line2D.new()
-	var aura_material := CanvasItemMaterial.new()
-	aura_material.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
-	aura.name = "AttackAura"
-	aura.material = aura_material
-	aura.width = 5.0
-	aura.antialiased = not MinimalistVisualProfile.is_active(get_tree())
-	aura.closed = true
-	aura.z_index = -1
-	var aura_color := Color(0.18, 0.86, 1.0, 0.82)
+	# Voltaic already draws its complete authored bolt between Koda and the
+	# target. A second body-origin effect only obscures Koda's silhouette.
+	if active_fleshdrive_id == FleshdriveCatalog.ELECTRIC:
+		return
+	var effect_id := &"fire_muzzle"
+	var effect_scale := 0.58
 	if active_fleshdrive_id == FleshdriveCatalog.FIRE:
-		aura_color = Color(1.0, 0.24, 0.035, 0.86)
+		effect_id = &"fire_muzzle"
+		effect_scale = 0.58
 	elif active_fleshdrive_id == FleshdriveCatalog.TELEKINETIC:
-		aura_color = Color(0.72, 0.24, 1.0, 0.86)
-	aura.default_color = aura_color
-	for point_index in range(33):
-		var angle := TAU * float(point_index) / 32.0
-		aura.add_point(Vector2(cos(angle), sin(angle)) * 54.0)
-	aura.scale = Vector2.ONE * 0.72
-	add_child(aura)
-	var tween := aura.create_tween()
-	tween.set_parallel(true)
-	tween.tween_property(aura, "scale", Vector2.ONE * 1.24, 0.18)
-	tween.tween_property(aura, "modulate:a", 0.0, 0.18)
-	tween.chain().tween_callback(aura.queue_free)
+		effect_id = &"neural_lance"
+		effect_scale = 0.72
+	var direction := last_direction.normalized()
+	if direction.is_zero_approx():
+		direction = Vector2.RIGHT
+	var local_origin := Vector2(0.0, -10.0) + direction * 9.0
+	var effect := play_combat_vfx(
+		effect_id, to_global(local_origin), effect_scale, direction.angle()
+	)
+	if effect != null:
+		effect.name = "AttackVFX"
+		effect.reparent(self, true)
+		effect.position = local_origin
+		effect.rotation = direction.angle()
+		effect.z_as_relative = true
+		effect.z_index = 12
 
 
 func play_hurt_animation(direction: Vector2 = Vector2.ZERO) -> void:
@@ -1838,7 +1851,7 @@ func heal(amount: float) -> void:
 		stored_healing -= released
 	health_changed.emit(current_health, max_health)
 	if applied > 0.0:
-		play_attached_combat_vfx(&"status_heal", 1.2, Vector2(0.0, -12.0))
+		play_attached_combat_vfx(&"holy_heal", 1.05, Vector2(0.0, -12.0))
 
 
 func release_stored_healing_if_needed() -> void:
@@ -1851,7 +1864,7 @@ func release_stored_healing_if_needed() -> void:
 	stored_healing -= released
 	health_changed.emit(current_health, max_health)
 	if released > 0.0:
-		play_attached_combat_vfx(&"status_heal", 1.2, Vector2(0.0, -12.0))
+		play_attached_combat_vfx(&"holy_heal", 1.05, Vector2(0.0, -12.0))
 
 
 func register_enemy_kill(total_kills: int) -> void:

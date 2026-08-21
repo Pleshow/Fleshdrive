@@ -24,10 +24,12 @@ var contact_cooldowns: Dictionary = {}
 var overdrive_hit_ids: Dictionary = {}
 var near_miss_cooldowns: Dictionary = {}
 var static_marks: Dictionary = {}
+var static_mark_vfx: Dictionary = {}
 var afterimages: Array[Dictionary] = []
 var damage_lockout: float = 0.0
 var aura: Node2D
 var kinetic_aura_sprite: AnimatedSprite2D
+var kinetic_aura_sprites: Array[AnimatedSprite2D] = []
 var unshaded_vfx_material: CanvasItemMaterial
 var momentum_layer: CanvasLayer
 var momentum_bar: ProgressBar
@@ -48,6 +50,15 @@ func shutdown() -> void:
 	for afterimage in afterimages:
 		_free_afterimage(afterimage)
 	afterimages.clear()
+	var visual_effects := host.get_tree().root.get_node_or_null("VisualEffects") if host != null and host.is_inside_tree() else null
+	for mark_ref_variant in static_mark_vfx.values():
+		var mark_ref := mark_ref_variant as WeakRef
+		var mark := mark_ref.get_ref() as AnimatedSprite2D if mark_ref != null else null
+		if mark != null and visual_effects != null:
+			visual_effects.call("stop_effect", mark)
+	static_mark_vfx.clear()
+	static_marks.clear()
+	_clear_kinetic_aura_assets()
 	if is_instance_valid(aura):
 		aura.queue_free()
 	if is_instance_valid(momentum_layer):
@@ -324,9 +335,12 @@ func _mark_or_detonate(enemy: Node2D, _force_detonate: bool) -> void:
 	var id := enemy.get_instance_id()
 	if static_marks.has(id):
 		static_marks.erase(id)
-		var existing_mark := enemy.get_node_or_null("StaticMark")
-		if existing_mark != null:
-			existing_mark.queue_free()
+		var existing_ref := static_mark_vfx.get(id) as WeakRef
+		var existing_mark := existing_ref.get_ref() as AnimatedSprite2D if existing_ref != null else null
+		var visual_effects := host.get_tree().root.get_node_or_null("VisualEffects")
+		if existing_mark != null and visual_effects != null:
+			visual_effects.call("stop_effect", existing_mark)
+		static_mark_vfx.erase(id)
 		_damage_circle(enemy.global_position, 88.0, 26.0, &"static_mark_detonation")
 		_spawn_radial_flash(enemy.global_position, 88.0, WHITE_CORE)
 		host.play_build_vfx(&"status_shock", enemy.global_position, 1.0)
@@ -370,6 +384,7 @@ func _end_overdrive() -> void:
 	momentum = 0.0
 	ready = false
 	overdrive_hit_ids.clear()
+	_clear_kinetic_aura_assets()
 	_spawn_radial_flash(player.global_position, 52.0, VIOLET)
 
 
@@ -418,44 +433,44 @@ func _update_aura() -> void:
 
 
 func _spawn_kinetic_aura_asset() -> void:
-	kinetic_aura_sprite = _spawn_attached_asset(
-		&"electric_chain_arc",
-		0.68,
-		"KineticChargeLightningAura"
-	)
-	if kinetic_aura_sprite != null:
-		kinetic_aura_sprite.position = Vector2(-2.0, -8.0)
-		kinetic_aura_sprite.rotation = 0.12
-		kinetic_aura_sprite.z_index = 72
-		kinetic_aura_sprite.add_to_group("kinetic_charge_vfx")
-		# Reuse the authored lightning frames around Koda without requesting
-		# additional point lights from the global VFX manager.
-		var arc_rotations := [2.38, 4.75]
-		var arc_offsets := [Vector2(-4.0, -11.0), Vector2(5.0, -4.0)]
-		var arc_scales := [0.82, 1.08]
-		for arc_index in range(2):
-			var arc := AnimatedSprite2D.new()
-			arc.name = "KineticChargeArc%d" % (arc_index + 1)
-			arc.sprite_frames = kinetic_aura_sprite.sprite_frames
-			arc.animation = &"play"
-			arc.material = kinetic_aura_sprite.material
-			arc.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-			arc.position = arc_offsets[arc_index]
-			arc.rotation = arc_rotations[arc_index]
-			arc.scale = kinetic_aura_sprite.scale * arc_scales[arc_index]
-			arc.flip_h = arc_index == 1
-			arc.flip_v = arc_index == 0
-			arc.z_index = 72
-			arc.add_to_group("kinetic_charge_vfx")
-			aura.add_child(arc)
-			arc.animation_finished.connect(arc.queue_free, CONNECT_ONE_SHOT)
-			arc.play(&"play")
+	_clear_kinetic_aura_assets()
+	for direction_index in range(4):
+		var arc := _spawn_attached_asset(
+			&"kinetic_charge_lightning", 1.05,
+			"KineticChargeLightning%d" % (direction_index + 1),
+			Vector2(0.0, -8.0), float(direction_index) * PI * 0.5
+		)
+		if arc == null:
+			continue
+		arc.z_index = 72
+		arc.add_to_group("kinetic_charge_vfx")
+		kinetic_aura_sprites.append(arc)
+		if kinetic_aura_sprite == null:
+			kinetic_aura_sprite = arc
+
+
+func _clear_kinetic_aura_assets() -> void:
+	if not is_instance_valid(aura) or host == null or not host.is_inside_tree():
+		kinetic_aura_sprite = null
+		return
+	var visual_effects := host.get_tree().root.get_node_or_null("VisualEffects")
+	for sprite in kinetic_aura_sprites:
+		if not is_instance_valid(sprite):
+			continue
+		if visual_effects != null:
+			visual_effects.call("stop_effect", sprite)
+		else:
+			sprite.queue_free()
+	kinetic_aura_sprites.clear()
+	kinetic_aura_sprite = null
 
 
 func _spawn_attached_asset(
 	effect_id: StringName,
 	effect_scale: float,
-	effect_name: String
+	effect_name: String,
+	local_offset: Vector2 = Vector2.ZERO,
+	rotation_radians: float = 0.0
 ) -> AnimatedSprite2D:
 	if host == null or not host.is_inside_tree():
 		return null
@@ -463,16 +478,11 @@ func _spawn_attached_asset(
 	if visual_effects == null:
 		return null
 	var sprite := visual_effects.call(
-		"play",
-		effect_id,
-		player.global_position,
-		effect_scale,
-		0.0
+		"play_attached", effect_id, aura, local_offset,
+		effect_scale, rotation_radians
 	) as AnimatedSprite2D
 	if sprite == null:
 		return null
-	sprite.reparent(aura, true)
-	sprite.position = Vector2.ZERO
 	sprite.name = effect_name
 	return sprite
 
@@ -542,22 +552,25 @@ func _update_momentum_hud() -> void:
 	]
 
 
-func _spawn_dash_trace(start: Vector2, finish: Vector2, alpha: float) -> Line2D:
-	var line := Line2D.new()
-	line.name = "VoltHoundAfterimage"
-	line.width = 7.0
-	line.default_color = Color(MAGENTA, alpha)
-	line.material = unshaded_vfx_material
-	line.points = PackedVector2Array([start, (start + finish) * 0.5 + Vector2(0.0, -5.0), finish])
-	_add_visual(line)
-	return line
+func _spawn_dash_trace(start: Vector2, finish: Vector2, alpha: float) -> Node2D:
+	var trace := Node2D.new()
+	trace.name = "VoltHoundAfterimage"
+	trace.global_position = (start + finish) * 0.5
+	_add_visual(trace)
+	var visual_effects := host.get_tree().root.get_node_or_null("VisualEffects")
+	if visual_effects != null:
+		var length_scale := clampf(start.distance_to(finish) / 64.0, 0.55, 2.8)
+		var sprite := visual_effects.call(
+			"play_attached", &"projectile_lightning", trace, Vector2.ZERO,
+			length_scale, start.direction_to(finish).angle()
+		) as AnimatedSprite2D
+		if sprite != null:
+			sprite.modulate.a = alpha
+	return trace
 
 
 func _spawn_line_burst(start: Vector2, finish: Vector2) -> void:
-	var line := _spawn_dash_trace(start, finish, 0.95)
-	line.width = 12.0
-	line.default_color = WHITE_CORE
-	_fade_visual(line, 0.18)
+	_spawn_dash_trace(start, finish, 0.95)
 
 
 func _spawn_radial_flash(position: Vector2, radius: float, _color: Color) -> void:
@@ -575,15 +588,15 @@ func _spawn_radial_flash(position: Vector2, radius: float, _color: Color) -> voi
 func _spawn_mark(enemy: Node2D) -> void:
 	if enemy.get_node_or_null("StaticMark") != null:
 		return
-	var mark := Line2D.new()
-	mark.name = "StaticMark"
-	mark.closed = true
-	mark.width = 2.0
-	mark.default_color = PINK
-	mark.material = unshaded_vfx_material
-	for index in range(8):
-		mark.add_point(Vector2.from_angle(TAU * float(index) / 8.0) * 22.0)
-	enemy.add_child(mark)
+	var visual_effects := host.get_tree().root.get_node_or_null("VisualEffects")
+	if visual_effects == null:
+		return
+	var mark := visual_effects.call(
+		"play_attached", &"shock_status", enemy, Vector2(0.0, -7.0), 0.96, 0.0
+	) as AnimatedSprite2D
+	if mark != null:
+		mark.name = "StaticMark"
+		static_mark_vfx[enemy.get_instance_id()] = weakref(mark)
 
 
 func _add_visual(visual: CanvasItem) -> void:

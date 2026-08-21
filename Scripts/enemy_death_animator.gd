@@ -60,8 +60,9 @@ static func play(
 			)
 
 	ghost.modulate = tint
-	if not enemy is Charger:
-		_play_world_effect(enemy, effect_id, scale_factor)
+	_play_world_effect(enemy, &"enemy_death_lightning", scale_factor * 0.82)
+	if not enemy is VisceralWarden:
+		_play_death_layers(enemy, scale_factor, effect_id)
 	var tween := ghost.create_tween()
 	tween.set_parallel(true)
 	tween.set_trans(Tween.TRANS_QUAD)
@@ -115,10 +116,9 @@ static func play_animation(
 	container.add_child(ghost)
 	ghost.play(animation)
 	var effect_id := _get_affinity_effect_id(enemy)
-	# Charger has a full authored death atlas. The generic death burst sat over
-	# its head in cyan and made that sprite look like a different colourway.
-	if not enemy is Charger:
-		_play_world_effect(enemy, effect_id, scale_factor)
+	_play_world_effect(enemy, &"enemy_death_lightning", scale_factor * 0.82)
+	if not enemy is VisceralWarden:
+		_play_death_layers(enemy, scale_factor, effect_id)
 	_free_after_animation(ghost)
 
 
@@ -151,3 +151,36 @@ static func _play_world_effect(
 			enemy.global_position,
 			0.85 * scale_factor
 		)
+
+
+static func _play_death_layers(
+	enemy: Node2D,
+	scale_factor: float,
+	affinity_effect_id: StringName
+) -> void:
+	_play_world_effect(enemy, &"enemy_death_burst", scale_factor * 0.78)
+	_play_delayed_world_effect(
+		enemy, &"tissue_droplets", scale_factor * 0.66, 0.045
+	)
+	# Only elemental finishing blows receive a small second accent. The flesh
+	# burst remains the dominant silhouette, including on authored Chargers.
+	if affinity_effect_id != &"enemy_death":
+		_play_delayed_world_effect(
+			enemy, affinity_effect_id, scale_factor * 0.44, 0.025
+		)
+
+
+static func _play_delayed_world_effect(
+	enemy: Node2D,
+	effect_id: StringName,
+	scale_factor: float,
+	delay: float
+) -> void:
+	if not is_instance_valid(enemy) or not enemy.is_inside_tree():
+		return
+	var tree := enemy.get_tree()
+	var position := enemy.global_position
+	await tree.create_timer(delay, false).timeout
+	var visual_effects := tree.root.get_node_or_null("VisualEffects")
+	if visual_effects != null:
+		visual_effects.call("play", effect_id, position, 0.85 * scale_factor)

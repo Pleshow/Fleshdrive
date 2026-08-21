@@ -72,6 +72,19 @@ func _capture() -> void:
 			0.9
 		) as AnimatedSprite2D
 		_pause_at_middle_frame(chain)
+		var original_color_samples := [
+			[&"ball_lightning_idle", Vector2(-145.0, 45.0), 1.25],
+			[&"kinetic_charge_lightning", Vector2(20.0, -15.0), 1.1],
+			[&"shock_status", Vector2(175.0, 65.0), 1.0],
+			[&"holy_heal", Vector2(25.0, 115.0), 1.0],
+			[&"decoy_smoke", Vector2(-210.0, 120.0), 1.0],
+		]
+		for sample in original_color_samples:
+			var sprite := visual_effects.call(
+				"play", sample[0], player.global_position + Vector2(sample[1]),
+				float(sample[2])
+			) as AnimatedSprite2D
+			_pause_at_middle_frame(sprite)
 	var player_sprite := player.get_node("AnimatedSprite2D") as AnimatedSprite2D
 	player.process_mode = Node.PROCESS_MODE_DISABLED
 	player_sprite.animation = &"right"

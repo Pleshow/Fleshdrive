@@ -139,4 +139,4 @@ func _play_impact(position: Vector2) -> void:
 		return
 	var visual_effects := get_tree().root.get_node_or_null("VisualEffects")
 	if visual_effects != null:
-		visual_effects.call("play", &"electric_impact", position, 1.15)
+		visual_effects.call("play", &"electric_impact", position, 0.78)

@@ -401,9 +401,9 @@ func _run() -> void:
 		modifier.initialize(elite, elite_type)
 		_check(
 			bool(elite.get_meta("is_elite", false))
-			and elite.has_node("EliteTelegraph")
+			and not elite.has_node("EliteTelegraph")
 			and elite.has_node("EliteLabel"),
-			"Elite modifier %d is telegraphed and active" % elite_type
+			"Elite modifier %d is labeled without a geometric frame" % elite_type
 		)
 		if elite_type == EliteModifier.Type.REGENERATIVE:
 			elite_reward_target = elite

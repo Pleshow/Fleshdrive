@@ -9,6 +9,7 @@ var speed: float = 720.0
 var lifetime: float = 1.2
 var hit_radius: float = 22.0
 var hit_callback: Callable
+var authored_electric_vfx: AnimatedSprite2D
 
 
 func configure(
@@ -44,25 +45,29 @@ func configure(
 	add_child(sprite)
 	sprite.play(&"flight")
 	if electric_projectile:
-		_install_blue_outline(projectile_scale)
+		_install_electric_asset(projectile_scale)
 	_install_projectile_light(light_color, projectile_scale)
 
 
-func _install_blue_outline(projectile_scale: float) -> void:
-	var outline := Line2D.new()
-	outline.name = "ElectricProjectileOutline"
-	outline.closed = true
-	outline.width = 3.0
-	outline.default_color = Color("0ce6f2")
-	outline.antialiased = false
-	var material := CanvasItemMaterial.new()
-	material.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
-	outline.material = material
-	outline.z_index = 17
-	var radius := clampf(18.0 + projectile_scale * 34.0, 20.0, 34.0)
-	for index in range(13):
-		outline.add_point(Vector2.from_angle(TAU * float(index) / 12.0) * radius)
-	add_child(outline)
+func _install_electric_asset(projectile_scale: float) -> void:
+	var visual_effects := get_tree().root.get_node_or_null("VisualEffects")
+	if visual_effects == null:
+		return
+	authored_electric_vfx = visual_effects.call(
+		"play_attached", &"projectile_lightning_loop", self,
+		Vector2.ZERO, clampf(projectile_scale * 1.15, 0.55, 1.05), 0.0
+	) as AnimatedSprite2D
+	if authored_electric_vfx != null:
+		authored_electric_vfx.name = "ElectricProjectileVFX"
+		authored_electric_vfx.z_index = 19
+
+
+func _exit_tree() -> void:
+	if not is_instance_valid(authored_electric_vfx):
+		return
+	var visual_effects := get_tree().root.get_node_or_null("VisualEffects")
+	if visual_effects != null:
+		visual_effects.call("stop_effect", authored_electric_vfx)
 
 
 func _install_projectile_light(color: Color, projectile_scale: float) -> void:

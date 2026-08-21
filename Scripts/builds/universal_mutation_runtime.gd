@@ -251,32 +251,11 @@ func _fire_parasite_maw(level: int) -> bool:
 
 
 func _spawn_maw_feedback(target_position: Vector2, killed: bool) -> void:
-	var container := system.get_tree().get_first_node_in_group("effects_container")
-	if container == null:
-		return
-	var jaw := Node2D.new()
-	jaw.name = "ParasiteMawImpact"
-	jaw.global_position = target_position
-	jaw.z_index = 26
-	container.add_child(jaw)
-	for side in [-1.0, 1.0]:
-		var teeth := Line2D.new()
-		teeth.width = 5.0
-		teeth.default_color = Color("ff0546") if not killed else Color("0ce6f2")
-		teeth.antialiased = false
-		teeth.material = unshaded_vfx_material
-		teeth.points = PackedVector2Array([
-			Vector2(-48.0, side * 30.0), Vector2(-20.0, side * 10.0),
-			Vector2(0.0, side * 24.0), Vector2(20.0, side * 10.0),
-			Vector2(48.0, side * 30.0),
-		])
-		jaw.add_child(teeth)
-	_spawn_ring(target_position, 52.0, Color("ff0546"))
-	var tween := jaw.create_tween()
-	tween.set_parallel(true)
-	tween.tween_property(jaw, "scale", Vector2(0.72, 0.18), 0.10)
-	tween.tween_property(jaw, "modulate:a", 0.0, 0.28).set_delay(0.12)
-	tween.chain().tween_callback(jaw.queue_free)
+	system.play_build_vfx(
+		&"bite_impact", target_position, 1.25 if killed else 1.0
+	)
+	if killed:
+		system.play_build_vfx(&"enemy_death_burst", target_position, 0.72)
 
 
 func _fire_blood_needle(level: int) -> bool:
@@ -435,18 +414,6 @@ func _spawn_decoy() -> Node2D:
 	visual.modulate = Color(0.62, 0.88, 1.0, 0.78)
 	visual.play(idle_animation)
 	decoy.add_child(visual)
-	var ring := Line2D.new()
-	ring.name = "LureGlyph"
-	ring.closed = true
-	ring.antialiased = false
-	ring.width = 2.0
-	ring.default_color = Color(0.28, 0.76, 1.0, 0.56)
-	ring.material = unshaded_vfx_material
-	ring.position = Vector2(0.0, 10.0)
-	for i in 17:
-		var angle := TAU * float(i) / 16.0
-		ring.add_point(Vector2(cos(angle) * 25.0, sin(angle) * 9.0))
-	decoy.add_child(ring)
 	var container := player.get_parent()
 	if container == null:
 		container = system.get_tree().current_scene
@@ -480,6 +447,7 @@ func _run_decoy_lifetime(
 	await fade.finished
 	if not is_instance_valid(decoy):
 		return
+	system.play_build_vfx(&"decoy_smoke", decoy.global_position, 0.92)
 	if level >= 2:
 		_discharge_decoy(decoy, distracted, level)
 	for enemy in distracted:

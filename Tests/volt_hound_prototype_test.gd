@@ -84,13 +84,15 @@ func _run() -> void:
 	)
 	system.volt_hound.update(0.01)
 	var kinetic_asset := system.volt_hound.kinetic_aura_sprite
+	var kinetic_follow := kinetic_asset.get_meta("follow_target", null) as WeakRef if kinetic_asset != null else null
 	_check(
 		system.volt_hound.aura.visible
 		and kinetic_asset is AnimatedSprite2D
-		and kinetic_asset.get_parent() == system.volt_hound.aura
-		and kinetic_asset.material is ShaderMaterial
-		and bool((kinetic_asset.material as ShaderMaterial).get_shader_parameter("force_electric_blue")),
-		"Invulnerable Overdrive uses an attached real blue lightning-asset aura"
+		and kinetic_follow != null
+		and kinetic_follow.get_ref() == system.volt_hound.aura
+		and kinetic_asset.material == null
+		and system.volt_hound.kinetic_aura_sprites.size() == 4,
+		"Invulnerable Overdrive uses four source-color lightning assets that follow Koda"
 	)
 	var crawler_scene := load("res://Scenes/enemies/crawler.tscn") as PackedScene
 	var enemy := crawler_scene.instantiate() as Crawler

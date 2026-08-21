@@ -73,7 +73,6 @@ func _ready() -> void:
 	unshaded_vfx_material.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
 	_install_consistent_sprite_material()
 	_configure_impact_animation()
-	_install_readability_rim()
 	var balance := get_tree().root.get_node_or_null("BalanceDatabase")
 	if balance != null:
 		balance.call("apply_enemy_profile", self, &"charger")
@@ -259,6 +258,10 @@ func _start_windup() -> void:
 	_pulse_charge_indicator()
 	windup_timer.start(charge_windup)
 	play_sound(&"charger_windup", -7.0, 0.035)
+	_play_charge_vfx(
+		&"charge_dust", global_position + charge_direction * 10.0,
+		0.42, charge_direction.angle()
+	)
 
 
 func update_telegraph() -> void:
@@ -292,6 +295,10 @@ func _begin_charge() -> void:
 	collision_mask = 1
 	charge_timer.start(charge_duration)
 	play_sound(&"charger_charge", -6.0, 0.04)
+	_play_charge_vfx(
+		&"dash_smoke", global_position - charge_direction * 34.0,
+		0.58, charge_direction.angle() + PI
+	)
 
 
 func _pulse_charge_indicator() -> void:
@@ -314,15 +321,15 @@ func update_charge() -> void:
 	):
 		if target.has_method("take_damage"):
 			target.take_damage(charge_damage, self, &"charger")
-		_finish_charge()
+		_finish_charge(true)
 		return
 
 	for collision_index in get_slide_collision_count():
-		_finish_charge()
+		_finish_charge(true)
 		return
 
 
-func _finish_charge() -> void:
+func _finish_charge(collided: bool = false) -> void:
 	if state != State.CHARGE:
 		return
 
@@ -337,6 +344,10 @@ func _finish_charge() -> void:
 	recovery_timer.start(recovery_duration)
 	play_sound(&"charger_impact", -5.0, 0.055)
 	play_impact_vfx()
+	if collided:
+		var camera := get_tree().get_first_node_in_group("camera_feedback")
+		if camera != null and camera.has_method("add_trauma_profile"):
+			camera.call("add_trauma_profile", &"explosion")
 
 
 func _finish_recovery() -> void:
@@ -470,7 +481,7 @@ func _install_readable_health_bar() -> void:
 func _install_consistent_sprite_material() -> void:
 	var charger_material := ShaderMaterial.new()
 	charger_material.shader = PIXEL_EMISSIVE_SHADER
-	charger_material.set_shader_parameter("force_alert_red", true)
+	charger_material.set_shader_parameter("force_charger_dark", true)
 	sprite.material = charger_material
 
 
@@ -586,7 +597,23 @@ func play_impact_vfx() -> void:
 			"play",
 			&"charger_impact",
 			global_position,
-			1.0
+			0.82,
+			charge_direction.angle()
+		)
+
+
+func _play_charge_vfx(
+	effect_id: StringName,
+	position: Vector2,
+	effect_scale: float,
+	rotation_radians: float
+) -> void:
+	if not is_inside_tree():
+		return
+	var visual_effects := get_tree().root.get_node_or_null("VisualEffects")
+	if visual_effects != null:
+		visual_effects.call(
+			"play", effect_id, position, effect_scale, rotation_radians
 		)
 
 
@@ -611,42 +638,15 @@ func _configure_impact_animation() -> void:
 	impact_animation.scale = Vector2.ONE * 0.32
 
 
-func _install_readability_rim() -> void:
-	readability_rim = Line2D.new()
-	readability_rim.name = "ChargerReadabilityRim"
-	readability_rim.width = 3.0
-	readability_rim.default_color = Color(1.0, 0.56, 0.12, 0.42)
-	readability_rim.closed = true
-	readability_rim.antialiased = false
-	readability_rim.material = unshaded_vfx_material
-	readability_rim.z_as_relative = false
-	readability_rim.z_index = 18
-	for point_index in range(17):
-		var angle := TAU * float(point_index) / 16.0
-		readability_rim.add_point(Vector2(
-			cos(angle) * 55.0,
-			sin(angle) * 39.0 + 3.0
-		))
-	add_child(readability_rim)
-
-
 func _set_readability_state(readability_state: StringName) -> void:
-	if not is_instance_valid(readability_rim):
-		return
+	# State readability comes from the authored charge telegraph and dust VFX.
+	# Avoid persistent procedural outlines around the enemy silhouette.
 	match readability_state:
 		&"windup":
-			readability_rim.default_color = Color(1.0, 0.68, 0.12, 0.96)
-			readability_rim.width = 5.0
-			sprite.modulate = Color(1.0, 0.72, 0.38, 1.0)
+			sprite.modulate = Color(1.0, 0.88, 0.94, 1.0)
 		&"charge":
-			readability_rim.default_color = Color(1.0, 0.16, 0.05, 0.88)
-			readability_rim.width = 4.0
-			sprite.modulate = Color(1.0, 0.46, 0.25, 1.0)
+			sprite.modulate = Color(0.92, 0.94, 1.0, 1.0)
 		&"recovery":
-			readability_rim.default_color = Color(1.0, 0.34, 0.10, 0.58)
-			readability_rim.width = 3.0
 			sprite.modulate = Color.WHITE
 		_:
-			readability_rim.default_color = Color(1.0, 0.56, 0.12, 0.42)
-			readability_rim.width = 3.0
 			sprite.modulate = Color.WHITE

@@ -607,6 +607,7 @@ func _update_gravity_wells(delta: float) -> void:
 		if float(well["remaining"]) <= 0.0:
 			var visual := well.get("visual") as Node
 			if is_instance_valid(visual):
+				_stop_attached_vfx_children(visual)
 				visual.queue_free()
 			active_gravity_wells.remove_at(index)
 		else:
@@ -671,26 +672,15 @@ func _create_gravity_well_visual(center: Vector2, radius: float) -> Node2D:
 	visual.name = "PersistentGravityWell"
 	effects.add_child(visual)
 	visual.global_position = center
-	var ring := Line2D.new()
-	ring.closed = true
-	ring.width = 5.0
-	ring.antialiased = true
-	ring.default_color = Color(0.74, 0.30, 1.0, 0.86)
-	ring.material = procedural_vfx_material
-	ring.z_index = 12
-	for point_index in range(49):
-		var angle := TAU * float(point_index) / 48.0
-		ring.add_point(Vector2(cos(angle), sin(angle)) * radius)
-	visual.add_child(ring)
-	var core := Polygon2D.new()
-	core.color = Color(0.30, 0.04, 0.48, 0.20)
-	core.material = procedural_vfx_material
-	core.polygon = ring.points
-	core.z_index = 11
-	visual.add_child(core)
-	var tween := visual.create_tween().set_loops()
-	tween.tween_property(visual, "scale", Vector2.ONE * 0.92, 0.32)
-	tween.tween_property(visual, "scale", Vector2.ONE * 1.04, 0.32)
+	var visual_effects := get_tree().root.get_node_or_null("VisualEffects")
+	if visual_effects != null:
+		var sprite := visual_effects.call(
+			"play_attached", &"gravity_well_loop", visual,
+			Vector2.ZERO, radius / 48.0, 0.0
+		) as AnimatedSprite2D
+		if sprite != null:
+			sprite.name = "GravityWellAsset"
+			sprite.z_index = 12
 	return visual
 
 
@@ -1281,9 +1271,10 @@ func _fire_magma_spear_direction(direction: Vector2, level: int) -> bool:
 func play_projectile_impact(
 	effect_id: StringName,
 	world_position: Vector2,
-	scale_multiplier: float = 1.0
+	scale_multiplier: float = 1.0,
+	rotation_radians: float = 0.0
 ) -> void:
-	_play_vfx(effect_id, world_position, scale_multiplier)
+	_play_vfx(effect_id, world_position, scale_multiplier, rotation_radians)
 
 
 func _spawn_magma_lane(direction: Vector2, range_value: float, level: int) -> void:
@@ -1435,9 +1426,9 @@ func _fire_arc_spear(level: int) -> bool:
 		width_multiplier
 	)
 	_play_vfx(
-		&"arc_muzzle",
+		&"projectile_lightning",
 		global_position + direction * 30.0,
-		0.85,
+		0.55,
 		direction.angle()
 	)
 	return true
@@ -2088,16 +2079,7 @@ func _make_projectile_frames(
 
 
 func _spawn_ring(radius: float, color: Color, width: float) -> void:
-	var ring := Line2D.new()
-	ring.width = width
-	ring.default_color = color
-	ring.material = procedural_vfx_material
-	ring.antialiased = true
-	for point_index in range(49):
-		var angle := TAU * float(point_index) / 48.0
-		ring.add_point(Vector2(cos(angle), sin(angle)) * radius)
-	add_child(ring)
-	_fade_and_free(ring, 0.24)
+	_spawn_world_ring(global_position, radius, color, maxf(width * 0.05, 0.18))
 
 
 func _spawn_world_ring(
@@ -2106,29 +2088,19 @@ func _spawn_world_ring(
 	color: Color,
 	duration: float
 ) -> void:
-	var ring := Line2D.new()
-	ring.global_position = center
-	ring.width = 4.0
-	ring.default_color = color
-	ring.material = procedural_vfx_material
-	ring.antialiased = true
-	ring.z_as_relative = false
-	ring.z_index = 58
-	for point_index in range(65):
-		var angle := TAU * float(point_index) / 64.0
-		ring.add_point(Vector2.from_angle(angle) * radius)
-	var container := get_tree().get_first_node_in_group("effects_container")
-	if container != null:
-		container.add_child(ring)
-	else:
-		get_tree().current_scene.add_child(ring)
-	ring.global_position = center
-	ring.scale = Vector2.ONE * 0.72
-	var tween := ring.create_tween()
-	tween.set_parallel(true)
-	tween.tween_property(ring, "scale", Vector2.ONE, duration)
-	tween.tween_property(ring, "modulate:a", 0.0, duration)
-	tween.chain().tween_callback(ring.queue_free)
+	var electric := color.b > color.r * 1.10 or color.g > color.r * 1.10
+	var effect_id := &"electro_shock" if electric else &"heavy_hit"
+	var effect_scale := clampf(radius / 52.0, 0.55, 3.2)
+	_play_vfx(effect_id, center, effect_scale)
+
+
+func _stop_attached_vfx_children(parent: Node) -> void:
+	var visual_effects := get_tree().root.get_node_or_null("VisualEffects")
+	if visual_effects == null:
+		return
+	for child in parent.get_children():
+		if child is AnimatedSprite2D:
+			visual_effects.call("stop_effect", child)
 
 
 func _fade_and_free(effect: CanvasItem, duration: float) -> void:

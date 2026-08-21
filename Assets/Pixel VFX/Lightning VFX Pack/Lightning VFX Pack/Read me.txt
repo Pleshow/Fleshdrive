@@ -1,0 +1,93 @@
+===========================================
+ Lightning VFX Pack – Pixel Art (64x64)
+===========================================
+
+🎨 Created by: [Fellor]
+📦 Version: 1.0
+📅 Release Date: [2025-09-11]
+🌐 Website / Itch.io: [https://fellor.itch.io/]
+
+-------------------------------------------
+📁 CONTENTS
+-------------------------------------------
+
+This VFX pack includes the following:
+
+✅ 64x64 pixel Lightning-themed visual effects
+✅ Provided in two formats:
+   - Sprite Sheets (PNG)
+   - Individual Frame Sequences (PNG)
+✅ Looping and non-looping animations
+
+List of effects:
+- Lightning v1 [(Fade In: 4 frame),(Idle: 24 frame),(Fade Out: 6 frame)]
+- Lightning v2 [8 frame]
+- Lightning v3 [(Fade In: 7 frame),(Idle: 12 frame),(Fade Out: 8 frame)]
+- Lightning v4 [8 frame]
+- Lightning v5 [11 frame]
+- Lightning v6 [8 frame]
+- Lightning v7 [10 frame]
+- Lightning v8 [10 frame]
+- Lightning v9 [10 frame]
+- Lightning v10 [9 frame]
+- Lightning v11 [25 frame]
+
+List of images:
+- Banner Image
+- Cover Image
+- Lightning Icon v1
+- Lightning Icon v2
+- Lightning Icon v3
+- Lightning Icon v4
+
+
+Preview GIFs are included to demonstrate each animation.
+
+-------------------------------------------
+📄 FILE STRUCTURE
+-------------------------------------------
+
+LightningVFXPack/
+​├── readme.txt
+​├── license.txt
+​├── Images/
+│      ├──Lightning_Icons
+│​             ​├── Lightning_Icon_v1 ... Lightning_Icon_v4/
+​│       └──Web
+│​             ├── Cover_Image
+│             ​└── Banner_Image
+​├── Preview_Gif/
+​├── SpriteSheets/
+│        └── Lightning_v1/ ... Lightning_v11/
+​├── PNG_Sequences/
+         ​└── Lightning_v1/ ... Lightning_v11/
+
+-------------------------------------------
+📜 LICENSE
+-------------------------------------------
+
+This asset pack is licensed under the following terms:
+
+✅ Free to use in personal and commercial projects  
+✅ No credit required (but always appreciated!)  
+❌ You may NOT redistribute or resell the assets as-is or as part of another asset pack
+
+See `license.txt` for full details.
+
+-------------------------------------------
+📌 HOW TO USE
+-------------------------------------------
+
+You can import the sprite sheets into your engine or editor and use slicing tools to break them into frames.  
+Or use the PNG sequences if your engine supports frame-by-frame animations (e.g. Unity, Godot, GameMaker).
+
+All animations are designed at 64x64 resolution. You can upscale them as needed.
+
+-------------------------------------------
+💌 CONTACT
+-------------------------------------------
+
+If you use the VFX in your project, I'd love to see it!  
+Feel free to message me at: [Instagram or Discord (You can find the links on Itch.io)]
+
+Thank you for downloading, and have fun creating!

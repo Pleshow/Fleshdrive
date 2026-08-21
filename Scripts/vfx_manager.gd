@@ -19,6 +19,54 @@ const TELEKINETIC_COMBAT_TEXTURE := preload(
 const PIXEL_EMISSIVE_SHADER: Shader = preload(
 	"res://Shaders/pixel_emissive.gdshader"
 )
+const JUICE_LIGHTNING_TEXTURE := preload(
+	"res://Assets/vfx/licensed/pixel_juice/lightning_radial.png"
+)
+const JUICE_DASH_SMOKE_TEXTURE := preload(
+	"res://Assets/vfx/licensed/pixel_juice/dash_smoke.png"
+)
+const JUICE_SPAWN_SMOKE_TEXTURE := preload(
+	"res://Assets/vfx/licensed/pixel_juice/spawn_smoke.png"
+)
+const JUICE_IMPACT_SMOKE_TEXTURE := preload(
+	"res://Assets/vfx/licensed/pixel_juice/impact_smoke.png"
+)
+const JUICE_FIRE_BURST_TEXTURE := preload(
+	"res://Assets/vfx/licensed/pixel_juice/fire_burst.png"
+)
+const JUICE_FIRE_SLASH_TEXTURE := preload(
+	"res://Assets/vfx/licensed/pixel_juice/fire_slash.png"
+)
+const JUICE_ORGANIC_BURST_TEXTURE := preload(
+	"res://Assets/vfx/licensed/pixel_juice/organic_burst.png"
+)
+const JUICE_TISSUE_DROPLETS_TEXTURE := preload(
+	"res://Assets/vfx/licensed/pixel_juice/tissue_droplets.png"
+)
+const BALL_LIGHTNING_V1_TEXTURE := preload(
+	"res://Assets/vfx/licensed/pixel_juice/ball_lightning_v1.png"
+)
+const PROJECTILE_LIGHTNING_V3_TEXTURE := preload(
+	"res://Assets/vfx/licensed/pixel_juice/projectile_lightning_v3.png"
+)
+const KINETIC_LIGHTNING_V7_TEXTURE := preload(
+	"res://Assets/vfx/licensed/pixel_juice/kinetic_lightning_v7.png"
+)
+const SHOCK_LIGHTNING_V9_TEXTURE := preload(
+	"res://Assets/vfx/licensed/pixel_juice/shock_lightning_v9.png"
+)
+const DECOY_SMOKE_V9_TEXTURE := preload(
+	"res://Assets/vfx/licensed/pixel_juice/decoy_smoke_v9.png"
+)
+const HOLY_HEAL_V3_TEXTURE := preload(
+	"res://Assets/vfx/licensed/pixel_juice/holy_heal_v3.png"
+)
+const BLOOD_MEMORY_COIN_SPIN_TEXTURE := preload(
+	"res://Assets/pickups/blood_memory_coin/gold_spin.png"
+)
+const BLOOD_MEMORY_COIN_COLLECT_TEXTURE := preload(
+	"res://Assets/pickups/blood_memory_coin/gold_collect.png"
+)
 const LIGHTNING_STRIKE_TEXTURES := [
 	preload("res://Assets/vfx/licensed/lightning_pack/strike_01_blue.png"),
 	preload("res://Assets/vfx/licensed/lightning_pack/strike_02_blue.png"),
@@ -161,6 +209,11 @@ const FROST_FIRE_RING := [
 ]
 const ELECTRIC_EFFECTS := [
 	&"electric_impact",
+	&"electric_micro_hit",
+	&"shock_proc",
+	&"biomass_collect",
+	&"ui_energy_confirm",
+	&"organ_activation",
 	&"electric_chain_arc",
 	&"electric_heavy_chain",
 	&"arc_muzzle",
@@ -174,6 +227,46 @@ const ELECTRIC_EFFECTS := [
 	&"storm_strike_06",
 	&"static_strike",
 	&"ball_lightning_burst",
+	&"ball_lightning_idle", &"ball_lightning_explosion",
+	&"projectile_lightning", &"projectile_lightning_loop", &"kinetic_charge_lightning",
+	&"shock_status", &"enemy_death_lightning", &"holy_heal",
+]
+const CRIMSON_EFFECTS := [
+	&"generic_hit", &"heavy_hit", &"enemy_death_burst",
+	&"tissue_droplets", &"fire_impact", &"magma_spear_impact",
+	&"boss_slam", &"boss_death", &"organ_flesh_pulse",
+]
+const NEUTRAL_EFFECTS := [
+	&"dash_smoke", &"dash_smoke_end", &"charge_dust",
+	&"charger_impact", &"enemy_spawn", &"decoy_smoke",
+]
+# Purchased Pixel VFX sheets stay untouched so they can be palette-edited at
+# source later. They render on a camera-following canvas above the global
+# Ink-Crimson screen quantizer, but below gameplay UI.
+const ORIGINAL_COLOR_EFFECTS := [
+	&"ball_lightning_idle", &"ball_lightning_explosion",
+	&"projectile_lightning", &"projectile_lightning_loop",
+	&"kinetic_charge_lightning", &"shock_status", &"enemy_death_lightning",
+	&"decoy_smoke", &"holy_heal",
+	&"blood_memory_coin_spin", &"blood_memory_coin_collect",
+	&"electric_impact", &"electric_micro_hit", &"shock_proc",
+	&"biomass_collect", &"ui_energy_confirm", &"organ_activation",
+	&"generic_hit", &"heavy_hit", &"dash_smoke", &"dash_smoke_end",
+	&"charge_dust", &"enemy_spawn", &"enemy_death_burst",
+	&"tissue_droplets", &"fire_impact", &"magma_spear_impact",
+	&"organ_flesh_pulse", &"charger_impact", &"boss_slam", &"boss_death",
+]
+const FREQUENT_EFFECTS := [
+	&"generic_hit", &"electric_micro_hit", &"biomass_collect",
+	&"dash_smoke_end", &"tissue_droplets",
+]
+const NO_LIGHT_EFFECTS := [
+	&"electric_micro_hit", &"shock_proc", &"biomass_collect",
+	&"ui_energy_confirm", &"organ_activation", &"ball_lightning_idle",
+	&"ball_lightning_explosion", &"projectile_lightning", &"projectile_lightning_loop",
+	&"kinetic_charge_lightning", &"shock_status",
+	&"enemy_death_lightning", &"holy_heal",
+	&"blood_memory_coin_spin", &"blood_memory_coin_collect",
 ]
 const FIRE_EFFECTS := [
 	&"fire_impact",
@@ -189,7 +282,7 @@ const FIRE_EFFECTS := [
 ]
 const TELEKINETIC_EFFECTS := [
 	&"kinetic_impact",
-	&"gravity_well",
+	&"gravity_well", &"gravity_well_loop",
 	&"repulse_wave",
 	&"neural_lance",
 ]
@@ -202,15 +295,84 @@ var pooled_sprites: Array[AnimatedSprite2D] = []
 var active_sprites: Array[AnimatedSprite2D] = []
 var pixel_vfx_material: ShaderMaterial
 var pixel_electric_material: ShaderMaterial
+var pixel_crimson_material: ShaderMaterial
+var pixel_neutral_material: ShaderMaterial
+var ui_layer: CanvasLayer
+var original_color_world_layer: CanvasLayer
 const MAX_ACTIVE_EFFECTS: int = 72
 const MAX_POOLED_EFFECTS: int = 40
 
 const EFFECTS := {
-	&"electric_impact": {
-		"frames": FROST_LIGHTNING_NOVA,
-		"fps": 22.0,
-		"base_scale": 0.46,
+	&"blood_memory_coin_spin": {
+		"texture": BLOOD_MEMORY_COIN_SPIN_TEXTURE,
+		"frame_size": Vector2i(25, 25), "frame_count": 7, "columns": 7,
+		"fps": 12.0, "base_scale": 1.0, "loop": true,
 	},
+	&"blood_memory_coin_collect": {
+		"texture": BLOOD_MEMORY_COIN_COLLECT_TEXTURE,
+		"frame_size": Vector2i(25, 25), "frame_count": 6, "columns": 6,
+		"fps": 20.0, "base_scale": 1.0,
+	},
+	&"ball_lightning_idle": {
+		"texture": BALL_LIGHTNING_V1_TEXTURE, "frame_size": Vector2i(64, 64),
+		"start_frame": 4, "frame_count": 24, "columns": 6,
+		"fps": 20.0, "base_scale": 1.0, "loop": true,
+	},
+	&"ball_lightning_explosion": {
+		"texture": BALL_LIGHTNING_V1_TEXTURE, "frame_size": Vector2i(64, 64),
+		"start_frame": 28, "frame_count": 6, "columns": 6,
+		"fps": 20.0, "base_scale": 1.0,
+	},
+	&"projectile_lightning": {
+		"texture": PROJECTILE_LIGHTNING_V3_TEXTURE, "frame_size": Vector2i(64, 64),
+		"frame_count": 27, "columns": 6, "fps": 36.0, "base_scale": 1.0,
+	},
+	&"projectile_lightning_loop": {
+		"texture": PROJECTILE_LIGHTNING_V3_TEXTURE, "frame_size": Vector2i(64, 64),
+		"start_frame": 7, "frame_count": 12, "columns": 6,
+		"fps": 24.0, "base_scale": 1.0, "loop": true,
+	},
+	&"kinetic_charge_lightning": {
+		"texture": KINETIC_LIGHTNING_V7_TEXTURE, "frame_size": Vector2i(64, 64),
+		"frame_count": 10, "columns": 4, "fps": 20.0,
+		"base_scale": 1.0, "loop": true,
+	},
+	&"shock_status": {
+		"texture": SHOCK_LIGHTNING_V9_TEXTURE, "frame_size": Vector2i(64, 64),
+		"frame_count": 10, "columns": 4, "fps": 16.667,
+		"base_scale": 1.0, "loop": true,
+	},
+	&"enemy_death_lightning": {
+		"texture": JUICE_LIGHTNING_TEXTURE, "frame_size": Vector2i(64, 64),
+		"frame_count": 8, "columns": 3, "fps": 20.0, "base_scale": 1.0,
+	},
+	&"decoy_smoke": {
+		"texture": DECOY_SMOKE_V9_TEXTURE, "frame_size": Vector2i(64, 64),
+		"frame_count": 10, "columns": 4, "fps": 13.333, "base_scale": 1.0,
+	},
+	&"holy_heal": {
+		"texture": HOLY_HEAL_V3_TEXTURE, "frame_size": Vector2i(64, 64),
+		"frame_count": 17, "columns": 5, "fps": 24.0, "base_scale": 1.0,
+	},
+	&"electric_impact": {
+		"texture": JUICE_LIGHTNING_TEXTURE, "frame_size": Vector2i(64, 64),
+		"frame_count": 8, "columns": 3, "fps": 48.0, "base_scale": 1.0,
+	},
+	&"electric_micro_hit": {"texture": JUICE_LIGHTNING_TEXTURE, "frame_size": Vector2i(64, 64), "frame_count": 5, "columns": 3, "fps": 52.0, "base_scale": 1.0},
+	&"shock_proc": {"texture": JUICE_LIGHTNING_TEXTURE, "frame_size": Vector2i(64, 64), "frame_count": 7, "columns": 3, "fps": 48.0, "base_scale": 1.0},
+	&"biomass_collect": {"texture": JUICE_LIGHTNING_TEXTURE, "frame_size": Vector2i(64, 64), "frame_count": 5, "columns": 3, "fps": 55.0, "base_scale": 1.0},
+	&"ui_energy_confirm": {"texture": JUICE_LIGHTNING_TEXTURE, "frame_size": Vector2i(64, 64), "frame_count": 7, "columns": 3, "fps": 48.0, "base_scale": 1.0},
+	&"organ_activation": {"texture": JUICE_LIGHTNING_TEXTURE, "frame_size": Vector2i(64, 64), "frame_count": 8, "columns": 3, "fps": 42.0, "base_scale": 1.0},
+	&"generic_hit": {"texture": JUICE_IMPACT_SMOKE_TEXTURE, "frame_size": Vector2i(64, 64), "frame_count": 6, "columns": 3, "fps": 55.0, "base_scale": 1.0},
+	&"heavy_hit": {"texture": JUICE_FIRE_BURST_TEXTURE, "frame_size": Vector2i(64, 64), "frame_count": 8, "columns": 4, "fps": 45.0, "base_scale": 1.0},
+	&"dash_smoke": {"texture": JUICE_DASH_SMOKE_TEXTURE, "frame_size": Vector2i(64, 64), "frame_count": 10, "columns": 4, "fps": 60.0, "base_scale": 1.0},
+	&"dash_smoke_end": {"texture": JUICE_DASH_SMOKE_TEXTURE, "frame_size": Vector2i(64, 64), "frame_count": 7, "columns": 4, "fps": 60.0, "base_scale": 1.0},
+	&"charge_dust": {"texture": JUICE_SPAWN_SMOKE_TEXTURE, "frame_size": Vector2i(64, 64), "frame_count": 7, "columns": 4, "fps": 48.0, "base_scale": 1.0},
+	&"enemy_spawn": {"texture": JUICE_SPAWN_SMOKE_TEXTURE, "frame_size": Vector2i(64, 64), "frame_count": 10, "columns": 4, "fps": 48.0, "base_scale": 1.0},
+	&"enemy_death_burst": {"texture": JUICE_ORGANIC_BURST_TEXTURE, "frame_size": Vector2i(64, 64), "frame_count": 12, "columns": 4, "fps": 45.0, "base_scale": 1.0},
+	&"tissue_droplets": {"texture": JUICE_TISSUE_DROPLETS_TEXTURE, "frame_size": Vector2i(64, 64), "frame_count": 12, "columns": 12, "fps": 50.0, "base_scale": 1.0},
+	&"magma_spear_impact": {"texture": JUICE_FIRE_SLASH_TEXTURE, "frame_size": Vector2i(64, 64), "frame_count": 10, "columns": 4, "fps": 48.0, "base_scale": 1.0},
+	&"organ_flesh_pulse": {"texture": JUICE_ORGANIC_BURST_TEXTURE, "frame_size": Vector2i(64, 64), "frame_count": 10, "columns": 4, "fps": 40.0, "base_scale": 1.0},
 	&"electric_chain_arc": {
 		"frames": FROST_LIGHTNING_CHAIN,
 		"fps": 22.0,
@@ -251,9 +413,8 @@ const EFFECTS := {
 		"base_scale": 0.09,
 	},
 	&"fire_impact": {
-		"frames": FROST_FIRE_IMPACT,
-		"fps": 22.0,
-		"base_scale": 0.58,
+		"texture": JUICE_FIRE_BURST_TEXTURE, "frame_size": Vector2i(64, 64),
+		"frame_count": 8, "columns": 4, "fps": 45.0, "base_scale": 1.0,
 	},
 	&"fire_muzzle": {
 		"frames": FROST_FIRE_PROJECTILE,
@@ -302,6 +463,13 @@ const EFFECTS := {
 		"fps": 16.0,
 		"base_scale": 0.34,
 	},
+	&"gravity_well_loop": {
+		"texture": TELEKINETIC_COMBAT_TEXTURE,
+		"row": 1,
+		"fps": 16.0,
+		"base_scale": 0.34,
+		"loop": true,
+	},
 	&"repulse_wave": {
 		"texture": TELEKINETIC_COMBAT_TEXTURE,
 		"row": 2,
@@ -333,16 +501,12 @@ const EFFECTS := {
 		"base_scale": 0.32,
 	},
 	&"charger_impact": {
-		"texture": ENEMY_COMBAT_TEXTURE,
-		"row": 3,
-		"fps": 20.0,
-		"base_scale": 0.32,
+		"texture": JUICE_IMPACT_SMOKE_TEXTURE, "frame_size": Vector2i(64, 64),
+		"frame_count": 9, "columns": 3, "fps": 48.0, "base_scale": 1.0,
 	},
 	&"boss_slam": {
-		"texture": BOSS_COMBAT_TEXTURE,
-		"row": 0,
-		"fps": 18.0,
-		"base_scale": 0.60,
+		"texture": JUICE_FIRE_BURST_TEXTURE, "frame_size": Vector2i(64, 64),
+		"frame_count": 10, "columns": 4, "fps": 32.0, "base_scale": 1.0,
 	},
 	&"boss_phase": {
 		"texture": BOSS_COMBAT_TEXTURE,
@@ -351,10 +515,8 @@ const EFFECTS := {
 		"base_scale": 0.55,
 	},
 	&"boss_death": {
-		"texture": BOSS_COMBAT_TEXTURE,
-		"row": 2,
-		"fps": 16.0,
-		"base_scale": 0.65,
+		"texture": JUICE_FIRE_BURST_TEXTURE, "frame_size": Vector2i(64, 64),
+		"frame_count": 12, "columns": 4, "fps": 30.0, "base_scale": 1.0,
 	},
 	&"boss_charge_impact": {
 		"texture": BOSS_COMBAT_TEXTURE,
@@ -363,6 +525,30 @@ const EFFECTS := {
 		"base_scale": 0.40,
 	},
 }
+
+
+func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
+
+
+func _process(_delta: float) -> void:
+	var detached: Array[AnimatedSprite2D] = []
+	for sprite in active_sprites:
+		if not is_instance_valid(sprite) or not sprite.has_meta("follow_target"):
+			continue
+		var target_ref := sprite.get_meta("follow_target") as WeakRef
+		var target := target_ref.get_ref() as Node2D if target_ref != null else null
+		if not is_instance_valid(target) or target.get("is_dead") == true:
+			detached.append(sprite)
+			continue
+		var local_offset := Vector2(sprite.get_meta("follow_offset", Vector2.ZERO))
+		sprite.global_position = target.to_global(local_offset)
+		sprite.global_rotation = (
+			target.global_rotation
+			+ float(sprite.get_meta("follow_rotation", 0.0))
+		)
+	for sprite in detached:
+		_recycle_effect(sprite)
 
 
 func play(
@@ -379,11 +565,23 @@ func play(
 	var intensity := float(settings.vfx_intensity) if settings != null else 1.0
 	if intensity <= 0.01:
 		return null
+	var budget := get_tree().root.get_node_or_null("PerformanceBudget")
+	if (
+		effect_id in FREQUENT_EFFECTS
+		and budget != null
+		and not bool(budget.call("allow_effect"))
+	):
+		return null
 	var is_critical_readability_effect := effect_id in [
 		&"boss_slam", &"boss_phase", &"boss_death", &"charger_impact",
-		&"status_heal", &"electric_impact", &"electric_chain_arc",
+		&"status_heal", &"holy_heal", &"generic_hit", &"heavy_hit", &"electric_impact", &"electric_chain_arc",
 		&"electro_shock", &"electric_heavy_chain", &"electric_lance",
-		&"static_strike", &"ball_lightning_burst"
+		&"static_strike", &"ball_lightning_burst", &"shock_status",
+		&"kinetic_charge_lightning", &"ball_lightning_idle",
+		&"ball_lightning_explosion", &"projectile_lightning",
+		&"projectile_lightning_loop", &"enemy_death_lightning",
+		&"decoy_smoke", &"holy_heal", &"blood_memory_coin_spin",
+		&"blood_memory_coin_collect"
 	] or String(effect_id).begins_with("storm_strike")
 	if not is_critical_readability_effect and randf() > maxf(intensity, 0.22):
 		return null
@@ -392,9 +590,25 @@ func play(
 	if active_sprites.size() >= MAX_ACTIVE_EFFECTS:
 		return null
 	var sprite := _acquire_effect_sprite()
+	# Every activation receives a unique generation. Async trackers retain the
+	# generation they started with, so a recycled sprite can never be moved by
+	# a coroutine that belonged to its previous effect.
+	var generation := int(sprite.get_meta("vfx_generation", 0)) + 1
+	sprite.set_meta("vfx_generation", generation)
 	var readable_scale := _get_readable_effect_scale(effect_id, effect_scale)
 	sprite.sprite_frames = _get_cached_animation(effect_id, effect_data)
+	sprite.set_meta("effect_id", effect_id)
 	sprite.animation = &"play"
+	sprite.frame = 0
+	sprite.frame_progress = 0.0
+	sprite.speed_scale = 1.0
+	sprite.modulate = Color.WHITE
+	sprite.self_modulate = Color.WHITE
+	sprite.offset = Vector2.ZERO
+	sprite.centered = true
+	sprite.flip_h = false
+	sprite.flip_v = false
+	sprite.z_as_relative = true
 	sprite.global_position = world_position
 	sprite.rotation = rotation_radians
 	sprite.scale = (
@@ -406,12 +620,19 @@ func play(
 	sprite.z_index = 20
 	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	var minimalist_mode := MinimalistVisualProfile.is_active(get_tree())
-	# Every effect uses a nearest-filtered, hard palette ramp. Non-minimalist
-	# arenas retain an environmental electric flash, but its texture is a hard
-	# three-band pixel mask instead of the old continuous radial gradient.
-	sprite.material = _get_pixel_vfx_material(effect_id in ELECTRIC_EFFECTS)
+	# Purchased Pixel VFX keep their source colors. Project-authored effects
+	# continue to use the hard functional palette ramps.
+	sprite.material = (
+		null
+		if effect_id in ORIGINAL_COLOR_EFFECTS
+		else _get_pixel_vfx_material(effect_id)
+	)
 
-	var container := get_tree().get_first_node_in_group("effects_container")
+	var container: Node = (
+		_get_original_color_world_layer()
+		if effect_id in ORIGINAL_COLOR_EFFECTS
+		else get_tree().get_first_node_in_group("effects_container")
+	)
 	if container == null:
 		container = get_tree().current_scene
 	if container == null:
@@ -422,21 +643,81 @@ func play(
 			container.add_child(sprite)
 		else:
 			sprite.reparent(container)
+	sprite.global_position = world_position
 	sprite.show()
 	active_sprites.append(sprite)
-	if not minimalist_mode and effect_id in ELECTRIC_EFFECTS:
+	if (
+		not minimalist_mode
+		and effect_id in ELECTRIC_EFFECTS
+		and effect_id not in NO_LIGHT_EFFECTS
+		and effect_id not in ORIGINAL_COLOR_EFFECTS
+	):
 		_play_electric_flash(
 			container,
 			world_position,
 			readable_scale,
 			effect_id
 		)
-	sprite.animation_finished.connect(
-		_recycle_effect.bind(sprite),
-		CONNECT_ONE_SHOT
-	)
+	if not bool(effect_data.get("loop", false)):
+		sprite.animation_finished.connect(
+			_recycle_effect.bind(sprite),
+			CONNECT_ONE_SHOT
+		)
 	sprite.play(&"play")
 	return sprite
+
+
+func play_attached(
+	effect_id: StringName,
+	parent: Node2D,
+	local_position: Vector2 = Vector2.ZERO,
+	effect_scale: float = 1.0,
+	rotation_radians: float = 0.0
+) -> AnimatedSprite2D:
+	if not is_instance_valid(parent) or not parent.is_inside_tree():
+		return null
+	var sprite := play(
+		effect_id, parent.to_global(local_position), effect_scale, rotation_radians
+	)
+	if sprite == null:
+		return null
+	if effect_id in ORIGINAL_COLOR_EFFECTS:
+		sprite.set_meta("follow_target", weakref(parent))
+		sprite.set_meta("follow_offset", local_position)
+		sprite.set_meta("follow_rotation", rotation_radians)
+		sprite.global_position = parent.to_global(local_position)
+		sprite.global_rotation = parent.global_rotation + rotation_radians
+		return sprite
+	sprite.reparent(parent, true)
+	sprite.position = local_position
+	sprite.rotation = rotation_radians
+	return sprite
+
+
+func stop_effect(sprite: AnimatedSprite2D) -> void:
+	_recycle_effect(sprite)
+
+
+func uses_original_colors(effect_id: StringName) -> bool:
+	return effect_id in ORIGINAL_COLOR_EFFECTS
+
+
+func get_effect_generation(sprite: AnimatedSprite2D) -> int:
+	if not is_instance_valid(sprite):
+		return -1
+	return int(sprite.get_meta("vfx_generation", -1))
+
+
+func _get_original_color_world_layer() -> CanvasLayer:
+	if is_instance_valid(original_color_world_layer):
+		return original_color_world_layer
+	original_color_world_layer = CanvasLayer.new()
+	original_color_world_layer.name = "OriginalColorWorldVFXLayer"
+	original_color_world_layer.layer = 106
+	original_color_world_layer.follow_viewport_enabled = true
+	original_color_world_layer.process_mode = Node.PROCESS_MODE_PAUSABLE
+	get_tree().root.add_child(original_color_world_layer)
+	return original_color_world_layer
 
 
 func _get_readable_effect_scale(effect_id: StringName, requested: float) -> float:
@@ -458,13 +739,55 @@ func has_effect(effect_id: StringName) -> bool:
 	return EFFECTS.has(effect_id)
 
 
-func _get_pixel_vfx_material(force_electric_blue: bool) -> ShaderMaterial:
-	if force_electric_blue:
+func play_ui(
+	effect_id: StringName,
+	viewport_position: Vector2,
+	effect_scale: float = 1.0,
+	rotation_radians: float = 0.0
+) -> AnimatedSprite2D:
+	var sprite := play(effect_id, viewport_position, effect_scale, rotation_radians)
+	if sprite == null:
+		return null
+	if ui_layer == null or not is_instance_valid(ui_layer):
+		ui_layer = CanvasLayer.new()
+		ui_layer.name = "PooledUIVFXLayer"
+		ui_layer.layer = 250
+		ui_layer.process_mode = Node.PROCESS_MODE_ALWAYS
+		get_tree().root.add_child(ui_layer)
+	if sprite.get_parent() != ui_layer:
+		sprite.reparent(ui_layer)
+	sprite.position = viewport_position
+	sprite.z_index = 0
+	sprite.process_mode = Node.PROCESS_MODE_ALWAYS
+	return sprite
+
+
+func _get_pixel_vfx_material(effect: Variant) -> ShaderMaterial:
+	# Keep the earlier boolean helper contract usable by visual-system tooling,
+	# while runtime callers use the more precise effect identifier.
+	var effect_id := (
+		(&"electric_impact" if bool(effect) else &"generic_hit")
+		if effect is bool
+		else StringName(effect)
+	)
+	if effect_id in ELECTRIC_EFFECTS:
 		if pixel_electric_material == null:
 			pixel_electric_material = ShaderMaterial.new()
 			pixel_electric_material.shader = PIXEL_EMISSIVE_SHADER
 			pixel_electric_material.set_shader_parameter("force_electric_blue", true)
 		return pixel_electric_material
+	if effect_id in CRIMSON_EFFECTS:
+		if pixel_crimson_material == null:
+			pixel_crimson_material = ShaderMaterial.new()
+			pixel_crimson_material.shader = PIXEL_EMISSIVE_SHADER
+			pixel_crimson_material.set_shader_parameter("force_alert_red", true)
+		return pixel_crimson_material
+	if effect_id in NEUTRAL_EFFECTS:
+		if pixel_neutral_material == null:
+			pixel_neutral_material = ShaderMaterial.new()
+			pixel_neutral_material.shader = PIXEL_EMISSIVE_SHADER
+			pixel_neutral_material.set_shader_parameter("force_neutral_smoke", true)
+		return pixel_neutral_material
 	if pixel_vfx_material == null:
 		pixel_vfx_material = ShaderMaterial.new()
 		pixel_vfx_material.shader = PIXEL_EMISSIVE_SHADER
@@ -489,7 +812,8 @@ func _get_cached_animation(
 				Vector2i(effect_data["frame_size"]),
 				int(effect_data["frame_count"]),
 				int(effect_data.get("columns", effect_data["frame_count"])),
-				float(effect_data["fps"])
+				float(effect_data["fps"]),
+				int(effect_data.get("start_frame", 0))
 			)
 			if effect_data.has("frame_size")
 			else _make_atlas_animation(
@@ -499,6 +823,7 @@ func _get_cached_animation(
 			)
 		)
 	)
+	frames.set_animation_loop(&"play", bool(effect_data.get("loop", false)))
 	frame_cache[effect_id] = frames
 	return frames
 
@@ -514,10 +839,26 @@ func _acquire_effect_sprite() -> AnimatedSprite2D:
 func _recycle_effect(sprite: AnimatedSprite2D) -> void:
 	if not is_instance_valid(sprite):
 		return
+	sprite.set_meta(
+		"vfx_generation",
+		int(sprite.get_meta("vfx_generation", 0)) + 1
+	)
+	var recycle_callback := _recycle_effect.bind(sprite)
+	if sprite.animation_finished.is_connected(recycle_callback):
+		sprite.animation_finished.disconnect(recycle_callback)
 	sprite.stop()
 	sprite.hide()
 	sprite.modulate = Color.WHITE
+	sprite.self_modulate = Color.WHITE
 	sprite.rotation = 0.0
+	sprite.scale = Vector2.ONE
+	sprite.offset = Vector2.ZERO
+	sprite.speed_scale = 1.0
+	sprite.frame = 0
+	sprite.frame_progress = 0.0
+	sprite.z_index = 0
+	sprite.z_as_relative = true
+	sprite.centered = true
 	sprite.flip_h = false
 	sprite.flip_v = false
 	for transient_group in [&"thunder_vfx", &"kinetic_charge_vfx"]:
@@ -525,10 +866,18 @@ func _recycle_effect(sprite: AnimatedSprite2D) -> void:
 			sprite.remove_from_group(transient_group)
 	if sprite.has_meta("autoattack_lightning"):
 		sprite.remove_meta("autoattack_lightning")
+	for follow_meta in ["follow_target", "follow_offset", "follow_rotation", "effect_id"]:
+		if sprite.has_meta(follow_meta):
+			sprite.remove_meta(follow_meta)
 	sprite.name = "PooledCombatVFX"
 	sprite.process_mode = Node.PROCESS_MODE_INHERIT
 	active_sprites.erase(sprite)
 	if pooled_sprites.size() < MAX_POOLED_EFFECTS:
+		var container := get_tree().get_first_node_in_group("effects_container")
+		if container == null:
+			container = get_tree().current_scene
+		if container != null and sprite.get_parent() != container:
+			sprite.reparent(container)
 		pooled_sprites.append(sprite)
 	else:
 		sprite.queue_free()
@@ -536,10 +885,17 @@ func _recycle_effect(sprite: AnimatedSprite2D) -> void:
 
 func finish_active_effects_during_pause() -> void:
 	# The death transition pauses gameplay immediately. Let effects already
-	# spawned by the killing hit finish instead of freezing into the rebirth UI.
-	for sprite in active_sprites:
+	# spawned by the killing hit finish, but remove persistent combat loops so
+	# Ball Lightning and status auras cannot continue under refabrication.
+	var persistent_effects: Array[AnimatedSprite2D] = []
+	for sprite in active_sprites.duplicate():
 		if is_instance_valid(sprite):
-			sprite.process_mode = Node.PROCESS_MODE_ALWAYS
+			if sprite.sprite_frames.get_animation_loop(&"play"):
+				persistent_effects.append(sprite)
+			else:
+				sprite.process_mode = Node.PROCESS_MODE_ALWAYS
+	for sprite in persistent_effects:
+		_recycle_effect(sprite)
 
 
 func clear_all() -> void:
@@ -556,6 +912,9 @@ func clear_all() -> void:
 		for light in get_tree().get_nodes_in_group(group_name):
 			if is_instance_valid(light) and not light.is_queued_for_deletion():
 				light.queue_free()
+	if ui_layer != null and is_instance_valid(ui_layer):
+		ui_layer.queue_free()
+	ui_layer = null
 
 
 func _prune_invalid_effects() -> void:
@@ -830,7 +1189,8 @@ func _make_grid_animation(
 	frame_size: Vector2i,
 	frame_count: int,
 	columns: int,
-	fps: float
+	fps: float,
+	start_frame: int = 0
 ) -> SpriteFrames:
 	var frames := SpriteFrames.new()
 	frames.remove_animation(&"default")
@@ -838,7 +1198,8 @@ func _make_grid_animation(
 	frames.set_animation_loop(&"play", false)
 	frames.set_animation_speed(&"play", fps)
 	var safe_columns := maxi(columns, 1)
-	for frame_index in range(frame_count):
+	for relative_index in range(frame_count):
+		var frame_index := start_frame + relative_index
 		var frame := AtlasTexture.new()
 		frame.atlas = texture
 		frame.region = Rect2(

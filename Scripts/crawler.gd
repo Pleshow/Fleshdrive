@@ -256,6 +256,12 @@ func die() -> void:
 	request_combat_feedback(0.38, 0.55)
 
 	spawn_death_vfx()
+	var visual_effects := get_tree().root.get_node_or_null("VisualEffects")
+	if visual_effects != null:
+		visual_effects.call(
+			"play", &"enemy_death_lightning", global_position,
+			0.82 * death_vfx_scale
+		)
 	_try_drop_biomass()
 	
 	sprite.modulate = Color.WHITE

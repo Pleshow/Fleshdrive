@@ -1,0 +1,85 @@
+===========================================
+ Holy VFX Pack – Pixel Art (64x64)
+===========================================
+
+🎨 Created by: [Fellor]
+📦 Version: 1.0
+📅 Release Date: [2026-07-12]
+🌐 Website / Itch.io: [https://fellor.itch.io/]
+
+-------------------------------------------
+📁 CONTENTS
+-------------------------------------------
+
+This VFX pack includes the following:
+
+✅ 64x64 pixel Holy-themed visual effects
+✅ Provided in two formats:
+   - Sprite Sheets (PNG)
+   - Individual Frame Sequences (PNG)
+✅ Looping and non-looping animations
+
+List of effects:
+-[Holy_v1 - (3 frame), (12 frame), (5 frame)]
+-[Holy_v2 - 20 frame]
+-[Holy_v3 - 17 frame]
+-[Holy_v4 - (8 frame), (15 frame), (4 frame)]
+-[Holy_v5 - 11 frame]
+-[Holy_v6 - (7 frame), (12 frame), (8 frame)]
+-[Holy_v7 - 21 frame]
+-[Holy_v8 - (10 frame), (8 frame), (3 frame), (6 frame), (3 frame), (6 frame), (6 frame), (5 frame)]
+-[Holy_v9 - 18 frame]
+
+List of images:
+- Banner Image
+- Cover Image
+- WEB Image
+
+Preview GIFs are included to demonstrate each animation.
+
+-------------------------------------------
+📄 FILE STRUCTURE
+-------------------------------------------
+
+HolyVFXPack/
+​├── readme.txt
+​├── license.txt
+​├── Images/
+​│      ├──Web
+│​      ├── Cover_Image
+│      └── Banner_Image
+​├── Preview_Gif/
+​├── SpriteSheets/
+│        └── Holy_v1/ ... Holy_v9/
+​├── PNG_Sequences/
+         ​└── Holy_v1/ ... Holy_v9/
+
+-------------------------------------------
+📜 LICENSE
+-------------------------------------------
+
+This asset pack is licensed under the following terms:
+
+✅ Free to use in personal and commercial projects  
+✅ No credit required (but always appreciated!)  
+❌ You may NOT redistribute or resell the assets as-is or as part of another asset pack
+
+See `license.txt` for full details.
+
+-------------------------------------------
+📌 HOW TO USE
+-------------------------------------------
+
+You can import the sprite sheets into your engine or editor and use slicing tools to break them into frames.  
+Or use the PNG sequences if your engine supports frame-by-frame animations (e.g. Unity, Godot, GameMaker).
+
+All animations are designed at 64x64 resolution. You can upscale them as needed.
+
+-------------------------------------------
+💌 CONTACT
+-------------------------------------------
+
+If you use the VFX in your project, I'd love to see it!  
+Feel free to message me at: [Instagram or Discord (You can find the links on Itch.io)]
+
+Thank you for downloading, and have fun creating!

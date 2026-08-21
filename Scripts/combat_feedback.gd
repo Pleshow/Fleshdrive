@@ -117,7 +117,8 @@ func register_damage(
 	heavy: bool = false,
 	show_number: bool = true,
 	critical: bool = false,
-	screen_shake: bool = true
+	screen_shake: bool = true,
+	source_id: StringName = &""
 ) -> void:
 	if not is_instance_valid(target) or amount <= 0.0:
 		return
@@ -126,7 +127,7 @@ func register_damage(
 	if show_number and numbers_enabled:
 		_show_or_merge_damage(target, amount, affinity, critical)
 	_flash_target(target, affinity)
-	_play_affinity_impact(target.global_position, affinity, heavy)
+	_play_affinity_impact(target.global_position, affinity, heavy, source_id)
 	if heavy:
 		if screen_shake:
 			shake_camera(0.22)
@@ -166,7 +167,8 @@ func _flash_target(target: Node2D, affinity: StringName) -> void:
 func _play_affinity_impact(
 	world_position: Vector2,
 	affinity: StringName,
-	heavy: bool
+	heavy: bool,
+	source_id: StringName = &""
 ) -> void:
 	var visual_effects := get_tree().root.get_node_or_null(
 		"VisualEffects"
@@ -177,19 +179,24 @@ func _play_affinity_impact(
 	# hostile hits with one of the elemental impact effects.
 	if affinity == &"hostile":
 		return
-	var effect_id := &"electric_impact"
+	# Piercing projectiles own their directional terminal impact. Suppressing
+	# the generic layer avoids a doubled, muddy burst on the same frame.
+	if source_id in [&"arc_spear", &"magma_spear", &"base_fireball"]:
+		return
+	var effect_id := &"heavy_hit" if heavy else &"generic_hit"
 	match affinity:
+		&"electric":
+			effect_id = &"electric_impact" if heavy else &"electric_micro_hit"
 		&"fire":
 			effect_id = &"fire_impact"
 		&"telekinetic":
 			effect_id = &"kinetic_impact"
-		&"physical":
-			effect_id = &"electric_impact"
 	visual_effects.call(
 		"play",
 		effect_id,
 		world_position,
-		0.48 if heavy else 0.34
+		0.62 if heavy else 0.44,
+		randf_range(-0.14, 0.14)
 	)
 
 

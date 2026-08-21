@@ -869,3 +869,5 @@ func _spawn_red_gem_deferred(container: Node, drop_position: Vector2) -> void:
 	if gem.get_parent() == null:
 		container.add_child(gem)
 	gem.global_position = drop_position
+	if gem.has_method("activate_at"):
+		gem.call("activate_at", drop_position)

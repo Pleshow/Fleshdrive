@@ -82,8 +82,10 @@ func _on_body_entered(body: Node2D) -> void:
 				burn_duration,
 				1
 			)
-		source_player.play_combat_vfx(&"fire_impact", global_position, 0.92)
-		source_player.play_combat_vfx(&"fireball_explode", global_position, 1.15)
+		source_player.play_combat_vfx(&"fire_impact", global_position, 0.68)
+		source_player.play_combat_vfx(
+			&"dash_smoke_end", global_position, 0.28, direction.angle()
+		)
 	queue_free()
 
 

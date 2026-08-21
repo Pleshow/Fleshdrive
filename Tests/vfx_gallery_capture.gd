@@ -2,14 +2,15 @@ extends SceneTree
 
 
 const EFFECT_IDS: Array[StringName] = [
+	&"generic_hit", &"heavy_hit", &"electric_impact", &"electric_micro_hit",
+	&"shock_proc", &"dash_smoke", &"dash_smoke_end", &"charge_dust",
+	&"enemy_death_burst", &"tissue_droplets", &"biomass_collect", &"fire_impact",
+	&"magma_spear_impact", &"charger_impact", &"enemy_spawn", &"boss_slam",
+	&"boss_death", &"ui_energy_confirm", &"organ_flesh_pulse", &"organ_activation",
 	&"electric_chain_arc", &"electric_heavy_chain", &"electric_lance",
-	&"storm_strike_01", &"storm_strike_03", &"storm_strike_06",
-	&"static_strike", &"ball_lightning_burst",
-	&"fire_impact", &"fireball_creation", &"fireball_explode",
-	&"fire_explosion_ring", &"fire_explosion_spiked", &"fire_explosion_embers",
-	&"slash_heavy", &"slash_horizontal", &"bite_impact", &"slash_small",
-	&"status_burn", &"status_shock", &"status_heal", &"status_shield",
-	&"status_haste", &"status_poison",
+	&"ball_lightning_burst", &"ball_lightning_idle", &"ball_lightning_explosion",
+	&"projectile_lightning", &"kinetic_charge_lightning", &"shock_status",
+	&"enemy_death_lightning", &"decoy_smoke", &"holy_heal",
 ]
 
 
@@ -24,6 +25,10 @@ func _capture() -> void:
 		visual_effects.call("clear_all")
 	await process_frame
 	await _capture_page(12, "res://.godot/vfx_gallery_2.png")
+	if visual_effects != null:
+		visual_effects.call("clear_all")
+	await process_frame
+	await _capture_page(24, "res://.godot/vfx_gallery_3.png")
 	print("VFX GALLERY CAPTURED")
 	quit(0)
 

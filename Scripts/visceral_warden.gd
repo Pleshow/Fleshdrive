@@ -448,7 +448,8 @@ func _perform_ground_slam() -> void:
 
 	_play_slam_burst()
 	play_sound(&"charger_impact", 0.0, 0.035)
-	request_combat_feedback(0.9, 0.75)
+	request_camera_profile(&"boss_attack")
+	request_combat_feedback(0.0, 0.75, false)
 
 	if phase == 2:
 		_fire_radial_projectiles(8)
@@ -805,7 +806,8 @@ func die() -> void:
 	EnemyDeathAnimator.play(self, sprite, 1.8)
 	_play_death_burst()
 	play_sound(&"enemy_death", 1.0, 0.025)
-	request_combat_feedback(1.4, 1.0)
+	request_camera_profile(&"boss_death")
+	request_combat_feedback(0.0, 1.0, false)
 	died.emit(self)
 
 	var death_tween := create_tween()
@@ -833,11 +835,37 @@ func _build_slam_telegraph() -> void:
 
 
 func _play_slam_burst() -> void:
-	play_world_vfx(&"boss_slam", global_position, 1.0)
+	play_world_vfx(&"boss_slam", global_position, 1.25)
+	play_world_vfx(&"enemy_spawn", global_position, 1.05)
 
 
 func _play_death_burst() -> void:
-	play_world_vfx(&"boss_death", global_position, 1.0)
+	_play_boss_death_sequence(global_position)
+
+
+func _play_boss_death_sequence(center: Vector2) -> void:
+	var visual_effects := get_tree().root.get_node_or_null("VisualEffects")
+	if visual_effects == null:
+		return
+	var effect := visual_effects.call("play", &"boss_death", center, 1.55) as AnimatedSprite2D
+	if is_instance_valid(effect):
+		effect.process_mode = Node.PROCESS_MODE_ALWAYS
+	await get_tree().create_timer(0.055, true, false, true).timeout
+	effect = visual_effects.call("play", &"shock_proc", center, 0.92) as AnimatedSprite2D
+	if is_instance_valid(effect):
+		effect.process_mode = Node.PROCESS_MODE_ALWAYS
+	await get_tree().create_timer(0.045, true, false, true).timeout
+	effect = visual_effects.call("play", &"enemy_death_burst", center, 1.38) as AnimatedSprite2D
+	if is_instance_valid(effect):
+		effect.process_mode = Node.PROCESS_MODE_ALWAYS
+	await get_tree().create_timer(0.045, true, false, true).timeout
+	effect = visual_effects.call("play", &"enemy_spawn", center, 1.18) as AnimatedSprite2D
+	if is_instance_valid(effect):
+		effect.process_mode = Node.PROCESS_MODE_ALWAYS
+	await get_tree().create_timer(0.045, true, false, true).timeout
+	effect = visual_effects.call("play", &"tissue_droplets", center, 1.42) as AnimatedSprite2D
+	if is_instance_valid(effect):
+		effect.process_mode = Node.PROCESS_MODE_ALWAYS
 
 
 func _configure_sprite_animations() -> void:
@@ -883,6 +911,12 @@ func request_combat_feedback(
 		feedback.play_hit(shake_amount, hit_stop_strength)
 	elif feedback.has_method("hit_stop"):
 		feedback.hit_stop(hit_stop_strength)
+
+
+func request_camera_profile(profile: StringName) -> void:
+	var camera := get_tree().get_first_node_in_group("camera_feedback")
+	if camera != null and camera.has_method("add_trauma_profile"):
+		camera.call("add_trauma_profile", profile)
 
 
 func play_world_vfx(

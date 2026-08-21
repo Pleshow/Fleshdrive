@@ -1,0 +1,54 @@
+===========================================
+ Smoke VFX Pack – Pixel Art (64x64)
+===========================================
+
+🎨 Created by: [Fellor]
+📦 Version: 1.0
+📅 Release Date: [2025-05-15] in Unity [2026-07-05]
+🌐 Website / Itch.io: [https://fellor.itch.io/]
+
+-------------------------------------------
+📁 CONTENTS
+-------------------------------------------
+
+This VFX pack includes the following:
+
+✅ 64x64 pixel smoke-themed visual effects
+✅ Looping and non-looping animations
+
+List of effects:
+- Smoke v1 [12 frame]
+- Smoke v2 [8 frame]
+- Smoke v3 [8 frame]
+- Smoke v4 [12 frame]
+- Smoke v5 [11 frame]
+- Smoke v6 [12 frame]
+- Smoke v7 [12 frame]
+- Smoke v8 [(Fade In: 5 frame),(Idle: 12 frame),(Fade Out: 8 frame)]
+- Smoke v9 [10 frame]
+- Smoke v11 [11 frame]
+- Smoke v12 [9 frame]
+- Smoke v13 [8 frame]
+
+Preview GIFs are included to demonstrate each animation.
+
+-------------------------------------------
+📜 LICENSE
+-------------------------------------------
+
+This asset pack is licensed under the following terms:
+
+✅ Free to use in personal and commercial projects  
+✅ No credit required (but always appreciated!)  
+❌ You may NOT redistribute or resell the assets as-is or as part of another asset pack
+
+See `license.txt` for full details.
+
+-------------------------------------------
+💌 CONTACT
+-------------------------------------------
+
+If you use the VFX in your project, I'd love to see it!  
+Feel free to message me at: [Instagram or Discord (You can find the links on Itch.io)]
+
+Thank you for downloading, and have fun creating!

@@ -352,8 +352,8 @@ func _run() -> void:
 	_check(
 		player.animated_sprite.animation == &"idle_right"
 		and not player.animated_sprite.flip_h
-		and player.get_node_or_null("AttackAura") != null,
-		"Attacks keep the side-view stance and flash a Fleshdrive aura"
+		and player.get_node_or_null("AttackVFX") == null,
+		"Voltaic autoattack keeps Koda's silhouette free of a duplicate body VFX"
 	)
 	player._on_visual_animation_finished()
 	player.velocity = Vector2(100.0, 0.0)
@@ -561,14 +561,27 @@ func _run() -> void:
 	) as PackedScene
 	var blood_memory := blood_memory_scene.instantiate() as RedGemPickup
 	game.get_node("Entities/Pickups").add_child(blood_memory)
+	blood_memory.activate_at(player.global_position + Vector2(96.0, 0.0))
+	await process_frame
+	var blood_memory_coin := blood_memory.coin_visual
 	_check(
-		blood_memory.get_node_or_null("BloodMemoryDrop/BurgundyDrop")
-		is Polygon2D
-		and blood_memory.get_node_or_null(
-			"BloodMemoryDrop/ElectricOutline"
-		) is Line2D
-		and not blood_memory.get_node("AnimatedSprite2D").visible,
-		"Blood Memory uses the burgundy pixel drop with electric-blue outline"
+		is_instance_valid(blood_memory_coin)
+		and blood_memory_coin.get_meta("effect_id", &"")
+		== &"blood_memory_coin_spin"
+		and blood_memory_coin.sprite_frames.get_frame_count(&"play") == 7
+		and blood_memory_coin.sprite_frames.get_animation_loop(&"play")
+		and blood_memory_coin.material == null,
+		"Blood Memory uses the original-color seven-frame spinning gold coin"
+	)
+	blood_memory._play_collect_visual()
+	var blood_memory_collect := blood_memory.coin_visual
+	_check(
+		is_instance_valid(blood_memory_collect)
+		and blood_memory_collect.get_meta("effect_id", &"")
+		== &"blood_memory_coin_collect"
+		and blood_memory_collect.sprite_frames.get_frame_count(&"play") == 6
+		and not blood_memory_collect.sprite_frames.get_animation_loop(&"play"),
+		"Blood Memory pickup plays the authored six-frame collection animation"
 	)
 	blood_memory.queue_free()
 
@@ -1039,8 +1052,8 @@ func _run() -> void:
 		"Player death enters the staged death presentation"
 	)
 	_check(
-		not paused,
-		"Death and game-over presentation keep world animation running"
+		paused,
+		"Death and refabrication presentation fully pause world combat"
 	)
 	_check(
 		lethal_vfx != null

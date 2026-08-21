@@ -1,0 +1,86 @@
+===========================================
+ Poison VFX Pack – Pixel Art (64x64)
+===========================================
+
+🎨 Created by: [Fellor]
+📦 Version: 1.0
+📅 Release Date: [2025-05-04]
+🌐 Website / Itch.io: [https://fellor.itch.io/]
+
+-------------------------------------------
+📁 CONTENTS
+-------------------------------------------
+
+This VFX pack includes the following:
+
+✅ 64x64 pixel poison-themed visual effects
+✅ Provided in two formats:
+   - Sprite Sheets (PNG)
+   - Individual Frame Sequences (PNG)
+✅ Looping and non-looping animations
+
+List of effects:
+- Poison Smoke (Fade in, Idle, Fade out)
+- Deadly Poison Explosion
+- Poison Explosion
+- Poison Debuff Aura
+- Poison Fire (Fade in, Idle, Fade out)
+- Poison Circle
+- Poison Shoot (Fade in, Idle, Fade out)
+- Poison Cloud Explosion
+
+List of debuff icons:
+- Bottle of Poison (3)
+- Poison Mark (3)
+- Poison Skull (3)
+
+Preview GIFs are included to demonstrate each animation.
+
+-------------------------------------------
+📄 FILE STRUCTURE
+-------------------------------------------
+
+PoisonVFXPack/
+├── readme.txt
+├── license.txt
+├── Icons/
+│   ├── Bottle_Of_Poison/
+│   ├── Poison_Mark/
+│   └── Poison_Skull/
+├── Preview_Gif/
+├── SpriteSheets/
+│   ├── poison_smoke_sheet/
+│   └── ...
+├── PNG_Sequences/
+│   ├── poison_smoke/
+│   └── ...
+
+-------------------------------------------
+📜 LICENSE
+-------------------------------------------
+
+This asset pack is licensed under the following terms:
+
+✅ Free to use in personal and commercial projects  
+✅ No credit required (but always appreciated!)  
+❌ You may NOT redistribute or resell the assets as-is or as part of another asset pack
+
+See `license.txt` for full details.
+
+-------------------------------------------
+📌 HOW TO USE
+-------------------------------------------
+
+You can import the sprite sheets into your engine or editor and use slicing tools to break them into frames.  
+Or use the PNG sequences if your engine supports frame-by-frame animations (e.g. Unity, Godot, GameMaker).
+
+All animations are designed at 64x64 resolution. You can upscale them as needed.
+
+-------------------------------------------
+💌 CONTACT
+-------------------------------------------
+
+If you use the VFX in your project, I'd love to see it!  
+Feel free to message me at: [Instagram or Discord (You can find the links on Itch.io)]
+
+Thank you for downloading, and have fun creating!

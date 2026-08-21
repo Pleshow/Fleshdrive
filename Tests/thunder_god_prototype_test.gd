@@ -83,12 +83,16 @@ func _run() -> void:
 				tracked_shock_duration,
 				float(shock.get("remaining", 0.0))
 			)
-			var crown := enemy.get_node_or_null("ThunderShockCrown") as Line2D
+			var crown_ref := enemy.get_meta("status_vfx_shock", null) as WeakRef
+			var crown := crown_ref.get_ref() as AnimatedSprite2D if crown_ref != null else null
+			var follow_ref := crown.get_meta("follow_target", null) as WeakRef if crown != null else null
 			shock_crowns_follow_targets = (
 				shock_crowns_follow_targets
 				and crown != null
-				and crown.get_parent() == enemy
-				and not crown.is_set_as_top_level()
+				and follow_ref != null
+				and follow_ref.get_ref() == enemy
+				and crown.material == null
+				and crown.sprite_frames.get_frame_count(&"play") == 10
 			)
 	_check(shocked_targets >= 2, "Base Chain Lightning reaches at least two unique enemies")
 	_check(shocked_targets <= 9, "Chain targeting never loops beyond unique enemies")
@@ -123,12 +127,49 @@ func _run() -> void:
 			player_bolt.global_position.distance_to(bolt_position_before_move) > 2.0,
 			"Active lightning stays attached while Koda moves"
 		)
+		var visual_effects := root.get_node("VisualEffects")
+		var previous_generation := int(
+			player_bolt.get_meta("vfx_generation", -1)
+		)
+		visual_effects.call("stop_effect", player_bolt)
+		var recycled_bolt := visual_effects.call(
+			"play", &"electric_chain_arc", Vector2(777.0, 777.0), 0.55, 0.0
+		) as AnimatedSprite2D
+		if recycled_bolt != null:
+			var recycled_position := recycled_bolt.global_position
+			player.global_position += Vector2(24.0, 0.0)
+			enemies[0].global_position += Vector2(0.0, 24.0)
+			await process_frame
+			_check(
+				recycled_bolt == player_bolt
+				and int(recycled_bolt.get_meta("vfx_generation", -1))
+				!= previous_generation
+				and recycled_bolt.global_position.is_equal_approx(recycled_position),
+				"Recycled VFX cannot be moved by a stale lightning tracker"
+			)
+		else:
+			_check(false, "Recycled VFX cannot be moved by a stale lightning tracker")
 	system.thunder_god.lightning_activity = 49
 	system.perform_thunder_god_attack(enemies[0])
 	_check(system.thunder_god.thunderstate_remaining > 0.0, "Fifty Lightning events activate THUNDERSTATE")
 	for index in range(4):
 		system.perform_thunder_god_attack(enemies[0])
 	_check(system.thunder_god.capacitor_charge < 20, "Capacitor automatically discharges and preserves remainder")
+	var shocked_enemy := enemies[0]
+	var shock_ref := shocked_enemy.get_meta("status_vfx_shock", null) as WeakRef
+	var shock_visual := shock_ref.get_ref() as AnimatedSprite2D if shock_ref != null else null
+	pipeline.status_effects.notify_target_killed(shocked_enemy)
+	_check(
+		not shocked_enemy.has_meta("status_vfx_shock")
+		and (not is_instance_valid(shock_visual) or not shock_visual.visible),
+		"Shock VFX disappears in the same frame its target dies"
+	)
+	var stale_aura := AnimatedSprite2D.new()
+	game.add_child(stale_aura)
+	system.thunder_god.player_aura_sprite = stale_aura
+	stale_aura.free()
+	system.thunder_god.shutdown()
+	_check(true, "Thunder God shutdown safely ignores an already-freed VFX reference")
 	game.queue_free()
 	await process_frame
 	if failures == 0:

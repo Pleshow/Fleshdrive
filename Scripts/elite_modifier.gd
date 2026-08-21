@@ -118,20 +118,6 @@ func _multiply_numeric_property(property_name: StringName, factor: float) -> voi
 
 
 func _create_telegraph() -> void:
-	var ring := Line2D.new()
-	ring.name = "EliteTelegraph"
-	ring.width = 4.0
-	ring.default_color = TYPE_COLORS[elite_type]
-	var material := CanvasItemMaterial.new()
-	material.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
-	ring.material = material
-	ring.z_as_relative = false
-	ring.z_index = 42
-	for point_index in range(33):
-		var angle := TAU * float(point_index) / 32.0
-		ring.add_point(Vector2.from_angle(angle) * 47.0)
-	enemy.add_child(ring)
-
 	var label := Label.new()
 	label.name = "EliteLabel"
 	label.position = Vector2(-48.0, -68.0)

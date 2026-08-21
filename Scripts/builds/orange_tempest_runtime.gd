@@ -2,14 +2,9 @@ class_name OrangeTempestRuntime
 extends RefCounted
 
 
-const DEEP_BLUE := Color("1e579c")
-const ELECTRIC_BLUE := Color("0098db")
 const CYAN := Color("0ce6f2")
-const CORE := Color("f2fbff")
 const MAX_ORBS := 12
 const POLARITY_COOLDOWN := 8.0
-
-static var orb_sprite_frames: SpriteFrames
 
 var host: PlayerWeaponSystem
 var player: Koda
@@ -312,9 +307,15 @@ func _expire_orb(index: int) -> void:
 	_remove_orb(index, true)
 
 
-func _remove_orb(index: int, _expired: bool) -> void:
+func _remove_orb(index: int, expired: bool) -> void:
 	if index < 0 or index >= orbs.size():
 		return
+	if expired:
+		host.play_build_vfx(
+			&"ball_lightning_explosion",
+			Vector2(orbs[index]["position"]),
+			float(orbs[index]["radius"]) / 32.0 * 1.35
+		)
 	_free_visual(orbs[index])
 	orbs.remove_at(index)
 
@@ -389,38 +390,16 @@ func _create_orb_visual(position: Vector2, radius: float, sun: bool) -> Node2D:
 	root.name = "StormCore" if sun else "BallLightning"
 	root.global_position = position
 	root.z_index = 6
-	var sprite := AnimatedSprite2D.new()
-	sprite.name = "PixelOrb"
-	sprite.sprite_frames = _get_orb_sprite_frames()
-	sprite.animation = &"pulse"
-	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	var material := CanvasItemMaterial.new()
-	material.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
-	sprite.material = material
-	root.add_child(sprite)
-	sprite.play()
-	var glow := Line2D.new()
-	glow.name = "ElectricGlow"
-	glow.closed = true
-	glow.antialiased = false
-	glow.width = 8.0
-	glow.default_color = Color(0.0, 0.596, 0.859, 0.30)
-	glow.material = material
-	for point in _circle_points(8, 15.0):
-		glow.add_point(point)
-	root.add_child(glow)
-	var ring := Line2D.new()
-	ring.name = "ElectricOutline"
-	ring.closed = true
-	ring.antialiased = false
-	ring.width = 3.0
-	ring.default_color = CYAN if not sun else CORE
-	ring.material = material
-	for point in _circle_points(8, 15.0):
-		ring.add_point(point)
-	root.add_child(ring)
-	root.scale = Vector2.ONE * radius / 32.0 * (1.45 if sun else 1.0)
 	_add_visual(root)
+	var visual_effects := host.get_tree().root.get_node_or_null("VisualEffects")
+	if visual_effects != null:
+		var sprite := visual_effects.call(
+			"play_attached", &"ball_lightning_idle", root,
+			Vector2.ZERO, radius / 32.0 * (1.75 if sun else 1.35), 0.0
+		) as AnimatedSprite2D
+		if sprite != null:
+			sprite.name = "PixelOrb"
+			sprite.z_index = 6
 	return root
 
 
@@ -429,73 +408,17 @@ func _create_field_visual(position: Vector2) -> Node2D:
 	root.name = "ResidualStaticField"
 	root.global_position = position
 	root.z_index = 2
-	var ring := Line2D.new()
-	ring.closed = true
-	ring.antialiased = false
-	ring.width = 2.0
-	ring.default_color = Color(0.047, 0.902, 0.949, 0.82)
-	var material := CanvasItemMaterial.new()
-	material.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
-	ring.material = material
-	for point in _circle_points(12, 68.0):
-		ring.add_point(point)
-	root.add_child(ring)
 	_add_visual(root)
+	var visual_effects := host.get_tree().root.get_node_or_null("VisualEffects")
+	if visual_effects != null:
+		var sprite := visual_effects.call(
+			"play_attached", &"shock_status", root,
+			Vector2.ZERO, 2.15, 0.0
+		) as AnimatedSprite2D
+		if sprite != null:
+			sprite.name = "ResidualStaticAsset"
+			sprite.modulate.a = 0.72
 	return root
-
-
-func _circle_points(count: int, radius: float) -> PackedVector2Array:
-	var points := PackedVector2Array()
-	for index in range(count):
-		points.append(Vector2.from_angle(TAU * float(index) / float(count)) * radius)
-	return points
-
-
-func _get_orb_sprite_frames() -> SpriteFrames:
-	if orb_sprite_frames != null:
-		return orb_sprite_frames
-	orb_sprite_frames = SpriteFrames.new()
-	orb_sprite_frames.remove_animation(&"default")
-	orb_sprite_frames.add_animation(&"pulse")
-	orb_sprite_frames.set_animation_loop(&"pulse", true)
-	orb_sprite_frames.set_animation_speed(&"pulse", 10.0)
-	var spark_sets := [
-		[Vector2i(4, 6), Vector2i(19, 5), Vector2i(3, 16), Vector2i(20, 18)],
-		[Vector2i(6, 3), Vector2i(21, 10), Vector2i(5, 20), Vector2i(18, 21)],
-		[Vector2i(3, 10), Vector2i(17, 3), Vector2i(20, 15), Vector2i(9, 21)],
-		[Vector2i(5, 4), Vector2i(20, 7), Vector2i(3, 18), Vector2i(17, 20)],
-	]
-	for frame_index in range(4):
-		var image := Image.create(24, 24, false, Image.FORMAT_RGBA8)
-		image.fill(Color.TRANSPARENT)
-		for y in range(7, 18):
-			for x in range(7, 18):
-				var distance := Vector2(x - 12, y - 12).length()
-				if distance <= 5.4:
-					image.set_pixel(x, y, DEEP_BLUE)
-				if distance <= 4.0:
-					image.set_pixel(x, y, ELECTRIC_BLUE)
-				if distance <= 2.1:
-					image.set_pixel(x, y, CORE)
-		var phase := frame_index % 2
-		_draw_pixel_line(image, Vector2i(1, 12 - phase), Vector2i(8, 10 + phase), CYAN)
-		_draw_pixel_line(image, Vector2i(16, 13 - phase), Vector2i(22, 10 + phase), CYAN)
-		_draw_pixel_line(image, Vector2i(10 + phase, 1), Vector2i(12 - phase, 8), ELECTRIC_BLUE)
-		_draw_pixel_line(image, Vector2i(13 - phase, 16), Vector2i(10 + phase, 22), ELECTRIC_BLUE)
-		for spark in spark_sets[frame_index]:
-			image.set_pixelv(spark, CORE)
-		var texture := ImageTexture.create_from_image(image)
-		orb_sprite_frames.add_frame(&"pulse", texture)
-	return orb_sprite_frames
-
-
-func _draw_pixel_line(image: Image, start: Vector2i, finish: Vector2i, color: Color) -> void:
-	var delta := finish - start
-	var steps := maxi(absi(delta.x), absi(delta.y))
-	for step in range(steps + 1):
-		var ratio := float(step) / float(maxi(steps, 1))
-		var point := Vector2(start).lerp(Vector2(finish), ratio).round()
-		image.set_pixelv(Vector2i(point), color)
 
 
 func _add_visual(visual: Node2D) -> void:
@@ -509,4 +432,9 @@ func _add_visual(visual: Node2D) -> void:
 func _free_visual(data: Dictionary) -> void:
 	var visual := _get_valid_node_2d(data.get("visual"))
 	if is_instance_valid(visual):
+		var visual_effects := host.get_tree().root.get_node_or_null("VisualEffects")
+		if visual_effects != null:
+			for child in visual.get_children():
+				if child is AnimatedSprite2D:
+					visual_effects.call("stop_effect", child)
 		visual.queue_free()

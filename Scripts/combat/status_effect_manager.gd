@@ -91,17 +91,27 @@ func apply_status(
 
 
 func _play_status_visual(target: Node2D, status_id: StringName) -> void:
+	if not is_instance_valid(target) or target.get("is_dead") == true:
+		return
 	var effect_id := &""
 	match status_id:
 		&"burn": effect_id = &"status_burn"
-		# Conductive Fur owns a persistent ThunderShockCrown parented to the
-		# enemy. Do not also leave the short generic impact sprite in world space.
-		&"shock": return
+		&"shock": effect_id = &"shock_status"
 		&"grounded", &"polarized_scar": effect_id = &"status_shock"
 	if effect_id.is_empty():
 		return
 	var visual_effects := get_tree().root.get_node_or_null("VisualEffects")
-	if visual_effects != null and visual_effects.has_method("play"):
+	if visual_effects == null:
+		return
+	if status_id == &"shock":
+		var sprite := visual_effects.call(
+			"play_attached", effect_id, target,
+			Vector2(0.0, -7.0), 0.98, 0.0
+		) as AnimatedSprite2D
+		if sprite != null:
+			sprite.name = "StatusVFX_shock"
+			target.set_meta("status_vfx_shock", weakref(sprite))
+	else:
 		visual_effects.call("play", effect_id, target.global_position, 0.9)
 
 
@@ -303,6 +313,20 @@ func _end_status(
 	)
 	if is_instance_valid(target):
 		target.remove_meta("status_" + key)
+		var visual: AnimatedSprite2D
+		var visual_meta_key := "status_vfx_" + key
+		var visual_ref := (
+			target.get_meta(visual_meta_key) as WeakRef
+			if target.has_meta(visual_meta_key)
+			else null
+		)
+		if visual_ref != null:
+			visual = visual_ref.get_ref() as AnimatedSprite2D
+		var visual_effects := get_tree().root.get_node_or_null("VisualEffects")
+		if visual != null and visual_effects != null:
+			visual_effects.call("stop_effect", visual)
+		if target.has_meta(visual_meta_key):
+			target.remove_meta(visual_meta_key)
 	entry["last_position"] = last_position
 	status_ended.emit(
 		last_position,

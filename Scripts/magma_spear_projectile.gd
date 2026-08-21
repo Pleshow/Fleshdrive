@@ -130,9 +130,10 @@ func _hit_enemy(body: Node2D) -> void:
 	)
 	source_system.apply_burn(body, burn_damage, burn_duration, 2)
 	source_system.play_projectile_impact(
-		&"fire_impact",
+		&"magma_spear_impact",
 		body.global_position,
-		1.0
+		0.74,
+		direction.angle()
 	)
 
 

@@ -1,0 +1,91 @@
+===========================================
+ Ice VFX Pack – Pixel Art (64x64)
+===========================================
+
+🎨 Created by: [Fellor]
+📦 Version: 1.0
+📅 Release Date: [2025-09-25]
+🌐 Website / Itch.io: [https://fellor.itch.io/]
+
+-------------------------------------------
+📁 CONTENTS
+-------------------------------------------
+
+This VFX pack includes the following:
+
+✅ 64x64 (The Ice rocks - 32x32) pixel Ice-themed visual effects
+✅ Provided in two formats:
+   - Sprite Sheets (PNG)
+   - Individual Frame Sequences (PNG)
+✅ Looping and non-looping animations
+
+List of effects:
+- Ice v1 [15 frame]
+- Ice v2 [3x14 frame]
+- Ice v3 [(Coming: 7 frame),(Idle: 12 frame),(Hit: 13 frame (hit fade in: 9 frame),(Stand: 1 frame),(Hit fade out: 3 frame)),(Miss: 5 frame)]
+- Ice v4 [23 frame]
+- Ice v5 [14 frame]
+- Ice v6 [(Rise: 11 frame),(Stande: 1 frame),(Hit: 4 frame),(Destroy: 7 frame)]
+- Ice v7 [(Fade In: 7 frame),(Idle: 12 frame),(Fade Out: 8 frame)]
+- Ice v8 [(On roof: 1 frame),(Fall: 11 farme),(Destroy: 5 frame)]
+- Ice v9 [11 frame]
+
+List of images:
+- Banner Image
+- Cover Image
+- WEB Image
+- Ice Rock v1
+- Ice Rock v2
+- Ice Rock v3
+
+
+Preview GIFs are included to demonstrate each animation.
+
+-------------------------------------------
+📄 FILE STRUCTURE
+-------------------------------------------
+
+IceVFXPack/
+​├── readme.txt
+​├── license.txt
+​├── Images/
+│      ├──Ice_Rocks
+│​             ​├── Ice_Rock_v1 ... Ice_Rock_v3/
+​│      └──Web
+│​             ├── Cover_Image
+│             ​└── Banner_Image
+​├── Preview_Gif/
+​├── SpriteSheets/
+│        └── Ice_v1/ ... Ice_v9/
+​├── PNG_Sequences/
+         ​└── Ice_v1/ ... Ice_v9/
+
+-------------------------------------------
+📜 LICENSE
+-------------------------------------------
+
+This asset pack is licensed under the following terms:
+
+✅ Free to use in personal and commercial projects  
+✅ No credit required (but always appreciated!)  
+❌ You may NOT redistribute or resell the assets as-is or as part of another asset pack
+
+See `license.txt` for full details.
+
+-------------------------------------------
+📌 HOW TO USE
+-------------------------------------------
+
+You can import the sprite sheets into your engine or editor and use slicing tools to break them into frames.  
+Or use the PNG sequences if your engine supports frame-by-frame animations (e.g. Unity, Godot, GameMaker).
+
+All animations are designed at 64x64 resolution. You can upscale them as needed.
+
+-------------------------------------------
+💌 CONTACT
+-------------------------------------------
+
+If you use the VFX in your project, I'd love to see it!  
+Feel free to message me at: [Instagram or Discord (You can find the links on Itch.io)]
+
+Thank you for downloading, and have fun creating!

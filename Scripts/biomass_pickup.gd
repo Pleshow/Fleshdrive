@@ -120,6 +120,12 @@ func on_body_entered(body: Node2D) -> void:
 
 	collected = true
 	body.add_biomass(biomass_value)
+	var visual_effects := get_tree().root.get_node_or_null("VisualEffects")
+	if visual_effects != null:
+		visual_effects.call(
+			"play", &"biomass_collect",
+			body.global_position + Vector2(0.0, -5.0), 0.30
+		)
 	var telemetry := get_tree().root.get_node_or_null("RunTelemetry")
 	if telemetry != null:
 		telemetry.call("record_biomass_collected", biomass_value)
