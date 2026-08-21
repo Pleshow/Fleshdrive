@@ -22,6 +22,9 @@ var reflected: bool = false
 
 func _ready() -> void:
 	collision_shape.shape = collision_shape.shape.duplicate()
+	var material := CanvasItemMaterial.new()
+	material.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+	projectile_sprite.material = material
 	var light := get_node_or_null("ProjectileLight") as PointLight2D
 	if light != null:
 		light.add_to_group("projectile_light")

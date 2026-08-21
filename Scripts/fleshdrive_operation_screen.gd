@@ -268,6 +268,11 @@ func _refresh_card_selection() -> void:
 		) as Control
 		if selected_frame != null:
 			selected_frame.visible = is_selected
+	var electric_icon := electric_card.get_node_or_null("Icon") as TextureRect
+	if electric_icon != null:
+		electric_icon.self_modulate = Color.WHITE
+		electric_icon.modulate = Color.WHITE
+		electric_icon.z_index = 3
 
 
 func _play_mimichu_intro() -> void:

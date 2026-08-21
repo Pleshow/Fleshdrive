@@ -2,10 +2,10 @@ class_name VoltHoundRuntime
 extends RefCounted
 
 
-const MAGENTA := Color("e43dff")
-const VIOLET := Color("8a39ff")
-const WHITE_CORE := Color("fff1ff")
-const PINK := Color("ff4fa3")
+const MAGENTA := Color("0098db")
+const VIOLET := Color("1e579c")
+const WHITE_CORE := Color("0ce6f2")
+const PINK := Color("53c9ff")
 const KineticChargeHudLayerScript := preload("res://Scripts/ui/kinetic_charge_hud_layer.gd")
 
 var host: PlayerWeaponSystem
@@ -27,6 +27,8 @@ var static_marks: Dictionary = {}
 var afterimages: Array[Dictionary] = []
 var damage_lockout: float = 0.0
 var aura: Node2D
+var kinetic_aura_sprite: AnimatedSprite2D
+var unshaded_vfx_material: CanvasItemMaterial
 var momentum_layer: CanvasLayer
 var momentum_bar: ProgressBar
 var momentum_label: Label
@@ -35,6 +37,8 @@ var momentum_label: Label
 func setup(owner: PlayerWeaponSystem) -> void:
 	host = owner
 	player = owner.player
+	unshaded_vfx_material = CanvasItemMaterial.new()
+	unshaded_vfx_material.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
 	previous_position = player.global_position
 	_install_aura()
 	_install_momentum_hud()
@@ -57,7 +61,7 @@ func update(delta: float) -> void:
 		return
 	var active := player.get_upgrade_level(&"static_claws") > 0
 	if is_instance_valid(aura):
-		aura.visible = active and (momentum >= 75.0 or overdrive_remaining > 0.0)
+		aura.visible = active and overdrive_remaining > 0.0
 	if is_instance_valid(momentum_layer):
 		momentum_layer.call("set_build_visible", active)
 	if not active:
@@ -356,7 +360,7 @@ func _activate_overdrive() -> void:
 	overdrive_extension_used = 0.0
 	overdrive_hit_ids.clear()
 	_spawn_radial_flash(player.global_position, 108.0, WHITE_CORE)
-	host.play_build_vfx(&"static_strike", player.global_position, 1.2)
+	_spawn_kinetic_aura_asset()
 	host.play_build_vfx(&"status_haste", player.global_position, 1.35)
 	host.play_build_vfx(&"status_shield", player.global_position, 1.3)
 
@@ -370,23 +374,7 @@ func _end_overdrive() -> void:
 
 
 func _show_ready_outline() -> void:
-	var outline := Line2D.new()
-	outline.name = "KineticReadyOutline"
-	outline.width = 3.0
-	outline.default_color = WHITE_CORE
-	outline.closed = true
-	outline.antialiased = false
-	outline.points = PackedVector2Array([
-		Vector2(-24, -30), Vector2(24, -30), Vector2(32, 0),
-		Vector2(24, 30), Vector2(-24, 30), Vector2(-32, 0),
-		Vector2(-24, -30),
-	])
-	outline.z_index = 28
-	player.add_child(outline)
-	var tween := outline.create_tween()
-	tween.tween_interval(0.52)
-	tween.tween_property(outline, "modulate:a", 0.0, 0.24)
-	tween.tween_callback(outline.queue_free)
+	_spawn_attached_asset(&"status_shield", 0.62, "KineticReadyPulse")
 
 
 func _overdrive_contact_damage() -> float:
@@ -415,49 +403,78 @@ func _distance_to_segment(point: Vector2, start: Vector2, finish: Vector2) -> fl
 func _install_aura() -> void:
 	aura = Node2D.new()
 	aura.name = "VoltHoundAura"
-	aura.z_index = 7
+	aura.z_index = 72
 	player.add_child.call_deferred(aura)
-	for index in range(4):
-		var arc := Line2D.new()
-		arc.name = "MomentumArc%d" % index
-		arc.width = 2.0
-		arc.default_color = MAGENTA
-		arc.add_point(Vector2.ZERO)
-		arc.add_point(Vector2.ZERO)
-		aura.add_child(arc)
-	var ring := Line2D.new()
-	ring.name = "OverdriveRing"
-	ring.closed = true
-	ring.width = 4.0
-	ring.default_color = WHITE_CORE
-	for index in range(49):
-		ring.add_point(Vector2.from_angle(TAU * float(index) / 48.0) * (48.0 + sin(float(index) * 1.7) * 3.0))
-	aura.add_child(ring)
 	aura.hide()
 
 
 func _update_aura() -> void:
 	if not is_instance_valid(aura):
 		return
-	var ratio := momentum / maxf(maximum_momentum, 1.0)
-	for index in range(aura.get_child_count()):
-		var arc := aura.get_child(index) as Line2D
-		if arc == null:
-			continue
-		if arc.name == "OverdriveRing":
-			arc.visible = overdrive_remaining > 0.0
-			arc.rotation += 0.035
-			arc.modulate.a = 0.92 + sin(Time.get_ticks_msec() * 0.012) * 0.08
-			continue
-		var angle := Time.get_ticks_msec() * 0.004 + float(index) * TAU / 4.0
-		var radius := 22.0 + 22.0 * ratio
-		arc.points = PackedVector2Array([
-			Vector2.from_angle(angle) * radius,
-			Vector2.from_angle(angle + 0.48) * radius * 1.15,
-			Vector2.from_angle(angle + 0.92) * radius,
-		])
-		arc.default_color = WHITE_CORE if overdrive_remaining > 0.0 else MAGENTA.lerp(VIOLET, float(index) / 4.0)
-		arc.modulate.a = clampf((ratio - 0.12) * 1.35, 0.0, 1.0)
+	if overdrive_remaining <= 0.0:
+		return
+	if not is_instance_valid(kinetic_aura_sprite) or not kinetic_aura_sprite.visible:
+		_spawn_kinetic_aura_asset()
+
+
+func _spawn_kinetic_aura_asset() -> void:
+	kinetic_aura_sprite = _spawn_attached_asset(
+		&"electric_chain_arc",
+		0.68,
+		"KineticChargeLightningAura"
+	)
+	if kinetic_aura_sprite != null:
+		kinetic_aura_sprite.position = Vector2(-2.0, -8.0)
+		kinetic_aura_sprite.rotation = 0.12
+		kinetic_aura_sprite.z_index = 72
+		kinetic_aura_sprite.add_to_group("kinetic_charge_vfx")
+		# Reuse the authored lightning frames around Koda without requesting
+		# additional point lights from the global VFX manager.
+		var arc_rotations := [2.38, 4.75]
+		var arc_offsets := [Vector2(-4.0, -11.0), Vector2(5.0, -4.0)]
+		var arc_scales := [0.82, 1.08]
+		for arc_index in range(2):
+			var arc := AnimatedSprite2D.new()
+			arc.name = "KineticChargeArc%d" % (arc_index + 1)
+			arc.sprite_frames = kinetic_aura_sprite.sprite_frames
+			arc.animation = &"play"
+			arc.material = kinetic_aura_sprite.material
+			arc.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+			arc.position = arc_offsets[arc_index]
+			arc.rotation = arc_rotations[arc_index]
+			arc.scale = kinetic_aura_sprite.scale * arc_scales[arc_index]
+			arc.flip_h = arc_index == 1
+			arc.flip_v = arc_index == 0
+			arc.z_index = 72
+			arc.add_to_group("kinetic_charge_vfx")
+			aura.add_child(arc)
+			arc.animation_finished.connect(arc.queue_free, CONNECT_ONE_SHOT)
+			arc.play(&"play")
+
+
+func _spawn_attached_asset(
+	effect_id: StringName,
+	effect_scale: float,
+	effect_name: String
+) -> AnimatedSprite2D:
+	if host == null or not host.is_inside_tree():
+		return null
+	var visual_effects := host.get_tree().root.get_node_or_null("VisualEffects")
+	if visual_effects == null:
+		return null
+	var sprite := visual_effects.call(
+		"play",
+		effect_id,
+		player.global_position,
+		effect_scale,
+		0.0
+	) as AnimatedSprite2D
+	if sprite == null:
+		return null
+	sprite.reparent(aura, true)
+	sprite.position = Vector2.ZERO
+	sprite.name = effect_name
+	return sprite
 
 
 func _install_momentum_hud() -> void:
@@ -475,7 +492,7 @@ func _install_momentum_hud() -> void:
 	panel.size = Vector2(340.0, 46.0)
 	var panel_style := StyleBoxFlat.new()
 	panel_style.bg_color = Color(0.015, 0.01, 0.025, 0.90)
-	panel_style.border_color = VIOLET
+	panel_style.border_color = MAGENTA
 	panel_style.set_border_width_all(2)
 	panel_style.set_corner_radius_all(5)
 	panel.add_theme_stylebox_override("panel", panel_style)
@@ -497,9 +514,9 @@ func _install_momentum_hud() -> void:
 	momentum_bar.show_percentage = false
 	momentum_bar.custom_minimum_size = Vector2(0.0, 12.0)
 	var background := StyleBoxFlat.new()
-	background.bg_color = Color(0.04, 0.025, 0.07, 1.0)
+	background.bg_color = Color("07182b")
 	var fill := StyleBoxFlat.new()
-	fill.bg_color = MAGENTA
+	fill.bg_color = Color("1e579c")
 	fill.set_corner_radius_all(3)
 	momentum_bar.add_theme_stylebox_override("background", background)
 	momentum_bar.add_theme_stylebox_override("fill", fill)
@@ -530,6 +547,7 @@ func _spawn_dash_trace(start: Vector2, finish: Vector2, alpha: float) -> Line2D:
 	line.name = "VoltHoundAfterimage"
 	line.width = 7.0
 	line.default_color = Color(MAGENTA, alpha)
+	line.material = unshaded_vfx_material
 	line.points = PackedVector2Array([start, (start + finish) * 0.5 + Vector2(0.0, -5.0), finish])
 	_add_visual(line)
 	return line
@@ -542,16 +560,16 @@ func _spawn_line_burst(start: Vector2, finish: Vector2) -> void:
 	_fade_visual(line, 0.18)
 
 
-func _spawn_radial_flash(position: Vector2, radius: float, color: Color) -> void:
-	var ring := Line2D.new()
-	ring.name = "VoltHoundDischarge"
-	ring.closed = true
-	ring.width = 4.0
-	ring.default_color = color
-	for index in range(20):
-		ring.add_point(position + Vector2.from_angle(TAU * float(index) / 20.0) * radius)
-	_add_visual(ring)
-	_fade_visual(ring, 0.24)
+func _spawn_radial_flash(position: Vector2, radius: float, _color: Color) -> void:
+	# The old polygonal ring read as a flat geometric debug shape after the
+	# Ink Crimson pass. Use authored electric animation frames for every burst.
+	var effect_id := &"electric_impact"
+	if radius >= 80.0:
+		effect_id = &"electro_shock"
+	elif radius >= 48.0:
+		effect_id = &"ball_lightning_burst"
+	var scale_multiplier := clampf(radius / 54.0, 0.62, 2.1)
+	host.play_build_vfx(effect_id, position, scale_multiplier)
 
 
 func _spawn_mark(enemy: Node2D) -> void:
@@ -562,6 +580,7 @@ func _spawn_mark(enemy: Node2D) -> void:
 	mark.closed = true
 	mark.width = 2.0
 	mark.default_color = PINK
+	mark.material = unshaded_vfx_material
 	for index in range(8):
 		mark.add_point(Vector2.from_angle(TAU * float(index) / 8.0) * 22.0)
 	enemy.add_child(mark)

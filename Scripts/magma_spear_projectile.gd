@@ -18,6 +18,9 @@ var finished := false
 
 
 func _ready() -> void:
+	var material := CanvasItemMaterial.new()
+	material.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+	sprite.material = material
 	var light := get_node_or_null("Glow") as PointLight2D
 	if light != null:
 		light.add_to_group("projectile_light")

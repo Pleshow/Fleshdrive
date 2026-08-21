@@ -10,6 +10,9 @@ const COMBAT_TEXTURE := preload(
 
 
 func _ready() -> void:
+	var material := CanvasItemMaterial.new()
+	material.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+	animation.material = material
 	var frames := SpriteFrames.new()
 	frames.remove_animation(&"default")
 	frames.add_animation(&"death")

@@ -91,6 +91,13 @@ var last_hunt_position: Vector2
 
 
 func _ready() -> void:
+	var telegraph_material := CanvasItemMaterial.new()
+	telegraph_material.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+	for telegraph_visual in [
+		aim_line, charge_line, volley_area, charge_area,
+		slam_telegraph, slam_fill,
+	]:
+		telegraph_visual.material = telegraph_material
 	_configure_sprite_animations()
 	var balance := get_tree().root.get_node_or_null("BalanceDatabase")
 	if balance != null:

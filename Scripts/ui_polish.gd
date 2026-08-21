@@ -174,14 +174,20 @@ func _style_rich_text(label: RichTextLabel) -> void:
 
 
 func _style_panel(control: Control) -> void:
-	if control is PanelContainer and control.name == &"PortraitFrame":
+	# The main menu artwork already supplies the composition behind the text.
+	# MenuShell is layout-only; painting it created the large black rectangle
+	# visible behind the otherwise frameless menu buttons.
+	if control.name in [&"PortraitFrame", &"MenuShell"]:
 		control.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
 		return
 	var style := StyleBoxFlat.new()
 	style.anti_aliasing = false
 	style.set_corner_radius_all(0)
 	style.shadow_size = 0
-	if String(control.name).contains("SelectionBorder"):
+	if (
+		String(control.name).contains("SelectionBorder")
+		or control.name == &"SelectedFrame"
+	):
 		style.bg_color = Color.TRANSPARENT
 		style.border_color = CRIMSON_HOVER
 		style.set_border_width_all(2)
@@ -255,6 +261,14 @@ func _style_ui_texture(texture_rect: TextureRect) -> void:
 	var texture_name := String(texture_rect.name).to_lower()
 	if "icon" not in texture_name and "portrait" not in texture_name:
 		return
+	# Heart illustrations are authored full-colour card art. Tinting the generic
+	# child name "Icon" crimson crushed the Voltaic Heart into its dark panel.
+	var ancestor: Node = texture_rect
+	while ancestor != null:
+		if ancestor.name == &"FleshdriveOperationScreen":
+			texture_rect.self_modulate = Color.WHITE
+			return
+		ancestor = ancestor.get_parent()
 	texture_rect.self_modulate = CRIMSON_BODY
 
 

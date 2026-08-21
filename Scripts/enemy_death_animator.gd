@@ -1,7 +1,6 @@
 class_name EnemyDeathAnimator
 extends RefCounted
 
-
 static func play(
 	enemy: Node2D,
 	sprite: AnimatedSprite2D,
@@ -25,6 +24,13 @@ static func play(
 	ghost.global_position = sprite.global_position
 	ghost.rotation = sprite.global_rotation
 	ghost.z_index = 24
+	if enemy is Charger:
+		ghost.material = sprite.material
+		ghost.self_modulate = sprite.self_modulate
+	else:
+		var ghost_material := CanvasItemMaterial.new()
+		ghost_material.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+		ghost.material = ghost_material
 	container.add_child(ghost)
 
 	var affinity := StringName(
@@ -54,7 +60,8 @@ static func play(
 			)
 
 	ghost.modulate = tint
-	_play_world_effect(enemy, effect_id, scale_factor)
+	if not enemy is Charger:
+		_play_world_effect(enemy, effect_id, scale_factor)
 	var tween := ghost.create_tween()
 	tween.set_parallel(true)
 	tween.set_trans(Tween.TRANS_QUAD)
@@ -98,10 +105,20 @@ static func play_animation(
 	ghost.global_position = sprite.global_position
 	ghost.global_rotation = sprite.global_rotation
 	ghost.z_index = 24
+	if enemy is Charger:
+		ghost.material = sprite.material
+		ghost.self_modulate = sprite.self_modulate
+	else:
+		var ghost_material := CanvasItemMaterial.new()
+		ghost_material.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+		ghost.material = ghost_material
 	container.add_child(ghost)
 	ghost.play(animation)
 	var effect_id := _get_affinity_effect_id(enemy)
-	_play_world_effect(enemy, effect_id, scale_factor)
+	# Charger has a full authored death atlas. The generic death burst sat over
+	# its head in cyan and made that sprite look like a different colourway.
+	if not enemy is Charger:
+		_play_world_effect(enemy, effect_id, scale_factor)
 	_free_after_animation(ghost)
 
 

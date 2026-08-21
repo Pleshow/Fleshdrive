@@ -90,7 +90,13 @@ func _physics_process(delta: float) -> void:
 
 	var pickup_radius := float(player.get("biomass_pickup_radius"))
 	var distance := global_position.distance_to(player.global_position)
-	if distance > pickup_radius or distance <= 1.0:
+	if distance > pickup_radius:
+		return
+	# With a large simultaneous drop several pickups can reach Koda in the same
+	# physics frame without producing a fresh body_entered edge. Previously the
+	# distance <= 1 early return then left those pickups pinned to Koda forever.
+	if distance <= 30.0:
+		on_body_entered(player)
 		return
 
 	var attraction_speed := lerpf(260.0, 720.0, 1.0 - distance / pickup_radius)

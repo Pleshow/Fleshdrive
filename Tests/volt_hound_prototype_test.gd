@@ -82,6 +82,16 @@ func _run() -> void:
 		and is_zero_approx(system.volt_hound.modify_incoming_damage(null, 10.0)),
 		"A full-charge dash spends READY and grants the complete Overdrive benefits"
 	)
+	system.volt_hound.update(0.01)
+	var kinetic_asset := system.volt_hound.kinetic_aura_sprite
+	_check(
+		system.volt_hound.aura.visible
+		and kinetic_asset is AnimatedSprite2D
+		and kinetic_asset.get_parent() == system.volt_hound.aura
+		and kinetic_asset.material is ShaderMaterial
+		and bool((kinetic_asset.material as ShaderMaterial).get_shader_parameter("force_electric_blue")),
+		"Invulnerable Overdrive uses an attached real blue lightning-asset aura"
+	)
 	var crawler_scene := load("res://Scenes/enemies/crawler.tscn") as PackedScene
 	var enemy := crawler_scene.instantiate() as Crawler
 	game.get_node("Entities").add_child(enemy)

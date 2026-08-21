@@ -29,6 +29,19 @@ func _run() -> void:
 	_check(camera != null, "Feedback camera exists")
 	_check(effects.is_in_group("effects_container"), "World effects use their own container")
 	_check(audio_effects != null, "Combat audio effects player exists")
+	_check(
+		player.lightning_line.default_color == Color("0ce6f2")
+		and player.lightning_glow.default_color == Color("0098db")
+		and is_equal_approx(player.lightning_glow.default_color.a, 1.0),
+		"Base autoattack uses opaque palette blues that survive world quantization"
+	)
+	_check(
+		player.lightning_line.material is CanvasItemMaterial
+		and (player.lightning_line.material as CanvasItemMaterial).light_mode
+			== CanvasItemMaterial.LIGHT_MODE_UNSHADED
+		and player.lightning_glow.material == player.lightning_line.material,
+		"Base autoattack ignores WorldDarkness like other electric-blue sprites"
+	)
 	if audio_effects != null:
 		audio_effects.call("clear_play_counts")
 

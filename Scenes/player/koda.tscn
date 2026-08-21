@@ -25,6 +25,9 @@ fill_to = Vector2(1, 0.5)
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_attack_cooldown"]
 light_mode = 1
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_lightning_unshaded"]
+light_mode = 1
+
 [sub_resource type="StyleBoxFlat" id="Style_attack_cooldown_background"]
 bg_color = Color(0.015, 0.035, 0.075, 0.88)
 border_width_left = 1
@@ -195,9 +198,21 @@ one_shot = true
 
 [node name="LightningLine" type="Line2D" parent="." unique_id=764223225]
 visible = false
-width = 5.0
-default_color = Color(0, 0.7472604, 0.7535147, 1)
-antialiased = true
+z_as_relative = false
+z_index = 73
+material = SubResource("CanvasItemMaterial_lightning_unshaded")
+width = 4.5
+default_color = Color(0.047058824, 0.9019608, 0.9490196, 1)
+antialiased = false
+
+[node name="LightningGlow" type="Line2D" parent="."]
+visible = false
+z_as_relative = false
+z_index = 72
+material = SubResource("CanvasItemMaterial_lightning_unshaded")
+width = 11.0
+default_color = Color(0, 0.59607846, 0.85882354, 1)
+antialiased = false
 
 [node name="AttackRangeIndicator" type="Line2D" parent="." unique_id=181694060]
 show_behind_parent = true

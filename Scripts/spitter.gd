@@ -57,6 +57,9 @@ var hit_flash_remaining: float = 0.0
 
 
 func _ready() -> void:
+	var telegraph_material := CanvasItemMaterial.new()
+	telegraph_material.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+	aim_line.material = telegraph_material
 	if MinimalistVisualProfile.is_active(get_tree()):
 		MinimalistVisualProfile.configure_spitter(sprite)
 		MinimalistVisualProfile.configure_shadow(

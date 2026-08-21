@@ -19,6 +19,9 @@ var impacted := false
 
 
 func _ready() -> void:
+	var material := CanvasItemMaterial.new()
+	material.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+	sprite.material = material
 	_configure_animation()
 	_install_light()
 	body_entered.connect(_on_body_entered)

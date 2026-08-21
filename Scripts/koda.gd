@@ -133,6 +133,7 @@ signal upgrade_levels_changed(upgrade_levels: Dictionary)
 @onready var attack_timer: Timer = $AttackTimer
 @onready var attack_cooldown_bar: ProgressBar = $AttackCooldownBar
 @onready var lightning_line: Line2D = $LightningLine
+@onready var lightning_glow: Line2D = $LightningGlow
 @onready var invulnerability_timer: Timer = $InvulnerabilityTimer
 @onready var attack_range_indicator: Line2D = $AttackRangeIndicator
 @onready var movement_dust: CPUParticles2D = $MovementDust
@@ -187,6 +188,9 @@ var pacing_run_manager: RunManager
 
 func _ready() -> void:
 	configure_directional_animations()
+	var range_material := CanvasItemMaterial.new()
+	range_material.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+	attack_range_indicator.material = range_material
 	if MinimalistVisualProfile.is_active(get_tree()):
 		_apply_minimalist_presentation()
 	dash_duration_timer.wait_time = dash_duration
@@ -619,7 +623,10 @@ func play_attack_animation(direction: Vector2) -> void:
 
 func _flash_fleshdrive_attack_aura() -> void:
 	var aura := Line2D.new()
+	var aura_material := CanvasItemMaterial.new()
+	aura_material.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
 	aura.name = "AttackAura"
+	aura.material = aura_material
 	aura.width = 5.0
 	aura.antialiased = not MinimalistVisualProfile.is_active(get_tree())
 	aura.closed = true
@@ -1008,12 +1015,15 @@ func perform_attack(target: Node2D) -> void:
 	if active_fleshdrive_id == FleshdriveCatalog.TELEKINETIC:
 		_perform_telekinetic_attack(target)
 		return
-	if weapon_system != null and weapon_system.perform_thunder_god_attack(target):
+	if weapon_system != null and get_upgrade_level(&"arc_heart") > 0:
+		# Set the mirrored attack pose before the runtime samples the chest socket.
+		# This keeps moving and freshly-turned attacks on the same anatomical point.
 		var thunder_direction := global_position.direction_to(target.global_position)
 		play_attack_animation(thunder_direction)
-		play_sound(&"raiju_attack", -8.0, 0.055)
-		play_sound(&"raiju_attack_spark", -2.0, 0.08)
-		return
+		if weapon_system.perform_thunder_god_attack(target):
+			play_sound(&"raiju_attack", -8.0, 0.055)
+			play_sound(&"raiju_attack_spark", -2.0, 0.08)
+			return
 
 	var chain_target: Node2D = null
 	var lightning_targets: Array[Node2D] = [target]
@@ -1232,40 +1242,59 @@ func show_lightning_effect(
 	if targets.is_empty():
 		return
 
-	lightning_line.clear_points()
-	var segment_start := Vector2.ZERO
-	lightning_line.add_point(segment_start)
+	# The licensed four-frame chain arc has organic branching and a clean
+	# electric silhouette. Stretch it only along its authored horizontal axis,
+	# then rotate the complete animation between each pair of chain targets.
+	hide_lightning_effect()
+	var segment_start := get_electric_muzzle_position(
+		targets[0].global_position
+	)
 
 	for target in targets:
 		if not is_instance_valid(target):
 			continue
 
-		var segment_end := to_local(target.global_position)
-		var segment_vector := segment_end - segment_start
-		var perpendicular := segment_vector.normalized().orthogonal()
-		for step in range(1, 7):
-			var ratio := float(step) / 6.0
-			var point := segment_start.lerp(segment_end, ratio)
-			if step < 6:
-				var envelope := sin(ratio * PI)
-				point += perpendicular * randf_range(-12.0, 12.0) * envelope
-			lightning_line.add_point(point)
+		var segment_end := target.global_position
+		_spawn_autoattack_lightning_asset(segment_start, segment_end)
 		segment_start = segment_end
 
-	if lightning_line.get_point_count() < 2:
-		lightning_line.clear_points()
+
+func get_electric_muzzle_position(_target_world_position: Vector2) -> Vector2:
+	var facing_sign := -1.0 if animated_sprite.flip_h else 1.0
+	# Koda's Dusk Garden sprite is centred on the body. Nine pixels forward and
+	# seven pixels upward places the socket under the jaw, at the upper chest,
+	# instead of at the paws/body origin.
+	return animated_sprite.to_global(Vector2(9.0 * facing_sign, -7.0))
+
+
+func _spawn_autoattack_lightning_asset(from: Vector2, to: Vector2) -> void:
+	var delta := to - from
+	var distance := delta.length()
+	if distance < 2.0:
 		return
-
-	lightning_line.visible = true
-
-	var tween := create_tween()
-	tween.tween_interval(0.09)
-	tween.tween_callback(hide_lightning_effect)
+	var arc := play_combat_vfx(
+		&"electric_chain_arc",
+		from.lerp(to, 0.5),
+		1.0,
+		delta.angle()
+	)
+	if arc == null:
+		return
+	# The useful painted span is approximately 210 px inside the 256 px asset.
+	# Preserve its authored vertical branching while fitting arbitrary ranges.
+	arc.scale = Vector2(distance / 210.0, 0.72)
+	arc.flip_v = randf() > 0.5
+	arc.z_index = 74
+	arc.name = "AutoattackLightningVFX"
+	arc.set_meta("autoattack_lightning", true)
 
 
 func hide_lightning_effect() -> void:
 	lightning_line.visible = false
 	lightning_line.clear_points()
+	lightning_glow.visible = false
+	lightning_glow.clear_points()
+
 
 func add_biomass(amount: float) -> void:
 	if is_dead or amount <= 0.0:
@@ -1291,11 +1320,6 @@ func _try_trigger_level_up() -> bool:
 
 	if current_biomass < biomass_required:
 		return false
-	if (
-		get_level_pacing_elapsed()
-		< float(get_level_pacing_contract()["minimum"])
-	):
-		return false
 
 	current_biomass -= biomass_required
 	level_up_pending = true
@@ -1316,9 +1340,9 @@ func confirm_level_up() -> void:
 
 
 func _queue_followup_level_up() -> void:
-	# Let the accepted card leave the screen and return control briefly. This
-	# also prevents the confirmation click/key from leaking into the next offer.
-	await get_tree().create_timer(1.15, false).timeout
+	# Consume overflow promptly so the XP bar always describes exactly one
+	# level. A short input guard prevents the accepted click from leaking.
+	await get_tree().create_timer(0.22, false).timeout
 	if not is_dead and not level_up_pending:
 		_try_trigger_level_up()
 
@@ -1642,7 +1666,15 @@ func _apply_minimalist_presentation() -> void:
 		Vector2(-2.0, 7.0)
 	)
 	lightning_line.antialiased = false
-	lightning_line.width = 4.0
+	var electric_material := CanvasItemMaterial.new()
+	electric_material.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+	lightning_line.material = electric_material
+	lightning_line.width = 4.5
+	lightning_line.default_color = Color("0ce6f2")
+	lightning_glow.antialiased = false
+	lightning_glow.material = electric_material
+	lightning_glow.width = 11.0
+	lightning_glow.default_color = Color("0098db")
 	attack_range_indicator.antialiased = false
 
 

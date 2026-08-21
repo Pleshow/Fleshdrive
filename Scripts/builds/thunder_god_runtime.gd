@@ -29,12 +29,15 @@ var status_layer: CanvasLayer
 var status_bar: ProgressBar
 var status_label: Label
 var ready_announced: bool = false
+var unshaded_vfx_material: CanvasItemMaterial
 
 
 func setup(owner: PlayerWeaponSystem, combat_pipeline: Node) -> void:
 	host = owner
 	player = owner.player
 	pipeline = combat_pipeline
+	unshaded_vfx_material = CanvasItemMaterial.new()
+	unshaded_vfx_material.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
 	random.randomize()
 	_install_status_hud()
 	if pipeline != null and not pipeline.target_killed.is_connected(_on_target_killed):
@@ -118,7 +121,10 @@ func _run_chain(
 	allow_capacitor: bool
 ) -> void:
 	var current_target := first_target
-	var origin := player.global_position
+	var origin := player.get_electric_muzzle_position(
+		first_target.global_position
+	)
+	var source_anchor: Node2D = player
 	var target_count := BASE_CHAIN_TARGETS + mini(_level(&"arc_relay"), 4)
 	var base_damage := maxf(player.attack_damage, BASE_DAMAGE)
 	for jump_index in range(target_count):
@@ -131,7 +137,14 @@ func _run_chain(
 		var damage := base_damage * arc_heart_multiplier * falloff * _overload_damage_multiplier()
 		var was_shocked := _shock_stacks(current_target) > 0
 		_hit_target(current_target, damage, source_type, context, state, allow_capacitor)
-		_draw_lightning(origin, current_target.global_position, 1.0, false)
+		_draw_lightning(
+			origin,
+			current_target.global_position,
+			1.0,
+			false,
+			source_anchor,
+			current_target
+		)
 		host.play_build_sound(&"electric_chain_jump", -12.0)
 		if was_shocked:
 			Dictionary(state["feedback_targets"])[current_target.get_instance_id()] = true
@@ -142,6 +155,7 @@ func _run_chain(
 				_try_neural_thunder(current_target, damage, context, state, allow_capacitor)
 		_try_storm_core(current_target, damage, context, state, allow_capacitor)
 		origin = current_target.global_position
+		source_anchor = current_target
 		current_target = _nearest_unvisited(origin, _chain_range(), context.visited_targets)
 
 
@@ -339,60 +353,94 @@ func _is_living_enemy(target: Node2D) -> bool:
 	return is_instance_valid(target) and target.is_in_group("enemies") and target.get("is_dead") != true
 
 
-func _draw_lightning(from: Vector2, to: Vector2, intensity: float, branch: bool) -> void:
+func _draw_lightning(
+	from: Vector2,
+	to: Vector2,
+	intensity: float,
+	branch: bool,
+	source_anchor: Node2D = null,
+	target_anchor: Node2D = null
+) -> void:
 	if host == null or not host.is_inside_tree():
 		return
-	var root := Node2D.new()
-	root.name = "ThunderBolt"
-	root.add_to_group("thunder_vfx")
-	# Keep the bolt below character sprites; the small impact marker can sit on
-	# top, but an enemy silhouette must remain readable through every chain.
-	root.z_as_relative = false
-	root.z_index = -1
-	var container := host.get_tree().get_first_node_in_group("attack_container")
-	if container == null:
-		container = host.get_tree().current_scene
-	if container == null:
-		container = host.get_parent()
-	if container == null:
-		root.free()
+	var delta := to - from
+	var distance := delta.length()
+	if distance < 2.0:
 		return
-	container.add_child(root)
-	var points := PackedVector2Array([from])
-	var direction := from.direction_to(to)
-	var normal := direction.orthogonal()
-	for step in range(1, 6):
-		var ratio := float(step) / 6.0
-		var envelope := sin(ratio * PI)
-		points.append(from.lerp(to, ratio) + normal * random.randf_range(-15.0, 15.0) * envelope * intensity)
-	points.append(to)
-	var glow := Line2D.new()
-	glow.width = 7.5 * intensity
-	glow.default_color = Color(0.05, 0.72, 1.0, 0.18)
-	glow.points = points
-	glow.joint_mode = Line2D.LINE_JOINT_SHARP
-	glow.antialiased = false
-	root.add_child(glow)
-	var core := Line2D.new()
-	core.width = 2.4 * intensity
-	core.default_color = Color(0.72, 0.96, 1.0, 0.96) if not branch else Color(0.34, 0.86, 1.0, 0.90)
-	core.points = points
-	core.joint_mode = Line2D.LINE_JOINT_SHARP
-	core.antialiased = false
-	root.add_child(core)
-	var tween := root.create_tween()
-	tween.tween_interval(0.27)
-	tween.tween_property(glow, "modulate:a", 0.0, 0.19)
-	tween.parallel().tween_property(core, "modulate:a", 0.0, 0.16)
-	tween.parallel().tween_property(core, "width", 0.5, 0.16)
-	tween.tween_callback(root.queue_free)
-	host.play_build_vfx(
-		&"electric_chain_arc",
-		from.lerp(to, 0.5),
-		clampf(from.distance_to(to) / 210.0, 0.62, 1.10),
-		from.direction_to(to).angle()
-	)
+	var visual_effects := host.get_tree().root.get_node_or_null("VisualEffects")
+	var arc: AnimatedSprite2D = null
+	if visual_effects != null:
+		arc = visual_effects.call(
+			"play",
+			&"electric_chain_arc",
+			from.lerp(to, 0.5),
+			1.0,
+			delta.angle()
+		) as AnimatedSprite2D
+	if arc != null:
+		_fit_lightning_asset(arc, from, to, intensity, branch)
+		arc.flip_v = random.randf() > 0.5
+		arc.z_as_relative = false
+		arc.z_index = 74
+		arc.name = "ThunderAssetBolt"
+		arc.add_to_group("thunder_vfx")
+		arc.set_meta("autoattack_lightning", true)
+		arc.set_meta("tracks_player_source", source_anchor == player)
+		if is_instance_valid(source_anchor) and is_instance_valid(target_anchor):
+			_track_lightning_asset(
+				arc,
+				source_anchor,
+				target_anchor,
+				intensity,
+				branch
+			)
 	host.play_build_vfx(&"electric_impact", to, 0.85 + intensity * 0.45)
+
+
+func _fit_lightning_asset(
+	arc: AnimatedSprite2D,
+	from: Vector2,
+	to: Vector2,
+	intensity: float,
+	branch: bool
+) -> void:
+	var delta := to - from
+	# The painted bolt occupies roughly 210 px of its 256 px canvas. Fit the
+	# authored animation exactly between anchors while retaining its branches.
+	arc.global_position = from.lerp(to, 0.5)
+	arc.rotation = delta.angle()
+	arc.scale = Vector2(
+		delta.length() / 210.0,
+		(0.68 if not branch else 0.56) * maxf(intensity, 0.72)
+	)
+
+
+func _track_lightning_asset(
+	arc: AnimatedSprite2D,
+	source_anchor: Node2D,
+	target_anchor: Node2D,
+	intensity: float,
+	branch: bool
+) -> void:
+	while (
+		is_instance_valid(arc)
+		and arc.visible
+		and is_instance_valid(source_anchor)
+		and is_instance_valid(target_anchor)
+	):
+		var live_from := source_anchor.global_position
+		if source_anchor == player:
+			live_from = player.get_electric_muzzle_position(
+				target_anchor.global_position
+			)
+		_fit_lightning_asset(
+			arc,
+			live_from,
+			target_anchor.global_position,
+			intensity,
+			branch
+		)
+		await host.get_tree().process_frame
 
 
 func _show_shock_crown(target: Node2D, stacks: int) -> void:
@@ -408,6 +456,7 @@ func _show_shock_crown(target: Node2D, stacks: int) -> void:
 	crown.set_as_top_level(false)
 	crown.width = 2.0
 	crown.default_color = Color(0.25, 0.88, 1.0, 0.58)
+	crown.material = unshaded_vfx_material
 	crown.z_index = 24
 	var points := PackedVector2Array()
 	for index in range(17):
@@ -446,6 +495,7 @@ func _update_player_aura(active: bool) -> void:
 				if ring_index == 0
 				else Color(0.05, 0.62, 1.0, 0.18)
 			)
+			ring.material = unshaded_vfx_material
 			var points := PackedVector2Array()
 			for index in range(25):
 				var angle := TAU * float(index) / 24.0
@@ -575,6 +625,7 @@ func _announce_build_ready() -> void:
 	outline.name = "BuildReadyOutline"
 	outline.width = 3.0
 	outline.default_color = Color(0.48, 0.92, 1.0, 0.94)
+	outline.material = unshaded_vfx_material
 	outline.closed = true
 	outline.antialiased = false
 	outline.points = PackedVector2Array([

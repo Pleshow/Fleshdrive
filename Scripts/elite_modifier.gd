@@ -122,6 +122,9 @@ func _create_telegraph() -> void:
 	ring.name = "EliteTelegraph"
 	ring.width = 4.0
 	ring.default_color = TYPE_COLORS[elite_type]
+	var material := CanvasItemMaterial.new()
+	material.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+	ring.material = material
 	ring.z_as_relative = false
 	ring.z_index = 42
 	for point_index in range(33):

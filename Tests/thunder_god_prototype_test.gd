@@ -49,6 +49,14 @@ func _run() -> void:
 	player.upgrade_levels[&"arc_heart"] = 1
 	player.upgrade_levels[&"arc_relay"] = 4
 	player.configure_fleshdrive(FleshdriveCatalog.ELECTRIC, 1)
+	var chest_socket := player.get_electric_muzzle_position(
+		player.global_position + Vector2.RIGHT * 100.0
+	)
+	_check(
+		chest_socket.x > player.global_position.x
+		and chest_socket.y < player.global_position.y,
+		"Voltaic autoattack starts forward from Koda's upper chest"
+	)
 	var crawler_scene := load("res://Scenes/enemies/crawler.tscn") as PackedScene
 	var enemies: Array[Node2D] = []
 	for index in range(9):
@@ -90,7 +98,31 @@ func _run() -> void:
 	)
 	_check(system.thunder_god.capacitor_charge <= 6, "One attack respects the six-charge Capacitor cap")
 	_check(player.attack_timer.wait_time >= 0.25, "Feedback Loop respects the absolute cooldown floor")
-	_check(not get_nodes_in_group("thunder_vfx").is_empty(), "Chain Lightning creates a layered bolt VFX")
+	var thunder_effects := get_nodes_in_group("thunder_vfx")
+	_check(not thunder_effects.is_empty(), "Chain Lightning creates an animated asset VFX")
+	var bolt := thunder_effects[0] as AnimatedSprite2D if not thunder_effects.is_empty() else null
+	_check(
+		bolt != null
+		and bolt.z_index >= 70
+		and bolt.sprite_frames.get_frame_count(&"play") == 4
+		and bolt.material is ShaderMaterial
+		and bool((bolt.material as ShaderMaterial).get_shader_parameter("force_electric_blue")),
+		"Autoattack uses the licensed four-frame blue lightning above enemies"
+	)
+	var player_bolt: AnimatedSprite2D = null
+	for effect in thunder_effects:
+		if bool(effect.get_meta("tracks_player_source", false)):
+			player_bolt = effect as AnimatedSprite2D
+			break
+	_check(player_bolt != null, "Primary Voltaic bolt tracks Koda's chest socket")
+	if player_bolt != null:
+		var bolt_position_before_move := player_bolt.global_position
+		player.global_position += Vector2(18.0, 6.0)
+		await process_frame
+		_check(
+			player_bolt.global_position.distance_to(bolt_position_before_move) > 2.0,
+			"Active lightning stays attached while Koda moves"
+		)
 	system.thunder_god.lightning_activity = 49
 	system.perform_thunder_god_attack(enemies[0])
 	_check(system.thunder_god.thunderstate_remaining > 0.0, "Fifty Lightning events activate THUNDERSTATE")

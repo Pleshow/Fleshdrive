@@ -50,6 +50,7 @@ func apply_damage(event: DamageEvent) -> Dictionary:
 		return result
 	var target := event.target
 	var amount := event.amount
+	amount = _apply_swarm_power_curve(event, target, amount)
 	if target.has_method("modify_incoming_damage_event"):
 		amount = float(target.call(
 			"modify_incoming_damage_event",
@@ -104,6 +105,35 @@ func apply_damage(event: DamageEvent) -> Dictionary:
 		status_effects.notify_target_killed(target)
 		target_killed.emit(target, event)
 	return result
+
+
+func _apply_swarm_power_curve(
+	event: DamageEvent,
+	target: Node2D,
+	amount: float
+) -> float:
+	# Crawlers are the late-run fodder fantasy: builds increasingly erase them,
+	# while Spitters, Chargers and the Warden retain their full durability and
+	# damage. This shifts difficulty toward readable projectiles and specials
+	# without lowering population density.
+	if event.source is Koda and target is Crawler:
+		if not bool(target.get_meta("is_elite", false)):
+			var player_level := int((event.source as Koda).current_level)
+			var execution_multiplier := clampf(
+				1.0 + 0.24 * float(maxi(player_level - 7, 0)),
+				1.0,
+				3.8
+			)
+			amount *= execution_multiplier
+	elif target is Koda and event.source is Crawler:
+		var player_level := int((target as Koda).current_level)
+		var fodder_threat := lerpf(
+			1.0,
+			0.55,
+			clampf(float(player_level - 7) / 10.0, 0.0, 1.0)
+		)
+		amount *= fodder_threat
+	return amount
 
 
 func _register_death_feedback(event: DamageEvent) -> void:

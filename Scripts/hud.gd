@@ -723,9 +723,9 @@ func update_biomass_bar(
 	current_level: int
 ) -> void:
 	var displayed_requirement := maxf(biomass_required, 1.0)
-	# Level-up pacing deliberately retains overflow. The HUD represents the
-	# current level threshold, not the whole hidden bank, so its number and fill
-	# can never disagree (for example 1364 / 115 on a full 115-point bar).
+	# Keep the survivor-style contract literal: progress gained since the last
+	# level-up versus the cost of the next one. Any retained overflow is consumed
+	# by the follow-up level-up immediately after card confirmation.
 	var displayed_biomass := clampf(
 		current_biomass,
 		0.0,

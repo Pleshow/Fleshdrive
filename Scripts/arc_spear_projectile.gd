@@ -2,6 +2,8 @@ class_name ArcSpearProjectile
 extends Area2D
 
 
+const PIXEL_EMISSIVE_SHADER := preload("res://Shaders/pixel_emissive.gdshader")
+
 @export var move_speed: float = 720.0
 @export var projectile_texture: Texture2D
 
@@ -17,6 +19,10 @@ var finished := false
 
 
 func _ready() -> void:
+	var material := ShaderMaterial.new()
+	material.shader = PIXEL_EMISSIVE_SHADER
+	material.set_shader_parameter("force_electric_blue", true)
+	sprite.material = material
 	_configure_animation()
 	_install_light()
 	body_entered.connect(_on_body_entered)

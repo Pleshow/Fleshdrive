@@ -23,11 +23,14 @@ var blood_target_id := 0
 var blood_streak := 0
 var repeat_guard := false
 var active_decoys: Array[Node2D] = []
+var unshaded_vfx_material: CanvasItemMaterial
 
 
 func setup(owner: PlayerWeaponSystem) -> void:
 	system = owner
 	player = owner.player
+	unshaded_vfx_material = CanvasItemMaterial.new()
+	unshaded_vfx_material.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
 	var manager := system.get_tree().get_first_node_in_group("run_manager")
 	if manager != null and manager.has_signal("rush_ended"):
 		manager.rush_ended.connect(_on_rush_ended)
@@ -233,12 +236,47 @@ func _fire_parasite_maw(level: int) -> bool:
 	var targets := system._nearest_enemies(470.0, 1)
 	if targets.is_empty(): return false
 	var target := targets[0]
+	var target_position := target.global_position
+	player.play_attack_animation(player.global_position.direction_to(target_position))
 	system._damage_enemy(target, (48.0 + 12.0 * level) * _damage_multiplier(), true, &"parasite_maw")
-	_spawn_ring(target.global_position, 42.0, Color(0.62, 0.12, 0.24, 0.9))
-	system.play_build_vfx(&"bite_impact", target.global_position, 1.25)
-	if target.get("is_dead") == true and randf() < 0.18 + 0.03 * level:
+	var killed: bool = bool(target.get("is_dead"))
+	_spawn_maw_feedback(target_position, killed)
+	system.play_build_vfx(&"bite_impact", target_position, 1.65)
+	system.play_build_sound(&"enemy_hit", -4.0)
+	if killed and randf() < 0.18 + 0.03 * level:
 		player.add_biomass(1.0)
+		_spawn_ring(target_position, 58.0, Color("0ce6f2"))
+		system.play_build_sound(&"biomass_pickup", -10.0)
 	return true
+
+
+func _spawn_maw_feedback(target_position: Vector2, killed: bool) -> void:
+	var container := system.get_tree().get_first_node_in_group("effects_container")
+	if container == null:
+		return
+	var jaw := Node2D.new()
+	jaw.name = "ParasiteMawImpact"
+	jaw.global_position = target_position
+	jaw.z_index = 26
+	container.add_child(jaw)
+	for side in [-1.0, 1.0]:
+		var teeth := Line2D.new()
+		teeth.width = 5.0
+		teeth.default_color = Color("ff0546") if not killed else Color("0ce6f2")
+		teeth.antialiased = false
+		teeth.material = unshaded_vfx_material
+		teeth.points = PackedVector2Array([
+			Vector2(-48.0, side * 30.0), Vector2(-20.0, side * 10.0),
+			Vector2(0.0, side * 24.0), Vector2(20.0, side * 10.0),
+			Vector2(48.0, side * 30.0),
+		])
+		jaw.add_child(teeth)
+	_spawn_ring(target_position, 52.0, Color("ff0546"))
+	var tween := jaw.create_tween()
+	tween.set_parallel(true)
+	tween.tween_property(jaw, "scale", Vector2(0.72, 0.18), 0.10)
+	tween.tween_property(jaw, "modulate:a", 0.0, 0.28).set_delay(0.12)
+	tween.chain().tween_callback(jaw.queue_free)
 
 
 func _fire_blood_needle(level: int) -> bool:
@@ -403,6 +441,7 @@ func _spawn_decoy() -> Node2D:
 	ring.antialiased = false
 	ring.width = 2.0
 	ring.default_color = Color(0.28, 0.76, 1.0, 0.56)
+	ring.material = unshaded_vfx_material
 	ring.position = Vector2(0.0, 10.0)
 	for i in 17:
 		var angle := TAU * float(i) / 16.0

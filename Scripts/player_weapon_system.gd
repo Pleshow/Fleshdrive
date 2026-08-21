@@ -73,10 +73,13 @@ var thunder_god: ThunderGodRuntime
 var orange_tempest: OrangeTempestRuntime
 var volt_hound: VoltHoundRuntime
 var universal_mutations: UniversalMutationRuntime
+var procedural_vfx_material: CanvasItemMaterial
 
 
 func _ready() -> void:
 	player = get_parent() as Koda
+	procedural_vfx_material = CanvasItemMaterial.new()
+	procedural_vfx_material.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
 	combat_pipeline = get_tree().root.get_node_or_null("CombatPipeline")
 	balance_database = get_tree().root.get_node_or_null("BalanceDatabase")
 	targeting_service = TargetingService.new()
@@ -270,6 +273,7 @@ func _install_magma_aim_indicator() -> void:
 	magma_aim_indicator = Polygon2D.new()
 	magma_aim_indicator.name = "MagmaAimShadow"
 	magma_aim_indicator.color = Color(0.92, 0.055, 0.01, 0.19)
+	magma_aim_indicator.material = procedural_vfx_material
 	magma_aim_indicator.z_index = -2
 	magma_aim_indicator.polygon = PackedVector2Array([
 		Vector2(28.0, -30.0), Vector2(720.0, -44.0),
@@ -280,6 +284,7 @@ func _install_magma_aim_indicator() -> void:
 	magma_aim_outline.name = "MagmaAimOutline"
 	magma_aim_outline.width = 3.0
 	magma_aim_outline.default_color = Color(1.0, 0.18, 0.025, 0.65)
+	magma_aim_outline.material = procedural_vfx_material
 	magma_aim_outline.points = PackedVector2Array([
 		Vector2(28.0, 0.0), Vector2(720.0, 0.0),
 	])
@@ -671,6 +676,7 @@ func _create_gravity_well_visual(center: Vector2, radius: float) -> Node2D:
 	ring.width = 5.0
 	ring.antialiased = true
 	ring.default_color = Color(0.74, 0.30, 1.0, 0.86)
+	ring.material = procedural_vfx_material
 	ring.z_index = 12
 	for point_index in range(49):
 		var angle := TAU * float(point_index) / 48.0
@@ -678,6 +684,7 @@ func _create_gravity_well_visual(center: Vector2, radius: float) -> Node2D:
 	visual.add_child(ring)
 	var core := Polygon2D.new()
 	core.color = Color(0.30, 0.04, 0.48, 0.20)
+	core.material = procedural_vfx_material
 	core.polygon = ring.points
 	core.z_index = 11
 	visual.add_child(core)
@@ -990,6 +997,7 @@ func _capture_enemy(enemy: Node2D, level: int) -> void:
 	tether.name = "KineticTether"
 	tether.width = 4.5
 	tether.default_color = Color(0.84, 0.62, 1.0, 0.94)
+	tether.material = procedural_vfx_material
 	tether.antialiased = true
 	tether.z_as_relative = false
 	tether.z_index = 62
@@ -1137,6 +1145,7 @@ func _spawn_telekinetic_tracer(
 	tracer.scale = Vector2.ONE * 0.34
 	tracer.z_index = 18
 	tracer.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	tracer.material = procedural_vfx_material
 	add_child(tracer)
 	tracer.play(&"flight")
 	var tween := tracer.create_tween()
@@ -1281,6 +1290,7 @@ func _spawn_magma_lane(direction: Vector2, range_value: float, level: int) -> vo
 	var lane := Line2D.new()
 	lane.width = 42.0
 	lane.default_color = Color(1.0, 0.20, 0.02, 0.42)
+	lane.material = procedural_vfx_material
 	lane.points = PackedVector2Array([Vector2.ZERO, direction * range_value])
 	lane.z_index = 7
 	add_child(lane)
@@ -1560,6 +1570,7 @@ func _spawn_blazing_stride_zone(
 	zone.name = "BlazingStrideZone"
 	zone.z_index = 4
 	zone.color = Color(1.0, 0.12, 0.015, 0.30)
+	zone.material = procedural_vfx_material
 	var points := PackedVector2Array()
 	for point_index in range(25):
 		var angle := TAU * float(point_index) / 24.0
@@ -1998,6 +2009,7 @@ func _spawn_projectile_tracer(
 	tracer.scale = Vector2.ONE * projectile_scale
 	tracer.z_index = 18
 	tracer.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	tracer.material = procedural_vfx_material
 	add_child(tracer)
 	tracer.play(&"flight")
 	var tween := tracer.create_tween()
@@ -2039,9 +2051,9 @@ func _launch_readable_projectile(
 			Color(1.0, 0.28, 0.055, 1.0)
 			if use_fire_atlas
 			else (
-				Color(0.28, 0.84, 1.0, 1.0)
+				Color("0ce6f2")
 				if atlas_row == 1
-				else Color(0.72, 0.42, 1.0, 1.0)
+				else Color("0098db")
 			)
 		)
 	)
@@ -2079,6 +2091,7 @@ func _spawn_ring(radius: float, color: Color, width: float) -> void:
 	var ring := Line2D.new()
 	ring.width = width
 	ring.default_color = color
+	ring.material = procedural_vfx_material
 	ring.antialiased = true
 	for point_index in range(49):
 		var angle := TAU * float(point_index) / 48.0
@@ -2097,6 +2110,7 @@ func _spawn_world_ring(
 	ring.global_position = center
 	ring.width = 4.0
 	ring.default_color = color
+	ring.material = procedural_vfx_material
 	ring.antialiased = true
 	ring.z_as_relative = false
 	ring.z_index = 58

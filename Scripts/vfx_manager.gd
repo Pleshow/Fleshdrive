@@ -518,6 +518,14 @@ func _recycle_effect(sprite: AnimatedSprite2D) -> void:
 	sprite.hide()
 	sprite.modulate = Color.WHITE
 	sprite.rotation = 0.0
+	sprite.flip_h = false
+	sprite.flip_v = false
+	for transient_group in [&"thunder_vfx", &"kinetic_charge_vfx"]:
+		if sprite.is_in_group(transient_group):
+			sprite.remove_from_group(transient_group)
+	if sprite.has_meta("autoattack_lightning"):
+		sprite.remove_meta("autoattack_lightning")
+	sprite.name = "PooledCombatVFX"
 	sprite.process_mode = Node.PROCESS_MODE_INHERIT
 	active_sprites.erase(sprite)
 	if pooled_sprites.size() < MAX_POOLED_EFFECTS:

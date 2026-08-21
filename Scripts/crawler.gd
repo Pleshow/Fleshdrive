@@ -116,6 +116,9 @@ func move_toward_player(delta: float) -> void:
 		target.global_position
 	)
 	var distance := global_position.distance_to(target.global_position)
+	var formation_direction := _get_circle_formation_direction(distance)
+	if not formation_direction.is_zero_approx():
+		chase_direction = formation_direction
 	var active_flank_weight := (
 		encirclement_weight
 		* clampf(inverse_lerp(260.0, 95.0, distance), 0.0, 1.0)
@@ -136,6 +139,28 @@ func move_toward_player(delta: float) -> void:
 		target_velocity,
 		acceleration * delta
 	)
+
+
+func _get_circle_formation_direction(distance: float) -> Vector2:
+	if distance < 86.0 or distance > 430.0:
+		return Vector2.ZERO
+	var serial := int(get_meta("formation_serial", 0))
+	var seconds := Time.get_ticks_msec() * 0.001
+	# Groups share a repeating assault window. Stable per-crawler slots form a
+	# real ring instead of every body merely adding the same sideways bias.
+	var cycle := fmod(seconds + float(serial % 7) * 1.3, 11.5)
+	if cycle > 3.6:
+		return Vector2.ZERO
+	var slot_count := 10
+	var slot := posmod(get_instance_id() + serial * 3, slot_count)
+	var orbit_sign := -1.0 if serial % 2 == 0 else 1.0
+	var angle := (
+		TAU * float(slot) / float(slot_count)
+		+ seconds * 0.22 * orbit_sign
+	)
+	var ring_radius := 142.0 + 12.0 * float(slot % 3)
+	var slot_position := target.global_position + Vector2.from_angle(angle) * ring_radius
+	return global_position.direction_to(slot_position)
 
 
 func update_facing() -> void:

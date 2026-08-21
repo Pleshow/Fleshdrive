@@ -175,7 +175,7 @@ func _run() -> void:
 		and is_equal_approx(hud.biomass_bar.max_value, 115.0)
 		and hud.biomass_value_label.text == "115 / 115"
 		and hud.level_label.text == "LV 7",
-		"Banked XP is retained internally while the HUD shows one coherent level threshold"
+		"XP bar shows only progress toward the immediate next level"
 	)
 	var health_fill := (
 		hud.health_bar.get_theme_stylebox("fill") as StyleBoxFlat
@@ -433,6 +433,29 @@ func _run() -> void:
 		and (crawler.collision_mask & player.collision_layer) == 0,
 		"Enemy bodies pass through Koda instead of forming an inescapable ring"
 	)
+	var early_contact_loss := health_before_contact - player.current_health
+	player.current_health = player.max_health
+	player.current_level = 15
+	player.invulnerability_timer.stop()
+	crawler.attack_timer.stop()
+	crawler.check_contact_damage()
+	var late_contact_loss := player.max_health - player.current_health
+	var combat_pipeline := root.get_node("CombatPipeline")
+	crawler.current_health = 500.0
+	crawler.max_health = 500.0
+	var crawler_damage_event := DamageEvent.create(
+		crawler, 10.0, player, &"late_game_power_probe",
+		FleshdriveCatalog.ELECTRIC
+	)
+	var crawler_damage_result := Dictionary(combat_pipeline.call(
+		"apply_damage", crawler_damage_event
+	))
+	_check(
+		late_contact_loss < early_contact_loss
+		and float(crawler_damage_result.get("damage", 0.0)) >= 29.0,
+		"Late-game power curve melts normal crawlers while reducing fodder contact pressure"
+	)
+	player.current_level = 1
 	player.current_health = player.max_health
 	player.invulnerability_timer.stop()
 	player.health_changed.emit(player.current_health, player.max_health)
@@ -533,6 +556,21 @@ func _run() -> void:
 			"Pickup detects Koda on the dedicated player layer"
 		)
 		pickup.free()
+	var blood_memory_scene := load(
+		"res://Scenes/pickups/red_gem_pickup.tscn"
+	) as PackedScene
+	var blood_memory := blood_memory_scene.instantiate() as RedGemPickup
+	game.get_node("Entities/Pickups").add_child(blood_memory)
+	_check(
+		blood_memory.get_node_or_null("BloodMemoryDrop/BurgundyDrop")
+		is Polygon2D
+		and blood_memory.get_node_or_null(
+			"BloodMemoryDrop/ElectricOutline"
+		) is Line2D
+		and not blood_memory.get_node("AnimatedSprite2D").visible,
+		"Blood Memory uses the burgundy pixel drop with electric-blue outline"
+	)
+	blood_memory.queue_free()
 
 	var charger_scene := load(
 		"res://Scenes/enemies/charger.tscn"
@@ -546,6 +584,13 @@ func _run() -> void:
 	_check(
 		charger.state == Charger.State.WINDUP,
 		"Charger enters a telegraphed wind-up"
+	)
+	_check(
+		charger.get_node_or_null("ReadableHealthBar") != null
+		and not charger.health_bar.visible
+		and (charger.get_node("ReadableHealthBar/Fill") as Polygon2D).color
+		== Color("ff0546"),
+		"Charger uses the dedicated high-layer readable health bar"
 	)
 	_check(
 		charger.charge_indicator.visible,
@@ -814,13 +859,13 @@ func _run() -> void:
 	player.confirm_level_up()
 	await process_frame
 	_check(
-		player.current_level == 2
-		and player.current_biomass == retained_overflow_biomass,
-		"Overflow biomass is retained without bypassing level pacing"
+		player.current_level == 3
+		and player.current_biomass < retained_overflow_biomass,
+		"Overflow biomass is immediately applied to the next level threshold"
 	)
 	_check(
-		run_manager.state == RunManager.RunState.PLAYING,
-		"Overflow biomass returns control between paced level-ups"
+		run_manager.state == RunManager.RunState.LEVEL_UP,
+		"Overflow opens the next mutation offer without a misleading full XP bar"
 	)
 	var second_level_contract := player.get_level_pacing_contract()
 	player.level_pacing_clock = (
@@ -831,7 +876,7 @@ func _run() -> void:
 	_check(
 		player.current_level == 3
 		and run_manager.state == RunManager.RunState.LEVEL_UP,
-		"Retained biomass triggers the next offer after the pacing gate"
+		"An active mutation offer prevents duplicate overflow level-ups"
 	)
 
 	paused = false
@@ -994,9 +1039,13 @@ func _run() -> void:
 		"Player death enters the staged death presentation"
 	)
 	_check(
+		not paused,
+		"Death and game-over presentation keep world animation running"
+	)
+	_check(
 		lethal_vfx != null
 		and lethal_vfx.process_mode == Node.PROCESS_MODE_ALWAYS,
-		"The killing hit VFX keeps animating through the paused death transition"
+		"The killing hit VFX keeps animating through the death transition"
 	)
 	_check(
 		hud.get_node("DeathMessage").visible

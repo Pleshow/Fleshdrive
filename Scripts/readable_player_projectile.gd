@@ -1,6 +1,7 @@
 class_name ReadablePlayerProjectile
 extends Node2D
 
+const PIXEL_EMISSIVE_SHADER := preload("res://Shaders/pixel_emissive.gdshader")
 
 var target_ref: WeakRef
 var last_target_position := Vector2.ZERO
@@ -34,9 +35,34 @@ func configure(
 	sprite.scale = Vector2.ONE * projectile_scale
 	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	sprite.z_index = 18
+	var electric_projectile := light_color.b > light_color.r * 1.15
+	if electric_projectile:
+		var material := ShaderMaterial.new()
+		material.shader = PIXEL_EMISSIVE_SHADER
+		material.set_shader_parameter("force_electric_blue", true)
+		sprite.material = material
 	add_child(sprite)
 	sprite.play(&"flight")
+	if electric_projectile:
+		_install_blue_outline(projectile_scale)
 	_install_projectile_light(light_color, projectile_scale)
+
+
+func _install_blue_outline(projectile_scale: float) -> void:
+	var outline := Line2D.new()
+	outline.name = "ElectricProjectileOutline"
+	outline.closed = true
+	outline.width = 3.0
+	outline.default_color = Color("0ce6f2")
+	outline.antialiased = false
+	var material := CanvasItemMaterial.new()
+	material.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+	outline.material = material
+	outline.z_index = 17
+	var radius := clampf(18.0 + projectile_scale * 34.0, 20.0, 34.0)
+	for index in range(13):
+		outline.add_point(Vector2.from_angle(TAU * float(index) / 12.0) * radius)
+	add_child(outline)
 
 
 func _install_projectile_light(color: Color, projectile_scale: float) -> void:

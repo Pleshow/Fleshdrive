@@ -5,6 +5,7 @@ extends CharacterBody2D
 const COMBAT_TEXTURE := preload(
 	"res://Assets/vfx/fleshdrive/enemy_combat_vfx_atlas.png"
 )
+const PIXEL_EMISSIVE_SHADER := preload("res://Shaders/pixel_emissive.gdshader")
 const HIT_FLASH_DURATION: float = 0.12
 
 enum State {
@@ -62,9 +63,15 @@ var is_dead: bool = false
 var external_impulse: Vector2 = Vector2.ZERO
 var readability_rim: Line2D
 var hit_flash_remaining: float = 0.0
+var health_bar_visual: Node2D
+var health_bar_fill: Polygon2D
+var unshaded_vfx_material: CanvasItemMaterial
 
 
 func _ready() -> void:
+	unshaded_vfx_material = CanvasItemMaterial.new()
+	unshaded_vfx_material.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+	_install_consistent_sprite_material()
 	_configure_impact_animation()
 	_install_readability_rim()
 	var balance := get_tree().root.get_node_or_null("BalanceDatabase")
@@ -73,6 +80,8 @@ func _ready() -> void:
 	current_health = max_health
 	health_bar.max_value = max_health
 	health_bar.value = current_health
+	_install_readable_health_bar()
+	_update_readable_health_bar()
 	find_player()
 
 	windup_timer.timeout.connect(_begin_charge)
@@ -83,6 +92,8 @@ func _ready() -> void:
 	impact_animation.hide()
 	charge_indicator.z_as_relative = false
 	charge_indicator.z_index = -2
+	charge_indicator.material = unshaded_vfx_material
+	charge_indicator_outline.material = unshaded_vfx_material
 	sprite.self_modulate = Color(1.16, 1.12, 1.22, 1.0)
 	charge_indicator.color = Color("ff0546", 0.52)
 	charge_indicator_outline.default_color = Color("ff0546")
@@ -95,6 +106,9 @@ func prepare_for_reuse() -> void:
 	current_health = max_health
 	health_bar.max_value = max_health
 	health_bar.value = current_health
+	_update_readable_health_bar()
+	if is_instance_valid(health_bar_visual):
+		health_bar_visual.show()
 	state = State.CHASE
 	external_impulse = Vector2.ZERO
 	hit_flash_remaining = 0.0
@@ -362,6 +376,7 @@ func receive_damage_event(
 
 	current_health = maxf(current_health - amount, 0.0)
 	health_bar.value = current_health
+	_update_readable_health_bar()
 	play_hit_feedback()
 
 	if current_health <= 0.0:
@@ -395,6 +410,8 @@ func die() -> void:
 		return
 
 	is_dead = true
+	if is_instance_valid(health_bar_visual):
+		health_bar_visual.hide()
 	play_sound(&"enemy_death", -5.0, 0.07)
 	died.emit(self)
 	request_combat_feedback(0.62, 0.78)
@@ -409,6 +426,62 @@ func die() -> void:
 	collision_mask = 0
 	set_physics_process(false)
 	_return_to_pool_or_free()
+
+
+func _install_readable_health_bar() -> void:
+	health_bar.hide()
+	health_bar_visual = Node2D.new()
+	health_bar_visual.name = "ReadableHealthBar"
+	health_bar_visual.z_as_relative = false
+	health_bar_visual.z_index = 82
+	add_child(health_bar_visual)
+	var background := Polygon2D.new()
+	background.name = "Background"
+	background.polygon = PackedVector2Array([
+		Vector2(-37, -55), Vector2(37, -55),
+		Vector2(37, -43), Vector2(-37, -43),
+	])
+	background.color = Color("1e579c")
+	background.material = unshaded_vfx_material
+	health_bar_visual.add_child(background)
+	health_bar_fill = Polygon2D.new()
+	health_bar_fill.name = "Fill"
+	health_bar_fill.position = Vector2(-34, -52)
+	health_bar_fill.polygon = PackedVector2Array([
+		Vector2(0, 0), Vector2(68, 0), Vector2(68, 6), Vector2(0, 6),
+	])
+	health_bar_fill.color = Color("ff0546")
+	health_bar_fill.material = unshaded_vfx_material
+	health_bar_visual.add_child(health_bar_fill)
+	var outline := Line2D.new()
+	outline.name = "Outline"
+	outline.closed = true
+	outline.width = 2.0
+	outline.default_color = Color("0ce6f2")
+	outline.antialiased = false
+	outline.material = unshaded_vfx_material
+	outline.points = PackedVector2Array([
+		Vector2(-38, -56), Vector2(38, -56), Vector2(38, -42),
+		Vector2(-38, -42), Vector2(-38, -56),
+	])
+	health_bar_visual.add_child(outline)
+
+
+func _install_consistent_sprite_material() -> void:
+	var charger_material := ShaderMaterial.new()
+	charger_material.shader = PIXEL_EMISSIVE_SHADER
+	charger_material.set_shader_parameter("force_alert_red", true)
+	sprite.material = charger_material
+
+
+func _update_readable_health_bar() -> void:
+	if not is_instance_valid(health_bar_fill):
+		return
+	health_bar_fill.scale.x = clampf(
+		current_health / maxf(max_health, 1.0),
+		0.0,
+		1.0
+	)
 
 
 func _return_to_pool_or_free() -> void:
@@ -534,6 +607,7 @@ func _configure_impact_animation() -> void:
 		)
 		frames.add_frame(&"impact", frame)
 	impact_animation.sprite_frames = frames
+	impact_animation.material = sprite.material
 	impact_animation.scale = Vector2.ONE * 0.32
 
 
@@ -544,6 +618,7 @@ func _install_readability_rim() -> void:
 	readability_rim.default_color = Color(1.0, 0.56, 0.12, 0.42)
 	readability_rim.closed = true
 	readability_rim.antialiased = false
+	readability_rim.material = unshaded_vfx_material
 	readability_rim.z_as_relative = false
 	readability_rim.z_index = 18
 	for point_index in range(17):
