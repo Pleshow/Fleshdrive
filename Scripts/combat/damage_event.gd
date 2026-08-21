@@ -32,6 +32,7 @@ var knockback_strength: float = 0.0
 var play_hit_sound: bool = true
 var show_damage_number: bool = true
 var heavy_feedback: bool = false
+var screen_shake: bool = true
 var tags: Array[StringName] = []
 var status_effects: Array[Dictionary] = []
 var metadata: Dictionary = {}

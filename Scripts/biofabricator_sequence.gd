@@ -26,6 +26,9 @@ enum SequenceState {
 @onready var terminal_panel: Control = $Terminal
 @onready var run_summary_panel: Control = $RunSummaryPanel
 @onready var printer_glass: Control = $PrinterGlass
+@onready var mimichu_portrait_frame: PanelContainer = (
+	%DialoguePanel.get_node("PortraitFrame") as PanelContainer
+)
 
 var sequence_state: SequenceState = SequenceState.HIDDEN
 var print_elapsed: float = 0.0
@@ -38,6 +41,10 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	skip_button.pressed.connect(_finish_printing)
 	dialogue_panel.choice_selected.connect(_on_choice_selected)
+	# On the rebirth/printing screen Mimichu is an overlay, not a framed card.
+	mimichu_portrait_frame.add_theme_stylebox_override(
+		"panel", StyleBoxEmpty.new()
+	)
 	hide()
 
 

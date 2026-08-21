@@ -18,6 +18,7 @@ signal enemy_defeated(enemy: Node2D)
 @export var arena_bounds: Rect2 = Rect2(96.0, 176.0, 2368.0, 1110.0)
 @export var viewport_half_extent: Vector2 = Vector2(640.0, 296.0)
 @export var offscreen_margin: float = 36.0
+@export var spawn_warning_duration: float = 1.0
 @export_category("Swarm Density")
 @export var early_batch_min: int = 2
 @export var early_batch_max: int = 3
@@ -97,6 +98,8 @@ var spawning_enabled: bool = true
 var special_sequence_active: bool = false
 var opening_wave_spawned: bool = false
 var active_arena: Node
+var pending_spawn_count: int = 0
+var pending_spawn_threat: float = 0.0
 
 
 func _ready() -> void:
@@ -215,7 +218,11 @@ func spawn_enemy() -> void:
 	if player == null:
 		return
 
-	if get_tree().get_nodes_in_group("enemies").size() >= maximum_enemies:
+	if (
+		get_tree().get_nodes_in_group("enemies").size()
+		+ pending_spawn_count
+		>= maximum_enemies
+	):
 		return
 	var budget := get_tree().root.get_node_or_null("PerformanceBudget")
 	if budget != null and not bool(budget.call("allow_enemy")):
@@ -236,6 +243,7 @@ func spawn_enemy() -> void:
 	var enemy_type := _enemy_type_for_scene(enemy_scene)
 	if (
 		get_current_threat()
+		+ pending_spawn_threat
 		+ float(threat_costs.get(enemy_type, 1.0))
 		> get_effective_threat_budget()
 	):
@@ -243,32 +251,7 @@ func spawn_enemy() -> void:
 	var spawn_position := _get_next_spawn_position()
 	if not _is_valid_spawn_position(spawn_position):
 		return
-	var enemy := _acquire_enemy(enemy_scene)
-
-	if enemy == null:
-		return
-
-	enemy.global_position = spawn_position
-	enemy.reset_physics_interpolation()
-	enemy.set_meta("enemy_type", enemy_type)
-	enemy.set_meta(
-		"threat_cost",
-		float(threat_costs.get(enemy_type, 1.0))
-	)
-	enemy.set_meta("formation_serial", formation_serial)
-	_try_apply_elite_modifier(enemy)
-
-	if enemy.has_signal("died"):
-		if not enemy.died.is_connected(_on_enemy_died):
-			enemy.died.connect(_on_enemy_died)
-
-	enemy_spawned.emit(enemy)
-	# Rush crawler picks arrive as a pair. Ranged and charger caps remain
-	# unchanged, so the additional pressure reads as a swarm instead of more
-	# unavoidable special attacks.
-	if rush_active and enemy_type == &"crawler":
-		_spawn_rush_crawler_partner(spawn_position)
-		_spawn_rush_crawler_partner(spawn_position)
+	_schedule_enemy_spawn(enemy_scene, enemy_type, spawn_position)
 
 func _on_spawn_timer_timeout() -> void:
 	if not spawning_enabled:
@@ -312,27 +295,11 @@ func _get_current_batch_size() -> int:
 func _spawn_rush_crawler_partner(anchor: Vector2) -> void:
 	if crawler_scene == null:
 		return
-	if get_tree().get_nodes_in_group("enemies").size() >= maximum_enemies:
-		return
-	if get_current_threat() + float(threat_costs.get(&"crawler", 1.0)) > get_effective_threat_budget():
-		return
 	var tangent := Vector2.RIGHT.rotated(randf_range(0.0, TAU))
 	var candidate := _clamp_to_arena(anchor + tangent * randf_range(58.0, 104.0))
 	if not _is_valid_spawn_position(candidate):
 		return
-	var partner := _acquire_enemy(crawler_scene)
-	if partner == null:
-		return
-	partner.global_position = candidate
-	partner.reset_physics_interpolation()
-	partner.set_meta("enemy_type", &"crawler")
-	partner.set_meta("threat_cost", float(threat_costs.get(&"crawler", 1.0)))
-	partner.set_meta("formation_serial", formation_serial)
-	_try_apply_elite_modifier(partner)
-	if partner.has_signal("died"):
-		if not partner.died.is_connected(_on_enemy_died):
-			partner.died.connect(_on_enemy_died)
-	enemy_spawned.emit(partner)
+	_schedule_enemy_spawn(crawler_scene, &"crawler", candidate, false)
 
 
 func spawn_opening_wave() -> void:
@@ -353,20 +320,7 @@ func spawn_opening_wave() -> void:
 		)
 		if not _is_valid_spawn_position(candidate):
 			continue
-		var enemy := _acquire_enemy(crawler_scene)
-		if enemy == null:
-			continue
-		enemy.global_position = candidate
-		enemy.reset_physics_interpolation()
-		enemy.set_meta("enemy_type", &"crawler")
-		enemy.set_meta(
-			"threat_cost",
-			float(threat_costs.get(&"crawler", 1.0))
-		)
-		if enemy.has_signal("died"):
-			if not enemy.died.is_connected(_on_enemy_died):
-				enemy.died.connect(_on_enemy_died)
-		enemy_spawned.emit(enemy)
+		_schedule_enemy_spawn(crawler_scene, &"crawler", candidate, false)
 	spawn_timer.start(0.55)
 
 
@@ -396,22 +350,118 @@ func _play_boss_reinforcement_wave(count: int) -> void:
 			spawn_position = _get_next_spawn_position()
 		if not _is_valid_spawn_position(spawn_position):
 			continue
-		var enemy := _acquire_enemy(scene)
-		if enemy == null:
-			continue
-		enemy.global_position = spawn_position
-		enemy.reset_physics_interpolation()
-		enemy.set_meta("enemy_type", enemy_type)
-		enemy.set_meta(
-			"threat_cost",
-			float(threat_costs.get(enemy_type, 1.0))
-		)
-		if enemy.has_signal("died"):
-			if not enemy.died.is_connected(_on_enemy_died):
-				enemy.died.connect(_on_enemy_died)
-		enemy_spawned.emit(enemy)
-		spawned += 1
+		if _schedule_enemy_spawn(scene, enemy_type, spawn_position, false):
+			spawned += 1
 		await get_tree().create_timer(0.045, false).timeout
+
+
+func _schedule_enemy_spawn(
+	scene: PackedScene,
+	enemy_type: StringName,
+	spawn_position: Vector2,
+	allow_rush_partners: bool = true
+) -> bool:
+	if scene == null or not spawning_enabled or not is_inside_tree():
+		return false
+	var threat_cost := float(threat_costs.get(enemy_type, 1.0))
+	if (
+		get_tree().get_nodes_in_group("enemies").size()
+		+ pending_spawn_count
+		>= maximum_enemies
+	):
+		return false
+	if (
+		get_current_threat() + pending_spawn_threat + threat_cost
+		> get_effective_threat_budget()
+	):
+		return false
+	pending_spawn_count += 1
+	pending_spawn_threat += threat_cost
+	var warning := _create_spawn_warning(spawn_position, enemy_type)
+	_complete_telegraphed_spawn(
+		scene,
+		enemy_type,
+		spawn_position,
+		threat_cost,
+		allow_rush_partners,
+		warning
+	)
+	return true
+
+
+func _complete_telegraphed_spawn(
+	scene: PackedScene,
+	enemy_type: StringName,
+	spawn_position: Vector2,
+	threat_cost: float,
+	allow_rush_partners: bool,
+	warning: Node2D
+) -> void:
+	await get_tree().create_timer(spawn_warning_duration, false).timeout
+	pending_spawn_count = maxi(pending_spawn_count - 1, 0)
+	pending_spawn_threat = maxf(pending_spawn_threat - threat_cost, 0.0)
+	if is_instance_valid(warning):
+		warning.queue_free()
+	if not spawning_enabled or not is_inside_tree():
+		return
+	var enemy := _acquire_enemy(scene)
+	if enemy == null:
+		return
+	enemy.global_position = spawn_position
+	enemy.reset_physics_interpolation()
+	enemy.set_meta("enemy_type", enemy_type)
+	enemy.set_meta("threat_cost", threat_cost)
+	enemy.set_meta("formation_serial", formation_serial)
+	_try_apply_elite_modifier(enemy)
+	if enemy.has_signal("died"):
+		if not enemy.died.is_connected(_on_enemy_died):
+			enemy.died.connect(_on_enemy_died)
+	enemy_spawned.emit(enemy)
+	# Rush crawler picks arrive as a pair. Each partner gets its own full
+	# one-second warning, so added swarm pressure never becomes a contact trap.
+	if allow_rush_partners and rush_active and enemy_type == &"crawler":
+		_spawn_rush_crawler_partner(spawn_position)
+		_spawn_rush_crawler_partner(spawn_position)
+
+
+func _create_spawn_warning(
+	spawn_position: Vector2,
+	enemy_type: StringName
+) -> Node2D:
+	var warning := Node2D.new()
+	warning.name = "EnemySpawnWarning"
+	warning.global_position = spawn_position
+	warning.z_index = 18
+	warning.add_to_group("spawn_warnings")
+	var size := 25.0
+	if enemy_type == &"spitter":
+		size = 30.0
+	elif enemy_type == &"charger":
+		size = 40.0
+	var unshaded := CanvasItemMaterial.new()
+	unshaded.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+	for is_shadow in [true, false]:
+		for diagonal in [-1.0, 1.0]:
+			var stroke := Line2D.new()
+			stroke.antialiased = false
+			stroke.width = 9.0 if is_shadow else 4.0
+			stroke.default_color = (
+				Color("450327") if is_shadow else Color("ff0546")
+			)
+			stroke.material = unshaded
+			stroke.add_point(Vector2(-size, -size * diagonal))
+			stroke.add_point(Vector2(size, size * diagonal))
+			warning.add_child(stroke)
+	var parent := get_tree().get_first_node_in_group("effects_container")
+	if parent == null:
+		parent = enemies_container.get_parent()
+	parent.add_child(warning)
+	warning.global_position = spawn_position
+	var pulse := warning.create_tween()
+	pulse.set_loops(2)
+	pulse.tween_property(warning, "scale", Vector2.ONE * 1.10, spawn_warning_duration * 0.25)
+	pulse.tween_property(warning, "scale", Vector2.ONE * 0.88, spawn_warning_duration * 0.25)
+	return warning
 
 
 func _acquire_enemy(scene: PackedScene) -> Node2D:
@@ -1126,6 +1176,9 @@ func stop_spawning() -> void:
 	spawning_enabled = false
 	spawn_timer.stop()
 	formation_queue.clear()
+	for warning in get_tree().get_nodes_in_group("spawn_warnings"):
+		if is_instance_valid(warning):
+			warning.queue_free()
 
 
 func get_boss_spawn_position() -> Vector2:

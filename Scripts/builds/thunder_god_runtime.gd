@@ -5,7 +5,7 @@ extends RefCounted
 const BASE_DAMAGE := 18.0
 const BASE_CHAIN_TARGETS := 2
 const CHAIN_RANGE := 240.0
-const SHOCK_DURATION := 4.0
+const SHOCK_DURATION := 6.0
 const SHOCK_MAX_STACKS := 5
 const SHOCK_DAMAGE_PER_STACK := 0.08
 const CAPACITOR_THRESHOLD := 20
@@ -404,6 +404,8 @@ func _show_shock_crown(target: Node2D, stacks: int) -> void:
 		return
 	var crown := Line2D.new()
 	crown.name = "ThunderShockCrown"
+	crown.position = Vector2.ZERO
+	crown.set_as_top_level(false)
 	crown.width = 2.0
 	crown.default_color = Color(0.25, 0.88, 1.0, 0.58)
 	crown.z_index = 24
@@ -489,8 +491,10 @@ func _install_status_hud() -> void:
 	var panel := PanelContainer.new()
 	panel.name = "ThunderBuildMeter"
 	panel.set_anchors_preset(Control.PRESET_TOP_RIGHT)
-	panel.position = Vector2(-392.0, 126.0)
-	panel.size = Vector2(270.0, 46.0)
+	# Keep the meter inside the permanent top HUD band instead of floating over
+	# enemies and attack telegraphs in the playfield.
+	panel.position = Vector2(-430.0, 20.0)
+	panel.size = Vector2(250.0, 46.0)
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color(0.008, 0.022, 0.04, 0.92)
 	style.border_color = Color(0.20, 0.72, 1.0, 0.88)

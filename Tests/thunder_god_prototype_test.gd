@@ -65,11 +65,29 @@ func _run() -> void:
 	_check(fired, "Base attack starts the Thunder God network")
 	var pipeline := root.get_node("CombatPipeline")
 	var shocked_targets := 0
+	var tracked_shock_duration := 0.0
+	var shock_crowns_follow_targets := true
 	for enemy in enemies:
-		if int(Dictionary(pipeline.call("get_status", enemy, &"shock")).get("stacks", 0)) > 0:
+		var shock := Dictionary(pipeline.call("get_status", enemy, &"shock"))
+		if int(shock.get("stacks", 0)) > 0:
 			shocked_targets += 1
+			tracked_shock_duration = maxf(
+				tracked_shock_duration,
+				float(shock.get("remaining", 0.0))
+			)
+			var crown := enemy.get_node_or_null("ThunderShockCrown") as Line2D
+			shock_crowns_follow_targets = (
+				shock_crowns_follow_targets
+				and crown != null
+				and crown.get_parent() == enemy
+				and not crown.is_set_as_top_level()
+			)
 	_check(shocked_targets >= 2, "Base Chain Lightning reaches at least two unique enemies")
 	_check(shocked_targets <= 9, "Chain targeting never loops beyond unique enemies")
+	_check(
+		tracked_shock_duration >= 5.9 and shock_crowns_follow_targets,
+		"Conductive Fur shock lasts six seconds and follows each target"
+	)
 	_check(system.thunder_god.capacitor_charge <= 6, "One attack respects the six-charge Capacitor cap")
 	_check(player.attack_timer.wait_time >= 0.25, "Feedback Loop respects the absolute cooldown floor")
 	_check(not get_nodes_in_group("thunder_vfx").is_empty(), "Chain Lightning creates a layered bolt VFX")

@@ -202,42 +202,27 @@ func _make_poison_orb_animation() -> SpriteFrames:
 	frames.add_animation(&"flight")
 	frames.set_animation_loop(&"flight", true)
 	frames.set_animation_speed(&"flight", 10.0)
-	var pattern := [
-		"............",
-		"....dddd....",
-		"..ddggggdd..",
-		".dggLLLLggd.",
-		"dggLLLLLLggd",
-		"dggLLWWLgggd",
-		"dggLLLLLLggd",
-		".dggLLLLggd.",
-		"..ddggggdd..",
-		"....dddd....",
-		"............",
-		"............",
-	]
 	for animation_frame in range(4):
-		var image := Image.create(12, 12, false, Image.FORMAT_RGBA8)
+		var image := Image.create(16, 16, false, Image.FORMAT_RGBA8)
 		image.fill(Color.TRANSPARENT)
-		for y in range(pattern.size()):
-			for x in range(pattern[y].length()):
-				var symbol: String = String(pattern[y]).substr(x, 1)
-				var color := Color.TRANSPARENT
-				match symbol:
-					"d":
-						color = Color("450327")
-					"g":
-						color = Color("660f31")
-					"L":
-						color = Color("9c173b")
-					"W":
-						color = (
-							Color("ff0546")
-							if (x + animation_frame) % 3 != 0
-							else Color("9c173b")
-						)
-				if color.a > 0.0:
-					image.set_pixel(x, y, color)
+		for y in range(16):
+			for x in range(16):
+				var offset := Vector2(float(x) - 7.5, float(y) - 7.5)
+				var distance := offset.length()
+				if distance > 7.25:
+					continue
+				var color := Color("ff0546")
+				if distance < 5.65:
+					color = Color("450327")
+				if distance < 4.35:
+					color = Color("9c173b")
+				if distance < 2.35:
+					color = (
+						Color("ff0546")
+						if (x + y + animation_frame) % 3 != 0
+						else Color("9c173b")
+					)
+				image.set_pixel(x, y, color)
 		frames.add_frame(&"flight", ImageTexture.create_from_image(image))
 	return frames
 

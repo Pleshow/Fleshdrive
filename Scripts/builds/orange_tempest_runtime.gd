@@ -2,9 +2,9 @@ class_name OrangeTempestRuntime
 extends RefCounted
 
 
-const DEEP_BLUE := Color("16235f")
-const ELECTRIC_BLUE := Color("238cff")
-const CYAN := Color("55e7ff")
+const DEEP_BLUE := Color("1e579c")
+const ELECTRIC_BLUE := Color("0098db")
+const CYAN := Color("0ce6f2")
 const CORE := Color("f2fbff")
 const MAX_ORBS := 12
 const POLARITY_COOLDOWN := 8.0
@@ -399,11 +399,23 @@ func _create_orb_visual(position: Vector2, radius: float, sun: bool) -> Node2D:
 	sprite.material = material
 	root.add_child(sprite)
 	sprite.play()
+	var glow := Line2D.new()
+	glow.name = "ElectricGlow"
+	glow.closed = true
+	glow.antialiased = false
+	glow.width = 8.0
+	glow.default_color = Color(0.0, 0.596, 0.859, 0.30)
+	glow.material = material
+	for point in _circle_points(8, 15.0):
+		glow.add_point(point)
+	root.add_child(glow)
 	var ring := Line2D.new()
+	ring.name = "ElectricOutline"
 	ring.closed = true
 	ring.antialiased = false
-	ring.width = 2.0
+	ring.width = 3.0
 	ring.default_color = CYAN if not sun else CORE
+	ring.material = material
 	for point in _circle_points(8, 15.0):
 		ring.add_point(point)
 	root.add_child(ring)
@@ -421,7 +433,10 @@ func _create_field_visual(position: Vector2) -> Node2D:
 	ring.closed = true
 	ring.antialiased = false
 	ring.width = 2.0
-	ring.default_color = Color(0.18, 0.68, 1.0, 0.72)
+	ring.default_color = Color(0.047, 0.902, 0.949, 0.82)
+	var material := CanvasItemMaterial.new()
+	material.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+	ring.material = material
 	for point in _circle_points(12, 68.0):
 		ring.add_point(point)
 	root.add_child(ring)

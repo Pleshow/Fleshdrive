@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://c0ouuir23l3bt" path="res://Scripts/camera_feedback.gd" id="10_camera_feedback"]
 [ext_resource type="Texture2D" uid="uid://dqjeyc5oi5mls" path="res://Assets/environment/dust_mote.svg" id="11_dust"]
 [ext_resource type="Script" uid="uid://k17tjp3mn6sb" path="res://Scripts/player_weapon_system.gd" id="12_weapons"]
+[ext_resource type="Shader" path="res://Shaders/pixel_emissive.gdshader" id="13_dust_shader"]
 
 [sub_resource type="Gradient" id="Gradient_koda_shadow"]
 offsets = PackedFloat32Array(0, 0.54, 1)
@@ -21,6 +22,28 @@ fill_to = Vector2(1, 0.5)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_a8jhk"]
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_attack_cooldown"]
+light_mode = 1
+
+[sub_resource type="StyleBoxFlat" id="Style_attack_cooldown_background"]
+bg_color = Color(0.015, 0.035, 0.075, 0.88)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.12, 0.38, 0.68, 0.86)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+
+[sub_resource type="StyleBoxFlat" id="Style_attack_cooldown_fill"]
+bg_color = Color(0.12, 0.72, 1, 0.96)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+
 [sub_resource type="Gradient" id="Gradient_raiju_light"]
 offsets = PackedFloat32Array(0, 0.58, 1)
 colors = PackedColorArray(0.82, 0.96, 1, 1, 0.45, 0.78, 1, 0.72, 0.08, 0.16, 0.25, 0)
@@ -35,11 +58,16 @@ fill_to = Vector2(1, 0.5)
 
 [sub_resource type="Gradient" id="Gradient_movement_dust"]
 offsets = PackedFloat32Array(0, 0.34, 0.72, 1)
-colors = PackedColorArray(0.65, 0.7, 0.76, 0, 0.65, 0.7, 0.76, 0.4, 0.46, 0.51, 0.57, 0.2, 0.36, 0.4, 0.46, 0)
+colors = PackedColorArray(0.047, 0.902, 0.949, 0, 0.047, 0.902, 0.949, 0.42, 0, 0.596, 0.859, 0.22, 0.118, 0.341, 0.612, 0)
 
 [sub_resource type="Gradient" id="Gradient_landing_dust"]
 offsets = PackedFloat32Array(0, 0.28, 0.7, 1)
-colors = PackedColorArray(0.72, 0.77, 0.82, 0, 0.72, 0.77, 0.82, 0.48, 0.5, 0.55, 0.61, 0.24, 0.38, 0.42, 0.48, 0)
+colors = PackedColorArray(0.047, 0.902, 0.949, 0, 0.047, 0.902, 0.949, 0.5, 0, 0.596, 0.859, 0.26, 0.118, 0.341, 0.612, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_koda_dust"]
+shader = ExtResource("13_dust_shader")
+shader_parameter/alpha_cutoff = 0.08
+shader_parameter/force_electric_blue = true
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ge6ft"]
 radius = 19.0
@@ -68,6 +96,20 @@ texture = SubResource("GradientTexture2D_koda_shadow")
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_a8jhk")
 
+[node name="AttackCooldownBar" type="ProgressBar" parent="."]
+z_index = 32
+material = SubResource("CanvasItemMaterial_attack_cooldown")
+offset_left = -24.0
+offset_top = -47.0
+offset_right = 24.0
+offset_bottom = -41.0
+mouse_filter = 2
+theme_override_styles/background = SubResource("Style_attack_cooldown_background")
+theme_override_styles/fill = SubResource("Style_attack_cooldown_fill")
+max_value = 1.0
+value = 1.0
+show_percentage = false
+
 [node name="PlayerLight" type="PointLight2D" parent="." unique_id=782758067]
 color = Color(0.52, 0.82, 1, 1)
 energy = 2.2
@@ -76,14 +118,15 @@ texture_scale = 1.85
 
 [node name="MovementDust" type="CPUParticles2D" parent="." unique_id=588079963]
 z_index = -1
+material = SubResource("ShaderMaterial_koda_dust")
 texture_filter = 2
-position = Vector2(0, 36)
+position = Vector2(0, 10)
 emitting = false
 amount = 16
 texture = ExtResource("11_dust")
 lifetime = 0.72
 emission_shape = 3
-emission_rect_extents = Vector2(18, 3)
+emission_rect_extents = Vector2(11, 2)
 direction = Vector2(0, -1)
 spread = 76.0
 gravity = Vector2(0, -5)
@@ -95,8 +138,9 @@ color_ramp = SubResource("Gradient_movement_dust")
 
 [node name="LandingDust" type="CPUParticles2D" parent="." unique_id=604813265]
 z_index = -1
+material = SubResource("ShaderMaterial_koda_dust")
 texture_filter = 2
-position = Vector2(0, 36)
+position = Vector2(0, 10)
 emitting = false
 amount = 20
 texture = ExtResource("11_dust")
@@ -104,7 +148,7 @@ lifetime = 0.78
 one_shot = true
 explosiveness = 1.0
 emission_shape = 3
-emission_rect_extents = Vector2(22, 4)
+emission_rect_extents = Vector2(15, 3)
 direction = Vector2(0, -1)
 spread = 84.0
 gravity = Vector2(0, 8)

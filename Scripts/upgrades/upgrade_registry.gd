@@ -23,7 +23,7 @@ const UNIVERSAL_DEFINITIONS: Array[Dictionary] = [
 	{"id": &"hypertrophic_muscle", "name": "HYPERTROPHIC MUSCLE", "desc": "+20% damage, -10% attack speed."},
 	{"id": &"biomass_magnet", "name": "BIOMASS MAGNET", "desc": "+40% biomass pickup radius."},
 	{"id": &"hungry_magnet", "name": "HUNGRY MAGNET", "desc": "Biomass accelerates as it is pulled toward Koda."},
-	{"id": &"scavenger_stomach", "name": "SCAVENGER STOMACH", "desc": "Every 15th biomass pickup restores 1 health."},
+	{"id": &"scavenger_stomach", "name": "SCAVENGER STOMACH", "desc": "Every 15th biomass pickup restores 5 health."},
 	{"id": &"reserve_bladder", "name": "RESERVE BLADDER", "desc": "Stores 50% of excess healing, up to 20, and releases it below 30% health."},
 	{"id": &"adrenal_gland", "name": "ADRENAL GLAND", "desc": "Below 30% health gain +25% attack speed and +15% movement speed."},
 	{"id": &"open_wound", "name": "OPEN WOUND", "desc": "+25% damage, but every incoming hit deals +1 damage."},

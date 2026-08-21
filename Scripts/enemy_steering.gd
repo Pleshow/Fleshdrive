@@ -4,6 +4,12 @@ extends RefCounted
 
 const ENVIRONMENT_MASK: int = 1
 const DEFAULT_LOOK_AHEAD: float = 82.0
+const SPATIAL_CELL_SIZE: float = 128.0
+const OBSTACLE_SAMPLE_FRAMES: int = 3
+const SEPARATION_SAMPLE_FRAMES: int = 3
+
+static var spatial_grid_frame: int = -1
+static var spatial_grid: Dictionary = {}
 
 
 static func resolve_direction(
@@ -82,29 +88,76 @@ static func _separation_direction(
 	body: CharacterBody2D,
 	radius: float
 ) -> Vector2:
+	var physics_frame := Engine.get_physics_frames()
+	var has_cached_separation := body.has_meta("steering_separation_direction")
+	if (
+		has_cached_separation
+		and physics_frame % SEPARATION_SAMPLE_FRAMES
+		!= body.get_instance_id() % SEPARATION_SAMPLE_FRAMES
+	):
+		return Vector2(body.get_meta(
+			"steering_separation_direction",
+			Vector2.ZERO
+		))
+	_rebuild_spatial_grid_if_needed(body.get_tree())
 	var force := Vector2.ZERO
 	var radius_squared := radius * radius
 	var considered := 0
-	for node in body.get_tree().get_nodes_in_group("enemies"):
-		var other := node as Node2D
+	var center_cell := _cell_for_position(body.global_position)
+	var cell_radius := maxi(int(ceil(radius / SPATIAL_CELL_SIZE)), 1)
+	for cell_y in range(center_cell.y - cell_radius, center_cell.y + cell_radius + 1):
+		for cell_x in range(center_cell.x - cell_radius, center_cell.x + cell_radius + 1):
+			var occupants: Array = spatial_grid.get(Vector2i(cell_x, cell_y), [])
+			for other_value in occupants:
+				var other := other_value as Node2D
+				if other == null or other == body or not is_instance_valid(other):
+					continue
+				var offset := body.global_position - other.global_position
+				var distance_squared := offset.length_squared()
+				if distance_squared <= 0.01 or distance_squared >= radius_squared:
+					continue
+				var distance := sqrt(distance_squared)
+				var closeness := 1.0 - distance / radius
+				force += offset / distance * closeness * closeness
+				considered += 1
+				if considered >= 18:
+					return _cache_separation(body, force.limit_length(1.0))
+	return _cache_separation(body, force.limit_length(1.0))
+
+
+static func _cache_separation(
+	body: CharacterBody2D,
+	direction: Vector2
+) -> Vector2:
+	body.set_meta("steering_separation_direction", direction)
+	return direction
+
+
+static func _rebuild_spatial_grid_if_needed(tree: SceneTree) -> void:
+	var physics_frame := Engine.get_physics_frames()
+	if spatial_grid_frame == physics_frame:
+		return
+	spatial_grid_frame = physics_frame
+	spatial_grid.clear()
+	for node in tree.get_nodes_in_group("enemies"):
+		var enemy := node as Node2D
 		if (
-			other == null
-			or other == body
-			or other.get("is_dead") == true
-			or bool(other.get_meta("telekinetically_captured", false))
+			enemy == null
+			or enemy.get("is_dead") == true
+			or bool(enemy.get_meta("telekinetically_captured", false))
 		):
 			continue
-		var offset := body.global_position - other.global_position
-		var distance_squared := offset.length_squared()
-		if distance_squared <= 0.01 or distance_squared >= radius_squared:
-			continue
-		var distance := sqrt(distance_squared)
-		var closeness := 1.0 - distance / radius
-		force += offset / distance * closeness * closeness
-		considered += 1
-		if considered >= 18:
-			break
-	return force.limit_length(1.0)
+		var cell := _cell_for_position(enemy.global_position)
+		var occupants: Array = spatial_grid.get(cell, [])
+		occupants.append(enemy)
+		spatial_grid[cell] = occupants
+
+
+static func _cell_for_position(position: Vector2) -> Vector2i:
+	return Vector2i(
+		floori(position.x / SPATIAL_CELL_SIZE),
+		floori(position.y / SPATIAL_CELL_SIZE)
+	)
 
 
 static func _obstacle_avoidance(
@@ -112,6 +165,21 @@ static func _obstacle_avoidance(
 	desired: Vector2,
 	look_ahead: float = DEFAULT_LOOK_AHEAD
 ) -> Vector2:
+	var physics_frame := Engine.get_physics_frames()
+	var next_sample_frame := int(body.get_meta(
+		"steering_obstacle_next_frame",
+		-1
+	))
+	if physics_frame < next_sample_frame:
+		return Vector2(body.get_meta(
+			"steering_obstacle_avoidance",
+			Vector2.ZERO
+		))
+	var sample_interval := 2 if look_ahead > 120.0 else OBSTACLE_SAMPLE_FRAMES
+	body.set_meta(
+		"steering_obstacle_next_frame",
+		physics_frame + sample_interval
+	)
 	var query := PhysicsRayQueryParameters2D.create(
 		body.global_position,
 		body.global_position + desired * look_ahead,
@@ -120,15 +188,20 @@ static func _obstacle_avoidance(
 	)
 	var hit := body.get_world_2d().direct_space_state.intersect_ray(query)
 	if hit.is_empty():
+		body.set_meta("steering_obstacle_avoidance", Vector2.ZERO)
 		return Vector2.ZERO
 	var normal: Vector2 = hit.get("normal", Vector2.ZERO)
 	if normal.is_zero_approx():
-		return Vector2(-desired.y, desired.x)
+		var fallback := Vector2(-desired.y, desired.x)
+		body.set_meta("steering_obstacle_avoidance", fallback)
+		return fallback
 	var slide := desired.slide(normal).normalized()
 	if slide.is_zero_approx():
 		var sign_value := -1.0 if body.get_instance_id() % 2 == 0 else 1.0
 		slide = Vector2(-desired.y, desired.x) * sign_value
-	return (slide + normal * 0.35).normalized()
+	var avoidance := (slide + normal * 0.35).normalized()
+	body.set_meta("steering_obstacle_avoidance", avoidance)
+	return avoidance
 
 
 static func _stuck_escape(

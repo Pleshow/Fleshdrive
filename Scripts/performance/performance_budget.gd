@@ -5,6 +5,8 @@ var rolling_frame_ms: float = 16.67
 var peak_frame_ms: float = 16.67
 var degraded_quality: bool = false
 var overload_seconds: float = 0.0
+var count_sample_elapsed: float = 0.0
+@export var count_sample_interval: float = 0.10
 var peak_counts: Dictionary = {
 	"enemies": 0,
 	"enemy_projectiles": 0,
@@ -29,42 +31,34 @@ func _process(delta: float) -> void:
 		if rolling_frame_ms > threshold
 		else maxf(overload_seconds - delta * 0.5, 0.0)
 	)
-	peak_counts["enemies"] = maxi(
-		int(peak_counts["enemies"]),
-		get_tree().get_nodes_in_group("enemies").size()
-	)
-	peak_counts["enemy_projectiles"] = maxi(
-		int(peak_counts["enemy_projectiles"]),
-		get_tree().get_nodes_in_group("enemy_projectiles").size()
-	)
-	peak_counts["player_projectiles"] = maxi(
-		int(peak_counts["player_projectiles"]),
-		get_tree().get_nodes_in_group("player_projectiles").size()
-	)
-	peak_counts["lights"] = maxi(
-		int(peak_counts["lights"]),
-		_count_runtime_lights()
-	)
-	peak_counts["damage_numbers"] = maxi(
-		int(peak_counts["damage_numbers"]),
-		get_tree().get_nodes_in_group("damage_numbers").size()
-	)
+	count_sample_elapsed += delta
+	if count_sample_elapsed >= count_sample_interval:
+		count_sample_elapsed = fmod(count_sample_elapsed, count_sample_interval)
+		_sample_peak_counts()
+
+
+func _sample_peak_counts() -> void:
+	peak_counts["enemies"] = maxi(int(peak_counts["enemies"]), get_tree().get_node_count_in_group("enemies"))
+	peak_counts["enemy_projectiles"] = maxi(int(peak_counts["enemy_projectiles"]), get_tree().get_node_count_in_group("enemy_projectiles"))
+	peak_counts["player_projectiles"] = maxi(int(peak_counts["player_projectiles"]), get_tree().get_node_count_in_group("player_projectiles"))
+	peak_counts["lights"] = maxi(int(peak_counts["lights"]), _count_runtime_lights())
+	peak_counts["damage_numbers"] = maxi(int(peak_counts["damage_numbers"]), get_tree().get_node_count_in_group("damage_numbers"))
 
 
 func allow_enemy() -> bool:
-	return get_tree().get_nodes_in_group("enemies").size() < int(
+	return get_tree().get_node_count_in_group("enemies") < int(
 		_budget("enemies", 73.0)
 	)
 
 
 func allow_enemy_projectile() -> bool:
-	return get_tree().get_nodes_in_group("enemy_projectiles").size() < int(
+	return get_tree().get_node_count_in_group("enemy_projectiles") < int(
 		_budget("enemy_projectiles", 84.0)
 	)
 
 
 func allow_player_projectile() -> bool:
-	return get_tree().get_nodes_in_group("player_projectiles").size() < int(
+	return get_tree().get_node_count_in_group("player_projectiles") < int(
 		_budget("player_projectiles", 72.0)
 	)
 
@@ -93,7 +87,7 @@ func allow_damage_number() -> bool:
 	var limit := int(_budget("damage_numbers", 28.0))
 	if degraded_quality:
 		limit = maxi(int(limit * 0.55), 8)
-	return get_tree().get_nodes_in_group("damage_numbers").size() < limit
+	return get_tree().get_node_count_in_group("damage_numbers") < limit
 
 
 func get_spawn_pressure_scale() -> float:
@@ -138,8 +132,8 @@ func reset_peaks() -> void:
 
 func _count_runtime_lights() -> int:
 	return (
-		get_tree().get_nodes_in_group("electric_flash").size()
-		+ get_tree().get_nodes_in_group("fire_flash").size()
-		+ get_tree().get_nodes_in_group("telekinetic_flash").size()
-		+ get_tree().get_nodes_in_group("projectile_light").size()
+		get_tree().get_node_count_in_group("electric_flash")
+		+ get_tree().get_node_count_in_group("fire_flash")
+		+ get_tree().get_node_count_in_group("telekinetic_flash")
+		+ get_tree().get_node_count_in_group("projectile_light")
 	)

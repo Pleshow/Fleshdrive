@@ -1940,6 +1940,12 @@ func _damage_enemy(
 	event.hit_role = hit_role
 	event.can_trigger_procs = can_trigger_procs
 	event.proc_context = proc_context
+	# Ball Lightning deals frequent overlapping ticks. Preserve its hit-stop and
+	# critical feedback without stacking camera trauma every quarter-second.
+	event.screen_shake = resolved_source not in [
+		&"ball_lightning",
+		&"orange_sun",
+	]
 	if build_runtime != null:
 		event.amount = build_runtime.modify_damage(
 			resolved_source,

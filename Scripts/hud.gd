@@ -7,6 +7,29 @@ const LabNoteIconScript := preload("res://Scripts/ui/lab_note_icon.gd")
 
 const REFLEX_CORTEX_OFFER_LEVEL: int = 10
 const AUTO_ATTACK_OFFER_LEVEL: int = 15
+const EARLY_VOLTAIC_CORE_THROUGH_LEVEL: int = 5
+const EARLY_SURVIVAL_THROUGH_LEVEL: int = 5
+const EARLY_VOLTAIC_CORE_IDS: Array[StringName] = [
+	&"arc_heart",
+	&"ball_lightning",
+	&"static_claws",
+]
+const SURVIVAL_UPGRADE_IDS: Array[StringName] = [
+	&"reinforced_rib_cage",
+	&"scavenger_stomach",
+	&"reserve_bladder",
+	&"reactive_hide",
+	&"bone_plating",
+	&"porcupine_reflex",
+	&"hemo_recycler",
+	&"cauterizing_blood",
+]
+const SURVIVAL_TAGS: Array[StringName] = [
+	&"defense",
+	&"healing",
+	&"sustain",
+	&"barrier",
+]
 const MAIN_MENU_SCENE_PATH := "res://Scenes/main_menu.tscn"
 const KODA_PORTRAIT_TEXTURE := "res://Assets/player/idle.png"
 const PAID_REROLL_COSTS: Array[int] = [2, 3, 5]
@@ -215,6 +238,7 @@ const PAID_REROLL_COSTS: Array[int] = [2, 3, 5]
 var player: Koda
 var run_manager: RunManager
 var displayed_upgrades: Array[UpgradeData] = []
+var recently_offered_upgrade_levels: Dictionary = {}
 var upgrade_cards: Array[TextureButton] = []
 var bonus_upgrade_card: TextureButton
 var pending_organ: UpgradeData
@@ -698,15 +722,20 @@ func update_biomass_bar(
 	biomass_required: float,
 	current_level: int
 ) -> void:
-	biomass_bar.max_value = maxf(biomass_required, 1.0)
-	biomass_bar.value = clampf(
+	var displayed_requirement := maxf(biomass_required, 1.0)
+	# Level-up pacing deliberately retains overflow. The HUD represents the
+	# current level threshold, not the whole hidden bank, so its number and fill
+	# can never disagree (for example 1364 / 115 on a full 115-point bar).
+	var displayed_biomass := clampf(
 		current_biomass,
 		0.0,
-		biomass_bar.max_value
+		displayed_requirement
 	)
+	biomass_bar.max_value = displayed_requirement
+	biomass_bar.value = displayed_biomass
 	biomass_value_label.text = "%d / %d" % [
-		floori(maxf(current_biomass, 0.0)),
-		ceili(maxf(biomass_required, 0.0)),
+		floori(displayed_biomass),
+		ceili(displayed_requirement),
 	]
 	level_label.text = "LV %d" % current_level
 
@@ -778,7 +807,13 @@ func show_level_up_panel(current_level: int) -> void:
 	var available_upgrades: Array[UpgradeData] = []
 
 	for upgrade in upgrade_pool:
-		if is_upgrade_available(upgrade):
+		if (
+			is_upgrade_available(upgrade)
+			and not _was_offered_in_previous_two_levels(
+				upgrade.upgrade_id,
+				current_level
+			)
+		):
 			available_upgrades.append(upgrade)
 
 	if available_upgrades.size() < upgrade_cards.size():
@@ -793,6 +828,18 @@ func show_level_up_panel(current_level: int) -> void:
 	var forced_auto_attack: UpgradeData = null
 	var affinity_offer: UpgradeData = null
 	var synergy_offer: UpgradeData = null
+	var survival_offer: UpgradeData = null
+
+	if current_level <= EARLY_SURVIVAL_THROUGH_LEVEL:
+		survival_offer = _take_early_survival_upgrade(available_upgrades)
+		if survival_offer != null:
+			displayed_upgrades.append(survival_offer)
+
+	if (
+		current_level <= EARLY_VOLTAIC_CORE_THROUGH_LEVEL
+		and player.active_fleshdrive_id == FleshdriveCatalog.ELECTRIC
+	):
+		_append_early_voltaic_core_offers(available_upgrades)
 
 	if (
 		current_level >= REFLEX_CORTEX_OFFER_LEVEL
@@ -833,8 +880,7 @@ func show_level_up_panel(current_level: int) -> void:
 			)
 
 	if (
-		run_manager != null
-		and run_manager.elapsed_seconds >= 360.0
+		current_level >= 5
 		and displayed_upgrades.size() < upgrade_cards.size()
 	):
 		synergy_offer = _take_synergy_upgrade(available_upgrades)
@@ -842,16 +888,14 @@ func show_level_up_panel(current_level: int) -> void:
 			displayed_upgrades.append(synergy_offer)
 			available_upgrades.erase(synergy_offer)
 
-	affinity_offer = _take_weighted_upgrade(
-		available_upgrades,
-		true
-	)
-	if (
-		affinity_offer != null
-		and displayed_upgrades.size() < upgrade_cards.size()
-	):
-		displayed_upgrades.append(affinity_offer)
-		available_upgrades.erase(affinity_offer)
+	if displayed_upgrades.size() < upgrade_cards.size():
+		affinity_offer = _take_weighted_upgrade(
+			available_upgrades,
+			true
+		)
+		if affinity_offer != null:
+			displayed_upgrades.append(affinity_offer)
+			available_upgrades.erase(affinity_offer)
 
 	while displayed_upgrades.size() < upgrade_cards.size():
 		if available_upgrades.is_empty():
@@ -868,6 +912,12 @@ func show_level_up_panel(current_level: int) -> void:
 			push_warning("HUD: Upgrade weighting returned no offer.")
 			return
 		displayed_upgrades.append(weighted_offer)
+
+	for offered_upgrade in displayed_upgrades:
+		if offered_upgrade != null:
+			recently_offered_upgrade_levels[
+				offered_upgrade.upgrade_id
+			] = current_level
 
 	# A garantált kártya ne mindig ugyanott jelenjen meg.
 	displayed_upgrades.shuffle()
@@ -965,6 +1015,66 @@ func _take_weighted_upgrade(
 	var fallback: UpgradeData = eligible.back()
 	candidates.erase(fallback)
 	return fallback
+
+
+func _was_offered_in_previous_two_levels(
+	upgrade_id: StringName,
+	current_level: int
+) -> bool:
+	if not recently_offered_upgrade_levels.has(upgrade_id):
+		return false
+	var last_offered_level := int(
+		recently_offered_upgrade_levels[upgrade_id]
+	)
+	return current_level <= last_offered_level + 2
+
+
+func _take_early_survival_upgrade(
+	candidates: Array[UpgradeData]
+) -> UpgradeData:
+	var survival_candidates: Array[UpgradeData] = []
+	for upgrade in candidates:
+		if _is_defensive_or_healing_upgrade(upgrade):
+			survival_candidates.append(upgrade)
+	if survival_candidates.is_empty():
+		push_warning("HUD: No defensive or healing early-game offer is available.")
+		return null
+	var selected := _take_weighted_upgrade(survival_candidates, false)
+	if selected != null:
+		candidates.erase(selected)
+	return selected
+
+
+func _is_defensive_or_healing_upgrade(upgrade: UpgradeData) -> bool:
+	if upgrade == null:
+		return false
+	if upgrade.upgrade_id in SURVIVAL_UPGRADE_IDS:
+		return true
+	for tag in upgrade.get_effective_synergy_tags():
+		if tag in SURVIVAL_TAGS:
+			return true
+	return false
+
+
+func _append_early_voltaic_core_offers(
+	candidates: Array[UpgradeData]
+) -> void:
+	# The opening offers establish the run's identity before generic passives
+	# dilute the pool. Unchosen core paths remain visible through level five.
+	for core_id in EARLY_VOLTAIC_CORE_IDS:
+		if displayed_upgrades.size() >= upgrade_cards.size():
+			return
+		if (
+			player.get_upgrade_level(core_id) > 0
+			or player.has_selected_upgrade(core_id)
+		):
+			continue
+		for upgrade in candidates:
+			if upgrade.upgrade_id != core_id:
+				continue
+			displayed_upgrades.append(upgrade)
+			candidates.erase(upgrade)
+			break
 
 
 func _take_synergy_upgrade(candidates: Array[UpgradeData]) -> UpgradeData:

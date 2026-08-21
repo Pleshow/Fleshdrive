@@ -54,6 +54,42 @@ func _run() -> void:
 		"Spawner cycles through varied combat encounter profiles"
 	)
 
+	player.current_level = 2
+	player.configure_fleshdrive(FleshdriveCatalog.ELECTRIC, 1)
+	var early_offer_sets: Array[Dictionary] = []
+	var early_survival_guaranteed := true
+	var two_level_repeat_found := false
+	for offer_level in [2, 3, 4]:
+		player.current_level = offer_level
+		hud.show_level_up_panel(offer_level)
+		await process_frame
+		var offer_ids: Dictionary = {}
+		var has_survival_offer := false
+		for offer: UpgradeData in hud.displayed_upgrades:
+			offer_ids[offer.upgrade_id] = true
+			has_survival_offer = (
+				has_survival_offer
+				or hud._is_defensive_or_healing_upgrade(offer)
+			)
+		for previous_set in early_offer_sets:
+			for offered_id in offer_ids:
+				if previous_set.has(offered_id):
+					two_level_repeat_found = true
+		early_survival_guaranteed = (
+			early_survival_guaranteed and has_survival_offer
+		)
+		early_offer_sets.append(offer_ids)
+		hud.level_up_panel.hide()
+		hud.run_manager.exit_level_up()
+	_check(
+		not two_level_repeat_found,
+		"A displayed skill cannot return in either of the next two level-up offers"
+	)
+	_check(
+		early_survival_guaranteed,
+		"Every early-game offer contains a defensive or healing skill"
+	)
+
 	player.current_level = 12
 	for drive_id in [
 		FleshdriveCatalog.ELECTRIC,
@@ -95,11 +131,15 @@ func _run() -> void:
 		var badge := hud.upgrade_cards[index].get_node_or_null(
 			"OfferBadge"
 		) as Label
+		var next_level_change := hud.upgrade_cards[index].find_child(
+			"NextLevelChange", true, false
+		) as Label
 		badges_valid = (
 			badges_valid
 			and badge != null
 			and not badge.text.is_empty()
-			and hud.upgrade_cards[index].tooltip_text.contains("NEXT:")
+			and next_level_change != null
+			and not next_level_change.text.is_empty()
 		)
 	_check(
 		affinity_found and offers_valid,
@@ -148,11 +188,16 @@ func _run() -> void:
 		and damage_label.get_theme_font("font").resource_path.ends_with(
 			"PixeloidSans-Bold.ttf"
 		)
+		and damage_label.get_theme_color("font_color").b
+		> damage_label.get_theme_color("font_color").r
+		and damage_label.material is CanvasItemMaterial
+		and (damage_label.material as CanvasItemMaterial).light_mode
+		== CanvasItemMaterial.LIGHT_MODE_UNSHADED
 		and absf(
 			damage_label.global_position.y
 			- crawler.global_position.y
 		) <= 50.0,
-		"Damage numbers use the bold face close to their target"
+		"Damage numbers use a readable unshaded blue face close to their target"
 	)
 
 	var charged := projectile_pool.call(

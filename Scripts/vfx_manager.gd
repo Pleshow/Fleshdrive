@@ -518,11 +518,20 @@ func _recycle_effect(sprite: AnimatedSprite2D) -> void:
 	sprite.hide()
 	sprite.modulate = Color.WHITE
 	sprite.rotation = 0.0
+	sprite.process_mode = Node.PROCESS_MODE_INHERIT
 	active_sprites.erase(sprite)
 	if pooled_sprites.size() < MAX_POOLED_EFFECTS:
 		pooled_sprites.append(sprite)
 	else:
 		sprite.queue_free()
+
+
+func finish_active_effects_during_pause() -> void:
+	# The death transition pauses gameplay immediately. Let effects already
+	# spawned by the killing hit finish instead of freezing into the rebirth UI.
+	for sprite in active_sprites:
+		if is_instance_valid(sprite):
+			sprite.process_mode = Node.PROCESS_MODE_ALWAYS
 
 
 func clear_all() -> void:

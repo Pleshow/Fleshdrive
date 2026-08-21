@@ -1,91 +1,83 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://Scripts/charger.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://Assets/enemies/charger/charger_pixel_atlas.png" id="2_atlas"]
+[ext_resource type="Texture2D" path="res://Assets/enemies/charger/charger v2/boar_like_mutant_charging_scarry/Idle/rotations/east.png" id="2_idle"]
+[ext_resource type="Texture2D" path="res://Assets/enemies/charger/charger v2/run/east/frame_000.png" id="3_run0"]
+[ext_resource type="Texture2D" path="res://Assets/enemies/charger/charger v2/run/east/frame_001.png" id="4_run1"]
+[ext_resource type="Texture2D" path="res://Assets/enemies/charger/charger v2/run/east/frame_002.png" id="5_run2"]
+[ext_resource type="Texture2D" path="res://Assets/enemies/charger/charger v2/run/east/frame_003.png" id="7_run3"]
+[ext_resource type="Texture2D" path="res://Assets/enemies/charger/charger v2/run/east/frame_004.png" id="8_run4"]
+[ext_resource type="Texture2D" path="res://Assets/enemies/charger/charger v2/run/east/frame_005.png" id="9_run5"]
+[ext_resource type="Texture2D" path="res://Assets/enemies/charger/charger v2/run/east/frame_006.png" id="10_run6"]
+[ext_resource type="Texture2D" path="res://Assets/enemies/charger/charger v2/run/east/frame_007.png" id="11_run7"]
+[ext_resource type="Texture2D" path="res://Assets/enemies/charger/charger v2/death/east/frame_000.png" id="12_death0"]
+[ext_resource type="Texture2D" path="res://Assets/enemies/charger/charger v2/death/east/frame_001.png" id="15_death1"]
+[ext_resource type="Texture2D" path="res://Assets/enemies/charger/charger v2/death/east/frame_002.png" id="16_death2"]
+[ext_resource type="Texture2D" path="res://Assets/enemies/charger/charger v2/death/east/frame_003.png" id="17_death3"]
+[ext_resource type="Texture2D" path="res://Assets/enemies/charger/charger v2/death/east/frame_004.png" id="18_death4"]
+[ext_resource type="Texture2D" path="res://Assets/enemies/charger/charger v2/death/east/frame_005.png" id="19_death5"]
+[ext_resource type="Texture2D" path="res://Assets/enemies/charger/charger v2/death/east/frame_006.png" id="20_death6"]
+[ext_resource type="Texture2D" path="res://Assets/enemies/charger/charger v2/death/east/frame_007.png" id="21_death7"]
+[ext_resource type="Texture2D" path="res://Assets/enemies/charger/charger v2/death/east/frame_008.png" id="22_death8"]
 [ext_resource type="PackedScene" path="res://Scenes/pickups/biomass_pickup.tscn" id="6_biomass"]
 [ext_resource type="PackedScene" path="res://Scenes/enemies/enemy_death_vfx.tscn" id="13_death_vfx"]
 [ext_resource type="Texture2D" path="res://Resources/Visuals/enemy_ground_shadow.tres" id="14_shadow"]
 
-[sub_resource type="AtlasTexture" id="Normal0"]
-atlas = ExtResource("2_atlas")
-region = Rect2(0, 0, 256, 256)
-
-[sub_resource type="AtlasTexture" id="Normal1"]
-atlas = ExtResource("2_atlas")
-region = Rect2(256, 0, 256, 256)
-
-[sub_resource type="AtlasTexture" id="Normal2"]
-atlas = ExtResource("2_atlas")
-region = Rect2(512, 0, 256, 256)
-
-[sub_resource type="AtlasTexture" id="Normal3"]
-atlas = ExtResource("2_atlas")
-region = Rect2(768, 0, 256, 256)
-
-[sub_resource type="AtlasTexture" id="Windup0"]
-atlas = ExtResource("2_atlas")
-region = Rect2(0, 256, 256, 256)
-
-[sub_resource type="AtlasTexture" id="Windup1"]
-atlas = ExtResource("2_atlas")
-region = Rect2(256, 256, 256, 256)
-
-[sub_resource type="AtlasTexture" id="Windup2"]
-atlas = ExtResource("2_atlas")
-region = Rect2(512, 256, 256, 256)
-
-[sub_resource type="AtlasTexture" id="Windup3"]
-atlas = ExtResource("2_atlas")
-region = Rect2(768, 256, 256, 256)
-
-[sub_resource type="AtlasTexture" id="Charge0"]
-atlas = ExtResource("2_atlas")
-region = Rect2(0, 512, 256, 256)
-
-[sub_resource type="AtlasTexture" id="Charge1"]
-atlas = ExtResource("2_atlas")
-region = Rect2(256, 512, 256, 256)
-
-[sub_resource type="AtlasTexture" id="Charge2"]
-atlas = ExtResource("2_atlas")
-region = Rect2(512, 512, 256, 256)
-
-[sub_resource type="AtlasTexture" id="Charge3"]
-atlas = ExtResource("2_atlas")
-region = Rect2(768, 512, 256, 256)
-
 [sub_resource type="SpriteFrames" id="SpriteFrames_charger"]
 animations = [{
 "frames": [
-{"duration": 1.0, "texture": SubResource("Charge0")},
-{"duration": 1.0, "texture": SubResource("Charge1")},
-{"duration": 1.0, "texture": SubResource("Charge2")},
-{"duration": 1.0, "texture": SubResource("Charge3")}
+{"duration": 1.0, "texture": ExtResource("3_run0")},
+{"duration": 1.0, "texture": ExtResource("4_run1")},
+{"duration": 1.0, "texture": ExtResource("5_run2")},
+{"duration": 1.0, "texture": ExtResource("7_run3")},
+{"duration": 1.0, "texture": ExtResource("8_run4")},
+{"duration": 1.0, "texture": ExtResource("9_run5")},
+{"duration": 1.0, "texture": ExtResource("10_run6")},
+{"duration": 1.0, "texture": ExtResource("11_run7")}
 ],
 "loop": true,
 "name": &"charge",
-"speed": 11.0
+"speed": 14.0
 }, {
 "frames": [
-{"duration": 1.0, "texture": SubResource("Normal0")},
-{"duration": 1.0, "texture": SubResource("Normal1")},
-{"duration": 1.0, "texture": SubResource("Normal2")},
-{"duration": 1.0, "texture": SubResource("Normal3")}
+{"duration": 1.0, "texture": ExtResource("12_death0")},
+{"duration": 1.0, "texture": ExtResource("15_death1")},
+{"duration": 1.0, "texture": ExtResource("16_death2")},
+{"duration": 1.0, "texture": ExtResource("17_death3")},
+{"duration": 1.0, "texture": ExtResource("18_death4")},
+{"duration": 1.0, "texture": ExtResource("19_death5")},
+{"duration": 1.0, "texture": ExtResource("20_death6")},
+{"duration": 1.0, "texture": ExtResource("21_death7")},
+{"duration": 1.0, "texture": ExtResource("22_death8")}
+],
+"loop": false,
+"name": &"death",
+"speed": 12.0
+}, {
+"frames": [
+{"duration": 1.0, "texture": ExtResource("3_run0")},
+{"duration": 1.0, "texture": ExtResource("4_run1")},
+{"duration": 1.0, "texture": ExtResource("5_run2")},
+{"duration": 1.0, "texture": ExtResource("7_run3")},
+{"duration": 1.0, "texture": ExtResource("8_run4")},
+{"duration": 1.0, "texture": ExtResource("9_run5")},
+{"duration": 1.0, "texture": ExtResource("10_run6")},
+{"duration": 1.0, "texture": ExtResource("11_run7")}
 ],
 "loop": true,
 "name": &"normal",
-"speed": 5.5
+"speed": 8.0
 }, {
 "frames": [
-{"duration": 1.0, "texture": SubResource("Windup0")},
-{"duration": 1.0, "texture": SubResource("Windup1")},
-{"duration": 1.0, "texture": SubResource("Windup2")},
-{"duration": 1.0, "texture": SubResource("Windup3")}
+{"duration": 1.0, "texture": ExtResource("2_idle")}
 ],
-"loop": true,
+"loop": false,
 "name": &"windup",
-"speed": 7.0
+"speed": 1.0
 }]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_charger_unshaded"]
+light_mode = 1
 
 [sub_resource type="CircleShape2D" id="CircleShape_charger"]
 radius = 31.0
@@ -117,21 +109,22 @@ death_vfx_scale = 1.1
 modulate = Color(1, 1, 1, 0.64)
 show_behind_parent = true
 z_index = -2
-position = Vector2(0, 38)
-scale = Vector2(0.78, 0.22)
+position = Vector2(0, 29)
+scale = Vector2(0.58, 0.18)
 texture = ExtResource("14_shadow")
 
 [node name="ChargeTrail" type="Sprite2D" parent="."]
 visible = false
 show_behind_parent = true
-position = Vector2(-58, 0)
+position = Vector2(-52, 0)
 modulate = Color(0.38, 0.62, 1, 0.32)
-scale = Vector2(0.44, 0.32)
-texture = SubResource("Normal0")
+scale = Vector2(1.5, 1.15)
+texture = ExtResource("3_run0")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
-scale = Vector2(0.5, 0.5)
+material = SubResource("CanvasItemMaterial_charger_unshaded")
+scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_charger")
 animation = &"normal"
 autoplay = "normal"
@@ -139,9 +132,9 @@ autoplay = "normal"
 [node name="HealthBar" type="ProgressBar" parent="."]
 z_index = 12
 offset_left = -34.0
-offset_top = -58.0
+offset_top = -52.0
 offset_right = 34.0
-offset_bottom = -51.0
+offset_bottom = -45.0
 mouse_filter = 2
 theme_override_styles/background = SubResource("Style_health_background")
 theme_override_styles/fill = SubResource("Style_health_fill")
@@ -157,7 +150,19 @@ shape = SubResource("CircleShape_charger")
 
 [node name="ChargeIndicator" type="Polygon2D" parent="."]
 show_behind_parent = true
-color = Color(0.96, 0.08, 0.05, 0.28)
+material = SubResource("CanvasItemMaterial_charger_unshaded")
+color = Color(1, 0.0196, 0.2745, 0.52)
+
+[node name="ChargeIndicatorOutline" type="Line2D" parent="."]
+visible = false
+show_behind_parent = true
+z_index = -1
+material = SubResource("CanvasItemMaterial_charger_unshaded")
+width = 4.0
+default_color = Color(1, 0.0196, 0.2745, 1)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
 
 [node name="WindupTimer" type="Timer" parent="."]
 one_shot = true

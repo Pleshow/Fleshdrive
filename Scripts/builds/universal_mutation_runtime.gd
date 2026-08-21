@@ -142,7 +142,7 @@ func _on_rush_ended(_rush_number: int) -> void:
 func on_biomass_collected() -> void:
 	biomass_pickups += 1
 	if player.get_upgrade_level(&"scavenger_stomach") > 0 and biomass_pickups % 15 == 0:
-		player.heal(1.0)
+		player.heal(5.0)
 
 
 func on_dash_finished() -> void:

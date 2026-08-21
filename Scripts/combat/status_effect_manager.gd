@@ -94,7 +94,10 @@ func _play_status_visual(target: Node2D, status_id: StringName) -> void:
 	var effect_id := &""
 	match status_id:
 		&"burn": effect_id = &"status_burn"
-		&"shock", &"grounded", &"polarized_scar": effect_id = &"status_shock"
+		# Conductive Fur owns a persistent ThunderShockCrown parented to the
+		# enemy. Do not also leave the short generic impact sprite in world space.
+		&"shock": return
+		&"grounded", &"polarized_scar": effect_id = &"status_shock"
 	if effect_id.is_empty():
 		return
 	var visual_effects := get_tree().root.get_node_or_null("VisualEffects")

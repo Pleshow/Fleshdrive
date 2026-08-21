@@ -1,6 +1,8 @@
 class_name Crawler
 extends CharacterBody2D
 
+const HIT_FLASH_DURATION: float = 0.12
+
 @onready var attack_timer: Timer = $AttackTimer
 @export_category("Movement")
 @export var move_speed: float = 88.0
@@ -34,6 +36,7 @@ signal died(enemy: Node2D)
 var current_health: float
 var is_dead: bool = false
 var external_impulse: Vector2 = Vector2.ZERO
+var hit_flash_remaining: float = 0.0
 
 func _ready() -> void:
 	if MinimalistVisualProfile.is_active(get_tree()):
@@ -55,6 +58,7 @@ func prepare_for_reuse() -> void:
 	is_dead = false
 	current_health = max_health
 	external_impulse = Vector2.ZERO
+	hit_flash_remaining = 0.0
 	velocity = Vector2.ZERO
 	sprite.modulate = Color.WHITE
 	find_player()
@@ -65,10 +69,13 @@ func prepare_for_pool() -> void:
 	target = null
 	attack_timer.stop()
 	external_impulse = Vector2.ZERO
+	hit_flash_remaining = 0.0
+	sprite.modulate = Color.WHITE
 	velocity = Vector2.ZERO
 
 
 func _physics_process(delta: float) -> void:
+	_update_hit_flash(delta)
 	if not is_instance_valid(target):
 		find_player()
 
@@ -185,7 +192,7 @@ func receive_damage_event(
 		die()
 	elif event.play_hit_sound:
 		play_sound(&"enemy_hit", -13.0, 0.09)
-		request_combat_feedback(0.10, 0.18)
+		request_combat_feedback(0.10, 0.18, event.screen_shake)
 
 
 func get_knockback_resistance() -> float:
@@ -193,15 +200,16 @@ func get_knockback_resistance() -> float:
 
 
 func play_hit_feedback() -> void:
+	hit_flash_remaining = HIT_FLASH_DURATION
 	sprite.modulate = Color(0.3, 0.8, 1.0)
 
-	var tween := create_tween()
-	tween.tween_property(
-		sprite,
-		"modulate",
-		Color.WHITE,
-		0.12
-	)
+
+func _update_hit_flash(delta: float) -> void:
+	if hit_flash_remaining <= 0.0:
+		return
+	hit_flash_remaining = maxf(hit_flash_remaining - delta, 0.0)
+	var progress := 1.0 - hit_flash_remaining / HIT_FLASH_DURATION
+	sprite.modulate = Color(0.3, 0.8, 1.0).lerp(Color.WHITE, progress)
 
 
 func die() -> void:
@@ -243,11 +251,16 @@ func _return_to_pool_or_free() -> void:
 
 func request_combat_feedback(
 	shake_amount: float,
-	hit_stop_strength: float
+	hit_stop_strength: float,
+	screen_shake: bool = true
 ) -> void:
 	var feedback := get_tree().get_first_node_in_group("combat_feedback")
-	if feedback != null and feedback.has_method("play_hit"):
+	if feedback == null:
+		return
+	if screen_shake and feedback.has_method("play_hit"):
 		feedback.play_hit(shake_amount, hit_stop_strength)
+	elif feedback.has_method("hit_stop"):
+		feedback.hit_stop(hit_stop_strength)
 
 func spawn_death_vfx() -> void:
 	if death_vfx_scene == null:

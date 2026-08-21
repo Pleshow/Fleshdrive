@@ -54,16 +54,7 @@ static func play(
 			)
 
 	ghost.modulate = tint
-	var visual_effects := enemy.get_tree().root.get_node_or_null(
-		"VisualEffects"
-	)
-	if visual_effects != null:
-		visual_effects.call(
-			"play",
-			effect_id,
-			enemy.global_position,
-			0.85 * scale_factor
-		)
+	_play_world_effect(enemy, effect_id, scale_factor)
 	var tween := ghost.create_tween()
 	tween.set_parallel(true)
 	tween.set_trans(Tween.TRANS_QUAD)
@@ -78,3 +69,68 @@ static func play(
 		0.32
 	).set_delay(0.06)
 	tween.chain().tween_callback(ghost.queue_free)
+
+
+static func play_animation(
+	enemy: Node2D,
+	sprite: AnimatedSprite2D,
+	animation: StringName,
+	scale_factor: float = 1.0
+) -> void:
+	if (
+		not is_instance_valid(enemy)
+		or not is_instance_valid(sprite)
+		or not sprite.sprite_frames.has_animation(animation)
+	):
+		play(enemy, sprite, scale_factor)
+		return
+	var container := enemy.get_tree().get_first_node_in_group(
+		"effects_container"
+	)
+	if container == null:
+		return
+	var ghost := AnimatedSprite2D.new()
+	ghost.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	ghost.sprite_frames = sprite.sprite_frames
+	ghost.animation = animation
+	ghost.flip_h = sprite.flip_h
+	ghost.scale = sprite.scale
+	ghost.global_position = sprite.global_position
+	ghost.global_rotation = sprite.global_rotation
+	ghost.z_index = 24
+	container.add_child(ghost)
+	ghost.play(animation)
+	var effect_id := _get_affinity_effect_id(enemy)
+	_play_world_effect(enemy, effect_id, scale_factor)
+	_free_after_animation(ghost)
+
+
+static func _free_after_animation(ghost: AnimatedSprite2D) -> void:
+	await ghost.animation_finished
+	if is_instance_valid(ghost):
+		ghost.queue_free()
+
+
+static func _get_affinity_effect_id(enemy: Node) -> StringName:
+	match StringName(enemy.get_meta("last_damage_affinity", &"physical")):
+		&"electric": return &"electric_impact"
+		&"fire": return &"fire_explosion_embers"
+		&"telekinetic": return &"kinetic_impact"
+	return &"enemy_death"
+
+
+static func _play_world_effect(
+	enemy: Node2D,
+	effect_id: StringName,
+	scale_factor: float
+) -> void:
+	var visual_effects := enemy.get_tree().root.get_node_or_null(
+		"VisualEffects"
+	)
+	if visual_effects != null:
+		visual_effects.call(
+			"play",
+			effect_id,
+			enemy.global_position,
+			0.85 * scale_factor
+		)

@@ -6,9 +6,9 @@ const DAMAGE_FONT := preload(
 	"res://Assets/fonts/PixeloidSans-Bold.ttf"
 )
 
-@export var base_hit_stop_seconds: float = 0.045
-@export var minimum_time_scale: float = 0.06
-@export var maximum_time_scale: float = 0.22
+@export var base_hit_stop_seconds: float = 0.032
+@export var minimum_time_scale: float = 0.38
+@export var maximum_time_scale: float = 0.68
 @export var combine_damage_numbers: bool = true
 @export var damage_merge_window: float = 0.24
 @export var maximum_damage_labels: int = 28
@@ -67,7 +67,7 @@ func hit_stop(strength: float = 0.5) -> void:
 		return
 
 	hit_stop_active = true
-	hit_stop_rearm = 0.055
+	hit_stop_rearm = 0.085
 	var clamped_strength := clampf(strength, 0.0, 1.0)
 	var duration := base_hit_stop_seconds * lerpf(
 		0.65,
@@ -116,7 +116,8 @@ func register_damage(
 	affinity: StringName = &"physical",
 	heavy: bool = false,
 	show_number: bool = true,
-	critical: bool = false
+	critical: bool = false,
+	screen_shake: bool = true
 ) -> void:
 	if not is_instance_valid(target) or amount <= 0.0:
 		return
@@ -127,7 +128,9 @@ func register_damage(
 	_flash_target(target, affinity)
 	_play_affinity_impact(target.global_position, affinity, heavy)
 	if heavy:
-		play_hit(0.22, 0.34)
+		if screen_shake:
+			shake_camera(0.22)
+		hit_stop(0.34)
 	if critical:
 		var audio := get_tree().root.get_node_or_null("AudioEffects")
 		if audio != null:
@@ -260,6 +263,9 @@ func _acquire_damage_label() -> Label:
 	label.add_theme_constant_override("shadow_offset_x", 2)
 	label.add_theme_constant_override("shadow_offset_y", 2)
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var unshaded := CanvasItemMaterial.new()
+	unshaded.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+	label.material = unshaded
 	label.add_to_group("damage_numbers")
 	label.z_as_relative = false
 	label.z_index = 96
@@ -274,16 +280,9 @@ func _update_damage_label(
 ) -> void:
 	label.text = ("! %d !" if critical else "%d") % roundi(amount)
 	label.add_theme_font_size_override("font_size", 21 if critical else 17)
-	var colors := {
-		&"electric": Color(0.42, 0.88, 1.0),
-		&"fire": Color(1.0, 0.38, 0.13),
-		&"telekinetic": Color(0.78, 0.53, 1.0),
-		&"physical": Color(0.92, 0.9, 0.82),
-		&"hostile": Color(1.0, 0.18, 0.14),
-	}
 	label.add_theme_color_override(
 		"font_color",
-		colors.get(affinity, colors[&"physical"])
+		Color("0ce6f2") if critical else Color("0098db")
 	)
 
 

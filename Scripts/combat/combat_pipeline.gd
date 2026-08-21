@@ -238,7 +238,8 @@ func _register_feedback(
 		event.affinity,
 		event.heavy_feedback or critical,
 		event.show_damage_number,
-		critical
+		critical,
+		event.screen_shake
 	)
 
 

@@ -9,6 +9,9 @@ const SPITTER_ROOT := "res://Assets/enemies/spitter/Spider"
 const BIOMASS_TEXTURE := preload(
 	"res://Assets/environment/small_biomass_transparent.png"
 )
+const PIXEL_EMISSIVE_SHADER := preload(
+	"res://Shaders/pixel_emissive.gdshader"
+)
 const DIRECTIONS: Array[StringName] = [&"down", &"right", &"up", &"left"]
 const Palette = preload("res://Scripts/visual/ink_crimson_palette.gd")
 static var pixel_shadow_texture: ImageTexture
@@ -162,6 +165,10 @@ static func configure_biomass(sprite: AnimatedSprite2D) -> void:
 	# beside the 48px character frames, like a compact survivor-game XP drop.
 	sprite.scale = Vector2.ONE * 0.65
 	_apply_crisp_canvas_style(sprite)
+	var biomass_material := ShaderMaterial.new()
+	biomass_material.shader = PIXEL_EMISSIVE_SHADER
+	biomass_material.set_shader_parameter("force_electric_blue", true)
+	sprite.material = biomass_material
 	sprite.play()
 
 

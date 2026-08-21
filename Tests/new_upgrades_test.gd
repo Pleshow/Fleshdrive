@@ -133,6 +133,18 @@ func _run() -> void:
 		player.current_health > health_before_heal,
 		"Hemo Recycler heals on its kill cadence"
 	)
+	player.apply_upgrade(&"scavenger_stomach")
+	player.current_health = player.max_health - 10.0
+	var health_before_scavenging := player.current_health
+	for _pickup in range(15):
+		player.weapon_system.notify_biomass_collected()
+	_check(
+		is_equal_approx(
+			player.current_health,
+			health_before_scavenging + 5.0
+		),
+		"Scavenger Stomach restores five health every fifteenth biomass"
+	)
 
 	var weapon_cooldown_before := player.weapon_cooldown_multiplier
 	player.apply_upgrade(&"overload_vent")

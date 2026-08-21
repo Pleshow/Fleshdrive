@@ -44,8 +44,10 @@ func _test_strict_output_pass() -> void:
 	)
 	var material := filter.material as ShaderMaterial if filter != null else null
 	_check(
-		visual_system != null and visual_system.layer >= 1000,
-		"Strict output pass renders above gameplay, HUD, menus and post-process"
+		visual_system != null
+		and visual_system.layer > 100
+		and visual_system.layer < 109,
+		"Strict output pass renders above the world post-process but below every UI layer"
 	)
 	_check(
 		filter != null
@@ -79,15 +81,18 @@ func _test_theme_components() -> void:
 				continue
 			checked_styleboxes += 1
 			_check(
-				_is_palette_color(style.bg_color)
-				and _is_palette_color(style.border_color)
+				(_is_palette_color(style.bg_color) or style.bg_color.a == 0.0)
+				and (
+					_is_palette_color(style.border_color)
+					or style.border_color.a == 0.0
+				)
 				and style.shadow_size == 0
 				and not style.anti_aliasing
 				and style.corner_radius_top_left == 0
 				and style.corner_radius_top_right == 0
 				and style.corner_radius_bottom_left == 0
 				and style.corner_radius_bottom_right == 0,
-				"Theme style %s/%s is crisp, square and palette-safe" % [
+				"Theme style %s/%s is crisp, square and uses only red or transparent surfaces" % [
 					theme_type, style_name,
 				]
 			)
@@ -107,11 +112,12 @@ func _test_menu_identity() -> void:
 		"Main menu uses the new procedural biomechanical pixel backdrop"
 	)
 	_check(
-		menu.play_button.icon != null
-		and menu.settings_button.icon != null
-		and menu.skill_tree_button.icon != null
-		and menu.quit_button.icon != null,
-		"Main menu actions use the reusable two-tone pixel icon language"
+		menu.play_button.icon == null
+		and menu.settings_button.icon == null
+		and menu.skill_tree_button.icon == null
+		and menu.quit_button.icon == null
+		and menu.play_button.flat,
+		"Main menu actions use the icon-free frameless red text language"
 	)
 	menu.queue_free()
 	await process_frame

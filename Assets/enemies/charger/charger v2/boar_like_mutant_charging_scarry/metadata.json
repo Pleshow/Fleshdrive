@@ -1,0 +1,91 @@
+{
+  "group_id": "a272b290-ade4-4139-a06b-aabaf272ee5c",
+  "states": [
+    {
+      "character": {
+        "id": "d0a70a1b-af98-4962-98b3-b906e9830c64",
+        "name": "Idle",
+        "prompt": "boar like mutant charging scarry evil creature enemy with red eyes and white fur",
+        "size": {
+          "width": 36,
+          "height": 36
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-08-12T19:51:03.562939+00:00"
+      },
+      "folder": "Idle",
+      "frames": {
+        "rotations": {
+          "south": "Idle/rotations/south.png",
+          "south-east": "Idle/rotations/south-east.png",
+          "east": "Idle/rotations/east.png",
+          "north-east": "Idle/rotations/north-east.png",
+          "north": "Idle/rotations/north.png",
+          "north-west": "Idle/rotations/north-west.png",
+          "west": "Idle/rotations/west.png",
+          "south-west": "Idle/rotations/south-west.png"
+        },
+        "animations": {}
+      }
+    },
+    {
+      "character": {
+        "id": "f32331ab-799b-447e-8d00-66e4ad15b535",
+        "name": "mid running full spe",
+        "prompt": "boar like mutant charging scarry evil creature enemy with red eyes and white fur",
+        "size": {
+          "width": 36,
+          "height": 36
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-08-12T19:56:25.252817+00:00"
+      },
+      "folder": "mid_running_full_spe",
+      "frames": {
+        "rotations": {
+          "south": "mid_running_full_spe/rotations/south.png",
+          "south-east": "mid_running_full_spe/rotations/south-east.png",
+          "east": "mid_running_full_spe/rotations/east.png",
+          "north-east": "mid_running_full_spe/rotations/north-east.png",
+          "north": "mid_running_full_spe/rotations/north.png",
+          "north-west": "mid_running_full_spe/rotations/north-west.png",
+          "west": "mid_running_full_spe/rotations/west.png",
+          "south-west": "mid_running_full_spe/rotations/south-west.png"
+        },
+        "animations": {
+          "Full_Sprint": {
+            "east": [
+              "mid_running_full_spe/animations/Full_Sprint/east/frame_000.png",
+              "mid_running_full_spe/animations/Full_Sprint/east/frame_001.png",
+              "mid_running_full_spe/animations/Full_Sprint/east/frame_002.png",
+              "mid_running_full_spe/animations/Full_Sprint/east/frame_003.png",
+              "mid_running_full_spe/animations/Full_Sprint/east/frame_004.png",
+              "mid_running_full_spe/animations/Full_Sprint/east/frame_005.png",
+              "mid_running_full_spe/animations/Full_Sprint/east/frame_006.png",
+              "mid_running_full_spe/animations/Full_Sprint/east/frame_007.png"
+            ]
+          },
+          "The_boar_stumbles_forward_as_its_front_legs_buckle": {
+            "east": [
+              "mid_running_full_spe/animations/The_boar_stumbles_forward_as_its_front_legs_buckle/east/frame_000.png",
+              "mid_running_full_spe/animations/The_boar_stumbles_forward_as_its_front_legs_buckle/east/frame_001.png",
+              "mid_running_full_spe/animations/The_boar_stumbles_forward_as_its_front_legs_buckle/east/frame_002.png",
+              "mid_running_full_spe/animations/The_boar_stumbles_forward_as_its_front_legs_buckle/east/frame_003.png",
+              "mid_running_full_spe/animations/The_boar_stumbles_forward_as_its_front_legs_buckle/east/frame_004.png",
+              "mid_running_full_spe/animations/The_boar_stumbles_forward_as_its_front_legs_buckle/east/frame_005.png",
+              "mid_running_full_spe/animations/The_boar_stumbles_forward_as_its_front_legs_buckle/east/frame_006.png",
+              "mid_running_full_spe/animations/The_boar_stumbles_forward_as_its_front_legs_buckle/east/frame_007.png",
+              "mid_running_full_spe/animations/The_boar_stumbles_forward_as_its_front_legs_buckle/east/frame_008.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.1",
+  "export_date": "2026-08-20T11:01:57.483635"
+}

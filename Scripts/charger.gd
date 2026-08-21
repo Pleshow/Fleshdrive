@@ -5,6 +5,7 @@ extends CharacterBody2D
 const COMBAT_TEXTURE := preload(
 	"res://Assets/vfx/fleshdrive/enemy_combat_vfx_atlas.png"
 )
+const HIT_FLASH_DURATION: float = 0.12
 
 enum State {
 	CHASE,
@@ -46,6 +47,7 @@ signal died(enemy: Node2D)
 @onready var trail: Sprite2D = $ChargeTrail
 @onready var impact_animation: AnimatedSprite2D = $ImpactAnimation
 @onready var charge_indicator: Polygon2D = $ChargeIndicator
+@onready var charge_indicator_outline: Line2D = $ChargeIndicatorOutline
 @onready var windup_timer: Timer = $WindupTimer
 @onready var charge_timer: Timer = $ChargeTimer
 @onready var recovery_timer: Timer = $RecoveryTimer
@@ -59,6 +61,7 @@ var current_health: float
 var is_dead: bool = false
 var external_impulse: Vector2 = Vector2.ZERO
 var readability_rim: Line2D
+var hit_flash_remaining: float = 0.0
 
 
 func _ready() -> void:
@@ -80,8 +83,11 @@ func _ready() -> void:
 	impact_animation.hide()
 	charge_indicator.z_as_relative = false
 	charge_indicator.z_index = -2
-	charge_indicator.color = Color(1.0, 0.16, 0.035, 0.34)
+	sprite.self_modulate = Color(1.16, 1.12, 1.22, 1.0)
+	charge_indicator.color = Color("ff0546", 0.52)
+	charge_indicator_outline.default_color = Color("ff0546")
 	charge_indicator.hide()
+	charge_indicator_outline.hide()
 
 
 func prepare_for_reuse() -> void:
@@ -91,6 +97,7 @@ func prepare_for_reuse() -> void:
 	health_bar.value = current_health
 	state = State.CHASE
 	external_impulse = Vector2.ZERO
+	hit_flash_remaining = 0.0
 	velocity = Vector2.ZERO
 	sprite.modulate = Color.WHITE
 	winding_cleanup()
@@ -101,6 +108,8 @@ func prepare_for_reuse() -> void:
 func prepare_for_pool() -> void:
 	target = null
 	external_impulse = Vector2.ZERO
+	hit_flash_remaining = 0.0
+	sprite.modulate = Color.WHITE
 	velocity = Vector2.ZERO
 	winding_cleanup()
 
@@ -111,12 +120,14 @@ func winding_cleanup() -> void:
 	recovery_timer.stop()
 	cooldown_timer.stop()
 	charge_indicator.hide()
+	charge_indicator_outline.hide()
 	trail.hide()
 	impact_animation.hide()
 	_set_readability_state(&"normal")
 
 
 func _physics_process(delta: float) -> void:
+	_update_hit_flash(delta)
 	if not is_instance_valid(target):
 		find_player()
 
@@ -229,6 +240,7 @@ func _start_windup() -> void:
 	sprite.play(&"windup")
 	_set_readability_state(&"windup")
 	charge_indicator.show()
+	charge_indicator_outline.show()
 	update_telegraph()
 	_pulse_charge_indicator()
 	windup_timer.start(charge_windup)
@@ -240,11 +252,16 @@ func update_telegraph() -> void:
 	var half_width := 42.0
 	var forward := charge_direction.normalized()
 	var side := Vector2(-forward.y, forward.x)
-	charge_indicator.polygon = PackedVector2Array([
+	var telegraph_points := PackedVector2Array([
 		forward * 20.0 - side * half_width,
 		forward * length - side * half_width,
 		forward * length + side * half_width,
 		forward * 20.0 + side * half_width,
+	])
+	charge_indicator.polygon = telegraph_points
+	charge_indicator_outline.points = PackedVector2Array([
+		telegraph_points[0], telegraph_points[1], telegraph_points[2],
+		telegraph_points[3], telegraph_points[0],
 	])
 
 
@@ -254,6 +271,7 @@ func _begin_charge() -> void:
 
 	state = State.CHARGE
 	charge_indicator.hide()
+	charge_indicator_outline.hide()
 	sprite.play(&"charge")
 	_set_readability_state(&"charge")
 	trail.show()
@@ -263,11 +281,12 @@ func _begin_charge() -> void:
 
 
 func _pulse_charge_indicator() -> void:
-	charge_indicator.modulate.a = 0.42
+	charge_indicator.modulate.a = 1.0
+	charge_indicator_outline.modulate.a = 1.0
 	var tween := charge_indicator.create_tween()
 	tween.set_loops(3)
-	tween.tween_property(charge_indicator, "modulate:a", 0.18, charge_windup / 6.0)
-	tween.tween_property(charge_indicator, "modulate:a", 0.42, charge_windup / 6.0)
+	tween.tween_property(charge_indicator, "modulate:a", 0.72, charge_windup / 6.0)
+	tween.tween_property(charge_indicator, "modulate:a", 1.0, charge_windup / 6.0)
 
 
 func update_charge() -> void:
@@ -349,7 +368,7 @@ func receive_damage_event(
 		die()
 	elif event.play_hit_sound:
 		play_sound(&"enemy_hit", -11.0, 0.07)
-		request_combat_feedback(0.18, 0.28)
+		request_combat_feedback(0.18, 0.28, event.screen_shake)
 
 
 func get_knockback_resistance() -> float:
@@ -359,9 +378,16 @@ func get_knockback_resistance() -> float:
 
 
 func play_hit_feedback() -> void:
+	hit_flash_remaining = HIT_FLASH_DURATION
 	sprite.modulate = Color(0.3, 0.8, 1.0)
-	var tween := create_tween()
-	tween.tween_property(sprite, "modulate", Color.WHITE, 0.12)
+
+
+func _update_hit_flash(delta: float) -> void:
+	if hit_flash_remaining <= 0.0:
+		return
+	hit_flash_remaining = maxf(hit_flash_remaining - delta, 0.0)
+	var progress := 1.0 - hit_flash_remaining / HIT_FLASH_DURATION
+	sprite.modulate = Color(0.3, 0.8, 1.0).lerp(Color.WHITE, progress)
 
 
 func die() -> void:
@@ -372,7 +398,12 @@ func die() -> void:
 	play_sound(&"enemy_death", -5.0, 0.07)
 	died.emit(self)
 	request_combat_feedback(0.62, 0.78)
-	EnemyDeathAnimator.play(self, sprite, death_vfx_scale)
+	EnemyDeathAnimator.play_animation(
+		self,
+		sprite,
+		&"death",
+		death_vfx_scale
+	)
 	_try_drop_biomass()
 	collision_layer = 0
 	collision_mask = 0
@@ -390,11 +421,16 @@ func _return_to_pool_or_free() -> void:
 
 func request_combat_feedback(
 	shake_amount: float,
-	hit_stop_strength: float
+	hit_stop_strength: float,
+	screen_shake: bool = true
 ) -> void:
 	var feedback := get_tree().get_first_node_in_group("combat_feedback")
-	if feedback != null and feedback.has_method("play_hit"):
+	if feedback == null:
+		return
+	if screen_shake and feedback.has_method("play_hit"):
 		feedback.play_hit(shake_amount, hit_stop_strength)
+	elif feedback.has_method("hit_stop"):
+		feedback.hit_stop(hit_stop_strength)
 
 
 func spawn_death_vfx() -> void:

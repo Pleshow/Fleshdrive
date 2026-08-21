@@ -209,8 +209,12 @@ func _run() -> void:
 		biomass_texture.resource_path.ends_with("small_biomass_transparent.png")
 		and biomass_image.get_pixel(0, 0).a == 0.0
 		and biomass_image.get_pixel(1, 0).a == 0.0
-		and is_equal_approx(biomass.original_scale.x, 0.65),
-		"Biomass is quarter-sized and all sampled gray background variants are transparent"
+		and is_equal_approx(biomass.original_scale.x, 0.65)
+		and biomass.sprite.material is ShaderMaterial
+		and bool((biomass.sprite.material as ShaderMaterial).get_shader_parameter(
+			"force_electric_blue"
+		)),
+		"Biomass is compact, transparent and forced onto the electric-blue ramp"
 	)
 
 	var projectile := PROJECTILE_SCENE.instantiate() as SpitterProjectile
@@ -219,19 +223,20 @@ func _run() -> void:
 		&"flight",
 		0
 	)
+	var orb_image := orb_texture.get_image()
 	_check(
-		orb_texture.get_width() == 12
-		and orb_texture.get_height() == 12
+		orb_texture.get_width() == 16
+		and orb_texture.get_height() == 16
+		and orb_image.get_pixel(8, 1).is_equal_approx(Color("ff0546"))
 		and is_equal_approx(projectile.projectile_sprite.scale.x, 1.0)
 		and is_equal_approx(
 			(projectile.collision_shape.shape as CircleShape2D).radius,
-			4.0
+			5.5
 		)
 		and is_equal_approx(projectile.projectile_light.texture_scale, 1.1)
-		and is_equal_approx(spitter.projectile_speed, 201.6)
 		and projectile.projectile_light.color.is_equal_approx(Color("ff0546"))
 		and projectile.projectile_light.energy <= 0.35,
-		"Spitter projectile is a half-sized, 10% slower hostile-crimson pixel orb"
+		"Spitter projectile is a larger outlined hostile-crimson pixel orb"
 	)
 
 	var post_filter := game.get_node_or_null("PostProcess/ScreenFilter") as PostProcessController

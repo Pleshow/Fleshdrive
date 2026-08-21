@@ -725,7 +725,7 @@ func receive_damage_event(
 		die()
 	elif event.play_hit_sound:
 		play_sound(&"enemy_hit", -8.0, 0.055)
-		request_combat_feedback(0.22, 0.28)
+		request_combat_feedback(0.22, 0.28, event.screen_shake)
 
 
 func get_knockback_resistance() -> float:
@@ -866,11 +866,16 @@ func _configure_sprite_animations() -> void:
 
 func request_combat_feedback(
 	shake_amount: float,
-	hit_stop_strength: float
+	hit_stop_strength: float,
+	screen_shake: bool = true
 ) -> void:
 	var feedback := get_tree().get_first_node_in_group("combat_feedback")
-	if feedback != null and feedback.has_method("play_hit"):
+	if feedback == null:
+		return
+	if screen_shake and feedback.has_method("play_hit"):
 		feedback.play_hit(shake_amount, hit_stop_strength)
+	elif feedback.has_method("hit_stop"):
+		feedback.hit_stop(hit_stop_strength)
 
 
 func play_world_vfx(

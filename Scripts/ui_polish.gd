@@ -1,6 +1,13 @@
 extends Node
 
 
+const CRIMSON_TEXT := Color("9c173b")
+const CRIMSON_BODY := Color("e84a6b")
+const CRIMSON_HOVER := Color("ff0546")
+const CRIMSON_PRESSED := Color("660f31")
+const CRIMSON_DISABLED := Color(0.27, 0.012, 0.153, 0.58)
+const UI_VOID := Color(0.035, 0.004, 0.035, 0.92)
+
 const MODAL_NAMES: Array[StringName] = [
 	&"SettingsPanel",
 	&"SettingsContainer",
@@ -44,6 +51,8 @@ func _register_branch(candidate: Variant) -> void:
 	if not is_instance_valid(candidate) or not candidate is Node:
 		return
 	var node := candidate as Node
+	if node is Control:
+		_apply_minimal_crimson_style(node as Control)
 	if node is BaseButton:
 		_register_button(node as BaseButton)
 	elif node is HSlider or node is VSlider:
@@ -72,28 +81,204 @@ func _register_button(button: BaseButton) -> void:
 	button.focus_exited.connect(_set_button_focus.bind(button, false))
 	button.button_down.connect(_press_button.bind(button))
 	button.button_up.connect(_release_button.bind(button))
-	_install_button_shadow(button)
+	_remove_button_shadow(button)
 	_constrain_menu_button.call_deferred(button)
 	_update_pivot(button)
 
 
-func _install_button_shadow(button: BaseButton) -> void:
-	if not button is Button or bool(button.get("flat")):
+func _remove_button_shadow(button: BaseButton) -> void:
+	var old_shadow := button.get_node_or_null("BiomechShadow")
+	if old_shadow != null:
+		old_shadow.queue_free()
+
+
+func _apply_minimal_crimson_style(control: Control) -> void:
+	if control.has_meta("preserve_authored_ui_style"):
 		return
-	var shadow := Panel.new()
-	shadow.name = "BiomechShadow"
-	shadow.show_behind_parent = true
-	shadow.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	shadow.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	shadow.position += Vector2(3.0, 3.0)
+	if control is BaseButton and not control is TextureButton:
+		_style_text_button(control as BaseButton)
+	elif control is Label:
+		_style_label(control as Label)
+	elif control is RichTextLabel:
+		_style_rich_text(control as RichTextLabel)
+	elif control is TextEdit:
+		_style_text_edit(control as TextEdit)
+	elif control is HSlider or control is VSlider:
+		_style_slider(control as Range)
+	elif control is Panel or control is PanelContainer:
+		_style_panel(control)
+	elif control is TabBar:
+		_style_tab_bar(control as TabBar)
+	elif control is LineEdit:
+		_style_line_edit(control as LineEdit)
+	elif control is TextureRect:
+		_style_ui_texture(control as TextureRect)
+	if control is ColorRect and _is_modal_background(control):
+		(control as ColorRect).color = UI_VOID
+	elif control is ColorRect and "accent" in String(control.name).to_lower():
+		var accent := control as ColorRect
+		accent.color = Color(
+			CRIMSON_TEXT.r,
+			CRIMSON_TEXT.g,
+			CRIMSON_TEXT.b,
+			accent.color.a
+		)
+
+
+func _style_text_button(button: BaseButton) -> void:
+	if button is Button:
+		(button as Button).flat = true
+	for style_name in ["normal", "hover", "pressed", "disabled", "focus"]:
+		var empty := StyleBoxEmpty.new()
+		empty.content_margin_left = 8.0
+		empty.content_margin_top = 4.0
+		empty.content_margin_right = 8.0
+		empty.content_margin_bottom = 4.0
+		button.add_theme_stylebox_override(style_name, empty)
+	button.add_theme_color_override("font_color", CRIMSON_TEXT)
+	button.add_theme_color_override("font_focus_color", CRIMSON_TEXT)
+	button.add_theme_color_override("font_hover_color", CRIMSON_HOVER)
+	button.add_theme_color_override("font_pressed_color", CRIMSON_PRESSED)
+	button.add_theme_color_override("font_disabled_color", CRIMSON_DISABLED)
+	button.add_theme_color_override("font_outline_color", Color.TRANSPARENT)
+	button.add_theme_color_override("font_shadow_color", Color.TRANSPARENT)
+	button.add_theme_color_override("icon_normal_color", CRIMSON_TEXT)
+	button.add_theme_color_override("icon_focus_color", CRIMSON_TEXT)
+	button.add_theme_color_override("icon_hover_color", CRIMSON_HOVER)
+	button.add_theme_color_override("icon_pressed_color", CRIMSON_PRESSED)
+	button.add_theme_color_override("icon_disabled_color", CRIMSON_DISABLED)
+	button.add_theme_constant_override("outline_size", 0)
+	button.add_theme_constant_override("shadow_offset_x", 0)
+	button.add_theme_constant_override("shadow_offset_y", 0)
+
+
+func _style_label(label: Label) -> void:
+	label.add_theme_color_override(
+		"font_color",
+		CRIMSON_HOVER if _is_heading_label(label) else CRIMSON_BODY
+	)
+	label.add_theme_color_override("font_outline_color", Color.TRANSPARENT)
+	label.add_theme_color_override("font_shadow_color", Color.TRANSPARENT)
+	label.add_theme_constant_override("outline_size", 0)
+	label.add_theme_constant_override("shadow_offset_x", 0)
+	label.add_theme_constant_override("shadow_offset_y", 0)
+
+
+func _style_rich_text(label: RichTextLabel) -> void:
+	label.add_theme_color_override("default_color", CRIMSON_BODY)
+	label.add_theme_color_override("font_outline_color", Color.TRANSPARENT)
+	label.add_theme_color_override("font_shadow_color", Color.TRANSPARENT)
+	label.add_theme_constant_override("outline_size", 0)
+	label.add_theme_constant_override("shadow_offset_x", 0)
+	label.add_theme_constant_override("shadow_offset_y", 0)
+
+
+func _style_panel(control: Control) -> void:
+	if control is PanelContainer and control.name == &"PortraitFrame":
+		control.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
+		return
 	var style := StyleBoxFlat.new()
-	style.bg_color = Color("09010d")
-	style.set_corner_radius_all(0)
-	style.shadow_color = Color("09010d")
-	style.shadow_size = 0
 	style.anti_aliasing = false
-	shadow.add_theme_stylebox_override("panel", style)
-	button.add_child(shadow)
+	style.set_corner_radius_all(0)
+	style.shadow_size = 0
+	if String(control.name).contains("SelectionBorder"):
+		style.bg_color = Color.TRANSPARENT
+		style.border_color = CRIMSON_HOVER
+		style.set_border_width_all(2)
+	else:
+		style.bg_color = UI_VOID
+		style.border_color = Color.TRANSPARENT
+		style.set_border_width_all(0)
+	control.add_theme_stylebox_override("panel", style)
+
+
+func _style_tab_bar(tab_bar: TabBar) -> void:
+	for style_name in [
+		"tab_unselected",
+		"tab_hovered",
+		"tab_selected",
+		"tab_disabled",
+		"tab_focus",
+	]:
+		tab_bar.add_theme_stylebox_override(style_name, StyleBoxEmpty.new())
+	tab_bar.add_theme_color_override("font_unselected_color", CRIMSON_TEXT)
+	tab_bar.add_theme_color_override("font_hovered_color", CRIMSON_HOVER)
+	tab_bar.add_theme_color_override("font_selected_color", CRIMSON_HOVER)
+	tab_bar.add_theme_color_override("font_disabled_color", CRIMSON_DISABLED)
+	tab_bar.add_theme_color_override("font_outline_color", Color.TRANSPARENT)
+	tab_bar.add_theme_constant_override("outline_size", 0)
+
+
+func _style_line_edit(line_edit: LineEdit) -> void:
+	for style_name in ["normal", "focus", "read_only"]:
+		var style := StyleBoxFlat.new()
+		style.bg_color = UI_VOID
+		style.border_color = CRIMSON_TEXT
+		style.border_width_bottom = 1
+		style.anti_aliasing = false
+		line_edit.add_theme_stylebox_override(style_name, style)
+	line_edit.add_theme_color_override("font_color", CRIMSON_TEXT)
+	line_edit.add_theme_color_override("font_selected_color", CRIMSON_HOVER)
+	line_edit.add_theme_color_override("caret_color", CRIMSON_HOVER)
+	line_edit.add_theme_color_override("font_outline_color", Color.TRANSPARENT)
+	line_edit.add_theme_constant_override("outline_size", 0)
+
+
+func _style_text_edit(text_edit: TextEdit) -> void:
+	text_edit.add_theme_color_override("font_color", CRIMSON_TEXT)
+	text_edit.add_theme_color_override("font_selected_color", CRIMSON_HOVER)
+	text_edit.add_theme_color_override("caret_color", CRIMSON_HOVER)
+	text_edit.add_theme_color_override("font_outline_color", Color.TRANSPARENT)
+	text_edit.add_theme_constant_override("outline_size", 0)
+
+
+func _style_slider(slider: Range) -> void:
+	var track := StyleBoxFlat.new()
+	track.bg_color = Color("17001d")
+	track.border_color = CRIMSON_PRESSED
+	track.border_width_top = 1
+	track.border_width_bottom = 1
+	track.anti_aliasing = false
+	var filled := StyleBoxFlat.new()
+	filled.bg_color = CRIMSON_TEXT
+	filled.border_color = CRIMSON_TEXT
+	filled.anti_aliasing = false
+	slider.add_theme_stylebox_override("slider", track)
+	slider.add_theme_stylebox_override("grabber_area", filled)
+	slider.add_theme_stylebox_override("grabber_area_highlight", filled)
+	# Slider grabbers are theme icons rather than styleboxes; a direct canvas
+	# tint keeps those authored pixels in the same red family without a shader.
+	(slider as CanvasItem).self_modulate = CRIMSON_HOVER
+
+
+func _style_ui_texture(texture_rect: TextureRect) -> void:
+	var texture_name := String(texture_rect.name).to_lower()
+	if "icon" not in texture_name and "portrait" not in texture_name:
+		return
+	texture_rect.self_modulate = CRIMSON_BODY
+
+
+func _is_heading_label(label: Label) -> bool:
+	var label_name := String(label.name).to_lower()
+	return (
+		"title" in label_name
+		or "header" in label_name
+		or "warning" in label_name
+		or "death" in label_name
+		or label.get_theme_font_size("font_size") >= 24
+	)
+
+
+func _is_modal_background(control: Control) -> bool:
+	var background_name := String(control.name).to_lower()
+	if background_name not in ["background", "overlay", "dim", "shade"]:
+		return false
+	var ancestor: Node = control
+	while ancestor != null:
+		if ancestor.name in MODAL_NAMES:
+			return true
+		ancestor = ancestor.get_parent()
+	return false
 
 
 func _constrain_menu_button(button: BaseButton) -> void:

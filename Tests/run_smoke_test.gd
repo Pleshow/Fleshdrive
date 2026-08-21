@@ -169,6 +169,14 @@ func _run() -> void:
 		and hud.biomass_value_label.text == "25 / 100",
 		"Red HP and blue XP bars display independent exact values"
 	)
+	hud.update_biomass_bar(1364.0, 115.0, 7)
+	_check(
+		is_equal_approx(hud.biomass_bar.value, 115.0)
+		and is_equal_approx(hud.biomass_bar.max_value, 115.0)
+		and hud.biomass_value_label.text == "115 / 115"
+		and hud.level_label.text == "LV 7",
+		"Banked XP is retained internally while the HUD shows one coherent level threshold"
+	)
 	var health_fill := (
 		hud.health_bar.get_theme_stylebox("fill") as StyleBoxFlat
 	)
@@ -309,7 +317,7 @@ func _run() -> void:
 		and player.movement_dust.color_ramp != null
 		and player.landing_dust.color_ramp != null
 		and player.movement_dust.initial_velocity_max <= 20.0,
-		"Dust emitters use subtle gray motes instead of brown debris"
+		"Dust emitters use readable cool-blue motes instead of dark debris"
 	)
 	player.input_direction = Vector2.ZERO
 	player.last_direction = Vector2.DOWN
@@ -565,6 +573,64 @@ func _run() -> void:
 			spawner._is_offscreen(spawn_position, camera_center),
 			"Generated enemy spawn is offscreen"
 		)
+
+	spawner.spawn_timer.stop()
+	spawner.maximum_enemies = 200
+	spawner.director_threat_budget = 500.0
+	spawner.director_pressure = 1.0
+	var telegraphed_spawn_position: Vector2 = spawner._find_spawn_position()
+	var enemies_before_warning := get_nodes_in_group("enemies").size()
+	_check(
+		is_equal_approx(spawner.spawn_warning_duration, 1.0)
+		and spawner._schedule_enemy_spawn(
+			spawner.crawler_scene,
+			&"crawler",
+			telegraphed_spawn_position,
+			false
+		),
+		"Enemy spawns reserve a one-second ground warning"
+	)
+	var spawn_warning: Node2D = null
+	for warning_candidate in get_nodes_in_group("spawn_warnings"):
+		if (
+			warning_candidate is Node2D
+			and (warning_candidate as Node2D).global_position.distance_to(
+				telegraphed_spawn_position
+			) < 1.0
+		):
+			spawn_warning = warning_candidate as Node2D
+			break
+	var warning_core := (
+		spawn_warning.get_child(2) as Line2D if spawn_warning != null else null
+	)
+	_check(
+		spawn_warning != null
+		and spawn_warning.global_position.distance_to(telegraphed_spawn_position) < 1.0
+		and spawn_warning.get_child_count() == 4
+		and warning_core != null
+		and warning_core.default_color == Color("ff0546")
+		and warning_core.material is CanvasItemMaterial
+		and (warning_core.material as CanvasItemMaterial).light_mode
+		== CanvasItemMaterial.LIGHT_MODE_UNSHADED
+		and get_nodes_in_group("enemies").size() == enemies_before_warning,
+		"The large red X is unshaded and appears before the enemy exists"
+	)
+	await create_timer(1.12, false).timeout
+	await process_frame
+	var warning_still_present := false
+	for warning_candidate in get_nodes_in_group("spawn_warnings"):
+		if (
+			warning_candidate is Node2D
+			and (warning_candidate as Node2D).global_position.distance_to(
+				telegraphed_spawn_position
+			) < 1.0
+		):
+			warning_still_present = true
+	_check(
+		not warning_still_present
+		and get_nodes_in_group("enemies").size() >= enemies_before_warning + 1,
+		"The red X disappears exactly when its enemy spawns"
+	)
 
 	run_manager.set_manual_pause(true)
 	_check(paused, "Manual pause pauses the scene tree")
@@ -909,6 +975,12 @@ func _run() -> void:
 		"Pending organ shelf survives closing the surgery screen"
 	)
 
+	var lethal_vfx := root.get_node("VisualEffects").call(
+		"play",
+		&"electric_impact",
+		player.global_position,
+		1.0
+	) as AnimatedSprite2D
 	player.take_damage(player.max_health)
 	_check(
 		player.visual_action == &"death"
@@ -920,6 +992,11 @@ func _run() -> void:
 	_check(
 		run_manager.state == RunManager.RunState.DYING,
 		"Player death enters the staged death presentation"
+	)
+	_check(
+		lethal_vfx != null
+		and lethal_vfx.process_mode == Node.PROCESS_MODE_ALWAYS,
+		"The killing hit VFX keeps animating through the paused death transition"
 	)
 	_check(
 		hud.get_node("DeathMessage").visible
@@ -970,6 +1047,13 @@ func _run() -> void:
 	)
 	var mimichu_dialogue_frame := (
 		bio_sequence.dialogue_panel.get_node("DialogueFrame") as Control
+	)
+	var mimichu_portrait_style := (
+		(mimichu_portrait_panel as PanelContainer).get_theme_stylebox("panel")
+	)
+	_check(
+		mimichu_portrait_style is StyleBoxEmpty,
+		"Rebirth Mimichu portrait has no visible frame"
 	)
 	_check(
 		rebirth_stats_panel.position.x < 40.0

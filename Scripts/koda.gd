@@ -106,11 +106,12 @@ signal upgrade_levels_changed(upgrade_levels: Dictionary)
 @export var attack_damage: float = 15.0
 @export var attack_interval: float = 0.8
 @export var attack_range: float = 220.0
-@export var manual_target_radius: float = 70.0
+@export var manual_target_radius: float = 90.0
 @export var chain_range: float = 150.0
 @export var chain_damage_multiplier: float = 0.60
 @export var chain_unlocked: bool = false
-@export var semi_auto_target_radius: float = 140.0
+@export var semi_auto_target_radius: float = 165.0
+@export var attack_input_buffer: float = 0.20
 
 
 @export_category("Health")
@@ -130,6 +131,7 @@ signal upgrade_levels_changed(upgrade_levels: Dictionary)
 @onready var attack_area: Area2D = $AttackRange
 @onready var attack_range_shape: CollisionShape2D = $AttackRange/CollisionShape2D
 @onready var attack_timer: Timer = $AttackTimer
+@onready var attack_cooldown_bar: ProgressBar = $AttackCooldownBar
 @onready var lightning_line: Line2D = $LightningLine
 @onready var invulnerability_timer: Timer = $InvulnerabilityTimer
 @onready var attack_range_indicator: Line2D = $AttackRangeIndicator
@@ -161,6 +163,7 @@ var biomass_required: float
 var current_level: int = 1
 var total_biomass_collected: float = 0.0
 var level_up_pending: bool = false
+var attack_buffer_remaining: float = 0.0
 var displayed_attack_range: float = -1.0
 var upgrade_levels: Dictionary = {}
 var selected_upgrade_history: Dictionary = {}
@@ -358,6 +361,9 @@ func _physics_process(delta: float) -> void:
 		level_pacing_clock += delta
 	read_movement_input()
 	dash_buffer_remaining = maxf(dash_buffer_remaining - delta, 0.0)
+	attack_buffer_remaining = maxf(attack_buffer_remaining - delta, 0.0)
+	if Input.is_action_just_pressed("attack"):
+		attack_buffer_remaining = attack_input_buffer
 	if Input.is_action_just_pressed("dash"):
 		dash_buffer_remaining = dash_input_buffer
 
@@ -373,6 +379,7 @@ func _physics_process(delta: float) -> void:
 	update_ground_shadow()
 	update_movement_dust()
 	update_attack()
+	_update_attack_cooldown_bar()
 	if current_biomass >= biomass_required and not level_up_pending:
 		_try_trigger_level_up()
 
@@ -912,6 +919,7 @@ func die() -> void:
 		return
 
 	is_dead = true
+	attack_cooldown_bar.hide()
 	velocity = Vector2.ZERO
 	set_physics_process(false)
 
@@ -941,11 +949,12 @@ func update_attack() -> void:
 
 
 func try_manual_attack() -> void:
-	if not Input.is_action_just_pressed("attack"):
+	if attack_buffer_remaining <= 0.0:
 		return
 	# Right mouse confirms a manually aimed Magma Spear. Do not also emit
 	# Koda's normal attack from the same click.
 	if weapon_system != null and weapon_system.magma_aim_active:
+		attack_buffer_remaining = 0.0
 		return
 
 	if not attack_timer.is_stopped():
@@ -957,6 +966,7 @@ func try_manual_attack() -> void:
 		return
 
 	perform_attack(target)
+	attack_buffer_remaining = 0.0
 	attack_timer.start()
 
 
@@ -1271,30 +1281,26 @@ func add_biomass(amount: float) -> void:
 	current_biomass += gained_biomass
 	total_biomass_collected += gained_biomass
 
-	_try_trigger_level_up()
-
-	biomass_changed.emit(
-		current_biomass,
-		biomass_required,
-		current_level
-	)
+	if not _try_trigger_level_up():
+		_emit_biomass_changed()
 
 
-func _try_trigger_level_up() -> void:
+func _try_trigger_level_up() -> bool:
 	if level_up_pending:
-		return
+		return false
 
 	if current_biomass < biomass_required:
-		return
+		return false
 	if (
 		get_level_pacing_elapsed()
 		< float(get_level_pacing_contract()["minimum"])
 	):
-		return
+		return false
 
 	current_biomass -= biomass_required
 	level_up_pending = true
 	level_up()
+	return true
 
 
 func confirm_level_up() -> void:
@@ -1303,11 +1309,7 @@ func confirm_level_up() -> void:
 
 	level_up_pending = false
 
-	biomass_changed.emit(
-		current_biomass,
-		biomass_required,
-		current_level
-	)
+	_emit_biomass_changed()
 
 	if current_biomass >= biomass_required:
 		_queue_followup_level_up()
@@ -1336,7 +1338,18 @@ func level_up() -> void:
 		biomass_required * biomass_requirement_multiplier
 	)
 
+	# Keep the HUD correct for every progression route, including pacing-gate
+	# and overflow level-ups that are not triggered directly by a pickup.
+	_emit_biomass_changed()
 	level_up_reached.emit(current_level)
+
+
+func _emit_biomass_changed() -> void:
+	biomass_changed.emit(
+		current_biomass,
+		biomass_required,
+		current_level
+	)
 
 
 
@@ -1832,7 +1845,7 @@ func update_attack_range_indicator() -> void:
 	attack_range_indicator.visible = false
 
 func try_semi_auto_attack() -> void:
-	if not Input.is_action_pressed("attack"):
+	if not Input.is_action_pressed("attack") and attack_buffer_remaining <= 0.0:
 		return
 
 	if not attack_timer.is_stopped():
@@ -1846,7 +1859,24 @@ func try_semi_auto_attack() -> void:
 		return
 
 	perform_attack(target)
+	attack_buffer_remaining = 0.0
 	attack_timer.start()
+
+
+func _update_attack_cooldown_bar() -> void:
+	if attack_cooldown_bar == null:
+		return
+	attack_cooldown_bar.visible = not is_dead and attack_mode != AttackMode.AUTO
+	if not attack_cooldown_bar.visible:
+		return
+	var cooldown := maxf(attack_timer.wait_time, 0.01)
+	var progress := (
+		1.0
+		if attack_timer.is_stopped()
+		else clampf(1.0 - attack_timer.time_left / cooldown, 0.0, 1.0)
+	)
+	attack_cooldown_bar.value = progress
+	attack_cooldown_bar.modulate.a = 0.58 if progress >= 0.999 else 0.92
 
 func find_target_near_mouse(
 	target_radius: float
@@ -1914,6 +1944,8 @@ func unlock_auto_attack() -> void:
 	# Autonomic Reflex is a complete replacement organ. It can be installed
 	# after the Reflex Cortex has been moved back to the pending shelf.
 	attack_mode = AttackMode.AUTO
+	attack_buffer_remaining = 0.0
+	attack_cooldown_bar.hide()
 	attack_range_indicator.hide()
 
 

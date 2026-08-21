@@ -58,12 +58,28 @@ func _run() -> void:
 	player.apply_upgrade(&"star_collapse")
 	player.apply_upgrade(&"chain_reactor")
 	player.apply_upgrade(&"polarity_shift")
+	var camera := player.get_node("Camera2D") as CameraFeedback
+	camera.trauma = 0.0
+	system._damage_enemy(
+		enemy,
+		8.0,
+		true,
+		&"ball_lightning",
+		DamageEvent.HitRole.SECONDARY,
+		false
+	)
+	_check(
+		is_zero_approx(camera.trauma),
+		"Ball Lightning damage does not add screen shake"
+	)
 	system.orange_tempest.update(0.05)
 	_check(
 		system.orange_tempest.orbs.size() == 1
 		and String((system.orange_tempest.orbs[0]["visual"] as Node).name)
 		== "BallLightning"
 		and (system.orange_tempest.orbs[0]["visual"] as Node).get_node_or_null("PixelOrb") is AnimatedSprite2D
+		and (system.orange_tempest.orbs[0]["visual"] as Node).get_node_or_null("ElectricGlow") is Line2D
+		and (system.orange_tempest.orbs[0]["visual"] as Node).get_node_or_null("ElectricOutline") is Line2D
 		and system.orange_tempest.MAX_ORBS == 12,
 		"Ball Lightning creates a capped, crisp animated blue pixel orb"
 	)

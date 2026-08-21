@@ -124,17 +124,18 @@ func _run() -> void:
 	enemies.add_child(charger)
 	charger.global_position = player.global_position + Vector2(400.0, 80.0)
 	var charger_sprite := charger.get_node("AnimatedSprite2D") as AnimatedSprite2D
-	var charger_frame := (
-		charger_sprite.sprite_frames.get_frame_texture(&"normal", 0)
-		as AtlasTexture
+	var charger_frame := charger_sprite.sprite_frames.get_frame_texture(
+		&"normal",
+		0
 	)
 	_check(
-		charger_frame.atlas.resource_path
-		== "res://Assets/enemies/charger/charger_pixel_atlas.png"
-		and charger_sprite.sprite_frames.get_frame_count(&"normal") == 4
-		and charger_sprite.sprite_frames.get_frame_count(&"windup") == 4
-		and charger_sprite.sprite_frames.get_frame_count(&"charge") == 4,
-		"Charger uses the new animated mutant-animal pixel atlas"
+		charger_frame.resource_path
+		== "res://Assets/enemies/charger/charger v2/run/east/frame_000.png"
+		and charger_sprite.sprite_frames.get_frame_count(&"normal") == 8
+		and charger_sprite.sprite_frames.get_frame_count(&"windup") == 1
+		and charger_sprite.sprite_frames.get_frame_count(&"charge") == 8
+		and charger_sprite.sprite_frames.get_frame_count(&"death") == 9,
+		"Charger uses the complete v2 run, windup, charge and death set"
 	)
 	_check(
 		charger.get_node_or_null("GroundShadow") != null,

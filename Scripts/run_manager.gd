@@ -660,6 +660,13 @@ func _on_player_died() -> void:
 		if enemy_spawner.has_method("stop_spawning"):
 			enemy_spawner.stop_spawning()
 
+	var visual_effects := get_tree().root.get_node_or_null("VisualEffects")
+	if (
+		visual_effects != null
+		and visual_effects.has_method("finish_active_effects_during_pause")
+	):
+		visual_effects.call("finish_active_effects_during_pause")
+
 	_set_state(RunState.DYING)
 	var lifecycle := get_tree().root.get_node_or_null("SceneLifecycle")
 	var transition_token := -1

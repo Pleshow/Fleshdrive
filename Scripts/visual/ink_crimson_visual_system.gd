@@ -9,12 +9,14 @@ var enabled: bool = false
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	layer = 4095
+	# Quantize the rendered world, never the interface. Gameplay post-process is
+	# on layer 100, transient arena banners start at 109 and the HUD starts at
+	# 110. Keeping this filter between them preserves the Ink Crimson world
+	# without recoloring or fringing any text or controls.
+	layer = 105
 	_create_screen_filter()
 
 	screen_filter.hide()
-
-	get_tree().node_added.connect(_on_node_added)
 
 
 func set_enabled(value: bool) -> void:
@@ -36,32 +38,3 @@ func _create_screen_filter() -> void:
 	screen_filter.material = shader_material
 
 	add_child(screen_filter)
-
-
-func _on_node_added(node: Node) -> void:
-	if not enabled:
-		return
-
-	if node == self or node == screen_filter:
-		return
-
-	call_deferred("_restyle_branch", node)
-
-
-func _restyle_branch(candidate: Variant) -> void:
-	if not enabled:
-		return
-
-	if not is_instance_valid(candidate) or not candidate is Node:
-		return
-
-	var node := candidate as Node
-
-	if node == self or node == screen_filter or is_ancestor_of(node):
-		return
-
-	if node is Control:
-		Palette.quantize_control_overrides(node as Control)
-
-	for child in node.get_children():
-		_restyle_branch(child)
