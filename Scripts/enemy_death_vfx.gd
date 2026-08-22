@@ -2,8 +2,8 @@ class_name EnemyDeathVFX
 extends Node2D
 
 
-const COMBAT_TEXTURE := preload(
-	"res://Assets/vfx/fleshdrive/enemy_combat_vfx_atlas.png"
+const ORGANIC_BURST_TEXTURE := preload(
+	"res://Assets/vfx/licensed/pixel_juice/organic_burst.png"
 )
 
 @onready var animation: AnimatedSprite2D = $AnimatedSprite2D
@@ -18,14 +18,18 @@ func _ready() -> void:
 	frames.add_animation(&"death")
 	frames.set_animation_loop(&"death", false)
 	frames.set_animation_speed(&"death", 18.0)
-	for frame_index in range(4):
+	# The former atlas row began with a full Charger silhouette. Crawlers using
+	# this scene therefore flashed one or two blue "ghost Chargers" when the
+	# global palette shader quantized that frame. Use the dedicated organic
+	# burst sheet so a death effect never contains another enemy's silhouette.
+	for frame_index in range(12):
 		var frame := AtlasTexture.new()
-		frame.atlas = COMBAT_TEXTURE
+		frame.atlas = ORGANIC_BURST_TEXTURE
 		frame.region = Rect2(
-			frame_index * 256,
-			2 * 256,
-			256,
-			256
+			(frame_index % 4) * 64,
+			int(frame_index / 4.0) * 64,
+			64,
+			64
 		)
 		frames.add_frame(&"death", frame)
 	animation.sprite_frames = frames

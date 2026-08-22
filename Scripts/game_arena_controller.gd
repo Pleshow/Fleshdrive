@@ -2,14 +2,12 @@ class_name GameArenaController
 extends Node2D
 
 
-const ISOMETRIC_ARENA_SCENE: PackedScene = preload(
-	"res://Scenes/isometric_slime_arena.tscn"
-)
-const ISOMETRIC_ARENA_ID: StringName = &"sludgeworks"
 const DUSK_GARDEN_SCENE: PackedScene = preload(
 	"res://Scenes/dusk_garden_arena.tscn"
 )
-const DUSK_GARDEN_ARENA_ID: StringName = &"dusk_garden"
+const BalanceDebugPanelScript := preload(
+	"res://Scripts/debug/balance_debug_panel.gd"
+)
 
 
 func _ready() -> void:
@@ -17,35 +15,9 @@ func _ready() -> void:
 	if ink_system != null:
 		ink_system.set_enabled(true)
 
-	var flow := get_tree().root.get_node_or_null("GameFlow")
-	var selected_arena := &"bio_lab"
-
-	if flow != null:
-		selected_arena = StringName(flow.get("selected_arena_id"))
-
-	match selected_arena:
-		ISOMETRIC_ARENA_ID:
-			_activate_isometric_arena()
-		DUSK_GARDEN_ARENA_ID:
-			_activate_dusk_garden_arena()
-
-
-func _activate_isometric_arena() -> void:
-	var arena := ISOMETRIC_ARENA_SCENE.instantiate() as IsometricSlimeArena
-	if arena == null:
-		push_error("GameArenaController: isometric arena failed to instantiate.")
-		return
-	_replace_arena(arena)
-	_configure_arena_runtime(arena)
-	var darkness := get_node_or_null("WorldDarkness") as CanvasModulate
-	if darkness != null:
-		darkness.color = Color(0.105, 0.155, 0.125, 1.0)
-	_show_arena_identification(
-		"SLUDGEWORKS // BASIN 07",
-		"GRAY DECK: WALKABLE   //   GREEN RUNOFF: RESTRICTED",
-		Color(0.20, 1.0, 0.28),
-		Color(0.56, 1.0, 0.62)
-	)
+	_activate_dusk_garden_arena()
+	if OS.is_debug_build():
+		add_child(BalanceDebugPanelScript.new())
 
 
 func _activate_dusk_garden_arena() -> void:

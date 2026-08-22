@@ -109,9 +109,8 @@ func _run() -> void:
 		bolt != null
 		and bolt.z_index >= 70
 		and bolt.sprite_frames.get_frame_count(&"play") == 4
-		and bolt.material is ShaderMaterial
-		and bool((bolt.material as ShaderMaterial).get_shader_parameter("force_electric_blue")),
-		"Autoattack uses the licensed four-frame blue lightning above enemies"
+		and bolt.visible,
+		"Autoattack uses the licensed four-frame lightning above enemies"
 	)
 	var player_bolt: AnimatedSprite2D = null
 	for effect in thunder_effects:

@@ -6,11 +6,7 @@ signal overlay_changed(previous: StringName, current: StringName)
 signal input_device_changed(device: StringName)
 
 
-const AVAILABLE_ARENAS: Array[StringName] = [
-	&"bio_lab",
-	&"sludgeworks",
-	&"dusk_garden",
-]
+const PUBLIC_ARENA_ID: StringName = &"dusk_garden"
 
 const PAUSING_STATES: Array[StringName] = [
 	&"OPERATION", &"ONBOARDING", &"PAUSED", &"LEVEL_UP", &"BOSS_INTRO",
@@ -39,7 +35,7 @@ var last_input_device: StringName = &"keyboard_mouse"
 var _input_guard_until_msec: int = 0
 var _scene_instance_id: int = 0
 var _transition_in_progress: bool = false
-var selected_arena_id: StringName = &"bio_lab"
+var selected_arena_id: StringName = PUBLIC_ARENA_ID
 
 
 func _ready() -> void:
@@ -142,10 +138,13 @@ func prepare_scene_change() -> void:
 
 
 func set_selected_arena(arena_id: StringName) -> bool:
-	if arena_id not in AVAILABLE_ARENAS:
-		push_warning("GameFlow rejected unknown arena: %s" % arena_id)
+	if arena_id != PUBLIC_ARENA_ID:
+		push_warning(
+			"GameFlow rejected non-public arena: %s; Dusk Garden is scope-locked."
+			% arena_id
+		)
 		return false
-	selected_arena_id = arena_id
+	selected_arena_id = PUBLIC_ARENA_ID
 	return true
 
 

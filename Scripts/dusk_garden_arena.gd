@@ -11,6 +11,12 @@ const CAMERA_BOUNDS := Rect2(0.0, 0.0, 2560.0, 1440.0)
 const SAFE_CENTER := Vector2(1280.0, 720.0)
 const WALL_THICKNESS := 48.0
 const ACTOR_CONSTRAINT_INTERVAL := 0.08
+const SOUTH_WALL_SOURCE_Y := 1024
+const SOUTH_WALL_HEIGHT := 96
+const SOUTH_WALL_UNDERLAY_SOURCE_Y := 944
+const SOUTH_WALL_UNDERLAY_HEIGHT := 80
+const SOUTH_WALL_SEGMENT_WIDTH := 64
+const SOUTH_WALL_OCCLUDED_ALPHA := 0.58
 const OCCLUDING_PROP_DATA := [
 	{
 		"name": "DryGrassSmall01",
@@ -70,6 +76,7 @@ const OCCLUDING_PROP_DATA := [
 const OCCLUDING_PROP_ROOT := "res://Assets/environment/dusk_garden_props/"
 
 var constraint_time := 0.0
+var south_wall_segments: Array[Sprite2D] = []
 
 
 func _ready() -> void:
@@ -77,6 +84,8 @@ func _ready() -> void:
 	y_sort_enabled = true
 	_create_backdrop()
 	_create_map_visual()
+	_create_south_wall_underlay()
+	_create_south_wall_foreground()
 	_create_occluding_props()
 	_create_pixel_motes()
 	_create_boundary_collision()
@@ -87,6 +96,7 @@ func _process(delta: float) -> void:
 	if constraint_time >= ACTOR_CONSTRAINT_INTERVAL:
 		constraint_time = 0.0
 		_enforce_walkable_actors()
+		_update_south_wall_occlusion()
 
 
 func _create_backdrop() -> void:
@@ -104,7 +114,14 @@ func _create_backdrop() -> void:
 func _create_map_visual() -> void:
 	var sprite := Sprite2D.new()
 	sprite.name = "MapComposite"
+	# The south wall must be able to render in front of actors and fade locally.
+	# Keep it out of the always-behind map composite; it is rebuilt in small
+	# foreground segments below.
 	sprite.texture = MAP_TEXTURE
+	sprite.region_enabled = true
+	sprite.region_rect = Rect2(
+		0.0, 0.0, MAP_TEXTURE.get_width(), SOUTH_WALL_SOURCE_Y
+	)
 	sprite.centered = false
 	sprite.position = MAP_OFFSET
 	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -113,6 +130,94 @@ func _create_map_visual() -> void:
 	unshaded.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
 	sprite.material = unshaded
 	add_child(sprite)
+
+
+func _create_south_wall_underlay() -> void:
+	# The foreground wall fades to reveal actors. A continuation of the garden
+	# floor must sit behind them; otherwise the NightBackdrop shows through as a
+	# hard black rectangle matching the faded segment.
+	var floor_region := AtlasTexture.new()
+	floor_region.atlas = MAP_TEXTURE
+	floor_region.region = Rect2(
+		0.0,
+		SOUTH_WALL_UNDERLAY_SOURCE_Y,
+		MAP_TEXTURE.get_width(),
+		SOUTH_WALL_UNDERLAY_HEIGHT
+	)
+	var underlay := Sprite2D.new()
+	underlay.name = "SouthWallFloorUnderlay"
+	underlay.texture = floor_region
+	underlay.centered = false
+	underlay.position = MAP_OFFSET + Vector2(0.0, SOUTH_WALL_SOURCE_Y)
+	underlay.scale.y = float(SOUTH_WALL_HEIGHT) / float(SOUTH_WALL_UNDERLAY_HEIGHT)
+	underlay.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	underlay.z_index = -99
+	var unshaded := CanvasItemMaterial.new()
+	unshaded.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+	underlay.material = unshaded
+	add_child(underlay)
+
+
+func _create_south_wall_foreground() -> void:
+	var foreground := Node2D.new()
+	foreground.name = "SouthWallForeground"
+	add_child(foreground)
+	var map_width := MAP_TEXTURE.get_width()
+	for source_x in range(0, map_width, SOUTH_WALL_SEGMENT_WIDTH):
+		var segment_width := mini(
+			SOUTH_WALL_SEGMENT_WIDTH,
+			map_width - source_x
+		)
+		var region := AtlasTexture.new()
+		region.atlas = MAP_TEXTURE
+		region.region = Rect2(
+			source_x,
+			SOUTH_WALL_SOURCE_Y,
+			segment_width,
+			SOUTH_WALL_HEIGHT
+		)
+		var segment := Sprite2D.new()
+		segment.name = "SouthWallSegment%02d" % south_wall_segments.size()
+		segment.texture = region
+		segment.centered = false
+		segment.position = MAP_OFFSET + Vector2(source_x, SOUTH_WALL_SOURCE_Y)
+		segment.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		segment.z_as_relative = false
+		segment.z_index = 8
+		var unshaded := CanvasItemMaterial.new()
+		unshaded.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+		segment.material = unshaded
+		foreground.add_child(segment)
+		south_wall_segments.append(segment)
+
+
+func _update_south_wall_occlusion() -> void:
+	var actors: Array[Node2D] = []
+	var player := get_tree().get_first_node_in_group("player") as Node2D
+	if is_instance_valid(player):
+		actors.append(player)
+	for enemy_node in get_tree().get_nodes_in_group("enemies"):
+		var enemy := enemy_node as Node2D
+		if is_instance_valid(enemy) and enemy.get("is_dead") != true:
+			actors.append(enemy)
+	var wall_top := MAP_OFFSET.y + SOUTH_WALL_SOURCE_Y
+	for segment in south_wall_segments:
+		if not is_instance_valid(segment):
+			continue
+		var segment_start := segment.position.x
+		var segment_end := segment_start + float(SOUTH_WALL_SEGMENT_WIDTH)
+		var occupied := false
+		for actor in actors:
+			if (
+				actor.global_position.y >= wall_top - 34.0
+				and actor.global_position.x >= segment_start - 36.0
+				and actor.global_position.x <= segment_end + 36.0
+			):
+				occupied = true
+				break
+		segment.modulate.a = (
+			SOUTH_WALL_OCCLUDED_ALPHA if occupied else 1.0
+		)
 
 
 func _create_occluding_props() -> void:

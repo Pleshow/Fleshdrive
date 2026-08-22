@@ -7,6 +7,10 @@ extends Resource
 	&"tail_lash": {"cooldown": 2.80, "step": -0.16, "minimum": 2.10, "damage": 18.0, "damage_step": 6.0, "knockback": 175.0, "knockback_step": 20.0},
 	&"arc_spear": {"cooldown": 2.35, "step": -0.13, "minimum": 1.80, "damage": 22.0, "damage_step": 7.0},
 	&"bone_shard_volley": {"cooldown": 2.10, "step": -0.12, "minimum": 1.60, "damage": 12.0, "damage_step": 4.0},
+	&"conductive_fur": {"cooldown": 1.15, "step": -0.05, "minimum": 0.82, "damage": 9.0, "damage_step": 2.5},
+	&"shock_ram": {"cooldown": 2.20, "step": -0.10, "minimum": 1.55, "damage": 16.0, "damage_step": 6.0},
+	&"static_claws": {"cooldown": 2.00, "step": -0.08, "minimum": 1.40, "damage": 18.0, "damage_step": 5.0},
+	&"ball_lightning": {"cooldown": 1.40, "step": -0.08, "minimum": 0.72, "damage": 8.0, "damage_step": 2.0},
 	&"cinder_volley": {"cooldown": 1.80, "step": -0.10, "minimum": 1.32, "damage": 5.0, "damage_step": 2.0},
 	&"inferno_ring": {"cooldown": 3.20, "step": -0.16, "minimum": 2.35, "damage": 7.0, "damage_step": 3.0},
 	&"magma_spear": {"cooldown": 2.70, "step": -0.13, "minimum": 2.00, "damage": 18.0, "damage_step": 6.0},
@@ -68,10 +72,10 @@ extends Resource
 	"maximum_charger_ratio": 0.16,
 
 	"threat_costs": {
-		"crawler": 0.00,
-		"spitter": 1.60,
-		"charger": 2.60,
-		"elite_bonus": 1.50,
+		"crawler": 1.00,
+		"spitter": 2.00,
+		"charger": 3.00,
+		"elite": 7.00,
 	},
 }
 
@@ -81,7 +85,7 @@ extends Resource
 		"title": "AWAKENING",
 		"start": 0.0,
 		"end": 75.0,
-		"threat_budget": 36.0,
+		"threat_budget": 55.0,
 		"spawn_rate": 0.92,
 		"profiles": ["swarm", "mixed"],
 		"elite_cap": 0.0,
@@ -93,7 +97,7 @@ extends Resource
 		"title": "ADAPTATION",
 		"start": 75.0,
 		"end": 240.0,
-		"threat_budget": 46.0,
+		"threat_budget": 80.0,
 		"spawn_rate": 0.82,
 		"profiles": ["mixed", "crossfire"],
 		"elite_cap": 0.10,
@@ -105,7 +109,7 @@ extends Resource
 		"title": "SYSTEM STRESS",
 		"start": 240.0,
 		"end": 360.0,
-		"threat_budget": 58.0,
+		"threat_budget": 110.0,
 		"spawn_rate": 0.72,
 		"profiles": ["swarm", "assault", "mixed"],
 		"elite_cap": 0.13,
@@ -117,7 +121,7 @@ extends Resource
 		"title": "COMPOUND PRESSURE",
 		"start": 360.0,
 		"end": 540.0,
-		"threat_budget": 72.0,
+		"threat_budget": 145.0,
 		"spawn_rate": 0.64,
 		"profiles": ["crossfire", "assault", "mixed"],
 		"elite_cap": 0.17,
@@ -129,7 +133,7 @@ extends Resource
 		"title": "CONTAINMENT FAILURE",
 		"start": 540.0,
 		"end": 660.0,
-		"threat_budget": 88.0,
+		"threat_budget": 180.0,
 		"spawn_rate": 0.55,
 		"profiles": ["assault", "crossfire", "mixed"],
 		"elite_cap": 0.20,
@@ -200,16 +204,16 @@ extends Resource
 }
 
 @export var build_validation_profiles: Dictionary = {
-	&"electric": {
-		"simulation_effectiveness": 1.00,
-		"expected_style": "burst_and_chains",
+	&"chainstorm": {
+		"simulation_effectiveness": 1.30,
+		"expected_style": "shock_network_and_branching_chains",
 	},
-	&"fire": {
-		"simulation_effectiveness": 1.50,
-		"expected_style": "burn_and_area_denial",
+	&"thunder_ram": {
+		"simulation_effectiveness": 1.35,
+		"expected_style": "kinetic_charge_and_contact_burst",
 	},
-	&"telekinetic": {
+	&"orange_tempest": {
 		"simulation_effectiveness": 1.40,
-		"expected_style": "control_and_piercing",
+		"expected_style": "persistent_orbs_and_area_melt",
 	},
 }

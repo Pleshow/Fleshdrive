@@ -4,6 +4,9 @@ const CardSelectionControllerScript := preload("res://Scripts/controllers/card_s
 const OrganScreenControllerScript := preload("res://Scripts/controllers/organ_screen_controller.gd")
 const BossPresentationControllerScript := preload("res://Scripts/controllers/boss_presentation_controller.gd")
 const LabNoteIconScript := preload("res://Scripts/ui/lab_note_icon.gd")
+const VoltaicBalanceContractScript := preload(
+	"res://Scripts/balance/voltaic_balance_contract.gd"
+)
 
 const REFLEX_CORTEX_OFFER_LEVEL: int = 10
 const AUTO_ATTACK_OFFER_LEVEL: int = 15
@@ -300,6 +303,7 @@ var active_skill_key_label: Label
 var warden_dialogue_panel: PanelContainer
 var warden_dialogue_text: Label
 var run_reward_icon: TextureRect
+var run_end_statistics_panel: RunStatisticsPanel
 
 
 func _ready() -> void:
@@ -366,6 +370,10 @@ func _ready() -> void:
 	_install_magma_skill_hud()
 	_install_warden_dialogue()
 	_install_run_reward_icon()
+	run_end_statistics_panel = RunStatisticsPanel.new()
+	run_end_statistics_panel.name = "RunEndStatisticsPanel"
+	run_end_panel.add_child(run_end_statistics_panel)
+	run_end_statistics_panel.hide()
 
 	level_up_panel.hide()
 
@@ -1532,7 +1540,9 @@ func _accept_selected_upgrade() -> void:
 	if telemetry != null:
 		telemetry.call(
 			"record_card_selected",
-			selected_upgrade.upgrade_id
+			selected_upgrade.upgrade_id,
+			VoltaicBalanceContractScript.classify_upgrade(selected_upgrade),
+			VoltaicBalanceContractScript.archetype_for(selected_upgrade)
 		)
 
 	play_sound(&"card_select", -3.0, 0.025, &"UI")
@@ -1677,6 +1687,9 @@ func _reroll_upgrade_offers() -> void:
 			return
 		paid = true
 	card_selection.register_reroll(paid)
+	var telemetry := get_tree().root.get_node_or_null("RunTelemetry")
+	if telemetry != null:
+		telemetry.call("record_reroll", paid, cost if paid else 0)
 	_clear_upgrade_selection()
 	# The level-up state is already active, so rebuild only the offers.
 	displayed_upgrades.clear()
@@ -1689,6 +1702,9 @@ func _reroll_upgrade_offers() -> void:
 func _skip_upgrade_offer() -> void:
 	if card_selection.locked:
 		return
+	var telemetry := get_tree().root.get_node_or_null("RunTelemetry")
+	if telemetry != null:
+		telemetry.call("record_offer_skipped")
 	if player != null and player.get_upgrade_level(&"cannibal_enzyme") > 0:
 		player.add_biomass(maxf(2.0, ceilf(player.biomass_required * 0.04)))
 	level_up_panel.hide()
@@ -2425,7 +2441,24 @@ func show_run_end(
 			]
 		)
 	var source_lines: Array[String] = []
-	for source: Dictionary in run_details.get("damage_sources", []):
+	var damage_source_rows: Array[Dictionary] = []
+	var damage_source_data: Variant = run_details.get("damage_sources", {})
+	if damage_source_data is Dictionary:
+		for source_id in Dictionary(damage_source_data):
+			damage_source_rows.append({
+				"id": StringName(source_id),
+				"damage": float(Dictionary(damage_source_data)[source_id]),
+			})
+		damage_source_rows.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
+			return float(a["damage"]) > float(b["damage"])
+		)
+	else:
+		for source_value in Array(damage_source_data):
+			if source_value is Dictionary:
+				damage_source_rows.append(Dictionary(source_value))
+	for source: Dictionary in damage_source_rows.slice(
+		0, mini(5, damage_source_rows.size())
+	):
 		source_lines.append(
 			"%s  %.0f" % [
 				String(source.get("id", &"damage"))
@@ -2456,6 +2489,12 @@ func show_run_end(
 			+ "\n".join(loadout_lines)
 		)
 	run_summary_label.text = summary_text
+	var full_run_summary := run_details.duplicate(true)
+	full_run_summary["elapsed_seconds"] = elapsed_seconds
+	full_run_summary["kills"] = kill_count
+	full_run_summary["biomass"] = biomass_collected
+	full_run_summary["level"] = level_reached
+	run_end_statistics_panel.present(full_run_summary)
 
 	run_end_panel.show()
 	if not reward_message.is_empty():
@@ -3027,43 +3066,21 @@ func _on_upgrade_levels_changed(_levels: Dictionary) -> void:
 func refresh_organ_overview() -> void:
 	if player == null:
 		return
-
-	var attack_mode_name := "MANUAL"
-	match player.attack_mode:
-		Koda.AttackMode.SEMI_AUTO:
-			attack_mode_name = "SEMI AUTO"
-		Koda.AttackMode.AUTO:
-			attack_mode_name = "AUTO"
-
-	organ_stats_label.text = (
-		"LEVEL        %d\n"
-		+ "HEALTH       %.0f / %.0f\n"
-		+ "DAMAGE       %.1f\n"
-		+ "ATTACK RATE  %.2f / sec\n"
-		+ "RANGE        %.0f\n"
-		+ "MOVE SPEED   %.0f\n"
-		+ "BIOMASS      x%.2f\n"
-		+ "PICKUP       %.0f\n"
-		+ "WEAPON RATE  +%.0f%%\n"
-		+ "WEAPONS      %d / %d\n"
-		+ "TARGETING    %s\n"
-		+ "DASH         %s"
-	) % [
-		player.current_level,
-		player.current_health,
-		player.max_health,
-		player.attack_damage,
-		1.0 / maxf(player.attack_interval, 0.01),
-		player.attack_range,
-		player.move_speed,
-		player.biomass_gain_multiplier,
-		player.biomass_pickup_radius,
-		(1.0 / player.weapon_cooldown_multiplier - 1.0) * 100.0,
-		player.get_unlocked_extra_weapon_count(),
-		player.MAX_EXTRA_WEAPONS,
-		attack_mode_name,
-		"READY" if player.dash_unlocked else "LOCKED"
-	]
+	var sheet := player.get_character_sheet()
+	var sheet_lines: Array[String] = [tr("KODA CHARACTER SHEET")]
+	for row: Dictionary in sheet.get("stats", []):
+		sheet_lines.append("%-17s %s" % [
+			tr(String(row.get("name", "STAT"))),
+			KodaStatSheet.format_value(row),
+		])
+	sheet_lines.append("")
+	sheet_lines.append(tr("ABILITIES"))
+	for ability: Dictionary in sheet.get("abilities", []):
+		sheet_lines.append("%s  LV%d" % [
+			tr(String(ability.get("name", "ABILITY"))),
+			int(ability.get("level", 1)),
+		])
+	organ_stats_label.text = "\n".join(sheet_lines)
 
 	for child in item_summary.get_children():
 		child.queue_free()

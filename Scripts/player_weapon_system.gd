@@ -21,6 +21,7 @@ const FIRE_PROJECTILES_TEXTURE := preload(
 const TELEKINETIC_PROJECTILES_TEXTURE := preload(
 	"res://Assets/vfx/fleshdrive/telekinetic_combat_vfx_atlas.png"
 )
+const PLAYER_PROJECTILE_SPEED_MULTIPLIER := 0.5
 const WEAPON_IDS: Array[StringName] = [
 	&"quill_burst",
 	&"shock_ram",
@@ -1776,13 +1777,23 @@ func _fire_burn_explosion(
 
 
 func _fire_kill_switch(level: int) -> void:
-	var radius := 260.0 + 25.0 * float(level - 1)
+	var candidates := _nearest_enemies(
+		520.0 + 30.0 * float(level - 1),
+		mini(4 + level, 8)
+	)
+	if candidates.is_empty():
+		return
+	# Kill Switch jumps away from Koda into one of the closest valid bodies.
+	# Randomising only this bounded nearest set keeps it readable and useful.
+	var center_enemy := candidates[randi_range(0, candidates.size() - 1)]
+	var center := center_enemy.global_position
+	var radius := 135.0 + 15.0 * float(level - 1)
 	var damage := player.attack_damage * (
 		1.65 + 0.25 * float(level - 1)
 	)
-	for enemy in _enemies_in_radius(global_position, radius):
+	for enemy in _enemies_in_radius(center, radius):
 		_damage_enemy(enemy, damage, true, &"kill_switch_nodes")
-	_play_vfx(&"electro_shock", global_position, radius / 52.0)
+	_play_vfx(&"electro_shock", center, radius / 52.0)
 
 
 func _living_enemies() -> Array[Node2D]:
@@ -1857,6 +1868,10 @@ func volt_hound_dash_speed_multiplier() -> float:
 
 func volt_hound_dash_cooldown_multiplier() -> float:
 	return volt_hound.dash_cooldown_multiplier() if volt_hound != null else 1.0
+
+
+func is_kinetic_charge_state_active() -> bool:
+	return volt_hound != null and volt_hound.is_overdrive_active()
 
 
 func volt_hound_modify_incoming_damage(event: DamageEvent, amount: float) -> float:
@@ -2034,7 +2049,7 @@ func _launch_readable_projectile(
 	projectile.global_position = global_position
 	projectile.configure(
 		target,
-		speed,
+		speed * PLAYER_PROJECTILE_SPEED_MULTIPLIER,
 		_make_projectile_frames(atlas_row, use_fire_atlas),
 		projectile_scale,
 		hit_callback,

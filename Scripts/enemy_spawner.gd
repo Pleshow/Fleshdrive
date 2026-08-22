@@ -74,7 +74,10 @@ var last_spawn_type: StringName = &""
 var consecutive_same_type: int = 0
 var director_pressure: float = 1.0
 var director_pressure_reason: StringName = &"nominal"
-var director_threat_budget: float = 18.0
+# Safe standalone/default ceiling. EncounterDirector replaces this with the
+# authored phase budget during a real run; stress/debug spawning must not lose
+# its ranged/charger mix merely because the director has not ticked yet.
+var director_threat_budget: float = 180.0
 var director_spawn_rate: float = 1.0
 var director_profiles: Array = [&"mixed"]
 var director_elite_cap: float = 1.0
@@ -87,7 +90,7 @@ var threat_costs: Dictionary = {
 	&"crawler": 1.0,
 	&"spitter": 2.3,
 	&"charger": 3.4,
-	&"elite_bonus": 1.8,
+	&"elite": 7.0,
 }
 var minimum_player_distance: float = 610.0
 var spawn_clearance_radius: float = 46.0
@@ -324,7 +327,7 @@ func spawn_opening_wave() -> void:
 	spawn_timer.start(0.55)
 
 
-func spawn_boss_reinforcements(count: int = 14) -> void:
+func spawn_boss_reinforcements(count: int = 100) -> void:
 	if not is_instance_valid(player):
 		player = get_tree().get_first_node_in_group("player")
 	if player == null or crawler_scene == null:
@@ -334,43 +337,53 @@ func spawn_boss_reinforcements(count: int = 14) -> void:
 
 func _play_boss_reinforcement_wave(count: int) -> void:
 	formation_queue.clear()
-	var spawned := 0
-	var attempts := 0
-	while spawned < count and attempts < count * 4:
-		attempts += 1
+	formation_serial += 1
+	var center := player.global_position
+	var safe_bounds := arena_bounds.grow(-spawn_clearance_radius)
+	var edge_clearance := minf(
+		minf(
+			center.x - safe_bounds.position.x,
+			safe_bounds.end.x - center.x
+		),
+		minf(
+			center.y - safe_bounds.position.y,
+			safe_bounds.end.y - center.y
+		)
+	)
+	# Use equal angular spacing so the warning marks and the arriving crawlers
+	# make one deliberate ring around Koda instead of an ordinary random wave.
+	var ring_radius := minf(460.0, maxf(edge_clearance - 12.0, 32.0))
+	for index in range(count):
 		if not is_inside_tree():
 			return
-		var scene := crawler_scene
-		var enemy_type: StringName = &"crawler"
-		if spitter_scene != null and spawned % 5 == 4:
-			scene = spitter_scene
-			enemy_type = &"spitter"
-		var spawn_position := _find_spawn_position()
-		if not _is_valid_spawn_position(spawn_position):
-			spawn_position = _get_next_spawn_position()
-		if not _is_valid_spawn_position(spawn_position):
-			continue
-		if _schedule_enemy_spawn(scene, enemy_type, spawn_position, false):
-			spawned += 1
-		await get_tree().create_timer(0.045, false).timeout
+		var angle := TAU * float(index) / float(count)
+		var spawn_position := center + Vector2.RIGHT.rotated(angle) * ring_radius
+		_schedule_enemy_spawn(
+			crawler_scene, &"crawler", spawn_position, false, true
+		)
 
 
 func _schedule_enemy_spawn(
 	scene: PackedScene,
 	enemy_type: StringName,
 	spawn_position: Vector2,
-	allow_rush_partners: bool = true
+	allow_rush_partners: bool = true,
+	force_spawn: bool = false
 ) -> bool:
-	if scene == null or not spawning_enabled or not is_inside_tree():
+	if (
+		scene == null
+		or (not spawning_enabled and not force_spawn)
+		or not is_inside_tree()
+	):
 		return false
 	var threat_cost := float(threat_costs.get(enemy_type, 1.0))
-	if (
+	if not force_spawn and (
 		get_tree().get_nodes_in_group("enemies").size()
 		+ pending_spawn_count
 		>= maximum_enemies
 	):
 		return false
-	if (
+	if not force_spawn and (
 		get_current_threat() + pending_spawn_threat + threat_cost
 		> get_effective_threat_budget()
 	):
@@ -384,7 +397,8 @@ func _schedule_enemy_spawn(
 		spawn_position,
 		threat_cost,
 		allow_rush_partners,
-		warning
+		warning,
+		force_spawn
 	)
 	return true
 
@@ -395,14 +409,15 @@ func _complete_telegraphed_spawn(
 	spawn_position: Vector2,
 	threat_cost: float,
 	allow_rush_partners: bool,
-	warning: Node2D
+	warning: Node2D,
+	force_spawn: bool = false
 ) -> void:
 	await get_tree().create_timer(spawn_warning_duration, false).timeout
 	pending_spawn_count = maxi(pending_spawn_count - 1, 0)
 	pending_spawn_threat = maxf(pending_spawn_threat - threat_cost, 0.0)
 	if is_instance_valid(warning):
 		warning.queue_free()
-	if not spawning_enabled or not is_inside_tree():
+	if (not spawning_enabled and not force_spawn) or not is_inside_tree():
 		return
 	var enemy := _acquire_enemy(scene)
 	if enemy == null:
@@ -412,7 +427,10 @@ func _complete_telegraphed_spawn(
 	enemy.set_meta("enemy_type", enemy_type)
 	enemy.set_meta("threat_cost", threat_cost)
 	enemy.set_meta("formation_serial", formation_serial)
-	_try_apply_elite_modifier(enemy)
+	if force_spawn:
+		enemy.set_meta("boss_reinforcement", true)
+	else:
+		_try_apply_elite_modifier(enemy)
 	# Mass crawlers remain clean and cheap. Specials arrive through a compact
 	# smoke veil after their one-second X telegraph has completed.
 	if enemy_type != &"crawler":
@@ -511,8 +529,7 @@ func _try_apply_elite_modifier(enemy: Node2D) -> void:
 	)
 	enemy.set_meta(
 		"threat_cost",
-		float(enemy.get_meta("threat_cost", 1.0))
-		+ float(threat_costs.get(&"elite_bonus", 1.8))
+		float(threat_costs.get(&"elite", 7.0))
 	)
 
 
@@ -1060,10 +1077,6 @@ func get_current_threat() -> float:
 			continue
 
 		var enemy_type := _enemy_type_for_node(enemy)
-
-		# Crawlers are swarm population, not strategic threat.
-		if enemy_type == &"crawler":
-			continue
 
 		total += float(
 			enemy.get_meta(

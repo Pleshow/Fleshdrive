@@ -15,6 +15,7 @@ var minimalist_pixel_mode: bool = false
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	add_to_group("shader_toggle_hide")
 	shader_material = material.duplicate() as ShaderMaterial
 	material = shader_material
 	_apply_vignette_strength()
@@ -26,7 +27,7 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	if not vignette_follows_player or shader_material == null:
+	if not visible or not vignette_follows_player or shader_material == null:
 		return
 	if not is_instance_valid(vignette_target):
 		vignette_target = get_tree().get_first_node_in_group(
@@ -90,6 +91,7 @@ func _apply_settings() -> void:
 	var settings := get_tree().root.get_node_or_null("GameSettings")
 	if settings == null or shader_material == null:
 		return
+	visible = bool(settings.get("shaders_enabled"))
 	shader_material.set_shader_parameter(
 		"crt_intensity",
 		minf(settings.crt_intensity, 0.08)

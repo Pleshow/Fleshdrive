@@ -35,12 +35,20 @@ var print_elapsed: float = 0.0
 var current_instance_number: int = 1
 var current_summary: Dictionary = {}
 var current_statistics: Dictionary = {}
+var statistics_panel: RunStatisticsPanel
 
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	skip_button.pressed.connect(_finish_printing)
 	dialogue_panel.choice_selected.connect(_on_choice_selected)
+	statistics_panel = RunStatisticsPanel.new()
+	statistics_panel.name = "RunStatisticsPanel"
+	add_child(statistics_panel)
+	statistics_panel.hide()
+	# Compact run data sits in the middle column. Mimichu and the dialogue must
+	# always render above it; only the deliberately expanded modal may cover it.
+	dialogue_panel.z_index = 30
 	# On the rebirth/printing screen Mimichu is an overlay, not a framed card.
 	mimichu_portrait_frame.add_theme_stylebox_override(
 		"panel", StyleBoxEmpty.new()
@@ -99,6 +107,7 @@ func start(
 	var summaries := _format_run_summary()
 	run_summary_label.text = String(summaries["last_body"])
 	lifetime_summary_label.text = String(summaries["lifetime"])
+	statistics_panel.present(current_summary)
 	_update_terminal(0.0)
 	show()
 	skip_button.grab_focus()
@@ -216,43 +225,49 @@ func _format_duration(duration_seconds: float) -> String:
 
 
 func _get_mimichu_dialogue(deaths: int) -> Array[Dictionary]:
-	var death_line := (
-		"Easy now. The imprint held. Most of you came back "
-		+ "in the correct places."
-	)
-	if deaths >= 20:
-		death_line = (
-			"Was that the twenty-third? Never mind. "
-			+ "I made another you."
-		)
-	elif deaths >= 10:
-		death_line = (
-			"Again? Hold still. You always twitch before "
-			+ "the eyes are finished."
-		)
-	elif deaths >= 5:
-		death_line = (
-			"The fabricator remembered your scars. "
-			+ "I told it not to."
-		)
-	elif deaths >= 2:
-		death_line = (
-			"You are getting easier to print. "
-			+ "I am not sure that is good."
-		)
-	return [
-		{
+	var result: Array[Dictionary] = []
+	if int(current_statistics.get("runs", 0)) <= 1:
+		result.append({
 			"speaker": tr("MIMICHU"),
-			"text": tr(death_line),
-		},
-		{
-			"speaker": tr("MIMICHU"),
-			"text": tr(
-				"The body is new. The memory is not. "
-				+ "Your Blood Memory fragments are safe."
-			),
-		},
+			"text": tr("MIMICHU_STATS_INTRO"),
+		})
+	var death_cause := String(current_summary.get("death_cause", "unknown")).to_lower()
+	var remark_key := &"MIMICHU_REMARK_BALANCED_1"
+	if death_cause.contains("crawler"):
+		var crawler_lines: Array[StringName] = [
+			&"MIMICHU_REMARK_CRAWLER_1", &"MIMICHU_REMARK_CRAWLER_2",
+		]
+		remark_key = crawler_lines[posmod(deaths, crawler_lines.size())]
+	elif death_cause.contains("charger"):
+		remark_key = &"MIMICHU_REMARK_CHARGER"
+	elif death_cause.contains("spitter") or death_cause.contains("acid"):
+		remark_key = &"MIMICHU_REMARK_SPITTER"
+	elif death_cause.contains("warden") or death_cause.contains("boss"):
+		remark_key = &"MIMICHU_REMARK_WARDEN"
+	elif int(current_summary.get("kills", 0)) >= 200:
+		remark_key = &"MIMICHU_REMARK_KILLER"
+	elif float(current_summary.get("damage_received", 0.0)) <= 40.0:
+		remark_key = &"MIMICHU_REMARK_GLASS"
+	elif float(current_summary.get("biomass_missed", 0.0)) >= 100.0:
+		remark_key = &"MIMICHU_REMARK_BIOMASS"
+	else:
+		var general_lines: Array[StringName] = [
+			&"MIMICHU_REMARK_BALANCED_1",
+			&"MIMICHU_REMARK_BALANCED_2",
+			&"MIMICHU_REMARK_BALANCED_3",
+		]
+		remark_key = general_lines[posmod(
+			current_instance_number + deaths, general_lines.size()
+		)]
+	result.append({"speaker": tr("MIMICHU"), "text": tr(remark_key)})
+	var recovery_lines: Array[StringName] = [
+		&"MIMICHU_RECOVERY_1", &"MIMICHU_RECOVERY_2", &"MIMICHU_RECOVERY_3",
 	]
+	result.append({
+		"speaker": tr("MIMICHU"),
+		"text": tr(recovery_lines[posmod(deaths, recovery_lines.size())]),
+	})
+	return result
 
 
 func _on_choice_selected(choice_id: StringName) -> void:

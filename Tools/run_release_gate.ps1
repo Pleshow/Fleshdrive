@@ -1,5 +1,6 @@
 param(
-    [string]$GodotPath = ""
+    [string]$GodotPath = "",
+    [int]$SuiteTimeoutSeconds = 180
 )
 
 $ErrorActionPreference = "Stop"
@@ -39,24 +40,52 @@ $LogDirectory = Join-Path $ProjectPath ".godot\release_gate"
 New-Item -ItemType Directory -Force -Path $LogDirectory | Out-Null
 
 $Tests = @(
-    "publication_readiness_test.gd",
-    "release_hardening_test.gd",
-    "production_hardening_test.gd",
-    "vertical_slice_lockdown_test.gd",
-    "playtest_feedback_regression_test.gd",
-    "isometric_arena_test.gd",
-    "dusk_garden_arena_test.gd",
-    "primary_build_infrastructure_test.gd",
-    "run_integrity_regression_test.gd",
-    "ink_crimson_visual_system_test.gd"
+    Get-ChildItem -LiteralPath (Join-Path $ProjectPath "Tests") `
+        -Filter "*_test.gd" -File |
+        Sort-Object Name |
+        Select-Object -ExpandProperty Name
 )
+
+if ($Tests.Count -eq 0) {
+    throw "Release gate found no active test suites."
+}
 
 $Failures = 0
 foreach ($Test in $Tests) {
     $Name = [IO.Path]::GetFileNameWithoutExtension($Test)
     $Log = Join-Path $LogDirectory ($Name + ".log")
-    & $GodotPath --headless --path $ProjectPath --script ("res://Tests/" + $Test) --log-file $Log
-    if ($LASTEXITCODE -ne 0) {
+    if (Test-Path -LiteralPath $Log) {
+        Remove-Item -LiteralPath $Log -Force
+    }
+    $Arguments = @(
+        "--headless",
+        "--path", $ProjectPath,
+        "--script", ("res://Tests/" + $Test),
+        "--log-file", $Log
+    )
+    $Process = Start-Process -FilePath $GodotPath -ArgumentList $Arguments -NoNewWindow -PassThru
+    if (-not $Process.WaitForExit($SuiteTimeoutSeconds * 1000)) {
+        Stop-Process -Id $Process.Id -Force
+        Write-Warning "Release suite timed out after $SuiteTimeoutSeconds seconds: $Test"
+        $Failures++
+        continue
+    }
+    # PowerShell can expose the default non-zero ExitCode value until the
+    # asynchronous stream handlers are drained and the process object refreshes.
+    $Process.WaitForExit()
+    $Process.Refresh()
+    if ($null -ne $Process.ExitCode -and $Process.ExitCode -ne 0) {
+        Write-Warning "Release suite returned exit code $($Process.ExitCode): $Test"
+        $Failures++
+        continue
+    }
+    $LogText = Get-Content -LiteralPath $Log -Raw -ErrorAction SilentlyContinue
+    if ($LogText -match "(?m)^SCRIPT ERROR:" -or $LogText -match "(?m)^ERROR: FAIL:") {
+        Write-Warning "Release suite logged a script error or failed assertion: $Test"
+        $Failures++
+    }
+    elseif ($LogText -notmatch "(?m)^.*TEST PASSED\r?$") {
+        Write-Warning "Release suite did not report its completion marker: $Test"
         $Failures++
     }
 }
@@ -65,4 +94,4 @@ if ($Failures -gt 0) {
     throw "Release gate failed: $Failures test suite(s) failed. Logs: $LogDirectory"
 }
 
-Write-Host "Release gate passed. Logs: $LogDirectory"
+Write-Host "Release gate passed: $($Tests.Count) suite(s). Logs: $LogDirectory"

@@ -74,7 +74,7 @@ func _run() -> void:
 	)
 	_check(
 		background.texture.resource_path
-		== "res://Assets/ui/screens/mainmenu.png",
+		== "res://Assets/ui/screens/menu_background.png",
 		"Requested image is used as the menu background"
 	)
 	_check(
@@ -159,9 +159,9 @@ func _run() -> void:
 	_check(
 		is_equal_approx(
 			float(post_material.get_shader_parameter("crt_intensity")),
-			0.45
+			0.08
 		),
-		"CRT setting updates the full-screen post process"
+		"Minimalist main menu safely caps the CRT post process"
 	)
 	var master_effect_count := AudioServer.get_bus_effect_count(master_bus)
 	_check(

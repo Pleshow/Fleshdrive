@@ -29,6 +29,7 @@ func _run() -> void:
 
 	hud.complete_onboarding()
 	await process_frame
+	paused = false
 	spawner.stop_spawning()
 
 	_check(
@@ -91,8 +92,13 @@ func _run() -> void:
 	)
 
 	boss.slam_windup = 0.05
+	for projectile in attack_container.get_children():
+		projectile.queue_free()
+	await process_frame
 	player.global_position = boss.global_position + Vector2(60.0, 0.0)
+	player.current_health = player.max_health
 	player.invulnerability_timer.stop()
+	paused = false
 	var health_before_slam := player.current_health
 	boss.force_attack(&"slam")
 	_check(
@@ -100,13 +106,15 @@ func _run() -> void:
 		and boss.slam_telegraph.visible,
 		"Ground slam displays its danger zone"
 	)
-	await create_timer(0.08).timeout
+	boss._on_state_timer_timeout()
+	await process_frame
 	_check(
 		player.current_health < health_before_slam,
 		"Ground slam damages players inside the telegraph"
 	)
 
 	boss.take_damage(boss.max_health * 0.51)
+	await process_frame
 	_check(
 		boss.phase == 2
 		and boss.sprite.animation == &"enraged"
@@ -137,6 +145,7 @@ func _run() -> void:
 	)
 
 	boss.take_damage(boss.max_health * 2.0)
+	await process_frame
 	await create_timer(
 		run_manager.boss_victory_delay_seconds + 0.12,
 		true,

@@ -59,6 +59,7 @@ var crosshair_scale: float = DEFAULT_CROSSHAIR_SCALE
 var aim_assist_strength: float = DEFAULT_AIM_ASSIST
 var damage_numbers_enabled: bool = true
 var tutorials_enabled: bool = true
+var shaders_enabled: bool = true
 var language_code: String = DEFAULT_LANGUAGE
 var active_skill_keycode: Key = DEFAULT_ACTIVE_SKILL_KEY
 var fullscreen_enabled: bool = true
@@ -71,12 +72,15 @@ var _bit_reducer_index: int = -1
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_load_settings()
+	if not get_tree().node_added.is_connected(_on_runtime_node_added):
+		get_tree().node_added.connect(_on_runtime_node_added)
 	_apply_display_settings()
 	TranslationServer.set_locale(language_code)
 	_ensure_bit_reducer()
 	_apply_audio_settings()
 	_apply_input_settings()
 	_apply_active_skill_binding()
+	_apply_shader_setting.call_deferred()
 
 
 func set_master_volume(value: float, save: bool = true) -> void:
@@ -145,6 +149,9 @@ func set_gameplay_setting(key: StringName, value: Variant, save: bool = true) ->
 		&"aim_assist": aim_assist_strength = clampf(float(value), 0.0, 1.0)
 		&"damage_numbers": damage_numbers_enabled = bool(value)
 		&"tutorials": tutorials_enabled = bool(value)
+		&"shaders":
+			shaders_enabled = bool(value)
+			_apply_shader_setting()
 		_: return
 	visual_settings_changed.emit()
 	if save:
@@ -294,6 +301,7 @@ func _load_settings() -> void:
 	aim_assist_strength = clampf(float(config.get_value(MASTER_SECTION, "aim_assist", aim_assist_strength)), 0.0, 1.0)
 	damage_numbers_enabled = bool(config.get_value(MASTER_SECTION, "damage_numbers", damage_numbers_enabled))
 	tutorials_enabled = bool(config.get_value(MASTER_SECTION, "tutorials", tutorials_enabled))
+	shaders_enabled = bool(config.get_value(MASTER_SECTION, "shaders", shaders_enabled))
 	language_code = String(config.get_value(
 		MASTER_SECTION,
 		"language",
@@ -352,6 +360,7 @@ func _save_settings() -> bool:
 	config.set_value(MASTER_SECTION, "aim_assist", aim_assist_strength)
 	config.set_value(MASTER_SECTION, "damage_numbers", damage_numbers_enabled)
 	config.set_value(MASTER_SECTION, "tutorials", tutorials_enabled)
+	config.set_value(MASTER_SECTION, "shaders", shaders_enabled)
 	config.set_value(MASTER_SECTION, "language", language_code)
 	config.set_value(MASTER_SECTION, "active_skill_keycode", int(active_skill_keycode))
 	config.set_value(MASTER_SECTION, "fullscreen", fullscreen_enabled)
@@ -500,3 +509,43 @@ func _ensure_bit_reducer() -> void:
 	_bit_reducer_index = (
 		AudioServer.get_bus_effect_count(master_bus) - 1
 	)
+
+
+func _on_runtime_node_added(node: Node) -> void:
+	if shaders_enabled:
+		return
+	_disable_shader_subtree.call_deferred(node)
+
+
+func _apply_shader_setting() -> void:
+	if shaders_enabled:
+		for node in get_tree().get_nodes_in_group("shader_toggle_disabled"):
+			if not is_instance_valid(node) or not node is CanvasItem:
+				continue
+			var item := node as CanvasItem
+			if item.has_meta("shader_toggle_saved_material"):
+				item.material = item.get_meta(
+					"shader_toggle_saved_material"
+				) as Material
+				item.remove_meta("shader_toggle_saved_material")
+			item.remove_from_group("shader_toggle_disabled")
+		return
+	_disable_shader_subtree(get_tree().root)
+
+
+func _disable_shader_subtree(node_value: Variant) -> void:
+	if not is_instance_valid(node_value):
+		return
+	var node := node_value as Node
+	if node == null:
+		return
+	if node is CanvasItem and not node.is_in_group("shader_toggle_hide"):
+		var item := node as CanvasItem
+		if item.material is ShaderMaterial:
+			if not item.has_meta("shader_toggle_saved_material"):
+				item.set_meta("shader_toggle_saved_material", item.material)
+			item.material = null
+			if not item.is_in_group("shader_toggle_disabled"):
+				item.add_to_group("shader_toggle_disabled")
+	for child in node.get_children():
+		_disable_shader_subtree(child)

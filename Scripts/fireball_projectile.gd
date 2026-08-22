@@ -2,7 +2,7 @@ class_name FireballProjectile
 extends Area2D
 
 
-@export var move_speed: float = 410.0
+@export var move_speed: float = 205.0
 @export var turn_speed: float = 3.2
 @export var projectile_texture: Texture2D
 

@@ -4,7 +4,7 @@ extends Area2D
 
 const PIXEL_EMISSIVE_SHADER := preload("res://Shaders/pixel_emissive.gdshader")
 
-@export var move_speed: float = 720.0
+@export var move_speed: float = 360.0
 @export var projectile_texture: Texture2D
 
 @onready var sprite: AnimatedSprite2D = $Sprite

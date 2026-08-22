@@ -74,8 +74,8 @@ func _run() -> void:
 		"Run finale includes the Visceral Warden and boss HUD"
 	)
 	_check(
-		world_darkness != null and world_darkness.color.v < 0.26,
-		"Arena has a deep blue-black ambient canvas modulation"
+		world_darkness != null and world_darkness.color.v <= 0.28,
+		"Dusk Garden has a restrained blue-black ambient canvas modulation"
 	)
 	_check(
 		post_process != null,
@@ -195,16 +195,12 @@ func _run() -> void:
 		"Gameplay HUD does not display permanent gem currency"
 	)
 	var player_sprite := player.get_node("AnimatedSprite2D") as AnimatedSprite2D
-	var down_frame := (
-		player_sprite.sprite_frames.get_frame_texture(&"down", 0)
-		as AtlasTexture
-	)
+	var down_frame := player_sprite.sprite_frames.get_frame_texture(&"down", 0)
 	_check(
 		down_frame != null
-		and down_frame.atlas.resource_path
-		== "res://Assets/player/Koda run.png"
-		and down_frame.region.size == Vector2(112, 96),
-		"Player uses the replacement Koda run sprite sheet"
+		and down_frame.resource_path
+		== "res://Assets/player/Koda_32x32/running state/east/frame_000.png",
+		"Player uses the current Dusk Garden Koda run frames"
 	)
 	_check(
 		player_sprite.scale == Vector2.ONE
@@ -221,19 +217,21 @@ func _run() -> void:
 		and player.walk_animation_speed < 14.0,
 		"Koda's grounded gait plays at a controlled running cadence"
 	)
-	var left_frame := (
-		player_sprite.sprite_frames.get_frame_texture(&"left", 0)
-		as AtlasTexture
-	)
-	var right_frame := (
-		player_sprite.sprite_frames.get_frame_texture(&"right", 0)
-		as AtlasTexture
-	)
+	var left_frame := player_sprite.sprite_frames.get_frame_texture(&"left", 0)
+	var right_frame := player_sprite.sprite_frames.get_frame_texture(&"right", 0)
 	_check(
-		left_frame.region == right_frame.region,
-		"Left reuses the mirrored side-view atlas row"
+		left_frame != null
+		and right_frame != null
+		and left_frame.resource_path == right_frame.resource_path,
+		"Left reuses the mirrored current side-view frame"
 	)
-	var action_names := [&"idle", &"jump", &"attack", &"hurt", &"death"]
+	var action_contracts := {
+		&"idle": {"frames": 8, "folder": "Idle state"},
+		&"jump": {"frames": 5, "folder": "jumping/east"},
+		&"attack": {"frames": 8, "folder": "running state/east"},
+		&"hurt": {"frames": 4, "folder": "jumping/east"},
+		&"death": {"frames": 9, "folder": "death/east"},
+	}
 	for direction_name in player.DIRECTION_ROWS:
 		_check(
 			player_sprite.sprite_frames.get_frame_count(direction_name) == 8,
@@ -242,33 +240,35 @@ func _run() -> void:
 		for run_frame_index in range(8):
 			var run_frame := player_sprite.sprite_frames.get_frame_texture(
 				direction_name, run_frame_index
-			) as AtlasTexture
+			)
 			_check(
 				run_frame != null
-				and run_frame.atlas.resource_path == "res://Assets/player/Koda run.png"
-				and run_frame.region.size == Vector2(112, 96),
-				"%s frame %d stays on the replacement run sheet"
+				and run_frame.resource_path == (
+					"res://Assets/player/Koda_32x32/running state/east/frame_%03d.png"
+					% run_frame_index
+				),
+				"%s frame %d stays on the current Dusk Garden run animation"
 				% [direction_name, run_frame_index]
 			)
-		for action_name in action_names:
+		for action_name in action_contracts:
+			var contract: Dictionary = action_contracts[action_name]
 			var animation_name := StringName(
 				"%s_%s" % [action_name, direction_name]
 			)
-			var action_frame := (
-				player_sprite.sprite_frames.get_frame_texture(
-					animation_name,
-					0
-				) as AtlasTexture
+			var action_frame := player_sprite.sprite_frames.get_frame_texture(
+				animation_name,
+				0
 			)
 			_check(
 				player_sprite.sprite_frames.get_frame_count(
 					animation_name
-				) == 8
+				) == int(contract.frames)
 				and action_frame != null
-				and action_frame.atlas.resource_path
-				== "res://Assets/player/idle.png"
-				and action_frame.region.size == Vector2(96, 96),
-				"%s uses the replacement idle sheet"
+				and action_frame.resource_path == (
+					"res://Assets/player/Koda_32x32/%s/frame_000.png"
+					% String(contract.folder)
+				),
+				"%s uses the current Dusk Garden source frames"
 				% animation_name
 			)
 	_check(
@@ -282,7 +282,8 @@ func _run() -> void:
 		ground_shadow != null
 		and ground_shadow.texture != null
 		and ground_shadow.z_index < player_sprite.z_index
-		and ground_shadow.position.y >= 40.0,
+		and ground_shadow.position.y >= 5.0
+		and ground_shadow.position.y <= 12.0,
 		"Koda has a grounded elliptical shadow at paw level"
 	)
 	if ground_shadow != null:
@@ -777,7 +778,7 @@ func _run() -> void:
 		_check(
 			float(restored_post_material.get_shader_parameter(
 				&"vignette_strength"
-			)) >= 0.65,
+			)) >= 0.40,
 			"Closing the organ screen restores the vignette"
 		)
 

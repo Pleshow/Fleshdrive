@@ -1,6 +1,11 @@
 extends SceneTree
 
 
+const VoltaicBalanceContract := preload(
+	"res://Scripts/balance/voltaic_balance_contract.gd"
+)
+
+
 class DamageTarget:
 	extends Node2D
 
@@ -24,23 +29,23 @@ class DamageTarget:
 
 
 const BUILD_WEAPONS: Dictionary = {
-	"electric": [
+	"chainstorm": [
 		&"quill_burst",
 		&"tail_lash",
 		&"arc_spear",
-		&"bone_shard_volley",
+		&"conductive_fur",
 	],
-	"fire": [
-		&"cinder_volley",
-		&"inferno_ring",
-		&"magma_spear",
-		&"ashen_eruption",
+	"thunder_ram": [
+		&"shock_ram",
+		&"static_claws",
+		&"quill_burst",
+		&"tail_lash",
 	],
-	"telekinetic": [
-		&"kinetic_shard",
-		&"gravity_well",
-		&"repulse_wave",
-		&"neural_lance",
+	"orange_tempest": [
+		&"ball_lightning",
+		&"arc_spear",
+		&"quill_burst",
+		&"tail_lash",
 	],
 }
 
@@ -69,6 +74,7 @@ func _run() -> void:
 	_test_lifecycle_guard(lifecycle)
 	_test_data_driven_profiles(database)
 	var report := _run_accelerated_soak(database)
+	report["power_curve_contract"] = _run_power_curve_contract()
 	var publication_scenarios := _run_publication_scenarios()
 	report["publication_scenarios"] = publication_scenarios
 	_write_report(report)
@@ -296,10 +302,30 @@ func _run_accelerated_soak(database: Node) -> Dictionary:
 	}
 
 
+func _run_power_curve_contract() -> Array[Dictionary]:
+	var checkpoints: Array[Dictionary] = []
+	var previous := 0.0
+	for checkpoint_id in [
+		&"level_1", &"early", &"mid", &"late", &"pre_boss", &"boss_build"
+	]:
+		var target := VoltaicBalanceContract.target_multiplier(checkpoint_id)
+		_check(target > previous, "%s power target grows monotonically" % checkpoint_id)
+		checkpoints.append({"id": checkpoint_id, "target_multiplier": target})
+		previous = target
+	_check(
+		VoltaicBalanceContract.threat_cost(&"crawler") == 1
+		and VoltaicBalanceContract.threat_cost(&"spitter") == 2
+		and VoltaicBalanceContract.threat_cost(&"charger") == 3
+		and VoltaicBalanceContract.threat_cost(&"crawler", true) == 7,
+		"Public encounter contract uses 1/2/3/7 threat costs"
+	)
+	return checkpoints
+
+
 func _run_publication_scenarios() -> Array[Dictionary]:
 	var definitions := [
-		{"id": "victory", "arena": "bio_lab", "event_tick": 700},
-		{"id": "death", "arena": "sludgeworks", "event_tick": 438},
+		{"id": "victory", "arena": "dusk_garden", "event_tick": 700},
+		{"id": "death", "arena": "dusk_garden", "event_tick": 438},
 		{"id": "restart", "arena": "dusk_garden", "event_tick": 286},
 	]
 	var scenarios: Array[Dictionary] = []
@@ -334,9 +360,9 @@ func _run_publication_scenarios() -> Array[Dictionary]:
 		complete = complete and int(scenario.simulated_seconds) == 720 and int(scenario.checksum) != 0
 	_check(
 		complete
-		and arenas == ["bio_lab", "sludgeworks", "dusk_garden"]
+		and arenas == ["dusk_garden", "dusk_garden", "dusk_garden"]
 		and outcomes == ["victory", "death", "restart"],
-		"Three deterministic 12-minute publication scenarios cover victory, death, restart and every public arena"
+		"Three deterministic Dusk Garden scenarios cover victory, death and restart"
 	)
 	return scenarios
 

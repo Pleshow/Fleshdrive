@@ -336,8 +336,6 @@ func receive_damage_event(
 		return
 
 	current_health = maxf(current_health - amount, 0.0)
-	play_hit_feedback()
-
 	if current_health <= 0.0:
 		die()
 	elif event.play_hit_sound:

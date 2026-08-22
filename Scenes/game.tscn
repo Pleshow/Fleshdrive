@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://cahxtcria5jev"]
 
 [ext_resource type="PackedScene" uid="uid://tmywkju6a3a5" path="res://Scenes/player/koda.tscn" id="1_ebmjs"]
-[ext_resource type="PackedScene" path="res://Scenes/placeholder_arena.tscn" id="1_nfavm"]
 [ext_resource type="PackedScene" uid="uid://diujfajd5ocm1" path="res://Scenes/enemies/crawler.tscn" id="1_qxrlw"]
 [ext_resource type="Script" uid="uid://b71damtrhupib" path="res://Scripts/enemy_spawner.gd" id="3_3dryh"]
 [ext_resource type="Script" uid="uid://b3kyfjhaipisd" path="res://Scripts/hud.gd" id="3_wrm1d"]
@@ -210,7 +209,7 @@ corner_radius_bottom_left = 8
 y_sort_enabled = true
 script = ExtResource("104_arena_controller")
 
-[node name="Arena" parent="." unique_id=1607695595 instance=ExtResource("1_nfavm")]
+[node name="Arena" type="Node2D" parent="." unique_id=1607695595]
 
 [node name="Music" type="AudioStreamPlayer" parent="." unique_id=397399926]
 process_mode = 3

@@ -38,6 +38,7 @@ func _ready() -> void:
 	add_child(toggles)
 	_add_toggle(toggles, tr("DAMAGE NUMBERS"), bool(settings.damage_numbers_enabled), &"damage_numbers")
 	_add_toggle(toggles, tr("TUTORIALS"), bool(settings.tutorials_enabled), &"tutorials")
+	_add_toggle(toggles, tr("SHADERS"), bool(settings.shaders_enabled), &"shaders")
 	active_skill_bind_button = Button.new()
 	active_skill_bind_button.custom_minimum_size = Vector2(250.0, 42.0)
 	active_skill_bind_button.text = "%s: %s" % [
@@ -121,6 +122,7 @@ func _add_toggle(
 	var translation_keys := {
 		&"damage_numbers": "DAMAGE NUMBERS",
 		&"tutorials": "TUTORIALS",
+		&"shaders": "SHADERS",
 	}
 	toggle.set_meta(
 		"translation_key",

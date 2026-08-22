@@ -448,6 +448,17 @@ func finish_run(victory: bool) -> void:
 	run_details["menu_overlay_seconds"] = menu_overlay_seconds
 	run_details["menu_time_ratio"] = get_menu_time_ratio()
 
+	var telemetry := get_tree().root.get_node_or_null("RunTelemetry")
+	if telemetry != null:
+		telemetry.call(
+			"record_menu_timing",
+			active_play_seconds,
+			menu_overlay_seconds
+		)
+		var telemetry_summary := Dictionary(telemetry.call(
+			"finish_run", victory, elapsed_seconds, &""
+		))
+		run_details.merge(telemetry_summary, true)
 	run_finished.emit(
 		victory,
 		elapsed_seconds,
@@ -456,14 +467,6 @@ func finish_run(victory: bool) -> void:
 		final_level,
 		run_details
 	)
-	var telemetry := get_tree().root.get_node_or_null("RunTelemetry")
-	if telemetry != null:
-		telemetry.call(
-			"record_menu_timing",
-			active_play_seconds,
-			menu_overlay_seconds
-		)
-		telemetry.call("finish_run", victory, elapsed_seconds, &"")
 
 
 func get_menu_time_ratio() -> float:
@@ -729,12 +732,16 @@ func _begin_rebirth() -> void:
 		summary.merge(player.get_combat_summary(), true)
 	var telemetry := get_tree().root.get_node_or_null("RunTelemetry")
 	if telemetry != null:
-		telemetry.call(
+		var death_cause := StringName(player.get_meta(
+			"last_damage_source_id", &"unknown"
+		)) if is_instance_valid(player) else &"unknown"
+		var telemetry_summary := Dictionary(telemetry.call(
 			"finish_run",
 			false,
 			elapsed_seconds,
-			&"player_health_depleted"
-		)
+			death_cause
+		))
+		summary.merge(telemetry_summary, true)
 	_set_state(RunState.REBIRTH)
 	rebirth_started.emit(
 		int(statistics.get("instance_number", 1)),
@@ -783,7 +790,7 @@ func _on_boss_health_changed(
 
 func _on_boss_phase_changed(new_phase: int) -> void:
 	boss_phase_changed.emit(new_phase)
-	if new_phase >= 2:
+	if new_phase == 2:
 		boss_warning_started.emit(
 			"WARDEN REINFORCEMENTS // INCOMING",
 			2.8
@@ -795,7 +802,7 @@ func _on_boss_phase_changed(new_phase: int) -> void:
 			enemy_spawner != null
 			and enemy_spawner.has_method("spawn_boss_reinforcements")
 		):
-			enemy_spawner.call_deferred("spawn_boss_reinforcements", 24)
+			enemy_spawner.call_deferred("spawn_boss_reinforcements", 100)
 
 
 func _on_boss_died(_boss: Node2D) -> void:
@@ -809,7 +816,7 @@ func _on_boss_died(_boss: Node2D) -> void:
 	kill_count += 1
 	var telemetry := get_tree().root.get_node_or_null("RunTelemetry")
 	if telemetry != null:
-		telemetry.call("record_kill")
+		telemetry.call("record_kill", &"visceral_warden", elapsed_seconds)
 		telemetry.call("mark_boss_killed", elapsed_seconds)
 	boss_defeated.emit()
 	boss_warning_started.emit(
@@ -832,7 +839,11 @@ func _on_enemy_defeated(_enemy: Node2D) -> void:
 	kill_count += 1
 	var telemetry := get_tree().root.get_node_or_null("RunTelemetry")
 	if telemetry != null:
-		telemetry.call("record_kill")
+		telemetry.call(
+			"record_kill",
+			_get_enemy_type_id(_enemy),
+			elapsed_seconds
+		)
 	if is_instance_valid(player):
 		player.register_enemy_kill(kill_count)
 	if (
@@ -842,6 +853,16 @@ func _on_enemy_defeated(_enemy: Node2D) -> void:
 		_drop_red_gem(_enemy.global_position)
 	elif bool(_enemy.get_meta("is_elite", false)):
 		_drop_red_gem(_enemy.global_position)
+
+
+func _get_enemy_type_id(enemy: Node) -> StringName:
+	if enemy is Charger:
+		return &"charger_elite" if bool(enemy.get_meta("is_elite", false)) else &"charger"
+	if enemy is Spitter:
+		return &"spitter_elite" if bool(enemy.get_meta("is_elite", false)) else &"spitter"
+	if enemy is Crawler:
+		return &"crawler_elite" if bool(enemy.get_meta("is_elite", false)) else &"crawler"
+	return &"elite" if bool(enemy.get_meta("is_elite", false)) else &"unknown"
 
 
 func _drop_red_gem(drop_position: Vector2) -> void:

@@ -720,7 +720,6 @@ func receive_damage_event(
 
 	current_health = maxf(current_health - amount, 0.0)
 	health_changed.emit(current_health, max_health)
-	_play_hit_feedback()
 
 	if (
 		phase == 1

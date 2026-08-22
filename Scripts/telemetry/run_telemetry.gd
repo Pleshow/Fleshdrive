@@ -1,6 +1,10 @@
 extends Node
 
 
+const BalanceContract := preload(
+	"res://Scripts/balance/voltaic_balance_contract.gd"
+)
+
 var current_run: Dictionary = {}
 var completed_runs: Array[Dictionary] = []
 
@@ -16,9 +20,21 @@ func start_run(build_id: StringName = &"unselected") -> void:
 	current_run = {
 		"build": String(build_id),
 		"damage_sources": {},
+		"source_hit_counts": {},
+		"proc_counts": {},
+		"damage_source_share": {},
+		"total_damage_dealt": 0.0,
+		"damage_received": 0.0,
+		"damage_received_sources": {},
 		"cards_offered": {},
 		"cards_selected": {},
+		"selection_classes": {},
+		"selection_archetypes": {},
+		"rerolls": {"free": 0, "paid": 0, "currency_spent": 0},
+		"offers_skipped": 0,
 		"kills": 0,
+		"kills_by_enemy": {},
+		"highest_level": 1,
 		"death_cause": "",
 		"first_damage_seconds": -1.0,
 		"death_times": [],
@@ -43,6 +59,7 @@ func start_run(build_id: StringName = &"unselected") -> void:
 		"active_play_seconds": 0.0,
 		"menu_overlay_seconds": 0.0,
 		"menu_time_ratio": 0.0,
+		"power_checkpoints": [],
 	}
 
 
@@ -57,8 +74,42 @@ func record_card_offered(card_id: StringName) -> void:
 	_increment_nested("cards_offered", String(card_id))
 
 
-func record_card_selected(card_id: StringName) -> void:
+func record_card_selected(
+	card_id: StringName,
+	classification: StringName = &"",
+	archetype: StringName = &""
+) -> void:
 	_increment_nested("cards_selected", String(card_id))
+	if not classification.is_empty():
+		_increment_nested("selection_classes", String(classification))
+	if not archetype.is_empty():
+		_increment_nested("selection_archetypes", String(archetype))
+
+
+func record_level_reached(level: int) -> void:
+	_ensure_run()
+	current_run["highest_level"] = maxi(
+		int(current_run.get("highest_level", 1)),
+		maxi(level, 1)
+	)
+
+
+func record_reroll(paid: bool, currency_spent: int = 0) -> void:
+	_ensure_run()
+	var rerolls := Dictionary(current_run.get("rerolls", {}))
+	var key := "paid" if paid else "free"
+	rerolls[key] = int(rerolls.get(key, 0)) + 1
+	rerolls["currency_spent"] = (
+		int(rerolls.get("currency_spent", 0)) + maxi(currency_spent, 0)
+	)
+	current_run["rerolls"] = rerolls
+
+
+func record_offer_skipped() -> void:
+	_ensure_run()
+	current_run["offers_skipped"] = int(
+		current_run.get("offers_skipped", 0)
+	) + 1
 
 
 func record_build_trigger(build_item_id: StringName) -> void:
@@ -87,6 +138,11 @@ func record_offer_set(
 	var offer_ids: Array[String] = []
 	var usable_count := 0
 	var synergy_count := 0
+	var relevant_count := 0
+	var offer_details: Array[Dictionary] = []
+	var selected_archetypes := Dictionary(
+		current_run.get("selection_archetypes", {})
+	)
 	for offer in offers:
 		if offer == null:
 			continue
@@ -94,16 +150,39 @@ func record_offer_set(
 		usable_count += 1
 		if not offer.get_effective_synergy_tags().is_empty():
 			synergy_count += 1
+		var archetype := BalanceContract.archetype_for(offer)
+		var relevant: bool = (
+			offer.fleshdrive_affinity == "universal"
+			or offer.fleshdrive_affinity == String(active_affinity)
+		)
+		if (
+			relevant
+			and not selected_archetypes.is_empty()
+			and archetype != &"universal"
+		):
+			relevant = selected_archetypes.has(String(archetype))
+		if relevant:
+			relevant_count += 1
+		offer_details.append({
+			"id": String(offer.upgrade_id),
+			"class": String(BalanceContract.classify_upgrade(offer)),
+			"archetype": String(archetype),
+			"relevant": relevant,
+		})
 	var quality := (
-		0.50 * float(affinity_matches) / maxf(float(offers.size()), 1.0)
+		0.30 * float(affinity_matches) / maxf(float(offers.size()), 1.0)
 		+ 0.30 * float(usable_count) / maxf(float(offers.size()), 1.0)
-		+ 0.20 * float(synergy_count) / maxf(float(offers.size()), 1.0)
+		+ 0.15 * float(synergy_count) / maxf(float(offers.size()), 1.0)
+		+ 0.25 * float(relevant_count) / maxf(float(offers.size()), 1.0)
 	)
 	var sets: Array = Array(current_run.get("offer_sets", []))
 	sets.append({
 		"affinity": String(active_affinity),
 		"offers": offer_ids,
 		"affinity_matches": affinity_matches,
+		"relevant_count": relevant_count,
+		"dead_offer_count": maxi(offers.size() - usable_count, 0),
+		"details": offer_details,
 		"quality": quality,
 	})
 	current_run["offer_sets"] = sets
@@ -116,9 +195,35 @@ func record_offer_set(
 	)
 
 
-func record_kill() -> void:
+func record_kill(
+	enemy_type: StringName = &"unknown",
+	_elapsed_seconds: float = -1.0
+) -> void:
 	_ensure_run()
 	current_run["kills"] = int(current_run.get("kills", 0)) + 1
+	_increment_nested(
+		"kills_by_enemy",
+		String(enemy_type if not enemy_type.is_empty() else &"unknown")
+	)
+
+
+func record_power_checkpoint(
+	checkpoint_id: StringName,
+	dps: float,
+	attack_frequency: float,
+	average_targets: float,
+	basic_enemy_ttk: float
+) -> void:
+	_ensure_run()
+	var checkpoints: Array = Array(current_run.get("power_checkpoints", []))
+	checkpoints.append({
+		"id": String(checkpoint_id),
+		"dps": maxf(dps, 0.0),
+		"attack_frequency": maxf(attack_frequency, 0.0),
+		"average_targets": maxf(average_targets, 0.0),
+		"basic_enemy_ttk": maxf(basic_enemy_ttk, 0.0),
+	})
+	current_run["power_checkpoints"] = checkpoints
 
 
 func record_player_damage(
@@ -264,6 +369,11 @@ func finish_run(
 	current_run["victory"] = victory
 	current_run["elapsed_seconds"] = elapsed_seconds
 	current_run["death_cause"] = String(death_cause)
+	current_run["average_dps"] = (
+		float(current_run.get("total_damage_dealt", 0.0))
+		/ maxf(elapsed_seconds, 0.001)
+	)
+	current_run["damage_source_share"] = _calculate_source_share()
 	current_run["biomass_missed"] = maxf(
 		float(current_run.get("biomass_spawned", 0.0))
 		- float(current_run.get("biomass_collected", 0.0)),
@@ -282,7 +392,14 @@ func finish_run(
 		)
 	var finished := current_run.duplicate(true)
 	completed_runs.append(finished)
+	_write_run_summary(finished)
 	return finished
+
+
+func get_last_completed_run() -> Dictionary:
+	if completed_runs.is_empty():
+		return {}
+	return Dictionary(completed_runs.back()).duplicate(true)
 
 
 func _on_damage_applied(
@@ -291,13 +408,80 @@ func _on_damage_applied(
 ) -> void:
 	if not bool(result.get("accepted", false)):
 		return
+	_ensure_run()
+	var damage := float(result.get("damage", 0.0))
+	if event.target is Koda:
+		current_run["damage_received"] = (
+			float(current_run.get("damage_received", 0.0)) + damage
+		)
+		var received := Dictionary(
+			current_run.get("damage_received_sources", {})
+		)
+		var received_key := String(event.source_id)
+		received[received_key] = float(
+			received.get(received_key, 0.0)
+		) + damage
+		current_run["damage_received_sources"] = received
+		return
+	if not (
+		event.target.is_in_group("enemies")
+		or event.target.is_in_group("boss")
+	):
+		return
 	var sources := Dictionary(current_run.get("damage_sources", {}))
 	var key := String(event.source_id)
 	sources[key] = (
 		float(sources.get(key, 0.0))
-		+ float(result.get("damage", 0.0))
+		+ damage
 	)
 	current_run["damage_sources"] = sources
+	_increment_nested("source_hit_counts", key)
+	if (
+		event.hit_role != DamageEvent.HitRole.PRIMARY
+		or event.metadata.has("proc_id")
+	):
+		var proc_id := String(event.metadata.get("proc_id", event.source_id))
+		_increment_nested("proc_counts", proc_id)
+	current_run["total_damage_dealt"] = (
+		float(current_run.get("total_damage_dealt", 0.0)) + damage
+	)
+
+
+func _calculate_source_share() -> Dictionary:
+	var shares := {}
+	var total := float(current_run.get("total_damage_dealt", 0.0))
+	if total <= 0.0:
+		return shares
+	for source_id in Dictionary(current_run.get("damage_sources", {})):
+		shares[source_id] = (
+			float(current_run["damage_sources"][source_id]) / total
+		)
+	return shares
+
+
+func _write_run_summary(summary: Dictionary) -> void:
+	# Automated suites inspect the returned Dictionary directly. Avoid writing
+	# test artifacts into the developer profile; graphical debug/release runs
+	# persist one JSON summary per completed run.
+	if DisplayServer.get_name() == "headless":
+		return
+	var directory := "user://telemetry"
+	var absolute_directory := ProjectSettings.globalize_path(directory)
+	var error := DirAccess.make_dir_recursive_absolute(absolute_directory)
+	if error != OK and error != ERR_ALREADY_EXISTS:
+		push_warning("RunTelemetry could not create telemetry directory: %s" % error)
+		return
+	var timestamp := Time.get_datetime_string_from_system().replace(":", "-")
+	var path := "%s/run_%s_%03d.json" % [
+		directory,
+		timestamp,
+		completed_runs.size(),
+	]
+	var file := FileAccess.open(path, FileAccess.WRITE)
+	if file == null:
+		push_warning("RunTelemetry could not write %s" % path)
+		return
+	file.store_string(JSON.stringify(summary, "\t"))
 
 
 func _increment_nested(section: String, key: String) -> void:

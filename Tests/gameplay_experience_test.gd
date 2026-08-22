@@ -50,10 +50,10 @@ func _run() -> void:
 	player.finish_dash()
 
 	player.velocity = Vector2(200.0, 0.0)
-	camera._process(0.1)
+	camera._physics_process(0.1)
 	_check(camera.look_offset.length() > 0.0, "Camera spring look-ahead follows movement and aim")
 	camera.add_trauma(0.5)
-	camera._process(0.01)
+	camera._physics_process(0.01)
 	_check(camera.offset.length() > 0.0, "Scaled camera shake remains active")
 	crosshair._process(0.01)
 	_check(is_equal_approx(crosshair.scale.x, 1.25), "Crosshair size setting is applied live")

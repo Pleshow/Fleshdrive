@@ -2,7 +2,7 @@ class_name MagmaSpearProjectile
 extends Area2D
 
 
-@export var move_speed: float = 690.0
+@export var move_speed: float = 345.0
 @export var projectile_texture: Texture2D
 
 @onready var sprite: AnimatedSprite2D = $Sprite

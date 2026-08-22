@@ -96,24 +96,18 @@ func _test_enemy_and_arena_readability(game: Node, spawner: Node) -> void:
 		"The ranged enemy joins the run between 60 and 90 seconds"
 	)
 	var arena := game.get_node("Arena")
-	var microzones := arena.get_node_or_null("ReadableMicrozones")
 	_check(
-		microzones != null
-		and microzones.get_child_count() == 6,
-		"Bio-Lab is divided into six recognizable traversable microzones"
+		arena is DuskGardenArena
+		and arena.get_node_or_null("MapComposite") != null
+		and arena.get_node_or_null("GardenBoundary") != null,
+		"Dusk Garden exposes its authored floor and solid boundary"
 	)
-	var zone_ids: Array[String] = []
-	if microzones != null:
-		for zone in microzones.get_children():
-			zone_ids.append(String(zone.get_meta("microzone_id", "")))
+	var props := arena.get_node_or_null("YSortedProps")
 	_check(
-		"ABANDONED SURGERY" in zone_ids
-		and "BIOMASS QUARANTINE" in zone_ids
-		and "ELECTRIC RELAY" in zone_ids
-		and "CONTAINMENT BREACH" in zone_ids
-		and "OVERGROWN SAMPLE" in zone_ids
-		and "BLOOD / CABLE LANE" in zone_ids,
-		"Every required Bio-Lab landmark has an explicit visual identity"
+		props != null
+		and props.get_child_count() >= 4
+		and arena.get_node_or_null("PixelMotes") != null,
+		"Dusk Garden has layered occluding landmarks and ambient motion"
 	)
 
 
@@ -194,10 +188,17 @@ func _test_card_and_organ_ui(hud: Node, player: Koda) -> void:
 		all_cards_described = all_cards_described and not changes.is_empty()
 	_check(all_cards_described, "Every public mutation has a non-empty progression description")
 	var operation := hud.fleshdrive_operation_screen as FleshdriveOperationScreen
-	operation.call("_preview_fleshdrive", FleshdriveCatalog.ELECTRIC)
+	var level_one_copy := String(operation.call(
+		"_get_core_bonus_description", FleshdriveCatalog.ELECTRIC, 1
+	))
 	_check(
-		operation.details_text.text.contains(tr("BASE CORE: STANDARD OUTPUT")),
-		"Level-one Fleshdrive copy says BASE CORE instead of +0 percent"
+		level_one_copy.contains(
+			tr("CORE LV %d: +%d%% BASE ATTACK DAMAGE") % [1, 0]
+		)
+		and level_one_copy.contains(
+			tr(" / +%d%% CHAIN DAMAGE") % 0
+		),
+		"Level-one Voltaic copy exposes its exact +0 percent baseline"
 	)
 	var organ_screen := hud.organ_screen as Control
 	var close_button := hud.organ_close_button as Control
@@ -274,8 +275,12 @@ func _test_main_menu_copy() -> void:
 	root.add_child(menu)
 	await process_frame
 	var all_text := _collect_label_text(menu)
+	var demo_label_count := 0
+	for text in all_text:
+		if text.contains("PRE-ALPHA DEMO"):
+			demo_label_count += 1
 	_check(
-		all_text.count("PRE-ALPHA DEMO") == 1
+		demo_label_count == 1
 		and "PLAYABLE PROTOTYPE" not in all_text,
 		"Main menu uses one PRE-ALPHA DEMO label without repeated prototype copy"
 	)

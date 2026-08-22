@@ -1,5 +1,10 @@
 extends SceneTree
 
+
+const VoltaicBalanceContract := preload(
+	"res://Scripts/balance/voltaic_balance_contract.gd"
+)
+
 var failures := 0
 
 
@@ -55,12 +60,16 @@ func _validate_build_resources() -> void:
 		_check(upgrade.prerequisites_met({upgrade.required_weapons[0]: 1}), "%s unlocks with its weapon" % upgrade.upgrade_id)
 		_check(not upgrade.prerequisites_met({}), "%s stays hidden without its weapon" % upgrade.upgrade_id)
 	_check(ids.size() == 36, "Build item identifiers are unique")
-	for build_id in BuildItemCatalog.BUILD_IDS:
-		_check(int(build_counts.get(build_id, 0)) == 3, "%s owns exactly three items" % build_id)
+	_check(int(build_counts.get(&"chainstorm", 0)) == 3, "Chainstorm owns exactly three legacy build items")
+	_check(int(build_counts.get(&"thunder_ram", 0)) == 3, "Thunder Ram owns exactly three legacy build items")
+	_check(
+		VoltaicBalanceContract.PATHS.has(&"orange_tempest"),
+		"Orange Tempest is defined by its dedicated Voltaic progression path"
+	)
 	_check(is_equal_approx(BuildItemCatalog.value(&"forked_arc_node", "fork_chance"), 0.45), "Chainstorm uses the spreadsheet fork chance")
-	_check(is_equal_approx(BuildItemCatalog.value(&"rupture_vesicle", "damage_per_stack"), 0.35), "Flashpoint uses the spreadsheet stack multiplier")
-	_check(is_equal_approx(BuildItemCatalog.value(&"event_horizon_membrane", "radius"), 0.45), "Gravity Architect uses the spreadsheet radius bonus")
-	_check(int(BuildItemCatalog.value(&"mirror_prism", "max_per_second")) == 6, "Repulse Bastion enforces the split budget")
+	_check(is_equal_approx(BuildItemCatalog.value(&"kinetic_capacitor", "distance"), 280.0), "Thunder Ram uses the authored movement-charge distance")
+	_check(is_equal_approx(BuildItemCatalog.value(&"galvanic_tendons", "radius_per_level"), 0.07), "Thunder Ram scales contact radius predictably")
+	_check(BuildItemCatalog.BUILD_IDS == [&"chainstorm", &"thunder_ram", &"orange_tempest"], "Public build catalog contains only the three Voltaic paths")
 
 
 func _validate_status_consumption() -> void:

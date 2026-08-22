@@ -340,11 +340,12 @@ const EFFECTS := {
 	&"shock_status": {
 		"texture": SHOCK_LIGHTNING_V9_TEXTURE, "frame_size": Vector2i(64, 64),
 		"frame_count": 10, "columns": 4, "fps": 16.667,
-		"base_scale": 1.0, "loop": true,
+		"base_scale": 1.0, "loop": true, "center_on_target_visual": true,
 	},
 	&"enemy_death_lightning": {
 		"texture": JUICE_LIGHTNING_TEXTURE, "frame_size": Vector2i(64, 64),
-		"frame_count": 8, "columns": 3, "fps": 20.0, "base_scale": 1.0,
+		"start_frame": 4, "frame_count": 8, "columns": 4,
+		"fps": 20.0, "base_scale": 1.0,
 	},
 	&"decoy_smoke": {
 		"texture": DECOY_SMOKE_V9_TEXTURE, "frame_size": Vector2i(64, 64),
@@ -356,10 +357,11 @@ const EFFECTS := {
 	},
 	&"electric_impact": {
 		"texture": JUICE_LIGHTNING_TEXTURE, "frame_size": Vector2i(64, 64),
-		"frame_count": 8, "columns": 3, "fps": 48.0, "base_scale": 1.0,
+		"start_frame": 4, "frame_count": 8, "columns": 4,
+		"fps": 48.0, "base_scale": 1.0,
 	},
-	&"electric_micro_hit": {"texture": JUICE_LIGHTNING_TEXTURE, "frame_size": Vector2i(64, 64), "frame_count": 5, "columns": 3, "fps": 52.0, "base_scale": 1.0},
-	&"shock_proc": {"texture": JUICE_LIGHTNING_TEXTURE, "frame_size": Vector2i(64, 64), "frame_count": 7, "columns": 3, "fps": 48.0, "base_scale": 1.0},
+	&"electric_micro_hit": {"texture": JUICE_LIGHTNING_TEXTURE, "frame_size": Vector2i(64, 64), "start_frame": 4, "frame_count": 5, "columns": 4, "fps": 52.0, "base_scale": 1.0},
+	&"shock_proc": {"texture": JUICE_LIGHTNING_TEXTURE, "frame_size": Vector2i(64, 64), "start_frame": 4, "frame_count": 7, "columns": 4, "fps": 48.0, "base_scale": 1.0},
 	&"biomass_collect": {"texture": JUICE_LIGHTNING_TEXTURE, "frame_size": Vector2i(64, 64), "frame_count": 5, "columns": 3, "fps": 55.0, "base_scale": 1.0},
 	&"ui_energy_confirm": {"texture": JUICE_LIGHTNING_TEXTURE, "frame_size": Vector2i(64, 64), "frame_count": 7, "columns": 3, "fps": 48.0, "base_scale": 1.0},
 	&"organ_activation": {"texture": JUICE_LIGHTNING_TEXTURE, "frame_size": Vector2i(64, 64), "frame_count": 8, "columns": 3, "fps": 42.0, "base_scale": 1.0},
@@ -446,7 +448,7 @@ const EFFECTS := {
 	&"bite_impact": {"texture": PUNCH_IMPACT_TEXTURE, "frame_size": Vector2i(48, 32), "frame_count": 5, "columns": 5, "fps": 22.0, "base_scale": 1.45},
 	&"slash_small": {"texture": SMALL_SLASH_TEXTURE, "frame_size": Vector2i(32, 48), "frame_count": 4, "columns": 4, "fps": 22.0, "base_scale": 1.25},
 	&"status_burn": {"texture": STATUS_BURN_TEXTURE, "frame_size": Vector2i(64, 64), "frame_count": 16, "columns": 4, "fps": 16.0, "base_scale": 0.9},
-	&"status_shock": {"texture": STATUS_SHOCK_TEXTURE, "frame_size": Vector2i(64, 64), "frame_count": 16, "columns": 4, "fps": 18.0, "base_scale": 0.9},
+	&"status_shock": {"texture": STATUS_SHOCK_TEXTURE, "frame_size": Vector2i(64, 64), "frame_count": 16, "columns": 4, "fps": 18.0, "base_scale": 0.9, "center_on_target_visual": true},
 	&"status_heal": {"texture": STATUS_HEAL_TEXTURE, "frame_size": Vector2i(64, 64), "frame_count": 16, "columns": 4, "fps": 17.0, "base_scale": 1.0},
 	&"status_shield": {"texture": STATUS_SHIELD_TEXTURE, "frame_size": Vector2i(64, 64), "frame_count": 16, "columns": 4, "fps": 17.0, "base_scale": 1.0},
 	&"status_haste": {"texture": STATUS_HASTE_TEXTURE, "frame_size": Vector2i(64, 64), "frame_count": 16, "columns": 4, "fps": 19.0, "base_scale": 1.0},
@@ -563,6 +565,7 @@ func play(
 		return null
 	var settings := get_tree().root.get_node_or_null("GameSettings")
 	var intensity := float(settings.vfx_intensity) if settings != null else 1.0
+	var shaders_allowed := bool(settings.shaders_enabled) if settings != null else true
 	if intensity <= 0.01:
 		return null
 	var budget := get_tree().root.get_node_or_null("PerformanceBudget")
@@ -619,12 +622,11 @@ func play(
 	)
 	sprite.z_index = 20
 	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	var minimalist_mode := MinimalistVisualProfile.is_active(get_tree())
 	# Purchased Pixel VFX keep their source colors. Project-authored effects
 	# continue to use the hard functional palette ramps.
 	sprite.material = (
 		null
-		if effect_id in ORIGINAL_COLOR_EFFECTS
+		if effect_id in ORIGINAL_COLOR_EFFECTS or not shaders_allowed
 		else _get_pixel_vfx_material(effect_id)
 	)
 
@@ -646,18 +648,9 @@ func play(
 	sprite.global_position = world_position
 	sprite.show()
 	active_sprites.append(sprite)
-	if (
-		not minimalist_mode
-		and effect_id in ELECTRIC_EFFECTS
-		and effect_id not in NO_LIGHT_EFFECTS
-		and effect_id not in ORIGINAL_COLOR_EFFECTS
-	):
-		_play_electric_flash(
-			container,
-			world_position,
-			readable_scale,
-			effect_id
-		)
+	# Authored electric frames already carry their own readable luminance.
+	# The old procedural PointLight pulse looked like a random cyan screen flash
+	# when many hits landed together, so electric effects no longer add it.
 	if not bool(effect_data.get("loop", false)):
 		sprite.animation_finished.connect(
 			_recycle_effect.bind(sprite),
@@ -676,6 +669,9 @@ func play_attached(
 ) -> AnimatedSprite2D:
 	if not is_instance_valid(parent) or not parent.is_inside_tree():
 		return null
+	var effect_data: Dictionary = EFFECTS.get(effect_id, {})
+	if bool(effect_data.get("center_on_target_visual", false)):
+		local_position = _get_target_visual_center(parent)
 	var sprite := play(
 		effect_id, parent.to_global(local_position), effect_scale, rotation_radians
 	)
@@ -692,6 +688,19 @@ func play_attached(
 	sprite.position = local_position
 	sprite.rotation = rotation_radians
 	return sprite
+
+
+func _get_target_visual_center(target: Node2D) -> Vector2:
+	# Enemy roots are located at their feet/collision origin, while individual
+	# sprites have different authored offsets (Crawler +5, Spitter -26, etc.).
+	# Following the actual sprite origin keeps the enemy exactly in the middle
+	# of the 64x64 status frame on every enemy type.
+	var visual := target.get_node_or_null("AnimatedSprite2D") as Node2D
+	if visual == null:
+		visual = target.get_node_or_null("Sprite") as Node2D
+	if visual == null:
+		return Vector2.ZERO
+	return target.to_local(visual.global_position)
 
 
 func stop_effect(sprite: AnimatedSprite2D) -> void:
@@ -846,6 +855,12 @@ func _recycle_effect(sprite: AnimatedSprite2D) -> void:
 	var recycle_callback := _recycle_effect.bind(sprite)
 	if sprite.animation_finished.is_connected(recycle_callback):
 		sprite.animation_finished.disconnect(recycle_callback)
+	# Pooled effects choose their shader again for every activation. Never let
+	# the global shader toggle restore a material belonging to an older effect.
+	if sprite.has_meta("shader_toggle_saved_material"):
+		sprite.remove_meta("shader_toggle_saved_material")
+	if sprite.is_in_group("shader_toggle_disabled"):
+		sprite.remove_from_group("shader_toggle_disabled")
 	sprite.stop()
 	sprite.hide()
 	sprite.modulate = Color.WHITE

@@ -375,3 +375,59 @@ DRAG THE BRAIN ORGAN TO THE HEAD SLOT,DRAG THE BRAIN ORGAN TO THE HEAD SLOT,HÚZ
 DRAG THE HEART ORGAN TO THE CHEST SLOT,DRAG THE HEART ORGAN TO THE CHEST SLOT,HÚZD A SZÍV ORGAN-T A MELLKASI SLOTBA
 DRAG THE LEGS ORGAN TO THE LEG SLOT,DRAG THE LEGS ORGAN TO THE LEG SLOT,HÚZD A LÁB ORGAN-T A LÁB SLOTBA
 DRAG THE %s ORGAN TO ITS MATCHING SLOT,DRAG THE %s ORGAN TO ITS MATCHING SLOT,HÚZD A(Z) %s ORGAN-T A HOZZÁ ILLŐ SLOTBA
+KODA CHARACTER SHEET,KODA CHARACTER SHEET,KODA KARAKTERLAP
+BASE STATISTICS,BASE STATISTICS,ALAP STATISZTIKÁK
+ABILITIES,ABILITIES,KÉPESSÉGEK
+MAX HEALTH,MAX HEALTH,MAX ÉLETERŐ
+DAMAGE,DAMAGE,SEBZÉS
+ATTACK SPEED,ATTACK SPEED,TÁMADÁSI SEBESSÉG
+MOVE SPEED,MOVE SPEED,MOZGÁSI SEBESSÉG
+ARMOR,ARMOR,PÁNCÉL
+LIFESTEAL,LIFESTEAL,ÉLETSZÍVÁS
+CRITICAL CHANCE,CRITICAL CHANCE,KRITIKUS ESÉLY
+CRITICAL DAMAGE,CRITICAL DAMAGE,KRITIKUS SEBZÉS
+ABILITY HASTE,ABILITY HASTE,KÉPESSÉGGYORSASÁG
+PICKUP RADIUS,PICKUP RADIUS,FELSZEDÉSI SUGÁR
+BASE ARC,BASE ARC,ALAP ÍVKISÜLÉS
+BASE FIREBALL,BASE FIREBALL,ALAP TŰZGOLYÓ
+BASE KINETIC SHARD,BASE KINETIC SHARD,ALAP KINETIKUS SZILÁNK
+PREVIOUS RUN STATISTICS,PREVIOUS RUN STATISTICS,ELŐZŐ RUN STATISZTIKÁI
+RUN STATISTICS,RUN STATISTICS,RUN STATISZTIKÁK
+EXPAND,EXPAND,NAGYÍTÁS
+COLLAPSE,COLLAPSE,KICSINYÍTÉS
+KODA DAMAGE BY SOURCE,KODA DAMAGE BY SOURCE,KODA SEBZÉSE FORRÁSONKÉNT
+ENEMY DAMAGE TO KODA,ENEMY DAMAGE TO KODA,ELLENFELEK SEBZÉSE KODÁRA
+KILLS BY ENEMY,KILLS BY ENEMY,ÖLÉSEK ELLENFÉLTÍPUSONKÉNT
+TOTAL DAMAGE,TOTAL DAMAGE,ÖSSZSEBZÉS
+DPS,DPS,DPS
+DAMAGE TAKEN,DAMAGE TAKEN,ELSZENVEDETT SEBZÉS
+NO DATA,NO DATA,NINCS ADAT
+DEATH CAUSE,DEATH CAUSE,HALÁL OKA
+BIOMASS COLLECTED,BIOMASS COLLECTED,BEGYŰJTÖTT BIOMASSZA
+BIOMASS MISSED,BIOMASS MISSED,KIHAGYOTT BIOMASSZA
+CROWD CONTROL,CROWD CONTROL,TÖMEGKONTROLL
+MIMICHU_OPERATION_PROMPT_2,"MIMICHU
+
+Fresh heart or familiar mistake? Pick one. I have sterilized the clamps this time.","MIMICHU
+
+Friss szív vagy ismerős hiba? Válassz. Ezúttal sterilizáltam a fogókat."
+MIMICHU_OPERATION_PROMPT_3,"MIMICHU
+
+Your chart says resilient. Your previous body says otherwise. Choose a Fleshdrive.","MIMICHU
+
+A kartonod szerint szívós vagy. Az előző tested mást mond. Válassz Fleshdrive-ot."
+MIMICHU_STATS_INTRO,"That statistics window is your previous body's confession. Damage sources show what worked. Enemy damage and the death cause show what worked on you. Click it to inspect every chart.","A statisztikaablak az előző tested vallomása. A sebzésforrások mutatják mi működött. Az ellenfélsebzés és a halál oka azt mutatja mi működött rajtad. Kattints rá az összes diagramhoz."
+MIMICHU_REMARK_CRAWLER_1,"A crawler killed you. One crawler. The chart confirms it was not even an ambitious crawler.","Egy crawler ölt meg. Egyetlen crawler. A diagram szerint még csak különösebben ambiciózus sem volt."
+MIMICHU_REMARK_CRAWLER_2,"Cause of death: crawler. I printed that line very small to protect your dignity.","Halál oka: crawler. A méltóságod védelmében nagyon apró betűvel írtam ki."
+MIMICHU_REMARK_CHARGER,"The charger delivered you back faster than our courier service. Excellent velocity. Poor survival.","A charger gyorsabban visszaküldött mint a futárszolgálatunk. Kiváló sebesség. Gyenge túlélés."
+MIMICHU_REMARK_SPITTER,"The acid damage chart resembles a waterfall. You were standing under it.","A savsebzés diagramja vízesésre hasonlít. Te alatta álltál."
+MIMICHU_REMARK_WARDEN,"The Warden signed your discharge papers personally. In several pieces.","Az Őrző személyesen írta alá az elbocsátó papírjaidat. Több darabban."
+MIMICHU_REMARK_KILLER,"That kill count is medically impressive and ethically inconvenient.","Ez az ölésszám orvosilag lenyűgöző és etikailag kellemetlen."
+MIMICHU_REMARK_GLASS,"You took remarkably little damage. Unfortunately the final portion was extremely well placed.","Feltűnően kevés sebzést kaptál. Sajnos az utolsó adag rendkívül jó helyre érkezett."
+MIMICHU_REMARK_BIOMASS,"You left enough biomass behind to print a second Koda. I did not. You are welcome.","Annyi biomasszát hagytál ott hogy kijött volna belőle még egy Koda. Nem nyomtattam ki. Szívesen."
+MIMICHU_REMARK_BALANCED_1,"Your damage distribution is beautifully balanced. Like a tray of surgical tools after an earthquake.","A sebzéseloszlásod gyönyörűen kiegyensúlyozott. Mint egy műszertálca földrengés után."
+MIMICHU_REMARK_BALANCED_2,"The charts indicate a strong plan followed by several fascinating improvisations.","A diagramok erős tervet mutatnak amelyet több lenyűgöző rögtönzés követett."
+MIMICHU_REMARK_BALANCED_3,"I highlighted your best damage source. I also highlighted running away. Consider both.","Kiemeltem a legjobb sebzésforrásodat. A menekülést is kiemeltem. Fontold meg mindkettőt."
+MIMICHU_RECOVERY_1,"New body. Same memory. Your Blood Memory is safe and the embarrassing chart is permanent.","Új test. Régi emlék. A Vérmemóriád biztonságban van a kínos diagram pedig maradandó."
+MIMICHU_RECOVERY_2,"The imprint held. Most of you returned to the correct compartments.","A lenyomat megmaradt. A legtöbb részed a megfelelő rekeszekbe került vissza."
+MIMICHU_RECOVERY_3,"Fabrication complete. Try to keep this body long enough for the warranty to become irrelevant.","A fabrikáció kész. Próbáld ezt a testet addig megtartani amíg a garancia érdektelenné válik."

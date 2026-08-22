@@ -3,10 +3,7 @@ extends RefCounted
 
 
 const BUILD_IDS: Array[StringName] = [
-	&"chainstorm", &"thunder_ram", &"wildfire_shepherd",
-	&"flashpoint_bomber", &"gravity_architect", &"repulse_bastion",
-	&"rail_predator", &"quill_tempest", &"furnace_halo",
-	&"magma_artillery", &"captive_moon", &"neural_executioner",
+	&"chainstorm", &"thunder_ram", &"orange_tempest",
 ]
 
 const ITEM_IDS: Array[StringName] = [

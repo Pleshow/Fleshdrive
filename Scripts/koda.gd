@@ -223,6 +223,14 @@ func _ready() -> void:
 
 	update_attack_range_indicator()
 	_install_damage_screen_flash()
+	var combat_pipeline := get_tree().root.get_node_or_null("CombatPipeline")
+	if (
+		combat_pipeline != null
+		and not combat_pipeline.damage_applied.is_connected(
+			_on_combat_damage_for_lifesteal
+		)
+	):
+		combat_pipeline.damage_applied.connect(_on_combat_damage_for_lifesteal)
 
 
 func configure_directional_animations() -> void:
@@ -819,8 +827,11 @@ func modify_incoming_damage_event(
 	event: DamageEvent,
 	amount: float
 ) -> float:
+	if bool(get_meta("balance_debug_god_mode", false)):
+		return 0.0
 	if is_dead or not invulnerability_timer.is_stopped():
 		return 0.0
+	amount *= 1.0 - clampf(float(get_meta("armor", 0.0)), 0.0, 0.85)
 	var hide_level := get_upgrade_level(&"smoldering_hide")
 	if hide_level > 0 and event.source is Node2D:
 		var pipeline := get_tree().root.get_node_or_null("CombatPipeline")
@@ -839,6 +850,18 @@ func modify_incoming_damage_event(
 		amount = weapon_system.volt_hound_modify_incoming_damage(event, amount)
 		amount = weapon_system.universal_modify_incoming_damage(amount)
 	return amount
+
+
+func _on_combat_damage_for_lifesteal(
+	event: DamageEvent,
+	result: Dictionary
+) -> void:
+	if event == null or event.source != self or is_dead:
+		return
+	var lifesteal := clampf(float(get_meta("lifesteal", 0.0)), 0.0, 1.0)
+	var applied_damage := float(result.get("damage", 0.0))
+	if lifesteal > 0.0 and applied_damage > 0.0:
+		heal(applied_damage * lifesteal)
 
 
 func receive_damage_event(
@@ -1334,6 +1357,16 @@ func _try_trigger_level_up() -> bool:
 	if current_biomass < biomass_required:
 		return false
 
+	# Kinetic Charge is a short, continuous control state. Opening the level-up
+	# overlay inside it used to pause/cancel the charge before its payoff. Keep
+	# the biomass untouched and retry from _physics_process as soon as the state
+	# has naturally ended.
+	if (
+		weapon_system != null
+		and weapon_system.is_kinetic_charge_state_active()
+	):
+		return false
+
 	current_biomass -= biomass_required
 	level_up_pending = true
 	level_up()
@@ -1362,6 +1395,9 @@ func _queue_followup_level_up() -> void:
 
 func level_up() -> void:
 	current_level += 1
+	var telemetry := get_tree().root.get_node_or_null("RunTelemetry")
+	if telemetry != null:
+		telemetry.call("record_level_reached", current_level)
 	last_level_up_pacing_time = level_pacing_clock
 	_refresh_level_up_reroll_entitlement()
 	if get_upgrade_level(&"malignant_growth") > 0:
@@ -1693,6 +1729,47 @@ func _apply_minimalist_presentation() -> void:
 
 func get_upgrade_level(upgrade_id: StringName) -> int:
 	return int(upgrade_levels.get(upgrade_id, 0))
+
+
+func get_character_sheet() -> Dictionary:
+	return KodaStatSheet.snapshot(self)
+
+
+func modify_character_stat(
+	stat_id: StringName,
+	multiplier: float = 1.0,
+	flat_bonus: float = 0.0
+) -> void:
+	# Cards and abilities can use this stable API instead of reaching into UI or
+	# duplicating stat names. Existing upgrades that alter the legacy backing
+	# fields are reflected by the same character-sheet snapshot.
+	match stat_id:
+		&"max_health":
+			max_health = maxf(max_health * multiplier + flat_bonus, 1.0)
+			current_health = minf(current_health, max_health)
+			health_changed.emit(current_health, max_health)
+		&"damage": attack_damage = maxf(attack_damage * multiplier + flat_bonus, 0.0)
+		&"attack_speed":
+			var current_rate := 1.0 / maxf(attack_interval, 0.01)
+			var next_rate := maxf(current_rate * multiplier + flat_bonus, 0.05)
+			attack_interval = 1.0 / next_rate
+			attack_timer.wait_time = attack_interval
+		&"move_speed": move_speed = maxf(move_speed * multiplier + flat_bonus, 1.0)
+		&"armor", &"lifesteal", &"critical_chance":
+			var default_value := 0.05 if stat_id == &"critical_chance" else 0.0
+			var current := float(get_meta(String(stat_id), default_value))
+			set_meta(String(stat_id), maxf(current * multiplier + flat_bonus, 0.0))
+		&"critical_damage":
+			var current := float(get_meta("critical_multiplier", 1.5))
+			set_meta("critical_multiplier", maxf(current * multiplier + flat_bonus, 1.0))
+		&"ability_haste":
+			var current_haste := maxf(1.0 / maxf(weapon_cooldown_multiplier, 0.01) - 1.0, 0.0)
+			var next_haste := maxf(current_haste * multiplier + flat_bonus, 0.0)
+			weapon_cooldown_multiplier = 1.0 / (1.0 + next_haste)
+		&"pickup_radius":
+			biomass_pickup_radius = maxf(biomass_pickup_radius * multiplier + flat_bonus, 0.0)
+		_:
+			push_warning("Unknown Koda character stat: %s" % stat_id)
 
 
 func record_damage_source(source_id: StringName, amount: float) -> void:

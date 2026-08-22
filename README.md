@@ -1,9 +1,13 @@
 # Fleshdrive
 
+Current public-playtest preparation status and remaining release blockers are
+tracked in `Docs/RELEASE_STATUS.md` and `Docs/PUBLIC_PLAYTEST_CHECKLIST.md`.
+
 Fleshdrive is a Godot 4.7 pre-alpha survivor-action prototype built around
-biomechanical mutation, organ loadouts and distinct combat builds. The current
-prototype includes multiple selectable arenas, English and Hungarian UI, mouse
-and controller support, persistent progression and a twelve-minute boss run.
+biomechanical mutation and organ loadouts. The public playtest is scope-locked
+to the Dusk Garden arena and the Voltaic Heart, with English and Hungarian UI,
+mouse and controller support, persistent progression and a twelve-minute boss
+run ending with the Visceral Warden.
 
 ## Requirements
 
@@ -28,7 +32,7 @@ and controller support, persistent progression and a twelve-minute boss run.
 
 ## Validation
 
-Run the complete automated publication gate from PowerShell:
+Run the complete automated Dusk Garden + Voltaic publication gate from PowerShell:
 
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Tools\run_release_gate.ps1 -GodotPath "C:\path\to\Godot_v4.7-stable_win64_console.exe"
@@ -36,6 +40,12 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Tools\run_release_gate
 
 Alternatively, set `GODOT_CONSOLE_PATH` to the Godot console executable and
 omit `-GodotPath`.
+
+The measurable Voltaic balance contract, F10 debug workflow, and scenario matrix
+are in `Docs/VOLTAIC_BALANCE_PLAYTEST_PLAN.md`.
+
+Release changes and currently known limitations are recorded in `CHANGELOG.md`
+and `Docs/KNOWN_ISSUES.md`.
 
 ## Licensing and third-party assets
 

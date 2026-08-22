@@ -28,20 +28,21 @@ func _run() -> void:
 	var crawler := crawler_scene.instantiate() as Crawler
 	enemies.add_child(crawler)
 	var crawler_sprite := crawler.get_node("AnimatedSprite2D") as AnimatedSprite2D
-	var crawler_frame := (
-		crawler_sprite.sprite_frames.get_frame_texture(&"walk", 0)
-		as AtlasTexture
+	var crawler_frame := crawler_sprite.sprite_frames.get_frame_texture(
+		&"walk", 0
 	)
 	_check(
-		is_equal_approx(crawler.move_speed, 88.0),
-		"Crawler movement speed is reduced by twenty percent"
+		is_equal_approx(crawler.move_speed, 65.0),
+		"Dusk Garden crawler uses the authored fodder movement speed"
 	)
 	_check(
-		crawler_frame.atlas.resource_path
-		== "res://Assets/enemies/crawler/walk.png"
-		and crawler_sprite.sprite_frames.get_frame_count(&"walk") == 8
-		and crawler_sprite.sprite_frames.get_frame_count(&"attack") == 8,
-		"Crawler uses the current eight-frame mutant-animal animation strip"
+		crawler_frame.resource_path.ends_with(
+			"Assets/enemies/crawler/Snake crawler/walk/east/frame_000.png"
+		)
+		and crawler_sprite.sprite_frames.get_frame_count(&"walk") == 9
+		and crawler_sprite.sprite_frames.get_frame_count(&"attack") == 9
+		and crawler_sprite.sprite_frames.get_frame_count(&"death") == 9,
+		"Crawler uses the current Dusk Garden frame animations"
 	)
 	_check(
 		crawler.get_node_or_null("GroundShadow") != null,
@@ -69,37 +70,38 @@ func _run() -> void:
 	enemies.add_child(spitter)
 	spitter.global_position = player.global_position + Vector2(400.0, 0.0)
 	var spitter_sprite := spitter.get_node("AnimatedSprite2D") as AnimatedSprite2D
-	var spitter_frame := (
-		spitter_sprite.sprite_frames.get_frame_texture(&"normal", 0)
-		as AtlasTexture
+	var spitter_frame := spitter_sprite.sprite_frames.get_frame_texture(
+		&"normal", 0
 	)
 	_check(
-		spitter_frame.atlas.resource_path
-		== "res://Assets/enemies/spitter/flying_spider_atlas.png"
-		and spitter_sprite.sprite_frames.get_frame_count(&"normal") == 8
-		and spitter_sprite.sprite_frames.get_frame_count(&"windup") == 4
-		and is_equal_approx(spitter.projectile_speed, 201.6),
-		"Ranged enemy uses the generated flying-spider animation atlas"
+		spitter_frame != null
+		and spitter_frame.resource_path.ends_with("frame_000.png")
+		and spitter_sprite.sprite_frames.get_frame_count(&"normal") == 9
+		and spitter_sprite.sprite_frames.get_frame_count(&"windup") == 9
+		and spitter_sprite.sprite_frames.get_frame_count(&"death") == 9
+		and is_equal_approx(spitter.projectile_speed, 150.0),
+		"Ranged enemy uses the current Dusk Garden flying-spider frames"
 	)
-	var spitter_image := spitter_frame.get_image()
-	var luminous_cyan_pixels := 0
-	for pixel_y in range(spitter_image.get_height()):
-		for pixel_x in range(spitter_image.get_width()):
-			var pixel := spitter_image.get_pixel(pixel_x, pixel_y)
-			if (
-				pixel.a > 0.95
-				and pixel.g > pixel.r * 1.22
-				and pixel.b > pixel.r * 1.14
-			):
-				luminous_cyan_pixels += 1
+	var spitter_image := spitter_frame.get_image() if spitter_frame != null else null
+	var visible_pixels := 0
+	var bright_pixels := 0
+	if spitter_image != null:
+		for pixel_y in range(spitter_image.get_height()):
+			for pixel_x in range(spitter_image.get_width()):
+				var pixel := spitter_image.get_pixel(pixel_x, pixel_y)
+				if pixel.a > 0.1:
+					visible_pixels += 1
+					if pixel.get_luminance() > 0.35:
+						bright_pixels += 1
 	_check(
-		luminous_cyan_pixels > 70,
-		"Flying spider retains readable cyan eyes and weapon highlights"
+		visible_pixels > 200 and bright_pixels > 20,
+		"Flying spider retains a readable silhouette and highlights"
 	)
+	var spitter_shadow := spitter.get_node("GroundShadow") as Sprite2D
 	_check(
-		spitter.get_node_or_null("GroundShadow") != null
-		and spitter_sprite.position.y < -20.0
-		and spitter.get_node("GroundShadow").modulate.a < 0.5,
+		spitter_shadow != null
+		and spitter_sprite.position.y < spitter_shadow.position.y
+		and spitter_shadow.modulate.a > 0.1,
 		"Flying spider hovers above a soft aerial shadow"
 	)
 

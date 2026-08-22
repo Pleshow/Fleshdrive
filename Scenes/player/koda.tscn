@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://c0ouuir23l3bt" path="res://Scripts/camera_feedback.gd" id="10_camera_feedback"]
 [ext_resource type="Texture2D" uid="uid://dqjeyc5oi5mls" path="res://Assets/environment/dust_mote.svg" id="11_dust"]
 [ext_resource type="Script" uid="uid://k17tjp3mn6sb" path="res://Scripts/player_weapon_system.gd" id="12_weapons"]
-[ext_resource type="Shader" path="res://Shaders/pixel_emissive.gdshader" id="13_dust_shader"]
+[ext_resource type="Shader" uid="uid://df1emsgrb7tpb" path="res://Shaders/pixel_emissive.gdshader" id="13_dust_shader"]
 
 [sub_resource type="Gradient" id="Gradient_koda_shadow"]
 offsets = PackedFloat32Array(0, 0.54, 1)
@@ -23,9 +23,6 @@ fill_to = Vector2(1, 0.5)
 [sub_resource type="SpriteFrames" id="SpriteFrames_a8jhk"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_attack_cooldown"]
-light_mode = 1
-
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_lightning_unshaded"]
 light_mode = 1
 
 [sub_resource type="StyleBoxFlat" id="Style_attack_cooldown_background"]
@@ -59,6 +56,14 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(1, 0.5)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_koda_dust"]
+shader = ExtResource("13_dust_shader")
+shader_parameter/alpha_cutoff = 0.08
+shader_parameter/force_electric_blue = true
+shader_parameter/force_alert_red = false
+shader_parameter/force_neutral_smoke = false
+shader_parameter/force_charger_dark = false
+
 [sub_resource type="Gradient" id="Gradient_movement_dust"]
 offsets = PackedFloat32Array(0, 0.34, 0.72, 1)
 colors = PackedColorArray(0.047, 0.902, 0.949, 0, 0.047, 0.902, 0.949, 0.42, 0, 0.596, 0.859, 0.22, 0.118, 0.341, 0.612, 0)
@@ -67,16 +72,14 @@ colors = PackedColorArray(0.047, 0.902, 0.949, 0, 0.047, 0.902, 0.949, 0.42, 0, 
 offsets = PackedFloat32Array(0, 0.28, 0.7, 1)
 colors = PackedColorArray(0.047, 0.902, 0.949, 0, 0.047, 0.902, 0.949, 0.5, 0, 0.596, 0.859, 0.26, 0.118, 0.341, 0.612, 0)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_koda_dust"]
-shader = ExtResource("13_dust_shader")
-shader_parameter/alpha_cutoff = 0.08
-shader_parameter/force_electric_blue = true
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_ge6ft"]
 radius = 19.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_a8jhk"]
 radius = 220.0
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_lightning_unshaded"]
+light_mode = 1
 
 [node name="Koda" type="CharacterBody2D" unique_id=1718074588 groups=["player"]]
 collision_layer = 4
@@ -99,7 +102,7 @@ texture = SubResource("GradientTexture2D_koda_shadow")
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_a8jhk")
 
-[node name="AttackCooldownBar" type="ProgressBar" parent="."]
+[node name="AttackCooldownBar" type="ProgressBar" parent="." unique_id=1782297563]
 z_index = 32
 material = SubResource("CanvasItemMaterial_attack_cooldown")
 offset_left = -24.0
@@ -121,8 +124,8 @@ texture_scale = 1.85
 
 [node name="MovementDust" type="CPUParticles2D" parent="." unique_id=588079963]
 z_index = -1
-material = SubResource("ShaderMaterial_koda_dust")
 texture_filter = 2
+material = SubResource("ShaderMaterial_koda_dust")
 position = Vector2(0, 10)
 emitting = false
 amount = 16
@@ -141,8 +144,8 @@ color_ramp = SubResource("Gradient_movement_dust")
 
 [node name="LandingDust" type="CPUParticles2D" parent="." unique_id=604813265]
 z_index = -1
-material = SubResource("ShaderMaterial_koda_dust")
 texture_filter = 2
+material = SubResource("ShaderMaterial_koda_dust")
 position = Vector2(0, 10)
 emitting = false
 amount = 20
@@ -167,6 +170,7 @@ shape = SubResource("CircleShape2D_ge6ft")
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1203176731 groups=["camera_feedback"]]
 process_mode = 3
 zoom = Vector2(1.3, 1.3)
+process_callback = 0
 limit_left = 0
 limit_top = 0
 limit_right = 2560
@@ -198,21 +202,19 @@ one_shot = true
 
 [node name="LightningLine" type="Line2D" parent="." unique_id=764223225]
 visible = false
-z_as_relative = false
 z_index = 73
+z_as_relative = false
 material = SubResource("CanvasItemMaterial_lightning_unshaded")
 width = 4.5
 default_color = Color(0.047058824, 0.9019608, 0.9490196, 1)
-antialiased = false
 
-[node name="LightningGlow" type="Line2D" parent="."]
+[node name="LightningGlow" type="Line2D" parent="." unique_id=1318806239]
 visible = false
-z_as_relative = false
 z_index = 72
+z_as_relative = false
 material = SubResource("CanvasItemMaterial_lightning_unshaded")
 width = 11.0
 default_color = Color(0, 0.59607846, 0.85882354, 1)
-antialiased = false
 
 [node name="AttackRangeIndicator" type="Line2D" parent="." unique_id=181694060]
 show_behind_parent = true

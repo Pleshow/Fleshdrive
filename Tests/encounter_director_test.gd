@@ -156,8 +156,8 @@ func _run() -> void:
 		fullscreen != null
 		and bool(fullscreen.get_meta("ui_polish_skip", false))
 		and fullscreen.get_theme_color("font_color")
-		== fullscreen.get_theme_color("font_hover_color"),
-		"Fullscreen toggle keeps a neutral non-highlighted hover state"
+		!= fullscreen.get_theme_color("font_hover_color"),
+		"Fullscreen toggle keeps the authored readable hover state"
 	)
 	main_menu.free()
 
@@ -166,6 +166,11 @@ func _run() -> void:
 	telemetry.record_player_damage(7.0, &"crawler", 34.0)
 	telemetry.record_biomass_spawned(20.0)
 	telemetry.record_biomass_collected(10.0)
+	telemetry.record_kill(&"crawler", 35.0)
+	telemetry.record_level_reached(4)
+	telemetry.record_reroll(true, 2)
+	telemetry.record_offer_skipped()
+	telemetry.record_power_checkpoint(&"early", 28.0, 1.4, 2.2, 1.1)
 	telemetry.record_runtime_sample(
 		34.0,
 		12,
@@ -182,7 +187,12 @@ func _run() -> void:
 		and is_equal_approx(
 			float(Dictionary(report["enemy_damage"])["crawler"]),
 			7.0
-		),
+		)
+		and int(Dictionary(report["kills_by_enemy"])["crawler"]) == 1
+		and int(report["highest_level"]) == 4
+		and int(Dictionary(report["rerolls"])["currency_spent"]) == 2
+		and int(report["offers_skipped"]) == 1
+		and Array(report["power_checkpoints"]).size() == 1,
 		"Run telemetry records pacing, missed pickups, damage and load peaks"
 	)
 

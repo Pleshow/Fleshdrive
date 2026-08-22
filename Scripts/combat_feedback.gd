@@ -139,6 +139,12 @@ func register_damage(
 
 
 func _flash_target(target: Node2D, affinity: StringName) -> void:
+	if target.get("is_dead") == true:
+		return
+	# Electric attacks already have an authored bolt and impact. Tinting the
+	# complete enemy sprite cyan as well read as an unrelated random flash.
+	if affinity == &"electric":
+		return
 	var sprite := target.get_node_or_null("AnimatedSprite2D") as CanvasItem
 	if sprite == null:
 		sprite = target.get_node_or_null("Sprite2D") as CanvasItem
@@ -159,8 +165,16 @@ func _flash_target(target: Node2D, affinity: StringName) -> void:
 		affinity,
 		flash_colors[&"physical"]
 	)
+	var old_tween := (
+		sprite.get_meta("combat_hit_flash_tween") as Tween
+		if sprite.has_meta("combat_hit_flash_tween")
+		else null
+	)
+	if old_tween != null and old_tween.is_valid():
+		old_tween.kill()
 	sprite.modulate = Color.WHITE.lerp(flash_color, flash_strength)
 	var tween := sprite.create_tween()
+	sprite.set_meta("combat_hit_flash_tween", tween)
 	tween.tween_property(sprite, "modulate", Color.WHITE, 0.095)
 
 

@@ -16,6 +16,7 @@ func _run() -> void:
 	await process_frame
 	_test_master_palette()
 	_test_strict_output_pass()
+	await _test_runtime_shader_toggle()
 	_test_theme_components()
 	await _test_menu_identity()
 	_test_pixel_vfx_contract()
@@ -60,6 +61,65 @@ func _test_strict_output_pass() -> void:
 		material != null
 		and material.shader.resource_path == "res://Shaders/ink_crimson_quantize.gdshader",
 		"Final frame is quantized by the Ink-Crimson nearest-color shader"
+	)
+
+
+func _test_runtime_shader_toggle() -> void:
+	var settings := root.get_node_or_null("GameSettings")
+	var visual_system := root.get_node_or_null("InkCrimsonVisualSystem")
+	var filter := visual_system.get_node_or_null(
+		"StrictTenColorOutput"
+	) as ColorRect
+	var original_enabled := bool(settings.shaders_enabled)
+	visual_system.call("set_enabled", true)
+	var shader_item := Sprite2D.new()
+	var test_material := ShaderMaterial.new()
+	test_material.shader = load(
+		"res://Shaders/pixel_emissive.gdshader"
+	) as Shader
+	shader_item.material = test_material
+	root.add_child(shader_item)
+	var post_process := (
+		load("res://Scenes/post_process.tscn") as PackedScene
+	).instantiate() as CanvasLayer
+	root.add_child(post_process)
+	var post_filter := post_process.get_node("ScreenFilter") as ColorRect
+	await process_frame
+	settings.call("set_gameplay_setting", &"shaders", false, false)
+	await process_frame
+	await process_frame
+	_check(
+		not filter.visible
+		and not post_filter.visible
+		and shader_item.material == null,
+		"Shader switch disables Ink Crimson, CRT and runtime sprite shaders"
+	)
+	settings.call("set_gameplay_setting", &"shaders", true, false)
+	await process_frame
+	_check(
+		filter.visible
+		and post_filter.visible
+		and shader_item.material == test_material,
+		"Shader switch restores every disabled shader material"
+	)
+	var controls := GameplaySettingsControls.new()
+	root.add_child(controls)
+	await process_frame
+	var shader_toggle_found := false
+	for child in controls.find_children("*", "CheckButton", true, false):
+		if (child as CheckButton).text == tr("SHADERS"):
+			shader_toggle_found = true
+			break
+	_check(
+		shader_toggle_found,
+		"Main and pause settings expose the shared Shaders switch"
+	)
+	controls.queue_free()
+	shader_item.queue_free()
+	post_process.queue_free()
+	visual_system.call("set_enabled", false)
+	settings.call(
+		"set_gameplay_setting", &"shaders", original_enabled, false
 	)
 
 

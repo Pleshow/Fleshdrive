@@ -74,8 +74,11 @@ func _on_body_entered(body: Node) -> void:
 	if collected_once or not body.is_in_group("player"):
 		return
 	collected_once = true
-	monitoring = false
-	monitorable = false
+	# body_entered is emitted while PhysicsServer2D is flushing its contact
+	# query. Area2D rejects immediate monitoring changes in that window, so
+	# defer both properties to the safe side of the physics frame.
+	set_deferred("monitoring", false)
+	set_deferred("monitorable", false)
 	var meta_progression := get_tree().root.get_node_or_null("MetaProgression")
 	if meta_progression != null:
 		meta_progression.add_gems(gem_value)

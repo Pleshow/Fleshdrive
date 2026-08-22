@@ -65,8 +65,8 @@ func _run() -> void:
 		"Koda attack creates separate muzzle and impact VFX"
 	)
 	_check(
-		get_nodes_in_group("electric_flash").size() >= 2,
-		"Koda's muzzle and impact create real blue light flashes"
+		get_nodes_in_group("electric_flash").is_empty(),
+		"Electric attacks avoid stray cyan transient light flashes"
 	)
 	var effect_count_after_attack := effects.get_child_count()
 	if audio_effects != null:

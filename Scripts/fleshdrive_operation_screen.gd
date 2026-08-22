@@ -32,6 +32,8 @@ var selected_fleshdrive_id: StringName = FleshdriveCatalog.ELECTRIC
 var meta_progression: Node
 var fleshdrive_slots: Array[Button] = []
 var mimichu_talk_generation: int = 0
+var character_sheet_button: Button
+var character_sheet_panel: CharacterSheetPanel
 
 
 func _ready() -> void:
@@ -75,11 +77,17 @@ func _ready() -> void:
 	)
 	implant_button.pressed.connect(_confirm_selection)
 	back_button.pressed.connect(back_requested.emit)
+	_install_character_sheet()
 	hide()
 
 
 func _unhandled_input(event: InputEvent) -> void:
 	if visible and event.is_action_pressed("ui_cancel"):
+		if is_instance_valid(character_sheet_panel) and character_sheet_panel.visible:
+			character_sheet_panel.hide()
+			character_sheet_button.grab_focus()
+			get_viewport().set_input_as_handled()
+			return
 		back_requested.emit()
 		get_viewport().set_input_as_handled()
 
@@ -87,7 +95,19 @@ func _unhandled_input(event: InputEvent) -> void:
 func present(progression: Node) -> void:
 	meta_progression = progression
 	selected_fleshdrive_id = FleshdriveCatalog.ELECTRIC
-	mimichu_dialogue.text = tr("MIMICHU_OPERATION_PROMPT")
+	var operation_prompts: Array[StringName] = [
+		&"MIMICHU_OPERATION_PROMPT",
+		&"MIMICHU_OPERATION_PROMPT_2",
+		&"MIMICHU_OPERATION_PROMPT_3",
+	]
+	var completed_runs := 0
+	if meta_progression != null and meta_progression.has_method("get_statistics"):
+		completed_runs = int(Dictionary(
+			meta_progression.call("get_statistics")
+		).get("runs", 0))
+	mimichu_dialogue.text = tr(operation_prompts[
+		posmod(completed_runs, operation_prompts.size())
+	])
 	mimichu_dialogue.visible_characters = 0
 	header.text = tr("SELECT FLESHDRIVE FOR IMPLANTATION")
 	if (
@@ -109,6 +129,29 @@ func present(progression: Node) -> void:
 	_animate_card_reveal()
 	_play_mimichu_intro()
 	electric_card.grab_focus()
+
+
+func _install_character_sheet() -> void:
+	character_sheet_button = Button.new()
+	character_sheet_button.name = "CharacterSheetButton"
+	character_sheet_button.text = tr("KODA CHARACTER SHEET")
+	character_sheet_button.position = Vector2(892.0, 636.0)
+	character_sheet_button.size = Vector2(304.0, 64.0)
+	character_sheet_button.process_mode = Node.PROCESS_MODE_ALWAYS
+	character_sheet_button.pressed.connect(_show_character_sheet)
+	add_child(character_sheet_button)
+	character_sheet_panel = CharacterSheetPanel.new()
+	character_sheet_panel.name = "CharacterSheetPanel"
+	character_sheet_panel.position = Vector2(220.0, 76.0)
+	character_sheet_panel.size = Vector2(840.0, 580.0)
+	character_sheet_panel.z_index = 40
+	add_child(character_sheet_panel)
+	character_sheet_panel.hide()
+
+
+func _show_character_sheet() -> void:
+	var player := get_tree().get_first_node_in_group("player") as Koda
+	character_sheet_panel.present(KodaStatSheet.snapshot(player))
 
 
 func _refresh_unlocks() -> void:
@@ -205,8 +248,6 @@ func _get_core_bonus_description(
 	core_level: int
 ) -> String:
 	var bonus_levels := maxi(core_level - 1, 0)
-	if bonus_levels == 0:
-		return tr("BASE CORE: STANDARD OUTPUT")
 	var shared := tr("CORE LV %d: +%d%% BASE ATTACK DAMAGE") % [
 		core_level,
 		bonus_levels * 3,

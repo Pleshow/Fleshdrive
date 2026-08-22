@@ -19,11 +19,11 @@ func _run() -> void:
 	root.add_child(fireball)
 	await process_frame
 	_check(
-		is_equal_approx(fireball.move_speed, 410.0)
+		is_equal_approx(fireball.move_speed, 205.0)
 		and fireball.projectile_texture.resource_path.ends_with(
 			"fireball_autoattack_sheet.png"
 		),
-		"Fire autoattack uses its unique, slower fireball asset"
+		"Fire autoattack uses its unique asset at the new half-speed contract"
 	)
 	_check(
 		fireball.sprite.sprite_frames.get_frame_count(&"flight") == 4,
@@ -35,12 +35,12 @@ func _run() -> void:
 	root.add_child(magma)
 	await process_frame
 	_check(
-		is_equal_approx(magma.move_speed, 690.0)
+		is_equal_approx(magma.move_speed, 345.0)
 		and magma.collision_mask == 3
 		and magma.projectile_texture.resource_path.ends_with(
 			"magma_spear_sheet.png"
 		),
-		"Manual Magma Spear has a distinct asset and world collision"
+		"Manual Magma Spear has a distinct half-speed asset and world collision"
 	)
 	_check(
 		magma.sprite.sprite_frames.get_frame_count(&"flight") == 4,
@@ -176,8 +176,8 @@ func _run() -> void:
 	_check(
 		chain_visual is AnimatedSprite2D
 		and chain_visual.sprite_frames.get_frame_count(&"play") == 4
-		and get_nodes_in_group("transient_lights").size() > light_count_before,
-		"Chain lightning keeps a hard pixel-stepped transient world light"
+		and get_nodes_in_group("transient_lights").size() == light_count_before,
+		"Chain lightning uses authored frames without a random cyan light flash"
 	)
 	var effect_frame_contracts := {
 		&"storm_strike_01": 48,

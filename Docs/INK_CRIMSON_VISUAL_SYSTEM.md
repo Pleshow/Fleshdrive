@@ -110,12 +110,11 @@ deep for locked biological growth, cyan for selected nodes and alert for
 requirements not met. Preserve full descriptions in a fixed right inspector;
 do not place prose inside the node graph.
 
-### Run-start / arena selection
+### Run-start scope
 
-Arena cards use one 32x18 pixel thumbnail, arena name, one-line modifier and a
-clear selected rail. Bio-Lab is crimson structural, Sludgeworks is blue-deep
-industrial, Dusk Garden alternates ink ground and crimson biomass; all are still
-the same master palette.
+The public playtest has no arena selector. Dusk Garden is the single authored
+combat site and Voltaic Heart is the single playable Fleshdrive. Prototype
+content must not imply that additional arenas are part of this release.
 
 ### Gameplay HUD
 
@@ -180,7 +179,7 @@ filtering plus pixel snapping enabled.
 2. Hostile/player projectiles, damage/status icons and six most frequent VFX.
 3. HUD portrait, HP/XP/charge widgets and crosshair.
 4. Organ type icons and the visible offer-card set, grouped by build family.
-5. Bio-Lab, Dusk Garden and Sludgeworks floors/props.
+5. Dusk Garden floor, boundary and props.
 6. Splash, loading, operation and recap illustrations.
 7. Rare VFX and inactive/prototype content.
 
@@ -192,7 +191,7 @@ preview. A beautiful zoomed sprite that loses its silhouette at 1x fails review.
 ```text
 Assets/ink_crimson/
   characters/{koda,crawler,spitter,warden}/
-  environments/{bio_lab,dusk_garden,sludgeworks}/
+  environments/dusk_garden/
   ui/{icons,cards,frames,cursors}/
   vfx/{electric,flesh,fire,kinetic,status}/
   source/                 # editable source only; not referenced at runtime
@@ -203,7 +202,7 @@ Scripts/visual/
 
 Runtime files use `ic_<family>_<purpose>_<state>_<size>`, for example
 `ic_ui_organ_heart_active_16.png`, `ic_vfx_electric_chain_32.png`, and
-`ic_prop_biolab_tank_broken_64.png`. Animation frames stay in one atlas whenever
+`ic_prop_dusk_tree_broken_64.png`. Animation frames stay in one atlas whenever
 possible; do not use numbered loose files for newly authored shipping art.
 
 ## Consistency gate

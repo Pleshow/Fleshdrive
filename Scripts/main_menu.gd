@@ -3,8 +3,7 @@ extends Control
 
 
 const GAME_SCENE_PATH := "res://Scenes/game.tscn"
-const InkIcons = preload("res://Scripts/visual/ink_crimson_icon_factory.gd")
-
+const PLAYTEST_VERSION := "0.1.0-playtest.1"
 @export var minimum_loading_seconds: float = 5.0
 
 @onready var main_panel: VBoxContainer = %MainPanel
@@ -43,9 +42,6 @@ const InkIcons = preload("res://Scripts/visual/ink_crimson_icon_factory.gd")
 @onready var title_separator: HSeparator = $MenuShell/MarginContainer/Content/Separator
 
 var game_loading: bool = false
-var arena_selector_panel: PanelContainer
-var arena_option: OptionButton
-var arena_description_label: Label
 var main_menu_shell_position: Vector2
 var main_menu_shell_size: Vector2
 
@@ -56,11 +52,7 @@ func _ready() -> void:
 	var flow := get_tree().root.get_node_or_null("GameFlow")
 	if flow != null:
 		flow.call("force_state", &"MENU", false)
-	if flow.has_method("set_selected_arena"):
-		flow.call("set_selected_arena", &"dusk_garden")
-		
 	_raise_menu_ui_above_post_process()
-	#_install_ink_crimson_icons()
 	play_button.pressed.connect(_on_play_pressed)
 	settings_button.pressed.connect(_open_settings)
 	skill_tree_button.pressed.connect(_open_skill_tree)
@@ -75,7 +67,6 @@ func _ready() -> void:
 	bit_reducer_slider.value_changed.connect(_on_bit_reducer_changed)
 	back_button.pressed.connect(_close_settings)
 	skill_tree_panel.back_requested.connect(_close_skill_tree)
-	#_install_arena_selector()
 	_connect_button_sounds()
 	resized.connect(_update_responsive_layout)
 
@@ -102,20 +93,6 @@ func _ready() -> void:
 		))
 	):
 		_open_skill_tree()
-
-
-func _install_ink_crimson_icons() -> void:
-	var icon_bindings := {
-		play_button: InkIcons.make_icon(&"play"),
-		settings_button: InkIcons.make_icon(&"settings"),
-		skill_tree_button: InkIcons.make_icon(&"organ", true),
-		quit_button: InkIcons.make_icon(&"exit", true),
-	}
-	for button_variant in icon_bindings:
-		var button := button_variant as Button
-		button.icon = icon_bindings[button]
-		button.expand_icon = false
-		button.icon_alignment = HORIZONTAL_ALIGNMENT_LEFT
 
 
 func _raise_menu_ui_above_post_process() -> void:
@@ -211,129 +188,6 @@ func _update_responsive_layout() -> void:
 	prototype_info_panel.offset_bottom = profile_position.y + profile_size.y
 
 
-func _install_arena_selector() -> void:
-	if main_panel.get_node_or_null("ArenaSelectorPanel") != null:
-		return
-	arena_selector_panel = PanelContainer.new()
-	arena_selector_panel.name = "ArenaSelectorPanel"
-	arena_selector_panel.custom_minimum_size = Vector2(0.0, 78.0)
-	arena_selector_panel.mouse_filter = Control.MOUSE_FILTER_PASS
-	var panel_style := StyleBoxFlat.new()
-	panel_style.bg_color = Color(0.018, 0.055, 0.055, 0.94)
-	panel_style.border_color = Color(0.20, 0.62, 0.66, 0.72)
-	panel_style.set_border_width_all(2)
-	panel_style.corner_radius_top_left = 6
-	panel_style.corner_radius_top_right = 6
-	panel_style.corner_radius_bottom_left = 6
-	panel_style.corner_radius_bottom_right = 6
-	arena_selector_panel.add_theme_stylebox_override("panel", panel_style)
-	main_panel.add_child(arena_selector_panel)
-	main_panel.move_child(arena_selector_panel, 0)
-	var margin := MarginContainer.new()
-	margin.add_theme_constant_override("margin_left", 12)
-	margin.add_theme_constant_override("margin_top", 7)
-	margin.add_theme_constant_override("margin_right", 12)
-	margin.add_theme_constant_override("margin_bottom", 7)
-	arena_selector_panel.add_child(margin)
-	var content := VBoxContainer.new()
-	content.add_theme_constant_override("separation", 3)
-	margin.add_child(content)
-	var row := HBoxContainer.new()
-	row.add_theme_constant_override("separation", 10)
-	content.add_child(row)
-	var title := Label.new()
-	title.text = "RUN SITE"
-	title.custom_minimum_size = Vector2(78.0, 0.0)
-	title.add_theme_color_override("font_color", Color(0.48, 0.90, 0.92))
-	title.add_theme_font_size_override("font_size", 13)
-	row.add_child(title)
-	arena_option = OptionButton.new()
-	arena_option.name = "ArenaOption"
-	arena_option.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	arena_option.custom_minimum_size = Vector2(0.0, 34.0)
-	arena_option.add_item("BIO-LAB")
-	arena_option.set_item_metadata(0, &"bio_lab")
-	arena_option.add_item("SLUDGEWORKS")
-	arena_option.set_item_metadata(1, &"sludgeworks")
-	arena_option.add_item("DUSK GARDEN")
-	arena_option.set_item_metadata(2, &"dusk_garden")
-	arena_option.tooltip_text = "Select the arena used by the next run."
-	row.add_child(arena_option)
-	arena_description_label = Label.new()
-	arena_description_label.name = "ArenaDescription"
-	arena_description_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	arena_description_label.add_theme_font_size_override("font_size", 11)
-	content.add_child(arena_description_label)
-	var selected_id := &"bio_lab"
-	var flow := get_tree().root.get_node_or_null("GameFlow")
-	if flow != null:
-		selected_id = StringName(flow.get("selected_arena_id"))
-	var selected_index := 0
-	for item_index in range(arena_option.item_count):
-		if StringName(arena_option.get_item_metadata(item_index)) == selected_id:
-			selected_index = item_index
-			break
-	arena_option.select(selected_index)
-	arena_option.item_selected.connect(_on_arena_selected)
-	_refresh_arena_selector(selected_index)
-
-
-func _on_arena_selected(index: int) -> void:
-	if arena_option == null or index < 0 or index >= arena_option.item_count:
-		return
-	var arena_id := StringName(arena_option.get_item_metadata(index))
-	var flow := get_tree().root.get_node_or_null("GameFlow")
-	if flow != null and flow.has_method("set_selected_arena"):
-		flow.call("set_selected_arena", arena_id)
-	_refresh_arena_selector(index)
-	if arena_selector_panel != null:
-		arena_selector_panel.modulate = Color(0.72, 1.0, 0.78, 1.0)
-		var tween := create_tween()
-		tween.tween_property(
-			arena_selector_panel,
-			"modulate",
-			Color.WHITE,
-			0.22
-		)
-
-
-func _refresh_arena_selector(index: int) -> void:
-	if arena_description_label == null or arena_selector_panel == null:
-		return
-	var style := arena_selector_panel.get_theme_stylebox("panel") as StyleBoxFlat
-	var arena_id := StringName(arena_option.get_item_metadata(index))
-	if arena_id == &"sludgeworks":
-		arena_description_label.text = (
-			"OPEN ISO DECK  //  GREEN RUNOFF IS IMPASSABLE"
-		)
-		arena_description_label.add_theme_color_override(
-			"font_color",
-			Color(0.48, 0.92, 0.50)
-		)
-		if style != null:
-			style.border_color = Color(0.22, 0.92, 0.30, 0.78)
-	elif arena_id == &"dusk_garden":
-		arena_description_label.text = (
-			"OPEN NIGHT FIELD  //  SHARP PIXELS, HIGH-CONTRAST HORDES"
-		)
-		arena_description_label.add_theme_color_override(
-			"font_color",
-			Color(0.54, 0.84, 1.0)
-		)
-		if style != null:
-			style.border_color = Color(0.30, 0.66, 1.0, 0.84)
-	else:
-		arena_description_label.text = (
-			"RECTILINEAR LAB  //  COVER LANES AND CONTAINMENT WALLS"
-		)
-		arena_description_label.add_theme_color_override(
-			"font_color",
-			Color(0.42, 0.72, 0.76)
-		)
-		if style != null:
-			style.border_color = Color(0.20, 0.62, 0.66, 0.72)
-
-
 func _install_gameplay_settings_controls() -> void:
 	var controls := %FullscreenToggle.get_parent()
 	var margin := controls.get_parent()
@@ -370,9 +224,6 @@ func _connect_button_sounds() -> void:
 		quit_button,
 		fullscreen_toggle,
 	]
-	if arena_option != null:
-		confirm_buttons.append(arena_option)
-
 	for button in confirm_buttons:
 		button.mouse_entered.connect(_play_ui_hover)
 		button.pressed.connect(_play_ui_confirm)
@@ -657,7 +508,10 @@ func _refresh_dynamic_localization() -> void:
 			tr("GAMEPLAY & ACCESSIBILITY")
 		)
 
-	version_label.text = tr("PRE-ALPHA DEMO")
+	version_label.text = "%s // v%s" % [
+		tr("PRE-ALPHA DEMO"),
+		PLAYTEST_VERSION,
+	]
 	_refresh_prototype_profile()
 
 	# Az új főmenü saját grafikát használ.

@@ -17,7 +17,7 @@ func _initialize() -> void:
 
 func _run() -> void:
 	var flow := root.get_node_or_null("GameFlow")
-	_check(flow != null, "GameFlow is available for Dusk Garden selection")
+	_check(flow != null, "GameFlow is available for the Dusk Garden scope lock")
 	if flow == null:
 		_finish()
 		return
@@ -28,11 +28,9 @@ func _run() -> void:
 	root.add_child(menu)
 	await process_frame
 	_check(
-		menu.arena_option != null
-		and menu.arena_option.item_count == 3
-		and menu.arena_option.selected == 2
-		and menu.arena_description_label.text.contains("SHARP PIXELS"),
-		"Main menu exposes and restores the high-contrast Dusk Garden"
+		StringName(flow.get("selected_arena_id")) == &"dusk_garden"
+		and menu.get_node_or_null("%ArenaOption") == null,
+		"Main menu keeps Dusk Garden scope-locked without an arena selector"
 	)
 	menu.queue_free()
 	await process_frame
@@ -248,21 +246,19 @@ func _run() -> void:
 		"Minimalist profile disables bloom blur and chromatic color smearing"
 	)
 
-	var offscreen_spawns_valid := true
 	spawner.set("spawning_enabled", false)
-	var camera_center := Vector2(spawner.call("_get_camera_center"))
-	for _sample in range(24):
-		var candidate := Vector2(spawner.call("_find_spawn_position"))
-		if (
-			not arena.is_walkable_position(candidate, 46.0)
-			or not bool(spawner.call("_is_offscreen", candidate, camera_center))
-		):
-			offscreen_spawns_valid = false
-			break
+	var warning := spawner.call(
+		"_create_spawn_warning", player.global_position, &"charger"
+	) as Node2D
 	_check(
-		offscreen_spawns_valid,
-		"Enemy spawns remain offscreen with the established 80px safety margin"
+		is_equal_approx(float(spawner.get("spawn_warning_duration")), 1.0)
+		and warning != null
+		and warning.is_in_group("spawn_warnings")
+		and warning.get_child_count() == 4,
+		"Every scheduled enemy spawn reserves a one-second red-X warning"
 	)
+	if is_instance_valid(warning):
+		warning.queue_free()
 	_check(
 		run_manager != null
 		and is_equal_approx(run_manager.run_duration_seconds, 720.0)
@@ -304,10 +300,9 @@ func _run() -> void:
 		) as AnimatedSprite2D
 	_check(
 		electric_effect != null
-		and electric_effect.material is ShaderMaterial
-		and bool((electric_effect.material as ShaderMaterial).get_shader_parameter("force_electric_blue"))
+		and electric_effect.material == null
 		and get_nodes_in_group("electric_flash").is_empty(),
-		"Lightning VFX is quantized blue pixel art without a soft radial flash"
+		"Lightning VFX keeps authored colors without a soft radial flash"
 	)
 
 	player.global_position = Vector2(-100.0, -100.0)

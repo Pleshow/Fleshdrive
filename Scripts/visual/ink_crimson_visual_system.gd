@@ -15,15 +15,20 @@ func _ready() -> void:
 	# without recoloring or fringing any text or controls.
 	layer = 105
 	_create_screen_filter()
-
-	screen_filter.hide()
+	var settings := get_tree().root.get_node_or_null("GameSettings")
+	if (
+		settings != null
+		and not settings.visual_settings_changed.is_connected(
+			_refresh_visibility
+		)
+	):
+		settings.visual_settings_changed.connect(_refresh_visibility)
+	_refresh_visibility()
 
 
 func set_enabled(value: bool) -> void:
 	enabled = value
-
-	if screen_filter != null:
-		screen_filter.visible = value
+	_refresh_visibility()
 
 
 func _create_screen_filter() -> void:
@@ -32,9 +37,20 @@ func _create_screen_filter() -> void:
 	screen_filter.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	screen_filter.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	screen_filter.color = Palette.VOID
+	screen_filter.add_to_group("shader_toggle_hide")
 
 	var shader_material := ShaderMaterial.new()
 	shader_material.shader = QUANTIZE_SHADER
 	screen_filter.material = shader_material
 
 	add_child(screen_filter)
+
+
+func _refresh_visibility() -> void:
+	if screen_filter == null:
+		return
+	var settings := get_tree().root.get_node_or_null("GameSettings")
+	screen_filter.visible = (
+		enabled
+		and (settings == null or bool(settings.get("shaders_enabled")))
+	)
