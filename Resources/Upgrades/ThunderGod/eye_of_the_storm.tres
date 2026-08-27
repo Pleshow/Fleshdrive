@@ -7,13 +7,13 @@
 script = ExtResource("1")
 upgrade_id = &"eye_of_the_storm"
 display_name = "EYE OF THE STORM"
-description = "With 5 Shocked enemies nearby, gain 15% movement speed and emit rapid static discharges."
+description = "Lightning fills the Thunder Meter. At 100%, activate a 5 second, 350 px storm around Koda that damages every enemy inside."
 card_texture = ExtResource("2")
 fleshdrive_affinity = "electric"
 synergy_tags = Array[StringName]([&"thunder_god", &"shock", &"mobility"])
 rarity = "rare"
 max_level = 1
-minimum_player_level = 12
+minimum_player_level = 6
 build_archetype = &"thunder_god"
-required_weapons = Array[StringName]([&"conductive_fur"])
-
+keystone = true
+required_weapons = Array[StringName]([&"storm_core"])

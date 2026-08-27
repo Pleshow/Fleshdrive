@@ -121,6 +121,9 @@ func prepare_for_pool() -> void:
 
 func _physics_process(delta: float) -> void:
 	_update_hit_flash(delta)
+	if bool(get_meta("status_shock", false)):
+		velocity = Vector2.ZERO
+		return
 	_update_flight_motion(delta)
 	if not is_instance_valid(target):
 		find_player()
@@ -368,7 +371,12 @@ func die() -> void:
 	play_sound(&"enemy_death", -7.0, 0.08)
 	died.emit(self)
 	request_combat_feedback(0.48, 0.65)
-	EnemyDeathAnimator.play(self, sprite, death_vfx_scale)
+	EnemyDeathAnimator.play_animation(
+		self,
+		sprite,
+		&"death",
+		death_vfx_scale
+	)
 	_try_drop_biomass()
 	collision_layer = 0
 	collision_mask = 0

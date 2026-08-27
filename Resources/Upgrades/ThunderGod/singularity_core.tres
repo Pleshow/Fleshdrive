@@ -7,14 +7,13 @@
 script = ExtResource("1")
 upgrade_id = &"singularity_core"
 display_name = "SINGULARITY CORE"
-description = "Every 50 Lightning events triggers THUNDERSTATE for 3 seconds, automatically relaying between Shocked enemies."
+description = "Shocked enemies periodically cast lightning at nearby enemies, dealing damage and spreading the electrical chain."
 card_texture = ExtResource("2")
 fleshdrive_affinity = "electric"
-synergy_tags = Array[StringName]([&"thunder_god", &"network", &"capstone"])
-rarity = "rare"
+synergy_tags = Array[StringName]([&"thunder_god", &"shock", &"network"])
+rarity = "specialized"
 max_level = 1
-minimum_player_level = 15
+minimum_player_level = 4
 build_archetype = &"thunder_god"
-keystone = true
-required_weapons = Array[StringName]([&"neural_thunder", &"overload_heart"])
-
+keystone = false
+required_weapons = Array[StringName]([&"feedback_loop"])

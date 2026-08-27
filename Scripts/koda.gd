@@ -157,6 +157,7 @@ var visual_action: StringName = &""
 var visual_action_priority: int = 0
 var visual_action_elapsed: float = 0.0
 var visual_action_timeout: float = 0.0
+var grounded_sprite_position: Vector2 = Vector2.ZERO
 var current_health: float
 var is_dead: bool = false
 var current_biomass: float = 0.0
@@ -201,6 +202,7 @@ func _ready() -> void:
 		_on_visual_animation_finished
 	)
 	normal_scale = animated_sprite.scale
+	grounded_sprite_position = animated_sprite.position
 	ground_shadow_base_scale = ground_shadow.scale
 	ground_shadow_base_alpha = ground_shadow.modulate.a
 	var meta_progression := get_tree().root.get_node_or_null(
@@ -454,6 +456,7 @@ func try_start_dash() -> void:
 		return
 
 	is_dashing = true
+	animated_sprite.position = grounded_sprite_position
 	dash_buffer_remaining = 0.0
 	dash_elapsed = 0.0
 	dash_direction = (
@@ -485,6 +488,13 @@ func try_start_dash() -> void:
 func update_dash_movement(delta: float) -> void:
 	dash_elapsed += delta
 	var progress := dash_elapsed / maxf(dash_duration, 0.001)
+	# The dash uses Koda's authored jump frames. Lift the rendered body along a
+	# short arc while the physics body remains on its predictable dash path.
+	# Together with the shadow contraction this reads as a leap, not a flicker.
+	animated_sprite.position = grounded_sprite_position + Vector2(
+		0.0,
+		-sin(clampf(progress, 0.0, 1.0) * PI) * 12.0
+	)
 	if progress >= dash_control_return and input_direction != Vector2.ZERO:
 		var return_weight := inverse_lerp(dash_control_return, 1.0, progress)
 		dash_direction = dash_direction.slerp(
@@ -499,6 +509,7 @@ func update_dash_movement(delta: float) -> void:
 
 func finish_dash() -> void:
 	is_dashing = false
+	animated_sprite.position = grounded_sprite_position
 	play_combat_vfx(
 		&"dash_smoke_end",
 		global_position - dash_direction * 8.0,
@@ -508,7 +519,10 @@ func finish_dash() -> void:
 	velocity = dash_direction * move_speed * dash_exit_speed_multiplier
 	animated_sprite.modulate.a = 1.0
 	animated_sprite.scale = normal_scale
-	if visual_action == &"jump":
+	if (
+		visual_action == &"jump"
+		and not MinimalistVisualProfile.is_active(get_tree())
+	):
 		visual_action = &""
 		visual_action_priority = 0
 		update_direction_sprite()

@@ -51,10 +51,12 @@ func _build_ui() -> void:
 	godot_logo.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	godot_column.add_child(godot_logo)
 	var godot_text := Label.new()
+	godot_text.name = "GodotCredit"
 	godot_text.text = "MADE WITH GODOT GAME ENGINE"
 	godot_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	godot_text.add_theme_font_size_override("font_size", 23)
-	godot_text.add_theme_color_override("font_color", Color(0.86, 0.94, 1.0))
+	godot_text.add_theme_color_override("font_color", Color.WHITE)
+	godot_text.set_meta("preserve_authored_ui_style", true)
 	godot_column.add_child(godot_text)
 
 	studio_stage = CenterContainer.new()
@@ -81,6 +83,7 @@ func _build_ui() -> void:
 	studio_name.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	studio_name.add_theme_font_size_override("font_size", 30)
 	studio_name.add_theme_color_override("font_color", Color.WHITE)
+	studio_name.set_meta("preserve_authored_ui_style", true)
 	studio_column.add_child(studio_name)
 
 

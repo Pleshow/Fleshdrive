@@ -22,3 +22,6 @@
 .DS_Store
 Thumbs.db
 Desktop.ini
+
+# Temporary / generated work
+.artifact-work/

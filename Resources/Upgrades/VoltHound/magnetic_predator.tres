@@ -5,12 +5,11 @@
 script = ExtResource("1")
 upgrade_id = &"magnetic_predator"
 display_name = "MAGNETIC PREDATOR"
-description = "At 75+ Momentum, nearby enemies are gently dragged behind Koda's movement, grouping them for a return pass."
+description = "During Overdrive, enemies in front of Koda are pulled toward his movement path."
 card_texture = ExtResource("2")
 fleshdrive_affinity = "electric"
 synergy_tags = Array[StringName]([&"volt_hound", &"movement", &"control"])
 max_level = 1
-minimum_player_level = 8
+minimum_player_level = 4
 build_archetype = &"volt_hound"
-required_weapons = Array[StringName]([&"static_claws"])
-
+required_weapons = Array[StringName]([&"kinetic_capacitor"])

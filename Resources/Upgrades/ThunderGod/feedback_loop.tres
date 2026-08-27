@@ -7,13 +7,12 @@
 script = ExtResource("1")
 upgrade_id = &"feedback_loop"
 display_name = "FEEDBACK LOOP"
-description = "Each unique Shocked target reduces the next attack cooldown by 0.03 seconds, capped at 20%. Minimum cooldown is 0.25 seconds."
+description = "Shock has a 50% chance to jump to another nearby enemy."
 card_texture = ExtResource("2")
 fleshdrive_affinity = "electric"
 synergy_tags = Array[StringName]([&"thunder_god", &"shock", &"feedback"])
 rarity = "rare"
 max_level = 1
-minimum_player_level = 10
+minimum_player_level = 3
 build_archetype = &"thunder_god"
-required_weapons = Array[StringName]([&"capacitor_organ"])
-
+required_weapons = Array[StringName]([&"conductive_fur"])

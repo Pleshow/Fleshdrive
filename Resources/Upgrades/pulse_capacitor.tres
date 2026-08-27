@@ -7,7 +7,12 @@
 script = ExtResource("1_86v7e")
 upgrade_id = &"pulse_capacitor"
 display_name = "PULSE CAPACITOR"
-description = "Extends chain-lightning range by 20% per level."
+description = "Every 8 chain hits stores a Pulse. At 3 Pulses, Koda releases an independent radial Chain Lightning discharge."
 card_texture = ExtResource("1_my5oy")
 fleshdrive_affinity = "electric"
+synergy_tags = Array[StringName]([&"thunder_god", &"chain", &"pulse"])
+max_level = 1
+minimum_player_level = 4
+build_archetype = &"thunder_god"
+required_weapons = Array[StringName]([&"forked_arc_node"])
 metadata/_custom_type_script = "uid://cgff01swg5n6"

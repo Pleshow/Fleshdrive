@@ -102,11 +102,28 @@ func _run() -> void:
 		and player_sprite.material is CanvasItemMaterial
 		and player_sprite.scale == Vector2.ONE
 		and jump_texture.resource_path.contains("Koda_32x32/jumping/east")
-		and is_equal_approx(player_sprite.sprite_frames.get_animation_speed(&"jump_right"), 30.0)
-		and jump_duration >= player.dash_duration
-		and jump_duration <= player.dash_duration + 0.02,
-		"Koda uses native-scale crisp pixel art and a readable 30 FPS jump"
+		and is_equal_approx(player_sprite.sprite_frames.get_animation_speed(&"jump_right"), 18.0)
+		and jump_duration >= 0.27
+		and jump_duration <= 0.29,
+		"Koda uses native-scale crisp pixel art and a readable 18 FPS jump"
 	)
+	var grounded_sprite_position := player_sprite.position
+	player.is_dashing = true
+	player.dash_direction = Vector2.RIGHT
+	player.dash_elapsed = player.dash_duration * 0.5
+	player.update_dash_movement(0.0)
+	_check(
+		player_sprite.position.y <= grounded_sprite_position.y - 11.5,
+		"Koda's dash animation follows a visible airborne arc"
+	)
+	player.play_jump_animation(Vector2.RIGHT)
+	player.finish_dash()
+	_check(
+		player_sprite.position == grounded_sprite_position
+		and player.visual_action == &"jump",
+		"Koda lands at ground height while the authored jump animation finishes"
+	)
+	player._on_visual_animation_finished()
 	var player_light := player.get_node_or_null("PlayerLight") as PointLight2D
 	_check(
 		player_light != null

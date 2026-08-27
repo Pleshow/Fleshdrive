@@ -54,7 +54,7 @@ static func configure_player(sprite: AnimatedSprite2D) -> void:
 			StringName("jump_%s" % direction),
 			PLAYER_ROOT + "/jumping/east",
 			[0, 2, 4, 6, 8],
-			30.0,
+			18.0,
 			false
 		)
 		_add_file_animation(
@@ -136,7 +136,7 @@ static func configure_spitter(sprite: AnimatedSprite2D) -> void:
 		&"death",
 		SPITTER_ROOT + "/death/south-east",
 		9,
-		13.0,
+		8.0,
 		false
 	)
 	sprite.sprite_frames = frames

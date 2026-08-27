@@ -12,6 +12,10 @@ var host: PlayerWeaponSystem
 var player: Koda
 var momentum: float = 0.0
 var maximum_momentum: float = 100.0
+var stored_charges: int = 0
+var charges_spent_in_window: int = 0
+var charge_spend_window_remaining: float = 0.0
+var lightspeed_remaining: float = 0.0
 var overdrive_remaining: float = 0.0
 var overdrive_duration: float = 2.0
 var overdrive_extension_used: float = 0.0
@@ -110,25 +114,23 @@ func movement_multiplier() -> float:
 func dash_speed_multiplier() -> float:
 	if player == null or player.get_upgrade_level(&"static_claws") <= 0:
 		return 1.0
-	var result := 1.0 + 0.20 * float(player.get_upgrade_level(&"charged_paw_pads") > 0)
-	if player.get_upgrade_level(&"flash_step") > 0 and momentum >= 75.0:
-		result *= 1.40
-	if player.get_upgrade_level(&"lightspeed") > 0 and ready:
-		result *= 1.28
-	return result
+	return 1.0
 
 
 func dash_cooldown_multiplier() -> float:
-	return 0.72 if overdrive_remaining > 0.0 else 1.0
+	return 0.25 if lightspeed_remaining > 0.0 else 1.0
 
 
 func modify_incoming_damage(event: DamageEvent, amount: float) -> float:
 	if overdrive_remaining <= 0.0:
 		return amount
-	# READY is consumed on dash start and the complete Overdrive window is a
-	# single, predictable invulnerability contract. This covers projectiles,
-	# hazards and bosses too, rather than only ordinary contact events.
-	return 0.0
+	if (
+		event != null
+		and is_instance_valid(event.source)
+		and event.source.is_in_group("enemies")
+	):
+		return 0.0
+	return amount
 
 
 func is_overdrive_active() -> bool:
@@ -147,6 +149,12 @@ func on_enemy_killed() -> void:
 
 func _update_timers(delta: float) -> void:
 	damage_lockout = maxf(damage_lockout - delta, 0.0)
+	charge_spend_window_remaining = maxf(
+		charge_spend_window_remaining - delta, 0.0
+	)
+	if charge_spend_window_remaining <= 0.0:
+		charges_spent_in_window = 0
+	lightspeed_remaining = maxf(lightspeed_remaining - delta, 0.0)
 	if overdrive_remaining > 0.0:
 		overdrive_remaining = maxf(overdrive_remaining - delta, 0.0)
 		if overdrive_remaining <= 0.0:
@@ -163,36 +171,27 @@ func _update_timers(delta: float) -> void:
 
 func _update_momentum(delta: float) -> void:
 	if overdrive_remaining > 0.0:
-		momentum = clampf(100.0 * overdrive_remaining / maxf(overdrive_duration + overdrive_extension_used, 0.01), 0.0, 100.0)
 		return
-	if ready:
+	var has_capacitor := player.get_upgrade_level(&"kinetic_capacitor") > 0
+	if has_capacitor:
+		ready = stored_charges > 0
+		if stored_charges >= 3:
+			return
+	elif ready:
 		momentum = 100.0
 		return
 	var moving := player.velocity.length() > 24.0
 	if moving:
 		var generation := _kinetic_value("movement_charge_per_second", 6.0)
-		if player.get_upgrade_level(&"voltaic_tendons") > 0:
-			generation *= 1.35
-		if player.get_upgrade_level(&"nerve_overclock") > 0:
-			generation *= 1.25
 		momentum = minf(momentum + generation * delta, maximum_momentum)
-	else:
-		var drain := 12.0
-		if player.get_upgrade_level(&"capacitor_marrow") > 0:
-			drain *= 0.50
-		if player.get_upgrade_level(&"ballistic_nervous_system") > 0:
-			drain = 42.0
-		momentum = maxf(momentum - drain * delta, 0.0)
-	if (
-		player.get_upgrade_level(&"ionized_spine") > 0
-		and not previous_direction.is_zero_approx()
-		and not player.velocity.is_zero_approx()
-		and previous_direction.dot(player.velocity.normalized()) < 0.35
-	):
-		_add_momentum(3.0)
-	ready = momentum >= _kinetic_value("ready_threshold", 100.0)
-	if ready:
-		momentum = 100.0
+	if momentum >= _kinetic_value("ready_threshold", 100.0):
+		if has_capacitor:
+			stored_charges = mini(stored_charges + 1, 3)
+			momentum = 0.0
+			ready = stored_charges > 0
+		else:
+			momentum = 100.0
+			ready = true
 		_spawn_radial_flash(player.global_position, 72.0, WHITE_CORE)
 		host.play_build_sound(&"capacitor_ready", -2.0)
 		_show_ready_outline()
@@ -201,10 +200,23 @@ func _update_momentum(delta: float) -> void:
 func _update_dash_state() -> void:
 	if player.is_dashing and not was_dashing:
 		dash_start = previous_position
-		if ready:
+		if lightspeed_remaining > 0.0:
+			_activate_overdrive()
+		elif ready or stored_charges > 0:
+			if player.get_upgrade_level(&"kinetic_capacitor") > 0:
+				stored_charges = maxi(stored_charges - 1, 0)
+				_register_charge_spent()
+			else:
+				momentum = 0.0
 			_activate_overdrive()
 		else:
 			_add_momentum(_kinetic_value("dash_charge", 20.0))
+		if (
+			overdrive_remaining > 0.0
+			and player.get_upgrade_level(&"charged_paw_pads") > 0
+		):
+			_damage_circle(player.global_position, 100.0, 22.0, &"charged_paw_pads")
+			_spawn_radial_flash(player.global_position, 100.0, WHITE_CORE)
 		_spawn_dash_trace(dash_start, player.global_position, 0.22)
 	if player.is_dashing:
 		_process_dash_segment(previous_position, player.global_position, false)
@@ -214,10 +226,9 @@ func _update_dash_state() -> void:
 
 
 func _process_dash_segment(start: Vector2, finish: Vector2, replay: bool) -> void:
-	if overdrive_remaining <= 0.0:
+	if overdrive_remaining <= 0.0 and not replay:
 		return
-	var high_momentum := momentum >= 75.0
-	var lightspeed := player.get_upgrade_level(&"lightspeed") > 0 and momentum >= 100.0
+	var lightspeed := lightspeed_remaining > 0.0
 	for enemy in host.living_enemies_for_build():
 		if _distance_to_segment(enemy.global_position, start, finish) > _kinetic_value("contact_radius", 48.0):
 			continue
@@ -238,11 +249,6 @@ func _process_dash_segment(start: Vector2, finish: Vector2, replay: bool) -> voi
 			DamageEvent.HitRole.SECONDARY,
 			false
 		)
-		if (
-			(high_momentum and player.get_upgrade_level(&"flash_step") > 0)
-			or overdrive_remaining > 0.0
-		):
-			_mark_or_detonate(enemy, lightspeed or replay)
 		_spawn_radial_flash(enemy.global_position, 34.0, PINK)
 
 
@@ -250,13 +256,12 @@ func _finish_dash_path(start: Vector2, finish: Vector2) -> void:
 	if overdrive_remaining <= 0.0:
 		return
 	if player.get_upgrade_level(&"charged_paw_pads") > 0:
-		_damage_circle(finish, 84.0, 16.0, &"charged_paw_pads")
+		_damage_circle(finish, 100.0, 22.0, &"charged_paw_pads")
+		_spawn_radial_flash(finish, 100.0, WHITE_CORE)
 	var repeats := 0
 	if player.get_upgrade_level(&"phantom_current") > 0:
 		repeats = 1
-	if player.get_upgrade_level(&"double_exposure") > 0:
-		repeats += 1
-	if player.get_upgrade_level(&"lightspeed") > 0 and momentum >= 100.0:
+	if lightspeed_remaining > 0.0:
 		repeats = maxi(repeats, 2)
 	if repeats <= 0:
 		return
@@ -264,7 +269,7 @@ func _finish_dash_path(start: Vector2, finish: Vector2) -> void:
 	afterimages.append({
 		"start": start,
 		"finish": finish,
-		"timer": 0.70,
+		"timer": 0.60,
 		"repeats": repeats,
 		"visual": trace,
 	})
@@ -323,12 +328,33 @@ func _update_near_misses() -> void:
 
 
 func _update_magnetic_predator(delta: float) -> void:
-	if player.get_upgrade_level(&"magnetic_predator") <= 0 or momentum < 75.0:
+	if (
+		player.get_upgrade_level(&"magnetic_predator") <= 0
+		or overdrive_remaining <= 0.0
+	):
 		return
 	for enemy in host.enemies_in_radius_for_build(player.global_position, 190.0):
+		var offset := enemy.global_position - player.global_position
+		if offset.length_squared() > 0.01 and player.last_direction.dot(offset.normalized()) <= 0.0:
+			continue
 		var pull := enemy.global_position.direction_to(player.global_position + player.velocity * 0.18)
 		if enemy is CharacterBody2D:
 			(enemy as CharacterBody2D).velocity += pull * 70.0 * delta
+
+
+func _register_charge_spent() -> void:
+	if player.get_upgrade_level(&"lightspeed") <= 0:
+		return
+	if charges_spent_in_window == 0:
+		charge_spend_window_remaining = 4.0
+	charges_spent_in_window += 1
+	if charges_spent_in_window < 3:
+		return
+	charges_spent_in_window = 0
+	charge_spend_window_remaining = 0.0
+	lightspeed_remaining = 6.0
+	host.play_build_vfx(&"electro_shock", player.global_position, 4.5)
+	host.play_build_sound(&"raiju_attack_spark", 1.0)
 
 
 func _mark_or_detonate(enemy: Node2D, _force_detonate: bool) -> void:
@@ -381,8 +407,7 @@ func _activate_overdrive() -> void:
 
 func _end_overdrive() -> void:
 	overdrive_remaining = 0.0
-	momentum = 0.0
-	ready = false
+	ready = stored_charges > 0
 	overdrive_hit_ids.clear()
 	_clear_kinetic_aura_assets()
 	_spawn_radial_flash(player.global_position, 52.0, VIOLET)
@@ -546,10 +571,21 @@ func _update_momentum_hud() -> void:
 		if ready
 		else Color.WHITE
 	)
-	momentum_label.text = "KINETIC CHARGE  %d / %d%s" % [
-		roundi(momentum), roundi(maximum_momentum),
-		"  OVERDRIVE" if overdrive_remaining > 0.0 else ("  READY - DASH" if ready else ""),
-	]
+	var state_suffix := ""
+	if lightspeed_remaining > 0.0:
+		state_suffix = "  LIGHTSPEED %.1f" % lightspeed_remaining
+	elif overdrive_remaining > 0.0:
+		state_suffix = "  OVERDRIVE"
+	elif ready:
+		state_suffix = "  READY - DASH"
+	if player.get_upgrade_level(&"kinetic_capacitor") > 0:
+		momentum_label.text = "KINETIC CHARGE  %d%%  STORED %d / 3%s" % [
+			roundi(momentum), stored_charges, state_suffix,
+		]
+	else:
+		momentum_label.text = "KINETIC CHARGE  %d / %d%s" % [
+			roundi(momentum), roundi(maximum_momentum), state_suffix,
+		]
 
 
 func _spawn_dash_trace(start: Vector2, finish: Vector2, alpha: float) -> Node2D:

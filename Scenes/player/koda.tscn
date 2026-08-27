@@ -1,8 +1,6 @@
 [gd_scene format=3 uid="uid://tmywkju6a3a5"]
 
 [ext_resource type="Script" uid="uid://beglwqyy0xe6t" path="res://Scripts/koda.gd" id="1_2lwdr"]
-[ext_resource type="Texture2D" uid="uid://ks6glwgijrbg" path="res://Assets/player/Koda run.png" id="2_pdep8"]
-[ext_resource type="Texture2D" uid="uid://djb1iixxmwpu2" path="res://Assets/player/idle.png" id="3_lwwdd"]
 [ext_resource type="Script" uid="uid://c0ouuir23l3bt" path="res://Scripts/camera_feedback.gd" id="10_camera_feedback"]
 [ext_resource type="Texture2D" uid="uid://dqjeyc5oi5mls" path="res://Assets/environment/dust_mote.svg" id="11_dust"]
 [ext_resource type="Script" uid="uid://k17tjp3mn6sb" path="res://Scripts/player_weapon_system.gd" id="12_weapons"]
@@ -85,8 +83,6 @@ light_mode = 1
 collision_layer = 4
 motion_mode = 1
 script = ExtResource("1_2lwdr")
-walk_sprite_sheet = ExtResource("2_pdep8")
-idle_sprite_sheet = ExtResource("3_lwwdd")
 dash_unlocked = true
 dash_speed = 850.0
 

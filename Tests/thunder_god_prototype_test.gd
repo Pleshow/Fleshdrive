@@ -39,15 +39,12 @@ func _run() -> void:
 		"Clicking Pyre explains that it is unavailable without selecting it"
 	)
 	var thunder_ids: Array[StringName] = [
-		&"conductive_fur", &"arc_relay", &"capacitor_organ",
-		&"storm_core", &"ionized_blood", &"neural_thunder",
-		&"feedback_loop", &"overload_heart", &"eye_of_the_storm",
-		&"singularity_core",
+		&"conductive_fur", &"feedback_loop", &"singularity_core",
+		&"ionized_blood", &"neural_thunder",
 	]
 	for upgrade_id in thunder_ids:
 		player.upgrade_levels[upgrade_id] = 1
 	player.upgrade_levels[&"arc_heart"] = 1
-	player.upgrade_levels[&"arc_relay"] = 4
 	player.configure_fleshdrive(FleshdriveCatalog.ELECTRIC, 1)
 	var chest_socket := player.get_electric_muzzle_position(
 		player.global_position + Vector2.RIGHT * 100.0
@@ -97,11 +94,13 @@ func _run() -> void:
 	_check(shocked_targets >= 2, "Base Chain Lightning reaches at least two unique enemies")
 	_check(shocked_targets <= 9, "Chain targeting never loops beyond unique enemies")
 	_check(
-		tracked_shock_duration >= 5.9 and shock_crowns_follow_targets,
-		"Conductive Fur shock lasts six seconds and follows each target"
+		tracked_shock_duration >= 0.9 and shock_crowns_follow_targets,
+		"Conductive Fur immobilizes targets for one refreshed second"
 	)
-	_check(system.thunder_god.capacitor_charge <= 6, "One attack respects the six-charge Capacitor cap")
-	_check(player.attack_timer.wait_time >= 0.25, "Feedback Loop respects the absolute cooldown floor")
+	_check(
+		system.thunder_god.thunder_meter > 0.0,
+		"Lightning hits charge the Thunder Meter"
+	)
 	var thunder_effects := get_nodes_in_group("thunder_vfx")
 	_check(not thunder_effects.is_empty(), "Chain Lightning creates an animated asset VFX")
 	var bolt := thunder_effects[0] as AnimatedSprite2D if not thunder_effects.is_empty() else null
@@ -148,12 +147,14 @@ func _run() -> void:
 			)
 		else:
 			_check(false, "Recycled VFX cannot be moved by a stale lightning tracker")
-	system.thunder_god.lightning_activity = 49
+	system.thunder_god.thunder_meter = 99.0
 	system.perform_thunder_god_attack(enemies[0])
-	_check(system.thunder_god.thunderstate_remaining > 0.0, "Fifty Lightning events activate THUNDERSTATE")
-	for index in range(4):
-		system.perform_thunder_god_attack(enemies[0])
-	_check(system.thunder_god.capacitor_charge < 20, "Capacitor automatically discharges and preserves remainder")
+	_check(
+		system.thunder_god.thunder_meter >= 100.0
+		and system.thunder_god.activate_thunder_capstone()
+		and system.thunder_god.neural_remaining >= 4.99,
+		"The active-skill input spends a full meter on Neural Thunder"
+	)
 	var shocked_enemy := enemies[0]
 	var shock_ref := shocked_enemy.get_meta("status_vfx_shock", null) as WeakRef
 	var shock_visual := shock_ref.get_ref() as AnimatedSprite2D if shock_ref != null else null

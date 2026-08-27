@@ -112,7 +112,33 @@ func _run() -> void:
 		attacks.get_child_count() > 0,
 		"Spitter completes wind-up and fires during live physics"
 	)
-	spitter.queue_free()
+	spitter.biomass_drop_chance = 0.0
+	var effects := get_first_node_in_group("effects_container")
+	spitter.die()
+	await process_frame
+	var spitter_death_ghost: AnimatedSprite2D
+	for effect_child in effects.get_children():
+		if (
+			effect_child is AnimatedSprite2D
+			and (effect_child as AnimatedSprite2D).animation == &"death"
+		):
+			spitter_death_ghost = effect_child as AnimatedSprite2D
+			break
+	_check(
+		is_instance_valid(spitter_death_ghost)
+		and spitter_death_ghost.is_playing()
+		and is_equal_approx(
+			spitter_death_ghost.sprite_frames.get_animation_speed(&"death"),
+			8.0
+		),
+		"Spitter death remains visible as a readable slow animation"
+	)
+	await create_timer(0.35).timeout
+	_check(
+		is_instance_valid(spitter_death_ghost)
+		and spitter_death_ghost.frame >= 2,
+		"Spitter death animation persists after the enemy leaves the pool"
+	)
 
 	for child in attacks.get_children():
 		child.queue_free()

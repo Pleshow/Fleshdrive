@@ -235,6 +235,7 @@ const CRIMSON_EFFECTS := [
 	&"generic_hit", &"heavy_hit", &"enemy_death_burst",
 	&"tissue_droplets", &"fire_impact", &"magma_spear_impact",
 	&"boss_slam", &"boss_death", &"organ_flesh_pulse",
+	&"ripper_tail_sweep",
 ]
 const NEUTRAL_EFFECTS := [
 	&"dash_smoke", &"dash_smoke_end", &"charge_dust",
@@ -296,6 +297,7 @@ var active_sprites: Array[AnimatedSprite2D] = []
 var pixel_vfx_material: ShaderMaterial
 var pixel_electric_material: ShaderMaterial
 var pixel_crimson_material: ShaderMaterial
+var source_color_unshaded_material: CanvasItemMaterial
 var pixel_neutral_material: ShaderMaterial
 var ui_layer: CanvasLayer
 var original_color_world_layer: CanvasLayer
@@ -444,6 +446,7 @@ const EFFECTS := {
 	&"fireball_creation": {"texture": FIREBALL_CREATION_TEXTURE, "frame_size": Vector2i(64, 64), "frame_count": 14, "columns": 14, "fps": 25.0, "base_scale": 1.0},
 	&"fireball_explode": {"texture": FIREBALL_EXPLODE_TEXTURE, "frame_size": Vector2i(64, 64), "frame_count": 7, "columns": 7, "fps": 24.0, "base_scale": 1.1},
 	&"slash_heavy": {"texture": BIG_SLASH_TEXTURE, "frame_size": Vector2i(64, 48), "frame_count": 5, "columns": 5, "fps": 19.0, "base_scale": 1.55},
+	&"ripper_tail_sweep": {"texture": BIG_SLASH_TEXTURE, "frame_size": Vector2i(64, 48), "frame_count": 5, "columns": 5, "fps": 14.0, "base_scale": 1.35},
 	&"slash_horizontal": {"texture": HORIZONTAL_SLASH_TEXTURE, "frame_size": Vector2i(64, 32), "frame_count": 5, "columns": 5, "fps": 21.0, "base_scale": 1.5},
 	&"bite_impact": {"texture": PUNCH_IMPACT_TEXTURE, "frame_size": Vector2i(48, 32), "frame_count": 5, "columns": 5, "fps": 22.0, "base_scale": 1.45},
 	&"slash_small": {"texture": SMALL_SLASH_TEXTURE, "frame_size": Vector2i(32, 48), "frame_count": 4, "columns": 4, "fps": 22.0, "base_scale": 1.25},
@@ -625,7 +628,9 @@ func play(
 	# Purchased Pixel VFX keep their source colors. Project-authored effects
 	# continue to use the hard functional palette ramps.
 	sprite.material = (
-		null
+		_get_source_color_unshaded_material()
+		if not shaders_allowed and effect_id == &"electric_chain_arc"
+		else null
 		if effect_id in ORIGINAL_COLOR_EFFECTS or not shaders_allowed
 		else _get_pixel_vfx_material(effect_id)
 	)
@@ -801,6 +806,15 @@ func _get_pixel_vfx_material(effect: Variant) -> ShaderMaterial:
 		pixel_vfx_material = ShaderMaterial.new()
 		pixel_vfx_material.shader = PIXEL_EMISSIVE_SHADER
 	return pixel_vfx_material
+
+
+func _get_source_color_unshaded_material() -> CanvasItemMaterial:
+	if source_color_unshaded_material == null:
+		source_color_unshaded_material = CanvasItemMaterial.new()
+		source_color_unshaded_material.light_mode = (
+			CanvasItemMaterial.LIGHT_MODE_UNSHADED
+		)
+	return source_color_unshaded_material
 
 
 func _get_cached_animation(

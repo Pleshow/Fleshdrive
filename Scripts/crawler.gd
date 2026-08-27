@@ -76,6 +76,9 @@ func prepare_for_pool() -> void:
 
 func _physics_process(delta: float) -> void:
 	_update_hit_flash(delta)
+	if bool(get_meta("status_shock", false)):
+		velocity = Vector2.ZERO
+		return
 	if not is_instance_valid(target):
 		find_player()
 

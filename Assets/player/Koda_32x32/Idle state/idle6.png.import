@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ks6glwgijrbg"
-path="res://.godot/imported/Koda run.png-664d7db21b91c02a867e70b571715a25.ctex"
+uid="uid://b7pvkj6yp1ff5"
+path="res://.godot/imported/idle6.png-3cf5c327268c0005e9000b082b682b93.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/player/Koda run.png"
-dest_files=["res://.godot/imported/Koda run.png-664d7db21b91c02a867e70b571715a25.ctex"]
+source_file="res://Assets/player/Koda_32x32/Idle state/idle6.png"
+dest_files=["res://.godot/imported/idle6.png-3cf5c327268c0005e9000b082b682b93.ctex"]
 
 [params]
 

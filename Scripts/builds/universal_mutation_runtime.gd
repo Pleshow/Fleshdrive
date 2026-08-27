@@ -205,12 +205,11 @@ func _fire_ripper_tail(level: int) -> bool:
 		if behind:
 			system._damage_enemy(enemy, (24.0 + 7.0 * level) * _damage_multiplier(), true, &"ripper_tail")
 			system._apply_knockback(enemy, player.global_position.direction_to(enemy.global_position), 460.0)
-	_spawn_ring(center, 150.0, Color(0.82, 0.28, 0.36, 0.8))
 	system.play_build_vfx(
-		&"slash_heavy",
+		&"ripper_tail_sweep",
 		center,
-		1.8,
-		player.last_direction.angle()
+		1.35,
+		player.last_direction.angle() + PI
 	)
 	return true
 

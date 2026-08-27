@@ -69,7 +69,7 @@ func _run() -> void:
 		"English strings resolve through the translation server"
 	)
 	_check(
-		TranslationServer.translate("VOLT_STATIC_CLAWS_DESC").contains("full invulnerability"),
+		TranslationServer.translate("VOLT_STATIC_CLAWS_DESC").contains("contact damage"),
 		"Revised Voltaic card explanations resolve in English"
 	)
 	menu.queue_free()

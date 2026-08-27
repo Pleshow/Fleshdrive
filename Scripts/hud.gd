@@ -12,6 +12,22 @@ const REFLEX_CORTEX_OFFER_LEVEL: int = 10
 const AUTO_ATTACK_OFFER_LEVEL: int = 15
 const EARLY_VOLTAIC_CORE_THROUGH_LEVEL: int = 5
 const EARLY_SURVIVAL_THROUGH_LEVEL: int = 5
+# Six Thunder selections complete one authored lane. Build focus therefore
+# recurs every three levels (2/5/8/11/14/17): even the slow 635-second pacing
+# target reaches its capstone before the 660-second boss spawn.
+const LEVEL_UP_FOCUS_CYCLE: Array[StringName] = [
+	&"build",
+	&"universal_weapon",
+	&"defensive",
+	&"build",
+	&"fleshdrive",
+	&"passive",
+]
+const BUILD_FOCUS_ARCHETYPES: Array[StringName] = [
+	&"thunder_god",
+	&"volt_hound",
+	&"orange_tempest",
+]
 const EARLY_VOLTAIC_CORE_IDS: Array[StringName] = [
 	&"arc_heart",
 	&"ball_lightning",
@@ -34,7 +50,9 @@ const SURVIVAL_TAGS: Array[StringName] = [
 	&"barrier",
 ]
 const MAIN_MENU_SCENE_PATH := "res://Scenes/main_menu.tscn"
-const KODA_PORTRAIT_TEXTURE := "res://Assets/player/idle.png"
+const KODA_PORTRAIT_TEXTURE := (
+	"res://Assets/player/Koda_32x32/Idle state/frame_000.png"
+)
 const PAID_REROLL_COSTS: Array[int] = [2, 3, 5]
 
 @export var upgrade_pool: Array[UpgradeData] = []
@@ -759,7 +777,7 @@ func _update_koda_portrait(_fleshdrive_id: StringName) -> void:
 		return
 	var portrait_texture := AtlasTexture.new()
 	portrait_texture.atlas = atlas
-	portrait_texture.region = Rect2(0.0, 0.0, 96.0, 96.0)
+	portrait_texture.region = Rect2(0.0, 0.0, 32.0, 32.0)
 	koda_portrait.texture = portrait_texture
 
 
@@ -834,17 +852,33 @@ func show_level_up_panel(current_level: int) -> void:
 
 	var forced_reflex_cortex: UpgradeData = null
 	var forced_auto_attack: UpgradeData = null
+	var focused_offer: UpgradeData = null
 	var affinity_offer: UpgradeData = null
 	var synergy_offer: UpgradeData = null
 	var survival_offer: UpgradeData = null
 
-	if current_level <= EARLY_SURVIVAL_THROUGH_LEVEL:
+	var level_focus := _level_up_focus(current_level)
+	if level_focus == &"build":
+		_append_build_focus_offers(available_upgrades)
+	else:
+		focused_offer = _take_focused_upgrade(
+			available_upgrades,
+			level_focus
+		)
+		if focused_offer != null:
+			displayed_upgrades.append(focused_offer)
+
+	if (
+		current_level <= EARLY_SURVIVAL_THROUGH_LEVEL
+		and displayed_upgrades.size() < upgrade_cards.size()
+	):
 		survival_offer = _take_early_survival_upgrade(available_upgrades)
 		if survival_offer != null:
 			displayed_upgrades.append(survival_offer)
 
 	if (
 		current_level <= EARLY_VOLTAIC_CORE_THROUGH_LEVEL
+		and _level_up_focus(current_level) == &"build"
 		and player.active_fleshdrive_id == FleshdriveCatalog.ELECTRIC
 	):
 		_append_early_voltaic_core_offers(available_upgrades)
@@ -852,6 +886,7 @@ func show_level_up_panel(current_level: int) -> void:
 	if (
 		current_level >= REFLEX_CORTEX_OFFER_LEVEL
 		and player.attack_mode == Koda.AttackMode.MANUAL
+		and displayed_upgrades.size() < upgrade_cards.size()
 	):
 		for upgrade in available_upgrades:
 			if upgrade.upgrade_id == &"reflex_cortex":
@@ -873,6 +908,7 @@ func show_level_up_panel(current_level: int) -> void:
 	elif (
 		current_level >= AUTO_ATTACK_OFFER_LEVEL
 		and player.attack_mode == Koda.AttackMode.SEMI_AUTO
+		and displayed_upgrades.size() < upgrade_cards.size()
 	):
 		for upgrade in available_upgrades:
 			if upgrade.upgrade_id == &"autonomic_reflex":
@@ -1051,6 +1087,83 @@ func _take_early_survival_upgrade(
 	if selected != null:
 		candidates.erase(selected)
 	return selected
+
+
+func _level_up_focus(current_level: int) -> StringName:
+	var cycle_index := posmod(current_level - 2, LEVEL_UP_FOCUS_CYCLE.size())
+	return LEVEL_UP_FOCUS_CYCLE[cycle_index]
+
+
+func _take_focused_upgrade(
+	candidates: Array[UpgradeData],
+	focus: StringName
+) -> UpgradeData:
+	var focused_candidates: Array[UpgradeData] = []
+	for upgrade in candidates:
+		if _upgrade_matches_focus(upgrade, focus):
+			focused_candidates.append(upgrade)
+	if focused_candidates.is_empty():
+		return null
+	var selected := _take_weighted_upgrade(focused_candidates, false)
+	if selected != null:
+		candidates.erase(selected)
+	return selected
+
+
+func _append_build_focus_offers(candidates: Array[UpgradeData]) -> void:
+	# Give each authored Voltaic build its own slot before falling back to
+	# weighted choices. A high-weight Volt Hound card can therefore never
+	# starve an available Thunder God card out of every build-level offer.
+	for archetype in BUILD_FOCUS_ARCHETYPES:
+		if displayed_upgrades.size() >= upgrade_cards.size():
+			return
+		var archetype_candidates: Array[UpgradeData] = []
+		for upgrade in candidates:
+			if upgrade.build_archetype == archetype:
+				archetype_candidates.append(upgrade)
+		var selected := _take_weighted_upgrade(archetype_candidates, false)
+		if selected == null:
+			continue
+		displayed_upgrades.append(selected)
+		candidates.erase(selected)
+
+	while displayed_upgrades.size() < upgrade_cards.size():
+		var remaining_builds: Array[UpgradeData] = []
+		for upgrade in candidates:
+			if not upgrade.build_archetype.is_empty():
+				remaining_builds.append(upgrade)
+		var selected := _take_weighted_upgrade(remaining_builds, false)
+		if selected == null:
+			return
+		displayed_upgrades.append(selected)
+		candidates.erase(selected)
+
+
+func _upgrade_matches_focus(upgrade: UpgradeData, focus: StringName) -> bool:
+	if upgrade == null:
+		return false
+	match focus:
+		&"build":
+			return not upgrade.build_archetype.is_empty()
+		&"universal_weapon":
+			return (
+				upgrade.fleshdrive_affinity == "universal"
+				and upgrade.upgrade_kind == UpgradeData.UpgradeKind.WEAPON
+			)
+		&"fleshdrive":
+			return (
+				upgrade.fleshdrive_affinity == String(player.active_fleshdrive_id)
+				and upgrade.build_archetype.is_empty()
+			)
+		&"passive":
+			return (
+				upgrade.fleshdrive_affinity == "universal"
+				and upgrade.upgrade_kind == UpgradeData.UpgradeKind.ITEM
+				and not _is_defensive_or_healing_upgrade(upgrade)
+			)
+		&"defensive":
+			return _is_defensive_or_healing_upgrade(upgrade)
+	return false
 
 
 func _is_defensive_or_healing_upgrade(upgrade: UpgradeData) -> bool:
@@ -3313,7 +3426,6 @@ func _format_upgrade_tooltip(
 		&"predator_tendons": effect = "+12% movement speed per level."
 		&"biomass_receptors": effect = "+20% biomass gain per level."
 		&"reinforced_carapace": effect = "+15 maximum health per level."
-		&"pulse_capacitor": effect = "+20% chain-lightning range per level."
 		&"impulse_gland": effect = "Unlocks Koda's combat dash."
 		&"arc_heart": effect = "Unlocks chain lightning."
 		&"reflex_cortex": effect = "Unlocks semi-automatic targeting."
@@ -3407,8 +3519,23 @@ func is_upgrade_available(upgrade: UpgradeData) -> bool:
 	if not upgrade.prerequisites_met(player.upgrade_levels):
 		return false
 
+	if not VoltaicCardCatalog.progression_allows(
+		upgrade.upgrade_id, player.upgrade_levels
+	):
+		return false
+
+	# Build paths advance only on their dedicated focus levels. This keeps
+	# complete build chains from occupying consecutive level-ups while still
+	# allowing every owned build to coexist in the same run.
+	if (
+		not upgrade.build_archetype.is_empty()
+		and _level_up_focus(player.current_level) != &"build"
+	):
+		return false
+
 	if (
 		upgrade.build_archetype == &"thunder_god"
+		and upgrade.upgrade_id != &"arc_heart"
 		and player.get_upgrade_level(&"arc_heart") <= 0
 	):
 		return false

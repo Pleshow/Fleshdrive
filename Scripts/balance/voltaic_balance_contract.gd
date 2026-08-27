@@ -21,14 +21,14 @@ const THREAT_COSTS := {
 
 const PATHS := {
 	&"thunder_god": {
-		"label": "THUNDER GOD / CHAINSTORM",
-		"mechanics": [&"conductive_fur", &"arc_relay", &"capacitor_organ"],
-		"keystones": [&"overload_heart", &"eye_of_the_storm", &"singularity_core"],
+		"label": "THUNDER GOD",
+		"mechanics": [&"arc_relay", &"conductive_fur", &"forked_arc_node", &"feedback_loop", &"pulse_capacitor", &"singularity_core"],
+		"keystones": [&"eye_of_the_storm", &"neural_thunder"],
 	},
 	&"volt_hound": {
-		"label": "VOLT HOUND / THUNDER RAM",
-		"mechanics": [&"shock_ram", &"static_claws", &"kinetic_capacitor"],
-		"keystones": [&"lightspeed", &"ballistic_nervous_system"],
+		"label": "VOLT HOUND",
+		"mechanics": [&"static_claws", &"charged_paw_pads", &"kinetic_capacitor", &"magnetic_predator", &"phantom_current"],
+		"keystones": [&"lightspeed"],
 	},
 	&"orange_tempest": {
 		"label": "ORANGE TEMPEST",

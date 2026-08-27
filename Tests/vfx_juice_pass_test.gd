@@ -69,6 +69,33 @@ func _run() -> void:
 	for effect_id in WORLD_EFFECTS + UI_EFFECTS:
 		all_registered = all_registered and bool(visual_effects.call("has_effect", effect_id))
 	_check(all_registered, "Every focused juice-pass effect is data-driven in VisualEffects")
+	var ripper_sweep := visual_effects.call(
+		"play",
+		&"ripper_tail_sweep",
+		Vector2(320.0, 260.0),
+		1.35,
+		PI
+	) as AnimatedSprite2D
+	var ripper_frame := (
+		ripper_sweep.sprite_frames.get_frame_texture(&"play", 0)
+		as AtlasTexture
+		if ripper_sweep != null
+		else null
+	)
+	_check(
+		ripper_sweep != null
+		and ripper_frame != null
+		and ripper_frame.atlas.resource_path.ends_with(
+			"Assets/vfx/licensed/slashes/big_slash.png"
+		)
+		and is_equal_approx(
+			ripper_sweep.sprite_frames.get_animation_speed(&"play"),
+			14.0
+		),
+		"Ripper Tail uses a readable crescent sweep instead of an explosion"
+	)
+	if ripper_sweep != null:
+		visual_effects.call("stop_effect", ripper_sweep)
 
 	var nearest_only := true
 	var source_colors_safe := true

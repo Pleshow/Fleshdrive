@@ -60,15 +60,25 @@ func _validate_build_resources() -> void:
 		_check(upgrade.prerequisites_met({upgrade.required_weapons[0]: 1}), "%s unlocks with its weapon" % upgrade.upgrade_id)
 		_check(not upgrade.prerequisites_met({}), "%s stays hidden without its weapon" % upgrade.upgrade_id)
 	_check(ids.size() == 36, "Build item identifiers are unique")
-	_check(int(build_counts.get(&"chainstorm", 0)) == 3, "Chainstorm owns exactly three legacy build items")
-	_check(int(build_counts.get(&"thunder_ram", 0)) == 3, "Thunder Ram owns exactly three legacy build items")
+	_check(int(build_counts.get(&"chainstorm", 0)) == 2, "Two inactive legacy Chainstorm items remain save-compatible")
+	_check(int(build_counts.get(&"thunder_ram", 0)) == 2, "Two inactive legacy Thunder Ram items remain save-compatible")
+	_check(int(build_counts.get(&"thunder_god", 0)) == 1, "Forked Arc Node belongs to the redesigned Thunder God path")
+	_check(int(build_counts.get(&"volt_hound", 0)) == 1, "Kinetic Capacitor belongs to the redesigned Volt Hound path")
 	_check(
 		VoltaicBalanceContract.PATHS.has(&"orange_tempest"),
 		"Orange Tempest is defined by its dedicated Voltaic progression path"
 	)
-	_check(is_equal_approx(BuildItemCatalog.value(&"forked_arc_node", "fork_chance"), 0.45), "Chainstorm uses the spreadsheet fork chance")
-	_check(is_equal_approx(BuildItemCatalog.value(&"kinetic_capacitor", "distance"), 280.0), "Thunder Ram uses the authored movement-charge distance")
-	_check(is_equal_approx(BuildItemCatalog.value(&"galvanic_tendons", "radius_per_level"), 0.07), "Thunder Ram scales contact radius predictably")
+	_check(
+		VoltaicCardCatalog.progression_allows(&"arc_relay", {&"arc_heart": 1})
+		and not VoltaicCardCatalog.progression_allows(&"forked_arc_node", {&"arc_heart": 1}),
+		"Thunder God cards unlock one authored build level at a time"
+	)
+	_check(
+		not VoltaicCardCatalog.progression_allows(
+			&"conductive_fur", {&"arc_heart": 1, &"arc_relay": 1}
+		),
+		"Selecting one Thunder God lane locks the opposite lane"
+	)
 	_check(BuildItemCatalog.BUILD_IDS == [&"chainstorm", &"thunder_ram", &"orange_tempest"], "Public build catalog contains only the three Voltaic paths")
 
 
@@ -103,28 +113,67 @@ func _validate_game_scene() -> void:
 	if hud != null:
 		_check(hud.upgrade_pool.size() >= 56, "HUD merges build items into its existing pool")
 		var player := game.get_node("Entities/Koda") as Koda
-		player.current_level = 10
-		var reservoir: UpgradeData
+		player.current_level = 11
+		var arc_relay: UpgradeData
+		var conductive_fur: UpgradeData
+		var forked_arc: UpgradeData
+		var charged_paws: UpgradeData
+		var static_reservoir_found := false
 		for candidate in hud.upgrade_pool:
-			if candidate.upgrade_id == &"static_reservoir":
-				reservoir = candidate
-				break
-		_check(reservoir != null, "Build resource is exposed to the offer system")
-		if reservoir != null:
-			_check(not hud.is_upgrade_available(reservoir), "Build item is hidden before its weapon prerequisite")
-			player.upgrade_levels[&"arc_heart"] = 1
-			_check(hud.is_upgrade_available(reservoir), "Build item becomes offerable after its weapon prerequisite")
-		var initial_chain_range := player.chain_range
-		player.apply_upgrade(&"grounding_filaments")
+			match candidate.upgrade_id:
+				&"arc_relay": arc_relay = candidate
+				&"conductive_fur": conductive_fur = candidate
+				&"forked_arc_node": forked_arc = candidate
+				&"charged_paw_pads": charged_paws = candidate
+				&"static_reservoir": static_reservoir_found = true
+		_check(not static_reservoir_found, "Inactive Thunder cards are absent from offers")
+		player.upgrade_levels[&"arc_heart"] = 1
+		player.upgrade_levels[&"static_claws"] = 1
 		_check(
-			is_equal_approx(player.chain_range, initial_chain_range + 12.0),
-			"Grounding Filaments applies its exact per-level chain range"
+			arc_relay != null and conductive_fur != null
+			and hud.is_upgrade_available(arc_relay)
+			and hud.is_upgrade_available(conductive_fur),
+			"Both Thunder God lanes remain available alongside Volt Hound"
 		)
-		var initial_move_speed := player.move_speed
-		player.apply_upgrade(&"galvanic_tendons")
 		_check(
-			is_equal_approx(player.move_speed, initial_move_speed * 1.04),
-			"Galvanic Tendons applies its exact per-level movement bonus"
+			charged_paws != null and hud.is_upgrade_available(charged_paws),
+			"Volt Hound and Thunder God can progress in the same run"
+		)
+		player.upgrade_levels[&"arc_relay"] = 1
+		_check(
+			forked_arc != null and hud.is_upgrade_available(forked_arc)
+			and not hud.is_upgrade_available(conductive_fur),
+			"The chosen Thunder lane unlocks only its next card"
+		)
+		player.current_level = 12
+		_check(
+			not hud.is_upgrade_available(forked_arc)
+			and not hud.is_upgrade_available(charged_paws),
+			"Build cards wait for the next dedicated build level"
+		)
+		_check(
+			hud._level_up_focus(11) == &"build"
+			and hud._level_up_focus(12) == &"fleshdrive"
+			and hud._level_up_focus(13) == &"passive"
+			and hud._level_up_focus(14) == &"build"
+			and hud._level_up_focus(15) == &"universal_weapon"
+			and hud._level_up_focus(16) == &"defensive",
+			"Build levels recur every three levels while all four supporting focuses rotate"
+		)
+		player.current_level = 11
+		var build_candidates: Array[UpgradeData] = []
+		for candidate in hud.upgrade_pool:
+			if hud.is_upgrade_available(candidate):
+				build_candidates.append(candidate)
+		hud.displayed_upgrades.clear()
+		hud._append_build_focus_offers(build_candidates)
+		var offered_archetypes: Dictionary = {}
+		for offered in hud.displayed_upgrades:
+			offered_archetypes[offered.build_archetype] = true
+		_check(
+			offered_archetypes.has(&"thunder_god")
+			and offered_archetypes.has(&"volt_hound"),
+			"Dedicated build levels guarantee both available Voltaic builds"
 		)
 	game.queue_free()
 	await process_frame

@@ -162,6 +162,9 @@ func _process(delta: float) -> void:
 func _physics_process(delta: float) -> void:
 	if is_dead:
 		return
+	if bool(get_meta("status_shock", false)):
+		velocity = Vector2.ZERO
+		return
 
 	if not is_instance_valid(target):
 		find_player()

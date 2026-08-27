@@ -13,7 +13,6 @@ fleshdrive_affinity = "electric"
 synergy_tags = Array[StringName]([&"thunder_god", &"shock", &"death"])
 rarity = "specialized"
 max_level = 1
-minimum_player_level = 7
+minimum_player_level = 5
 build_archetype = &"thunder_god"
-required_weapons = Array[StringName]([&"conductive_fur"])
-
+required_weapons = Array[StringName]([&"singularity_core"])

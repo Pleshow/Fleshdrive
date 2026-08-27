@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://djb1iixxmwpu2"
-path="res://.godot/imported/idle.png-cc0b877acfb3870ea3da70bcaec5731e.ctex"
+uid="uid://bjk3nrottq0tn"
+path="res://.godot/imported/fleshdrive_logo_blur.png-b8b3f16d3705316a0e16634dedcc70c9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/player/idle.png"
-dest_files=["res://.godot/imported/idle.png-cc0b877acfb3870ea3da70bcaec5731e.ctex"]
+source_file="res://Assets/ui/screens/fleshdrive_logo_blur.png"
+dest_files=["res://.godot/imported/fleshdrive_logo_blur.png-b8b3f16d3705316a0e16634dedcc70c9.ctex"]
 
 [params]
 

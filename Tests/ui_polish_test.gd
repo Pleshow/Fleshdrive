@@ -4,6 +4,7 @@ extends SceneTree
 const MAIN_MENU := preload("res://Scenes/main_menu.tscn")
 const GAME := preload("res://Scenes/game.tscn")
 const DIALOGUE_PANEL := preload("res://Scenes/dialogue_panel.tscn")
+const STARTUP_SPLASH := preload("res://Scenes/startup_splash.tscn")
 
 var failures: int = 0
 
@@ -13,6 +14,26 @@ func _initialize() -> void:
 
 
 func _run() -> void:
+	var splash := STARTUP_SPLASH.instantiate() as StartupSplash
+	root.add_child(splash)
+	await process_frame
+	await process_frame
+	var godot_credit := splash.find_child(
+		"GodotCredit", true, false
+	) as Label
+	var studio_credit := splash.find_child(
+		"StudioName", true, false
+	) as Label
+	_check(
+		godot_credit != null
+		and studio_credit != null
+		and godot_credit.get_theme_color("font_color") == Color.WHITE
+		and studio_credit.get_theme_color("font_color") == Color.WHITE,
+		"Startup credits remain white after global UI styling"
+	)
+	splash.queue_free()
+	await process_frame
+
 	var theme := load(
 		"res://Resources/Themes/fleshdrive_theme.tres"
 	) as Theme

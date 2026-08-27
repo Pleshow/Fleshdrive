@@ -1,14 +1,23 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://Scripts/red_gem_pickup.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://dmko5km18bny6" path="res://Resources/Visuals/enemy_ground_shadow.tres" id="2_shadow"]
 
 [sub_resource type="CircleShape2D" id="CircleShape_coin"]
-radius = 15.0
+radius = 7.5
 
 [node name="RedGemPickup" type="Area2D" groups=["permanent_currency_pickup"]]
 collision_layer = 0
 collision_mask = 4
 script = ExtResource("1_script")
+
+[node name="GroundShadow" type="Sprite2D" parent="."]
+visible = false
+show_behind_parent = true
+position = Vector2(0, 10)
+scale = Vector2(0.18, 0.055)
+texture = ExtResource("2_shadow")
+modulate = Color(0.02, 0.008, 0.02, 0.42)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape_coin")

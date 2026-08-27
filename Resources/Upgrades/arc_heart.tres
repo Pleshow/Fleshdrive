@@ -7,9 +7,13 @@
 script = ExtResource("1_jmx75")
 upgrade_id = &"arc_heart"
 display_name = "ARC HEART"
-description = "Unlocks chain lightning for the Voltaic Heart base attack."
+description = "The Voltaic Heart's autoattack becomes Chain Lightning that jumps through two targets."
 card_texture = ExtResource("1_f7rm1")
 upgrade_kind = 1
 organ_slot = 3
 fleshdrive_affinity = "electric"
+synergy_tags = Array[StringName]([&"thunder_god", &"chain"])
+max_level = 1
+minimum_player_level = 1
+build_archetype = &"thunder_god"
 metadata/_custom_type_script = "uid://cgff01swg5n6"

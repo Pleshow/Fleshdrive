@@ -75,9 +75,10 @@ func _run() -> void:
 			for offered_id in offer_ids:
 				if previous_set.has(offered_id):
 					two_level_repeat_found = true
-		early_survival_guaranteed = (
-			early_survival_guaranteed and has_survival_offer
-		)
+		if hud._level_up_focus(offer_level) != &"build":
+			early_survival_guaranteed = (
+				early_survival_guaranteed and has_survival_offer
+			)
 		early_offer_sets.append(offer_ids)
 		hud.level_up_panel.hide()
 		hud.run_manager.exit_level_up()
@@ -87,7 +88,7 @@ func _run() -> void:
 	)
 	_check(
 		early_survival_guaranteed,
-		"Every early-game offer contains a defensive or healing skill"
+		"Every early non-build offer contains a defensive or healing skill"
 	)
 
 	player.current_level = 12

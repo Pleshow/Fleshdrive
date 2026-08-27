@@ -7,11 +7,12 @@
 script = ExtResource("1")
 upgrade_id = &"arc_relay"
 display_name = "ARC RELAY"
-description = "+1 Chain Lightning jump and increased relay range. Maximum 4 levels."
+description = "Chain Lightning gains one additional target and 10% relay range."
 card_texture = ExtResource("2")
 fleshdrive_affinity = "electric"
 synergy_tags = Array[StringName]([&"thunder_god", &"chain", &"relay"])
-max_level = 4
+max_level = 1
 minimum_player_level = 2
 build_archetype = &"thunder_god"
-
+required_weapons = Array[StringName]([&"arc_heart"])
+excluded_upgrades = Array[StringName]([&"conductive_fur"])

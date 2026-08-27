@@ -7,13 +7,13 @@
 script = ExtResource("1")
 upgrade_id = &"neural_thunder"
 display_name = "NEURAL THUNDER"
-description = "Every eighth main or Capacitor jump has a 40% chance to branch into up to 3 new targets."
+description = "Lightning fills the Thunder Meter. At 100%, activate Neural Thunder: lethal lightning Overrides enemies for 5 seconds, then detonates them and triggers Ionized Blood."
 card_texture = ExtResource("2")
 fleshdrive_affinity = "electric"
 synergy_tags = Array[StringName]([&"thunder_god", &"fork", &"network"])
 rarity = "specialized"
 max_level = 1
-minimum_player_level = 8
+minimum_player_level = 6
 build_archetype = &"thunder_god"
-required_weapons = Array[StringName]([&"storm_core"])
-
+keystone = true
+required_weapons = Array[StringName]([&"ionized_blood"])

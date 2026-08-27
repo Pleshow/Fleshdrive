@@ -39,6 +39,30 @@ func _run() -> void:
 	# Keep this collision regression isolated from persistent metaprogression.
 	pickup.gem_value = 0
 	world.add_child(pickup)
+	pickup.activate_at(player.global_position + Vector2(64.0, 0.0))
+	await process_frame
+	var pickup_shape := pickup.get_node(
+		"CollisionShape2D"
+	) as CollisionShape2D
+	_check(
+		is_instance_valid(pickup.coin_visual)
+		and pickup.coin_visual.scale.x <= RedGemPickup.COIN_VISUAL_SCALE
+		and pickup.ground_shadow.visible
+		and is_equal_approx(
+			(pickup_shape.shape as CircleShape2D).radius,
+			7.5
+		),
+		"Blood Memory coin and collision are half-sized with a spinning shadow"
+	)
+	var initial_shadow_width := pickup.ground_shadow.scale.x
+	await create_timer(0.18).timeout
+	_check(
+		not is_equal_approx(
+			pickup.ground_shadow.scale.x,
+			initial_shadow_width
+		),
+		"Blood Memory shadow changes width with the coin rotation"
+	)
 	pickup.global_position = player.global_position
 
 	await physics_frame

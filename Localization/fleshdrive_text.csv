@@ -260,7 +260,7 @@ SYSTEM STRESS,SYSTEM STRESS,RENDSZERTERHELÉS
 COMPOUND PRESSURE,COMPOUND PRESSURE,ÖSSZETETT NYOMÁS
 CONTAINMENT FAILURE,CONTAINMENT FAILURE,ELZÁRÁSI HIBA
 CARD_FORKED_ARC_NODE_NAME,FORKED ARC NODE,ELÁGAZÓ ÍVCSOMÓ
-CARD_FORKED_ARC_NODE_DESC,"Chain lightning has a 45% chance to fork once into two unhit targets for 45% damage. A chain cannot revisit a target.","A láncvillám 45% eséllyel egyszer két még el nem talált célpontra ágazik 45% sebzéssel. Egy lánc nem térhet vissza korábbi célpontra."
+CARD_FORKED_ARC_NODE_DESC,"Chain hits have a 50% chance to fork into two new targets.","A lánctalálatok 50% eséllyel két új célpontra ágaznak."
 CARD_STATIC_RESERVOIR_NAME,STATIC RESERVOIR,STATIKUS TÁROLÓ
 CARD_STATIC_RESERVOIR_DESC,"Every 10 chain hits releases a 180 px pulse for 70% + 15% per level attack damage.","Minden 10. lánctalálat 180 px sugarú impulzust kelt, amely a támadási sebzés 70% + szintenként 15%-át okozza."
 CARD_GROUNDING_FILAMENTS_NAME,GROUNDING FILAMENTS,FÖLDELŐ FILAMENTUMOK
@@ -268,7 +268,7 @@ CARD_GROUNDING_FILAMENTS_DESC,"Electric hits Ground for 2 seconds. The next chai
 CARD_THUNDER_GAIT_NAME,THUNDER GAIT,MENNYDÖRGŐ JÁRÁS
 CARD_THUNDER_GAIT_DESC,"Crossing at least two enemies in one dash refunds 45% dash cooldown and triggers a 70% attack-damage aftershock once per dash.","Legalább két ellenfélen áthaladó dash 45% dash cooldown-visszatérítést és egyszer 70% támadási sebzésű utórezgést ad."
 CARD_KINETIC_CAPACITOR_NAME,KINETIC CAPACITOR,KINETIKUS KONDENZÁTOR
-CARD_KINETIC_CAPACITOR_DESC,"Every 280 px moved stores one charge up to three. Shock Ram consumes all charges for +7% damage per level and charge.","Minden megtett 280 px egy töltést tárol, legfeljebb hármat. A Shock Ram mindet elfogyasztja, töltésenként és szintenként +7% sebzésért."
+CARD_KINETIC_CAPACITOR_DESC,"Koda can store up to 3 Kinetic Charges. Reaching 100% stores one Charge; Dashing consumes one Charge to trigger Overdrive.","Koda legfeljebb 3 Kinetikus Töltést tárolhat. A 100% elérése eltárol egy Töltést; a dash egy Töltést fogyaszt az Overdrive aktiválásához."
 CARD_GALVANIC_TENDONS_NAME,GALVANIC TENDONS,GALVANIKUS INAK
 CARD_GALVANIC_TENDONS_DESC,"Per level: +4% move speed and +7% dash-impact radius, but -3% non-dash secondary electric damage.","Szintenként +4% mozgási sebesség és +7% dash-becsapódási sugár, de -3% nem dash eredetű másodlagos elektromos sebzés."
 CARD_SPORE_EMBER_SAC_NAME,SPORE EMBER SAC,PARÁZSSPÓRA-ZSÁK
@@ -335,6 +335,7 @@ REROLL - %d BIOMASS,REROLL - %d BIOMASS,ÚJRA - %d BIOMASSZA
 SKIP,SKIP,KIHAGYÁS
 BIOFABRICATOR CACHE // FINAL MUTATION AND REPAIR,BIOFABRICATOR CACHE // FINAL MUTATION AND REPAIR,BIOFABRIKÁTOR-TARTALÉK // UTOLSÓ MUTÁCIÓ ÉS JAVÍTÁS
 ACTIVE SKILL,ACTIVE SKILL,AKTÍV KÉPESSÉG
+SECONDARY ACTIVE SKILL,SECONDARY ACTIVE SKILL,MÁSODLAGOS AKTÍV KÉPESSÉG
 PRESS A KEY - ESC TO CANCEL,PRESS A KEY - ESC TO CANCEL,NYOMJ LE EGY GOMBOT - ESC: MÉGSE
 ONBOARDING_ACTIVE_ELECTRIC,"ACTIVE: Voltaic Overdrive discharges around Koda and can interrupt the Warden. Press the Active Skill key when enemies are close.","AKTÍV: A Voltaic Overdrive Koda körül sül ki, és megszakíthatja az Őrzőt. Nyomd meg az Aktív képesség gombját, ha ellenfelek vannak közel."
 ONBOARDING_ACTIVE_FIRE,"ACTIVE: Pyre Burst burns nearby enemies. After unlocking Magma Spear, press Active Skill to aim, confirm to fire, or Cancel to leave aim mode.","AKTÍV: A Pyre Burst felgyújtja a közeli ellenfeleket. A Magma Spear feloldása után az Aktív képességgel célozz, megerősítéssel lőj, vagy a Mégse gombbal lépj ki a célzásból."

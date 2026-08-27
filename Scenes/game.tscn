@@ -56,7 +56,7 @@
 [ext_resource type="Resource" uid="uid://do3o0x2fw247c" path="res://Resources/Upgrades/mass_amplifier.tres" id="59_mass"]
 [ext_resource type="Resource" uid="uid://bopkkab4wdmre" path="res://Resources/Upgrades/vector_cortex.tres" id="60_vector"]
 [ext_resource type="Resource" path="res://Resources/Upgrades/inertial_lattice.tres" id="61_inertial"]
-[ext_resource type="Texture2D" uid="uid://djb1iixxmwpu2" path="res://Assets/player/idle.png" id="62_koda_portrait"]
+[ext_resource type="Texture2D" uid="uid://bseiwrmtdenpx" path="res://Assets/player/Koda_32x32/Idle state/frame_000.png" id="62_koda_portrait"]
 [ext_resource type="Script" uid="uid://fhr4wlppj35t" path="res://Scripts/ui/gameplay_crosshair.gd" id="63_crosshair"]
 [ext_resource type="Resource" path="res://Resources/Upgrades/ThunderGod/conductive_fur.tres" id="67_conductive_fur"]
 [ext_resource type="Resource" path="res://Resources/Upgrades/ThunderGod/arc_relay.tres" id="68_arc_relay"]
@@ -125,7 +125,7 @@ corner_radius_bottom_left = 4
 
 [sub_resource type="AtlasTexture" id="Atlas_koda_portrait"]
 atlas = ExtResource("62_koda_portrait")
-region = Rect2(0, 0, 96, 96)
+region = Rect2(0, 0, 32, 32)
 
 [sub_resource type="StyleBoxFlat" id="StyleBox_status_under"]
 bg_color = Color(0.018, 0.029, 0.04, 1)

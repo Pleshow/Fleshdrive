@@ -5,12 +5,11 @@
 script = ExtResource("1")
 upgrade_id = &"phantom_current"
 display_name = "PHANTOM CURRENT"
-description = "Dash paths leave a violet afterimage that repeats the route as an electric discharge after 0.7 seconds."
+description = "Every Overdrive Dash leaves a Phantom Current. After 0.6 seconds it repeats the entire Dash for full contact damage."
 card_texture = ExtResource("2")
 fleshdrive_affinity = "electric"
 synergy_tags = Array[StringName]([&"volt_hound", &"dash", &"afterimage"])
 max_level = 1
-minimum_player_level = 4
+minimum_player_level = 5
 build_archetype = &"volt_hound"
-required_weapons = Array[StringName]([&"static_claws"])
-
+required_weapons = Array[StringName]([&"magnetic_predator"])

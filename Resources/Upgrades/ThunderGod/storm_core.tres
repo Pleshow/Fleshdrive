@@ -7,7 +7,7 @@
 script = ExtResource("1")
 upgrade_id = &"storm_core"
 display_name = "STORM CORE"
-description = "Normal lightning hits have a 40% chance to fork a 45% damage Mini Bolt. Mini Bolts cannot fork themselves."
+description = "Forked Lightning can fork one additional time."
 card_texture = ExtResource("2")
 fleshdrive_affinity = "electric"
 synergy_tags = Array[StringName]([&"thunder_god", &"fork", &"shock"])
@@ -15,5 +15,4 @@ rarity = "specialized"
 max_level = 1
 minimum_player_level = 5
 build_archetype = &"thunder_god"
-required_weapons = Array[StringName]([&"arc_relay"])
-
+required_weapons = Array[StringName]([&"pulse_capacitor"])

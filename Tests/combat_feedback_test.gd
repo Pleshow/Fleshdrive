@@ -23,6 +23,8 @@ func _run() -> void:
 	var camera := get_first_node_in_group("camera_feedback")
 	var player := get_first_node_in_group("player") as Koda
 	var audio_effects := root.get_node_or_null("AudioEffects")
+	var settings := root.get_node_or_null("GameSettings")
+	var visual_effects := root.get_node_or_null("VisualEffects")
 	spawner.stop_spawning()
 
 	_check(feedback != null, "Combat feedback controller exists")
@@ -41,6 +43,23 @@ func _run() -> void:
 			== CanvasItemMaterial.LIGHT_MODE_UNSHADED
 		and player.lightning_glow.material == player.lightning_line.material,
 		"Base autoattack ignores WorldDarkness like other electric-blue sprites"
+	)
+	var original_shader_setting := bool(settings.shaders_enabled)
+	settings.call("set_gameplay_setting", &"shaders", false, false)
+	await process_frame
+	var source_color_arc := visual_effects.call(
+		"play", &"electric_chain_arc", player.global_position, 1.0, 0.0
+	) as AnimatedSprite2D
+	_check(
+		source_color_arc != null
+		and source_color_arc.material is CanvasItemMaterial
+		and (source_color_arc.material as CanvasItemMaterial).light_mode
+			== CanvasItemMaterial.LIGHT_MODE_UNSHADED
+		and source_color_arc.modulate == Color.WHITE,
+		"Shaderless autoattack preserves the licensed VFX source colors"
+	)
+	settings.call(
+		"set_gameplay_setting", &"shaders", original_shader_setting, false
 	)
 	if audio_effects != null:
 		audio_effects.call("clear_play_counts")

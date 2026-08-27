@@ -28,6 +28,7 @@ const DEFAULT_CROSSHAIR_SCALE: float = 1.0
 const DEFAULT_AIM_ASSIST: float = 0.35
 const DEFAULT_LANGUAGE := "en"
 const DEFAULT_ACTIVE_SKILL_KEY: Key = KEY_E
+const DEFAULT_SECONDARY_ACTIVE_SKILL_KEY: Key = KEY_Q
 const DEFAULT_WINDOW_RESOLUTION := Vector2i(1280, 720)
 const RESOLUTION_PRESETS := [
 	Vector2i(1280, 720),
@@ -62,6 +63,7 @@ var tutorials_enabled: bool = true
 var shaders_enabled: bool = true
 var language_code: String = DEFAULT_LANGUAGE
 var active_skill_keycode: Key = DEFAULT_ACTIVE_SKILL_KEY
+var secondary_active_skill_keycode: Key = DEFAULT_SECONDARY_ACTIVE_SKILL_KEY
 var fullscreen_enabled: bool = true
 # Vector2i.ZERO means native desktop resolution in fullscreen mode.
 var selected_resolution: Vector2i = Vector2i.ZERO
@@ -80,6 +82,7 @@ func _ready() -> void:
 	_apply_audio_settings()
 	_apply_input_settings()
 	_apply_active_skill_binding()
+	_apply_secondary_active_skill_binding()
 	_apply_shader_setting.call_deferred()
 
 
@@ -242,6 +245,22 @@ func get_active_skill_key_text() -> String:
 	return OS.get_keycode_string(active_skill_keycode)
 
 
+func set_secondary_active_skill_keycode(
+	keycode: Key,
+	save: bool = true
+) -> void:
+	if keycode == KEY_NONE:
+		return
+	secondary_active_skill_keycode = keycode
+	_apply_secondary_active_skill_binding()
+	if save:
+		_save_settings()
+
+
+func get_secondary_active_skill_key_text() -> String:
+	return OS.get_keycode_string(secondary_active_skill_keycode)
+
+
 func _load_settings() -> void:
 	var config := ConfigFile.new()
 	var repository := get_tree().root.get_node_or_null("SaveRepository")
@@ -314,6 +333,11 @@ func _load_settings() -> void:
 		"active_skill_keycode",
 		DEFAULT_ACTIVE_SKILL_KEY
 	))
+	secondary_active_skill_keycode = int(config.get_value(
+		MASTER_SECTION,
+		"secondary_active_skill_keycode",
+		DEFAULT_SECONDARY_ACTIVE_SKILL_KEY
+	))
 	fullscreen_enabled = bool(config.get_value(
 		MASTER_SECTION,
 		"fullscreen",
@@ -363,6 +387,11 @@ func _save_settings() -> bool:
 	config.set_value(MASTER_SECTION, "shaders", shaders_enabled)
 	config.set_value(MASTER_SECTION, "language", language_code)
 	config.set_value(MASTER_SECTION, "active_skill_keycode", int(active_skill_keycode))
+	config.set_value(
+		MASTER_SECTION,
+		"secondary_active_skill_keycode",
+		int(secondary_active_skill_keycode)
+	)
 	config.set_value(MASTER_SECTION, "fullscreen", fullscreen_enabled)
 	config.set_value(MASTER_SECTION, "resolution_x", selected_resolution.x)
 	config.set_value(MASTER_SECTION, "resolution_y", selected_resolution.y)
@@ -487,6 +516,17 @@ func _apply_active_skill_binding() -> void:
 	var key_event := InputEventKey.new()
 	key_event.physical_keycode = active_skill_keycode
 	InputMap.action_add_event(&"active_skill", key_event)
+
+
+func _apply_secondary_active_skill_binding() -> void:
+	if not InputMap.has_action(&"secondary_active_skill"):
+		InputMap.add_action(&"secondary_active_skill")
+	for event in InputMap.action_get_events(&"secondary_active_skill"):
+		if event is InputEventKey:
+			InputMap.action_erase_event(&"secondary_active_skill", event)
+	var key_event := InputEventKey.new()
+	key_event.physical_keycode = secondary_active_skill_keycode
+	InputMap.action_add_event(&"secondary_active_skill", key_event)
 
 
 func _ensure_bit_reducer() -> void:

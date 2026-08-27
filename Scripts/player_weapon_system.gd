@@ -186,7 +186,13 @@ func _activate_or_aim_active_skill() -> bool:
 	if (
 		player.active_fleshdrive_id == FleshdriveCatalog.ELECTRIC
 		and orange_tempest != null
-		and orange_tempest.activate_polarity_shift()
+		and player.get_upgrade_level(&"polarity_shift") > 0
+	):
+		return orange_tempest.activate_polarity_shift()
+	if (
+		player.active_fleshdrive_id == FleshdriveCatalog.ELECTRIC
+		and thunder_god != null
+		and thunder_god.activate_thunder_capstone()
 	):
 		return true
 	if intrinsic_active_cooldown > 0.0:
@@ -199,6 +205,15 @@ func _activate_or_aim_active_skill() -> bool:
 	# Repulse Wave, Inferno Ring and Voltaic Overdrive are automatic weapons.
 	# Only explicitly manual weapons may consume the active-skill input.
 	return false
+
+
+func _activate_secondary_active_skill() -> bool:
+	return (
+		player.active_fleshdrive_id == FleshdriveCatalog.ELECTRIC
+		and player.get_upgrade_level(&"polarity_shift") > 0
+		and thunder_god != null
+		and thunder_god.activate_thunder_capstone()
+	)
 
 
 func _fire_voltaic_overdrive() -> bool:
@@ -346,6 +361,12 @@ func _build_active_skill_status() -> Dictionary:
 			"cooldown": maxf(remaining, cooldown),
 			"max_cooldown": OrangeTempestRuntime.POLARITY_COOLDOWN,
 		}
+	if (
+		affinity == FleshdriveCatalog.ELECTRIC
+		and thunder_god != null
+		and thunder_god.has_capstone_active_skill()
+	):
+		return thunder_god.get_active_skill_status()
 	if affinity == FleshdriveCatalog.FIRE and player.get_upgrade_level(&"magma_spear") > 0:
 		var magma := get_magma_spear_status()
 		magma["id"] = &"magma_spear"

@@ -5,10 +5,93 @@
 [ext_resource type="Texture2D" uid="uid://y5drqtqrysf2" path="res://Assets/ui/screens/menu_background.png" id="4_cp0ys"]
 [ext_resource type="PackedScene" path="res://Scenes/post_process.tscn" id="4_post_process"]
 [ext_resource type="PackedScene" path="res://Scenes/ui/skill_tree_panel.tscn" id="5_skill_tree"]
-[ext_resource type="Texture2D" uid="uid://c46k4ipl4uvf1" path="res://Assets/ui/screens/fleshdrive_logo.png" id="5_yhxw7"]
+[ext_resource type="Texture2D" uid="uid://bjk3nrottq0tn" path="res://Assets/ui/screens/fleshdrive_logo_blur.png" id="5_trj04"]
 [ext_resource type="PackedScene" uid="uid://d3hk6kh3ss73n" path="res://Scenes/ui/loading_screen.tscn" id="6_loading"]
 [ext_resource type="Texture2D" uid="uid://dbtgyakhk5fao" path="res://Assets/ui/screens/koda_silhouette.png" id="6_trj04"]
 [ext_resource type="Script" uid="uid://dc34cfmipq08k" path="res://Scripts/visual/ink_crimson_backdrop.gd" id="7_ink_backdrop"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_16hvj"]
+atlas = ExtResource("5_trj04")
+region = Rect2(0, 0, 1280, 720)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vr1f0"]
+atlas = ExtResource("5_trj04")
+region = Rect2(1280, 0, 1280, 720)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t1dhk"]
+atlas = ExtResource("5_trj04")
+region = Rect2(2560, 0, 1280, 720)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5egv6"]
+atlas = ExtResource("5_trj04")
+region = Rect2(3840, 0, 1280, 720)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vtepg"]
+atlas = ExtResource("5_trj04")
+region = Rect2(5120, 0, 1280, 720)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8dnnj"]
+atlas = ExtResource("5_trj04")
+region = Rect2(6400, 0, 1280, 720)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m3bi6"]
+atlas = ExtResource("5_trj04")
+region = Rect2(7680, 0, 1280, 720)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wyh8j"]
+atlas = ExtResource("5_trj04")
+region = Rect2(8960, 0, 1280, 720)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ujyyl"]
+atlas = ExtResource("5_trj04")
+region = Rect2(10240, 0, 1280, 720)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mkpwh"]
+atlas = ExtResource("5_trj04")
+region = Rect2(11520, 0, 1280, 720)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_d6u6w"]
+animations = [{
+"frames": [],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_16hvj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vr1f0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t1dhk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5egv6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vtepg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8dnnj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m3bi6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wyh8j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ujyyl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mkpwh")
+}],
+"loop": 1,
+"name": &"new_animation",
+"speed": 5.0
+}]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_trj04"]
 
@@ -128,13 +211,13 @@ texture = ExtResource("4_cp0ys")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="Logo" type="TextureRect" parent="." unique_id=1577666069]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-mouse_filter = 2
-texture = ExtResource("5_yhxw7")
-stretch_mode = 5
+[node name="Logo" type="AnimatedSprite2D" parent="." unique_id=636967414]
+position = Vector2(636, 368)
+sprite_frames = SubResource("SpriteFrames_d6u6w")
+animation = &"new_animation"
+autoplay = "new_animation"
+frame = 6
+frame_progress = 0.86150366
 
 [node name="KodaMenuArt" type="TextureRect" parent="." unique_id=1000036452]
 layout_mode = 0
@@ -221,7 +304,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 focus_neighbor_bottom = NodePath("../SettingsButton")
 theme_override_colors/font_color = Color(0.4, 0.05882353, 0.19215687, 1)
-theme_override_colors/font_focus_color = Color(0.4, 0.05882353, 0.19215687, 1)
+theme_override_colors/font_focus_color = Color(0.6117647, 0.09019608, 0.23137255, 1)
 theme_override_colors/font_hover_color = Color(0.6117647, 0.09019608, 0.23137255, 1)
 theme_override_font_sizes/font_size = 22
 theme_override_styles/normal = SubResource("StyleBoxEmpty_d6u6w")
@@ -239,7 +322,7 @@ size_flags_horizontal = 4
 focus_neighbor_top = NodePath("../PlayButton")
 focus_neighbor_bottom = NodePath("../SkillTreeButton")
 theme_override_colors/font_color = Color(0.4, 0.05882353, 0.19215687, 1)
-theme_override_colors/font_focus_color = Color(0.4, 0.05882353, 0.19215687, 1)
+theme_override_colors/font_focus_color = Color(0.6117647, 0.09019608, 0.23137255, 1)
 theme_override_colors/font_hover_color = Color(0.6117647, 0.09019608, 0.23137255, 1)
 theme_override_font_sizes/font_size = 22
 theme_override_styles/normal = SubResource("StyleBoxEmpty_gxn76")
@@ -257,7 +340,7 @@ size_flags_horizontal = 4
 focus_neighbor_top = NodePath("../SettingsButton")
 focus_neighbor_bottom = NodePath("../QuitButton")
 theme_override_colors/font_color = Color(0.4, 0.05882353, 0.19215687, 1)
-theme_override_colors/font_focus_color = Color(0.4, 0.05882353, 0.19215687, 1)
+theme_override_colors/font_focus_color = Color(0.6117647, 0.09019608, 0.23137255, 1)
 theme_override_colors/font_hover_color = Color(0.6117647, 0.09019608, 0.23137255, 1)
 theme_override_font_sizes/font_size = 22
 theme_override_styles/normal = SubResource("StyleBoxEmpty_t1dhk")
@@ -274,7 +357,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 focus_neighbor_top = NodePath("../SkillTreeButton")
 theme_override_colors/font_color = Color(0.4, 0.05882353, 0.19215687, 1)
-theme_override_colors/font_focus_color = Color(0.4, 0.05882353, 0.19215687, 1)
+theme_override_colors/font_focus_color = Color(0.6117647, 0.09019608, 0.23137255, 1)
 theme_override_colors/font_hover_color = Color(0.6117647, 0.09019608, 0.23137255, 1)
 theme_override_font_sizes/font_size = 22
 theme_override_styles/normal = SubResource("StyleBoxEmpty_5egv6")

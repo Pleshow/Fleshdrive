@@ -3,8 +3,8 @@ extends RefCounted
 
 
 const LOADOUTS := {
-	&"chainstorm": {"affinity": &"electric", "upgrades": [&"conductive_fur", &"arc_relay", &"capacitor_organ", &"storm_core", &"neural_thunder", &"feedback_loop", &"overload_heart"]},
-	&"thunder_ram": {"affinity": &"electric", "upgrades": [&"shock_ram", &"static_claws", &"thunder_gait", &"kinetic_capacitor", &"galvanic_tendons", &"voltaic_tendons", &"lightspeed"]},
+	&"chainstorm": {"affinity": &"electric", "upgrades": [&"arc_heart", &"arc_relay", &"forked_arc_node", &"pulse_capacitor", &"storm_core", &"eye_of_the_storm"]},
+	&"thunder_ram": {"affinity": &"electric", "upgrades": [&"static_claws", &"charged_paw_pads", &"kinetic_capacitor", &"magnetic_predator", &"phantom_current", &"lightspeed"]},
 	&"orange_tempest": {"affinity": &"electric", "upgrades": [&"ball_lightning", &"ionized_membrane", &"plasma_expansion", &"static_replication", &"orbital_charge", &"chain_reactor", &"star_collapse"]},
 }
 

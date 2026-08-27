@@ -4,6 +4,10 @@ extends Area2D
 
 signal collected
 
+const COIN_VISUAL_SCALE: float = 0.675
+const SHADOW_MIN_WIDTH: float = 0.09
+const SHADOW_MAX_WIDTH: float = 0.18
+
 @export var attraction_radius: float = 150.0
 @export var attraction_speed: float = 360.0
 @export var gem_value: int = 1
@@ -11,6 +15,7 @@ signal collected
 var player: Node2D
 var collected_once: bool = false
 var coin_visual: AnimatedSprite2D
+@onready var ground_shadow: Sprite2D = $GroundShadow
 
 
 func _ready() -> void:
@@ -55,6 +60,7 @@ func _physics_process(delta: float) -> void:
 	# drop frame. Keep retrying so a permanent collectible never stays hidden.
 	if not is_instance_valid(coin_visual):
 		_start_spin_visual()
+	_update_spinning_shadow()
 	if not is_instance_valid(player):
 		player = get_tree().get_first_node_in_group("player") as Node2D
 	if player == null:
@@ -99,12 +105,14 @@ func _start_spin_visual() -> void:
 		&"blood_memory_coin_spin",
 		self,
 		Vector2.ZERO,
-		1.35,
+		COIN_VISUAL_SCALE,
 		0.0
 	) as AnimatedSprite2D
 	if coin_visual != null:
 		coin_visual.name = "BloodMemoryGoldCoin"
 		coin_visual.z_index = 32
+		ground_shadow.show()
+		_update_spinning_shadow()
 
 
 func _play_collect_visual() -> void:
@@ -115,7 +123,7 @@ func _play_collect_visual() -> void:
 			"play",
 			&"blood_memory_coin_collect",
 			global_position,
-			1.35,
+			COIN_VISUAL_SCALE,
 			0.0
 		) as AnimatedSprite2D
 		if coin_visual != null:
@@ -130,6 +138,8 @@ func _play_collect_visual() -> void:
 
 
 func _stop_coin_visual() -> void:
+	if is_instance_valid(ground_shadow):
+		ground_shadow.hide()
 	if not is_instance_valid(coin_visual):
 		coin_visual = null
 		return
@@ -139,6 +149,27 @@ func _stop_coin_visual() -> void:
 	else:
 		coin_visual.queue_free()
 	coin_visual = null
+
+
+func _update_spinning_shadow() -> void:
+	if not is_instance_valid(ground_shadow) or not is_instance_valid(coin_visual):
+		return
+	var frame_count := maxi(
+		coin_visual.sprite_frames.get_frame_count(&"play"),
+		1
+	)
+	var phase := TAU * (
+		float(coin_visual.frame) + coin_visual.frame_progress
+	) / float(frame_count)
+	var face_width := absf(cos(phase))
+	ground_shadow.scale.x = lerpf(
+		SHADOW_MIN_WIDTH,
+		SHADOW_MAX_WIDTH,
+		face_width
+	)
+	var shadow_color := ground_shadow.modulate
+	shadow_color.a = lerpf(0.28, 0.42, face_width)
+	ground_shadow.modulate = shadow_color
 
 
 func _release_after_collection() -> void:

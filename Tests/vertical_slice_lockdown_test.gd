@@ -61,11 +61,18 @@ func _run() -> void:
 		&"spine_launcher", &"bone_saw", &"parasite_maw", &"blood_needle",
 		&"acid_gland", &"jaw_reflex", &"surgical_drone", &"implosion_sac",
 		&"reserve_bladder", &"bone_plating", &"split_nervous_system",
-		&"electric_kinetic_expanded_capacitor",
 		&"electric_kinetic_predator_capacitor",
-		&"electric_kinetic_compressed_charge",
 	]:
 		_check(universal_ids.has(expected_id), "%s is available in the universal mutation pool" % String(expected_id))
+	for inactive_id in [
+		&"electric_kinetic_expanded_capacitor",
+		&"electric_kinetic_compressed_charge", &"shock_ram",
+		&"capacitor_organ", &"voltaic_tendons",
+	]:
+		_check(
+			not universal_ids.has(inactive_id),
+			"%s is removed from the current offer pool" % String(inactive_id)
+		)
 	_check(
 		weapon_system.universal_mutations != null
 		and weapon_system.universal_mutations.handles(&"spine_launcher"),
@@ -102,16 +109,20 @@ func _run() -> void:
 		and not weapon_system.volt_hound.ready,
 		"Kinetic READY waits for the next Dash and activates a two-second Overdrive"
 	)
-	var contact_probe := DamageEvent.create(player, 10.0, null, &"contact_probe")
+	var enemy_source := Node2D.new()
+	root.add_child(enemy_source)
+	enemy_source.add_to_group("enemies")
+	var contact_probe := DamageEvent.create(player, 10.0, enemy_source, &"contact_probe")
 	contact_probe.damage_type = DamageEvent.DamageType.CONTACT
 	var projectile_probe := DamageEvent.create(player, 10.0, null, &"projectile_probe")
 	projectile_probe.damage_type = DamageEvent.DamageType.PROJECTILE
 	_check(
 		is_zero_approx(weapon_system.volt_hound.modify_incoming_damage(contact_probe, 10.0))
-		and is_zero_approx(weapon_system.volt_hound.modify_incoming_damage(projectile_probe, 10.0))
+		and is_equal_approx(weapon_system.volt_hound.modify_incoming_damage(projectile_probe, 10.0), 10.0)
 		and weapon_system.volt_hound.is_overdrive_active(),
-		"Overdrive blocks contact and projectile damage for its complete active window"
+		"Overdrive blocks enemy contact damage but preserves projectile damage"
 	)
+	enemy_source.queue_free()
 	player.is_dashing = false
 	weapon_system.volt_hound.was_dashing = false
 	weapon_system.volt_hound._end_overdrive()
@@ -119,6 +130,7 @@ func _run() -> void:
 
 	_check(
 		InputMap.has_action(&"active_skill")
+		and InputMap.has_action(&"secondary_active_skill")
 		and InputMap.has_action(&"active_confirm")
 		and InputMap.has_action(&"active_cancel"),
 		"Active skills expose unified keyboard and controller actions"

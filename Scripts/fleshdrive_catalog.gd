@@ -16,7 +16,7 @@ const DEFINITIONS := {
 		"accent": Color(0.16, 0.82, 1.0, 1.0),
 		"operation": (
 			"Build a self-sustaining electrical network through Shock, "
-			+ "branching chains, Capacitor discharges and THUNDERSTATE."
+			+ "branching chains, Shock networks and active Thunder Meter capstones."
 		),
 		"build": (
 			"THUNDER GOD / SHOCK NETWORK / RECURSIVE DISCHARGE\n"

@@ -17,6 +17,8 @@ func handle_input(event: InputEvent) -> bool:
 		return true
 	if event.is_action_pressed("active_skill"):
 		return bool(host._activate_or_aim_active_skill())
+	if event.is_action_pressed("secondary_active_skill"):
+		return bool(host._activate_secondary_active_skill())
 	if event.is_action_pressed("active_confirm") and host.magma_aim_active:
 		host._fire_aimed_magma_spear()
 		return true

@@ -6,6 +6,8 @@ var settings: Node
 var sliders: Dictionary = {}
 var active_skill_bind_button: Button
 var waiting_for_active_skill_key: bool = false
+var secondary_active_skill_bind_button: Button
+var waiting_for_secondary_active_skill_key: bool = false
 
 
 func _ready() -> void:
@@ -47,6 +49,16 @@ func _ready() -> void:
 	]
 	active_skill_bind_button.pressed.connect(_begin_active_skill_rebind)
 	add_child(active_skill_bind_button)
+	secondary_active_skill_bind_button = Button.new()
+	secondary_active_skill_bind_button.custom_minimum_size = Vector2(250.0, 42.0)
+	secondary_active_skill_bind_button.text = "%s: %s" % [
+		tr("SECONDARY ACTIVE SKILL"),
+		String(settings.call("get_secondary_active_skill_key_text")),
+	]
+	secondary_active_skill_bind_button.pressed.connect(
+		_begin_secondary_active_skill_rebind
+	)
+	add_child(secondary_active_skill_bind_button)
 
 
 func _notification(what: int) -> void:
@@ -163,18 +175,40 @@ func _on_toggle_changed(enabled: bool, key: StringName) -> void:
 
 func _begin_active_skill_rebind() -> void:
 	waiting_for_active_skill_key = true
+	waiting_for_secondary_active_skill_key = false
 	active_skill_bind_button.text = tr("PRESS A KEY - ESC TO CANCEL")
 	active_skill_bind_button.release_focus()
 
 
-func _unhandled_key_input(event: InputEvent) -> void:
-	if not waiting_for_active_skill_key or not event.pressed or event.echo:
-		return
+func _begin_secondary_active_skill_rebind() -> void:
 	waiting_for_active_skill_key = false
-	if event.keycode != KEY_ESCAPE:
-		settings.call("set_active_skill_keycode", event.physical_keycode)
+	waiting_for_secondary_active_skill_key = true
+	secondary_active_skill_bind_button.text = tr("PRESS A KEY - ESC TO CANCEL")
+	secondary_active_skill_bind_button.release_focus()
+
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if (
+		not waiting_for_active_skill_key
+		and not waiting_for_secondary_active_skill_key
+	) or not event.pressed or event.echo:
+		return
+	if waiting_for_active_skill_key:
+		waiting_for_active_skill_key = false
+		if event.keycode != KEY_ESCAPE:
+			settings.call("set_active_skill_keycode", event.physical_keycode)
+	else:
+		waiting_for_secondary_active_skill_key = false
+		if event.keycode != KEY_ESCAPE:
+			settings.call(
+				"set_secondary_active_skill_keycode", event.physical_keycode
+			)
 	active_skill_bind_button.text = "%s: %s" % [
 		tr("ACTIVE SKILL"),
 		String(settings.call("get_active_skill_key_text")),
+	]
+	secondary_active_skill_bind_button.text = "%s: %s" % [
+		tr("SECONDARY ACTIVE SKILL"),
+		String(settings.call("get_secondary_active_skill_key_text")),
 	]
 	get_viewport().set_input_as_handled()

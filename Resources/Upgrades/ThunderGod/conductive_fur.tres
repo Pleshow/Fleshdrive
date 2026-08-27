@@ -7,9 +7,12 @@
 script = ExtResource("1")
 upgrade_id = &"conductive_fur"
 display_name = "CONDUCTIVE FUR"
-description = "Lightning hits apply Shock for 6 seconds. Shock stacks up to 5 times and adds 8% Lightning damage per stack."
+description = "Lightning hits Shock enemies for 1 second, preventing movement. Reapplying Shock refreshes it."
 card_texture = ExtResource("2")
 fleshdrive_affinity = "electric"
 synergy_tags = Array[StringName]([&"thunder_god", &"shock", &"chain"])
 max_level = 1
+minimum_player_level = 2
 build_archetype = &"thunder_god"
+required_weapons = Array[StringName]([&"arc_heart"])
+excluded_upgrades = Array[StringName]([&"arc_relay"])

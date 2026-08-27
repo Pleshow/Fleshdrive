@@ -264,7 +264,7 @@ func _run() -> void:
 	)
 
 	menu.minimum_loading_seconds = 0.05
-	menu._on_play_pressed()
+	play_button.pressed.emit()
 	for _frame in range(600):
 		if current_scene != null and current_scene.name == "Game":
 			break

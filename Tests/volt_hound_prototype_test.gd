@@ -57,30 +57,26 @@ func _run() -> void:
 		"Movement builds Momentum and exposes the dedicated HUD meter"
 	)
 	for id in [
-		&"voltaic_tendons", &"phantom_current", &"predators_static",
-		&"flash_step", &"magnetic_predator", &"nerve_overclock",
-		&"lightspeed", &"capacitor_marrow", &"predator_coil",
-		&"charged_paw_pads", &"ionized_spine", &"purple_heart",
-		&"double_exposure", &"ballistic_nervous_system",
+		&"charged_paw_pads", &"kinetic_capacitor", &"magnetic_predator",
+		&"phantom_current", &"lightspeed",
 	]:
 		player.apply_upgrade(id)
 	system.volt_hound.momentum = 100.0
 	system.volt_hound.update(0.01)
 	_check(
 		system.volt_hound.ready
+		and system.volt_hound.stored_charges == 1
 		and is_zero_approx(system.volt_hound.overdrive_remaining),
-		"100 Momentum arms Kinetic Overdrive without spending it early"
+		"100% Kinetic Charge stores one of three Capacitor charges"
 	)
 	player.is_dashing = true
 	system.volt_hound.update(0.01)
 	_check(
-		system.volt_hound.overdrive_remaining >= 2.4
-		and system.volt_hound.movement_multiplier() > 1.3
-		and is_equal_approx(
-			system.volt_hound.dash_cooldown_multiplier(), 0.72
-		)
-		and is_zero_approx(system.volt_hound.modify_incoming_damage(null, 10.0)),
-		"A full-charge dash spends READY and grants the complete Overdrive benefits"
+		system.volt_hound.overdrive_remaining >= 1.99
+		and system.volt_hound.stored_charges == 0
+		and is_equal_approx(system.volt_hound.dash_cooldown_multiplier(), 1.0)
+		and is_equal_approx(system.volt_hound.modify_incoming_damage(null, 10.0), 10.0),
+		"A charged dash spends one stored Charge and starts Overdrive"
 	)
 	system.volt_hound.update(0.01)
 	var kinetic_asset := system.volt_hound.kinetic_aura_sprite
@@ -92,7 +88,7 @@ func _run() -> void:
 		and kinetic_follow.get_ref() == system.volt_hound.aura
 		and kinetic_asset.material == null
 		and system.volt_hound.kinetic_aura_sprites.size() == 4,
-		"Invulnerable Overdrive uses four source-color lightning assets that follow Koda"
+		"Overdrive uses four source-color lightning assets that follow Koda"
 	)
 	var crawler_scene := load("res://Scenes/enemies/crawler.tscn") as PackedScene
 	var enemy := crawler_scene.instantiate() as Crawler
@@ -101,13 +97,18 @@ func _run() -> void:
 	enemy.max_health = 5000.0
 	enemy.current_health = enemy.max_health
 	var hp_before := enemy.current_health
+	var contact_event := DamageEvent.create(player, 10.0, enemy, &"crawler")
+	contact_event.damage_type = DamageEvent.DamageType.CONTACT
+	_check(
+		is_zero_approx(system.volt_hound.modify_incoming_damage(contact_event, 10.0)),
+		"Overdrive blocks enemy contact damage without blocking projectiles"
+	)
 	system.volt_hound._process_dash_segment(
 		player.global_position, player.global_position + Vector2(140.0, 0.0), false
 	)
 	_check(
-		enemy.current_health < hp_before
-		and system.volt_hound.static_marks.has(enemy.get_instance_id()),
-		"Dash traversal deals Momentum-scaled damage and applies Static Mark"
+		enemy.current_health < hp_before,
+		"Dash traversal deals full Overdrive contact damage"
 	)
 	system.volt_hound.contact_cooldowns.clear()
 	var marked_hp := enemy.current_health
@@ -115,9 +116,8 @@ func _run() -> void:
 		player.global_position, player.global_position + Vector2(140.0, 0.0), false
 	)
 	_check(
-		not system.volt_hound.static_marks.has(enemy.get_instance_id())
-		and enemy.current_health < marked_hp,
-		"A second pass detonates Static Mark"
+		enemy.current_health < marked_hp,
+		"A repeated traversal can deal contact damage again"
 	)
 	system.volt_hound.contact_cooldowns.clear()
 	system.volt_hound._finish_dash_path(
@@ -126,7 +126,14 @@ func _run() -> void:
 	_check(
 		system.volt_hound.afterimages.size() > 0
 		and get_nodes_in_group("volt_hound_vfx").size() > 0,
-		"Phantom Current records a readable magenta afterimage route"
+		"Phantom Current records a readable route for its 0.6 second replay"
+	)
+	for index in range(3):
+		system.volt_hound._register_charge_spent()
+	_check(
+		system.volt_hound.lightspeed_remaining >= 5.99
+		and is_equal_approx(system.volt_hound.dash_cooldown_multiplier(), 0.25),
+		"Three Charges spent in the window activate six seconds of LIGHTSPEED"
 	)
 	var arc := _find_upgrade(hud.upgrade_pool, &"arc_heart")
 	var ball := _find_upgrade(hud.upgrade_pool, &"ball_lightning")
