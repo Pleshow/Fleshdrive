@@ -25,3 +25,6 @@ Desktop.ini
 
 # Temporary / generated work
 .artifact-work/
+.artifact-work/voltaic-catalog/node_modules/.modules.yaml
+.artifact-work/voltaic-catalog/node_modules/.modules.yaml
+.artifact-work/voltaic-catalog/node_modules/.package-map.json

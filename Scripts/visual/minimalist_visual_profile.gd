@@ -7,10 +7,7 @@ const PLAYER_ROOT := "res://Assets/player/Koda_32x32"
 const CRAWLER_ROOT := "res://Assets/enemies/crawler/Snake crawler"
 const SPITTER_ROOT := "res://Assets/enemies/spitter/Spider"
 const BIOMASS_TEXTURE := preload(
-	"res://Assets/environment/small_biomass_transparent.png"
-)
-const PIXEL_EMISSIVE_SHADER := preload(
-	"res://Shaders/pixel_emissive.gdshader"
+	"res://Assets/pickups/biomass/blue_colored_pulsating_flesh_c-spritesheet/biomass.png"
 )
 const DIRECTIONS: Array[StringName] = [&"down", &"right", &"up", &"left"]
 const Palette = preload("res://Scripts/visual/ink_crimson_palette.gd")
@@ -54,7 +51,7 @@ static func configure_player(sprite: AnimatedSprite2D) -> void:
 			StringName("jump_%s" % direction),
 			PLAYER_ROOT + "/jumping/east",
 			[0, 2, 4, 6, 8],
-			18.0,
+			12.0,
 			false
 		)
 		_add_file_animation(
@@ -98,9 +95,30 @@ static func configure_crawler(sprite: AnimatedSprite2D) -> void:
 		return
 	var frames := SpriteFrames.new()
 	frames.remove_animation(&"default")
-	_add_file_animation(frames, &"walk", CRAWLER_ROOT + "/walk/east", 9, 11.0, true)
-	_add_file_animation(frames, &"attack", CRAWLER_ROOT + "/attack/east", 9, 15.0, false)
-	_add_file_animation(frames, &"death", CRAWLER_ROOT + "/death/east", 9, 13.0, false)
+	_add_numbered_file_animation(
+		frames,
+		&"walk",
+		CRAWLER_ROOT + "/walk/east/snake walk",
+		9,
+		11.0,
+		true
+	)
+	_add_numbered_file_animation(
+		frames,
+		&"attack",
+		CRAWLER_ROOT + "/walk/east/snake walk",
+		9,
+		15.0,
+		false
+	)
+	_add_numbered_file_animation(
+		frames,
+		&"death",
+		CRAWLER_ROOT + "/death/east/snake death",
+		10,
+		13.0,
+		false
+	)
 	sprite.sprite_frames = frames
 	sprite.animation = &"walk"
 	sprite.frame = 0
@@ -155,20 +173,19 @@ static func configure_biomass(sprite: AnimatedSprite2D) -> void:
 	frames.remove_animation(&"default")
 	frames.add_animation(&"pulse")
 	frames.set_animation_loop(&"pulse", true)
-	frames.set_animation_speed(&"pulse", 2.0)
-	frames.add_frame(&"pulse", BIOMASS_TEXTURE, 1.0)
-	frames.add_frame(&"pulse", BIOMASS_TEXTURE, 1.0)
+	frames.set_animation_speed(&"pulse", 8.0)
+	for frame_index in range(9):
+		var frame := AtlasTexture.new()
+		frame.atlas = BIOMASS_TEXTURE
+		frame.region = Rect2(frame_index * 32, 32, 32, 32)
+		frames.add_frame(&"pulse", frame, 1.0)
 	sprite.sprite_frames = frames
 	sprite.animation = &"pulse"
 	sprite.frame = 0
-	# The source is already a complete 17x17 pickup. Keep it deliberately tiny
-	# beside the 48px character frames, like a compact survivor-game XP drop.
-	sprite.scale = Vector2.ONE * 0.65
+	# The visible 26px flesh chunk becomes roughly 12px at this scale, matching
+	# the Blood Memory coin's in-game footprint rather than its padded cell size.
+	sprite.scale = Vector2.ONE * 0.46
 	_apply_crisp_canvas_style(sprite)
-	var biomass_material := ShaderMaterial.new()
-	biomass_material.shader = PIXEL_EMISSIVE_SHADER
-	biomass_material.set_shader_parameter("force_electric_blue", true)
-	sprite.material = biomass_material
 	sprite.play()
 
 
@@ -195,12 +212,18 @@ static func configure_shadow(
 		for y in range(rows.size()):
 			for x in range(String(rows[y]).length()):
 				if String(rows[y]).substr(x, 1) == "#":
-					image.set_pixel(x, y, Palette.VOID)
+					image.set_pixel(x, y, Color.WHITE)
 		pixel_shadow_texture = ImageTexture.create_from_image(image)
 	shadow.texture = pixel_shadow_texture
 	shadow.scale = display_scale
 	shadow.position = ground_position
-	shadow.modulate = Palette.TECH_BRIGHT
+	configure_ground_shadow(shadow)
+
+
+static func configure_ground_shadow(shadow: CanvasItem) -> void:
+	if shadow == null:
+		return
+	shadow.modulate = Palette.GROUND_SHADOW
 	_apply_crisp_canvas_style(shadow)
 
 
@@ -237,6 +260,26 @@ static func _add_selected_file_animation(
 	frames.set_animation_speed(animation_name, fps)
 	for frame_index in frame_indices:
 		var path := "%s/frame_%03d.png" % [folder, int(frame_index)]
+		var texture := load(path) as Texture2D
+		if texture == null:
+			push_warning("Minimalist visual profile could not load: %s" % path)
+			continue
+		frames.add_frame(animation_name, texture)
+
+
+static func _add_numbered_file_animation(
+	frames: SpriteFrames,
+	animation_name: StringName,
+	file_prefix: String,
+	frame_count: int,
+	fps: float,
+	loops: bool
+) -> void:
+	frames.add_animation(animation_name)
+	frames.set_animation_loop(animation_name, loops)
+	frames.set_animation_speed(animation_name, fps)
+	for frame_index in range(1, frame_count + 1):
+		var path := "%s%d.png" % [file_prefix, frame_index]
 		var texture := load(path) as Texture2D
 		if texture == null:
 			push_warning("Minimalist visual profile could not load: %s" % path)

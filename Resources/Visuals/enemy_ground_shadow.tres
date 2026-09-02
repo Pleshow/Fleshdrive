@@ -1,8 +1,8 @@
 [gd_resource type="GradientTexture2D" format=3 uid="uid://dmko5km18bny6"]
 
 [sub_resource type="Gradient" id="Gradient_enemy_shadow"]
-offsets = PackedFloat32Array(0, 0.5, 1)
-colors = PackedColorArray(0.008, 0.012, 0.02, 0.86, 0.008, 0.012, 0.02, 0.42, 0.008, 0.012, 0.02, 0)
+offsets = PackedFloat32Array(0, 0.59452057, 1)
+colors = PackedColorArray(1, 1, 1, 0.86, 1, 1, 1, 0.42, 1, 1, 1, 0)
 
 [resource]
 gradient = SubResource("Gradient_enemy_shadow")

@@ -117,9 +117,11 @@ func _run() -> void:
 	await process_frame
 	_check(
 		boss.phase == 2
+		and boss.state == VisceralWarden.State.HUNT
+		and not boss.attack_cooldown_timer.is_stopped()
 		and boss.sprite.animation == &"enraged"
 		and hud.boss_phase_label.text == "PHASE II",
-		"Boss enters its second phase below half health"
+		"Boss phase II resets into an active attack rhythm"
 	)
 	boss.pending_combo_attack = &"volley"
 	boss._start_recovery()
@@ -154,12 +156,13 @@ func _run() -> void:
 	).timeout
 	_check(
 		run_manager.boss_defeated_flag
-		and run_manager.state == RunManager.RunState.VICTORY,
-		"Boss death completes the run with victory"
+		and run_manager.state == RunManager.RunState.REBIRTH,
+		"Boss death completes the run through refabrication"
 	)
 	_check(
-		hud.get_node("RunEndPanel").visible,
-		"Boss victory displays the run summary"
+		hud.biofabricator_sequence.visible
+		and not hud.get_node("RunEndPanel").visible,
+		"Boss victory displays the refabrication sequence"
 	)
 
 	paused = false

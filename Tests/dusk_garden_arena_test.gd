@@ -102,10 +102,10 @@ func _run() -> void:
 		and player_sprite.material is CanvasItemMaterial
 		and player_sprite.scale == Vector2.ONE
 		and jump_texture.resource_path.contains("Koda_32x32/jumping/east")
-		and is_equal_approx(player_sprite.sprite_frames.get_animation_speed(&"jump_right"), 18.0)
-		and jump_duration >= 0.27
-		and jump_duration <= 0.29,
-		"Koda uses native-scale crisp pixel art and a readable 18 FPS jump"
+		and is_equal_approx(player_sprite.sprite_frames.get_animation_speed(&"jump_right"), 12.0)
+		and jump_duration >= 0.41
+		and jump_duration <= 0.43,
+		"Koda uses native-scale crisp pixel art and a readable 12 FPS jump"
 	)
 	var grounded_sprite_position := player_sprite.position
 	player.is_dashing = true
@@ -217,19 +217,37 @@ func _run() -> void:
 	player.upgrade_levels.erase(&"shed_skin")
 
 	var biomass := BIOMASS_SCENE.instantiate() as BiomassPickup
-	game.add_child(biomass)
-	var biomass_texture := biomass.sprite.sprite_frames.get_frame_texture(&"pulse", 0)
-	var biomass_image := biomass_texture.get_image()
+	var authored_biomass_sprite := biomass.get_node("AnimatedSprite2D") as AnimatedSprite2D
+	var authored_biomass_frame := authored_biomass_sprite.sprite_frames.get_frame_texture(
+		&"pulse",
+		0
+	) as AtlasTexture
 	_check(
-		biomass_texture.resource_path.ends_with("small_biomass_transparent.png")
-		and biomass_image.get_pixel(0, 0).a == 0.0
-		and biomass_image.get_pixel(1, 0).a == 0.0
-		and is_equal_approx(biomass.original_scale.x, 0.65)
-		and biomass.sprite.material is ShaderMaterial
-		and bool((biomass.sprite.material as ShaderMaterial).get_shader_parameter(
-			"force_electric_blue"
-		)),
-		"Biomass is compact, transparent and forced onto the electric-blue ramp"
+		authored_biomass_sprite.sprite_frames.get_frame_count(&"pulse") == 9
+		and authored_biomass_frame.atlas.resource_path.ends_with("biomass.png")
+		and authored_biomass_frame.region == Rect2(0.0, 32.0, 32.0, 32.0)
+		and biomass.get_node_or_null("GroundShadow") is Sprite2D,
+		"Biomass scene uses the authored nine-frame pulsating flesh row"
+	)
+	game.add_child(biomass)
+	var biomass_texture := biomass.sprite.sprite_frames.get_frame_texture(
+		&"pulse",
+		0
+	) as AtlasTexture
+	_check(
+		biomass.sprite.sprite_frames.get_frame_count(&"pulse") == 9
+		and biomass_texture.atlas.resource_path.ends_with("biomass.png")
+		and biomass_texture.region == Rect2(0.0, 32.0, 32.0, 32.0)
+		and is_equal_approx(biomass.original_scale.x, 0.46)
+		and biomass.sprite.material is CanvasItemMaterial
+		and (biomass.sprite.material as CanvasItemMaterial).light_mode
+		== CanvasItemMaterial.LIGHT_MODE_UNSHADED
+		and biomass.sprite.texture_filter == CanvasItem.TEXTURE_FILTER_NEAREST
+		and biomass.ground_shadow.visible
+		and biomass.ground_shadow.modulate.is_equal_approx(
+			InkCrimsonPalette.GROUND_SHADOW
+		),
+		"Biomass preserves authored colors and uses the shared ground shadow"
 	)
 
 	var projectile := PROJECTILE_SCENE.instantiate() as SpitterProjectile

@@ -2,13 +2,52 @@
 
 [ext_resource type="Script" uid="uid://ca0wiow5qmmat" path="res://Scripts/main_menu.gd" id="1_script"]
 [ext_resource type="AudioStream" uid="uid://cyfexmffp7pfn" path="res://Assets/audio/music/main_menu.mp3" id="3_menu_music"]
-[ext_resource type="Texture2D" uid="uid://y5drqtqrysf2" path="res://Assets/ui/screens/menu_background.png" id="4_cp0ys"]
+[ext_resource type="Texture2D" uid="uid://ddchy15sjf50e" path="res://Assets/ui/screens/main_menu_background1.png" id="4_m3bi6"]
 [ext_resource type="PackedScene" path="res://Scenes/post_process.tscn" id="4_post_process"]
 [ext_resource type="PackedScene" path="res://Scenes/ui/skill_tree_panel.tscn" id="5_skill_tree"]
 [ext_resource type="Texture2D" uid="uid://bjk3nrottq0tn" path="res://Assets/ui/screens/fleshdrive_logo_blur.png" id="5_trj04"]
+[ext_resource type="Texture2D" uid="uid://c6hggr5f6udsb" path="res://Assets/ui/screens/main_menu_background2.png" id="5_wyh8j"]
 [ext_resource type="PackedScene" uid="uid://d3hk6kh3ss73n" path="res://Scenes/ui/loading_screen.tscn" id="6_loading"]
-[ext_resource type="Texture2D" uid="uid://dbtgyakhk5fao" path="res://Assets/ui/screens/koda_silhouette.png" id="6_trj04"]
+[ext_resource type="Texture2D" uid="uid://bi5rtby0vdyd8" path="res://Assets/ui/screens/main_menu_background3.png" id="6_ujyyl"]
 [ext_resource type="Script" uid="uid://dc34cfmipq08k" path="res://Scripts/visual/ink_crimson_backdrop.gd" id="7_ink_backdrop"]
+[ext_resource type="Texture2D" uid="uid://doltb30xegdf8" path="res://Assets/ui/screens/main_menu_background4.png" id="7_mkpwh"]
+[ext_resource type="Texture2D" uid="uid://bjonoqkmsfpos" path="res://Assets/ui/screens/main_menu_background5.png" id="8_4nkqq"]
+[ext_resource type="Texture2D" uid="uid://dir0cw23i3vi1" path="res://Assets/ui/screens/main_menu_background6.png" id="9_ehtkc"]
+[ext_resource type="Texture2D" uid="uid://dxwcmpyavyvsl" path="res://Assets/ui/screens/main_menu_background7.png" id="10_6dk6o"]
+[ext_resource type="Texture2D" uid="uid://ca7sb4kgneisk" path="res://Assets/ui/screens/main_menu_background8.png" id="11_jr6u5"]
+[ext_resource type="Texture2D" uid="uid://btoqlrugr8tpo" path="res://Assets/ui/screens/Koda_mainmenu.png" id="13_m3bi6"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_f8x8u"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_m3bi6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_wyh8j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_ujyyl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_mkpwh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_4nkqq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_ehtkc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_6dk6o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_jr6u5")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_16hvj"]
 atlas = ExtResource("5_trj04")
@@ -199,17 +238,11 @@ volume_db = -8.0
 autoplay = true
 bus = &"Music"
 
-[node name="Background" type="TextureRect" parent="." unique_id=1234378256]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = ExtResource("4_cp0ys")
-expand_mode = 1
-stretch_mode = 6
+[node name="Background" type="AnimatedSprite2D" parent="." unique_id=532093978]
+position = Vector2(643, 361)
+sprite_frames = SubResource("SpriteFrames_f8x8u")
+autoplay = "default"
+frame_progress = 0.28097042
 
 [node name="Logo" type="AnimatedSprite2D" parent="." unique_id=636967414]
 position = Vector2(636, 368)
@@ -221,9 +254,11 @@ frame_progress = 0.86150366
 
 [node name="KodaMenuArt" type="TextureRect" parent="." unique_id=1000036452]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-texture = ExtResource("6_trj04")
+offset_left = 642.0
+offset_top = 378.0
+offset_right = 1042.0
+offset_bottom = 678.0
+texture = ExtResource("13_m3bi6")
 stretch_mode = 5
 
 [node name="InkCrimsonBackdrop" type="Control" parent="." unique_id=1302714596]

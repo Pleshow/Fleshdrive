@@ -400,73 +400,15 @@ func finish_run(victory: bool) -> void:
 	]:
 		return
 	if not victory:
-		_begin_rebirth()
+		_begin_rebirth(false)
 		return
 
-	if enemy_spawner != null:
-		if enemy_spawner.has_method("set_rush_active"):
-			enemy_spawner.set_rush_active(false)
-
-		if enemy_spawner.has_method("stop_spawning"):
-			enemy_spawner.stop_spawning()
-
-	if is_instance_valid(player):
-		player.set_physics_process(false)
-
-	var final_state := (
-		RunState.VICTORY if victory else RunState.GAME_OVER
-	)
-	_set_state(final_state)
-
-	var final_biomass := 0.0
-	var final_level := 1
-
-	if is_instance_valid(player):
-		final_biomass = player.total_biomass_collected
-		final_level = player.current_level
-	var progression_result := _record_progression_result(true)
-	var run_details := (
-		player.get_combat_summary()
-		if is_instance_valid(player)
-		else {}
-	)
-	run_details["reward_message"] = String(
-		progression_result.get("reward_message", "")
-	)
-	run_details["blueprint_unlocked"] = progression_result.get(
-		"blueprint_unlocked",
-		&""
-	)
-	run_details["fleshdrive_leveled"] = progression_result.get(
-		"fleshdrive_leveled",
-		&""
-	)
-	run_details["fleshdrive_level"] = int(
-		progression_result.get("fleshdrive_level", 0)
-	)
-	run_details["active_play_seconds"] = active_play_seconds
-	run_details["menu_overlay_seconds"] = menu_overlay_seconds
-	run_details["menu_time_ratio"] = get_menu_time_ratio()
-
-	var telemetry := get_tree().root.get_node_or_null("RunTelemetry")
-	if telemetry != null:
-		telemetry.call(
-			"record_menu_timing",
-			active_play_seconds,
-			menu_overlay_seconds
-		)
-		var telemetry_summary := Dictionary(telemetry.call(
-			"finish_run", victory, elapsed_seconds, &""
-		))
-		run_details.merge(telemetry_summary, true)
-	run_finished.emit(
-		victory,
-		elapsed_seconds,
-		kill_count,
-		final_biomass,
-		final_level,
-		run_details
-	)
+	# Successful bodies are refabricated too. Keeping victory on the same
+	# presentation path prevents the legacy run-summary overlay from covering
+	# the biofabricator sequence at the end of the Warden encounter.
+	if not _set_state(RunState.VICTORY):
+		return
+	_begin_rebirth(true)
 
 
 func get_menu_time_ratio() -> float:
@@ -704,7 +646,7 @@ func _on_player_died() -> void:
 		_begin_rebirth()
 
 
-func _begin_rebirth() -> void:
+func _begin_rebirth(victory: bool = false) -> void:
 	if state == RunState.REBIRTH:
 		return
 	if enemy_spawner != null:
@@ -721,23 +663,35 @@ func _begin_rebirth() -> void:
 		final_biomass = player.total_biomass_collected
 		final_level = player.current_level
 
-	var statistics := _record_progression_result(false)
+	var statistics := _record_progression_result(victory)
 	var summary := {
 		"elapsed_seconds": elapsed_seconds,
 		"kills": kill_count,
 		"biomass": final_biomass,
 		"level": final_level,
+		"victory": victory,
 	}
 	if is_instance_valid(player):
 		summary.merge(player.get_combat_summary(), true)
 	var telemetry := get_tree().root.get_node_or_null("RunTelemetry")
 	if telemetry != null:
-		var death_cause := StringName(player.get_meta(
-			"last_damage_source_id", &"unknown"
-		)) if is_instance_valid(player) else &"unknown"
+		telemetry.call(
+			"record_menu_timing",
+			active_play_seconds,
+			menu_overlay_seconds
+		)
+		var death_cause: StringName = &""
+		if not victory:
+			death_cause = (
+				StringName(player.get_meta(
+					"last_damage_source_id", &"unknown"
+				))
+				if is_instance_valid(player)
+				else &"unknown"
+			)
 		var telemetry_summary := Dictionary(telemetry.call(
 			"finish_run",
-			false,
+			victory,
 			elapsed_seconds,
 			death_cause
 		))

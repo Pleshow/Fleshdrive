@@ -896,10 +896,14 @@ func _run() -> void:
 	paused = false
 	run_manager.finish_run(true)
 	_check(
-		run_manager.state == RunManager.RunState.VICTORY,
-		"Victory enters VICTORY state"
+		run_manager.state == RunManager.RunState.REBIRTH,
+		"Victory enters the refabrication state"
 	)
-	_check(hud.get_node("RunEndPanel").visible, "Victory panel is visible")
+	_check(
+		hud.biofabricator_sequence.visible
+		and not hud.get_node("RunEndPanel").visible,
+		"Victory opens refabrication instead of the legacy run summary"
+	)
 
 	paused = false
 	game.queue_free()

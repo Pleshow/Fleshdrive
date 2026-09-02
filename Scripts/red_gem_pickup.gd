@@ -19,6 +19,7 @@ var coin_visual: AnimatedSprite2D
 
 
 func _ready() -> void:
+	MinimalistVisualProfile.configure_ground_shadow(ground_shadow)
 	var legacy_sprite := get_node_or_null("AnimatedSprite2D") as AnimatedSprite2D
 	if legacy_sprite != null:
 		legacy_sprite.hide()

@@ -2658,7 +2658,10 @@ func show_rebirth_sequence(
 	death_message.hide()
 	_set_player_status_visible(false)
 	_set_vignette_suppressed(true)
-	play_sound(&"defeat", -4.0)
+	play_sound(
+		&"victory" if bool(run_summary.get("victory", false)) else &"defeat",
+		-4.0
+	)
 	biofabricator_sequence.start(
 		instance_number,
 		run_summary,

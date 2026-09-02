@@ -1,0 +1,46 @@
+{
+  "object": {
+    "id": "c177e0a8-d8ac-4dd8-9b10-8e5b3454627e",
+    "name": "base",
+    "prompt": "blue colored pulsating flesh chunk ",
+    "size": {
+      "width": 32,
+      "height": 32
+    },
+    "directions": 1,
+    "view": "low top-down"
+  },
+  "spritesheet": {
+    "path": "blue_colored_pulsating_flesh_c.png",
+    "cell_size": {
+      "width": 32,
+      "height": 32
+    },
+    "sheet_size": {
+      "width": 288,
+      "height": 64
+    },
+    "columns": 9,
+    "pivot": "cell-center",
+    "rows": [
+      {
+        "row": 0,
+        "type": "rotations",
+        "frame_count": 1,
+        "directions": [
+          "unknown"
+        ]
+      },
+      {
+        "row": 1,
+        "type": "animation",
+        "frame_count": 9,
+        "animation": "the flesh piece is pulsing up and down, looping",
+        "animation_group_id": "9965df22-015f-4eed-accc-4703a1fa0012",
+        "direction": "unknown"
+      }
+    ]
+  },
+  "export_version": "1.0",
+  "export_date": "2026-08-27T12:07:21.162018+00:00"
+}

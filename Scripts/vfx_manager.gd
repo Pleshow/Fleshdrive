@@ -78,9 +78,6 @@ const LIGHTNING_STRIKE_TEXTURES := [
 const STATIC_STRIKE_TEXTURE := preload(
 	"res://Assets/vfx/licensed/lightning_pack/static_05_purple.png"
 )
-const BALL_STRIKE_TEXTURE := preload(
-	"res://Assets/vfx/licensed/lightning_pack/ball_06_red.png"
-)
 const FIRE_EXPLOSION_RING_TEXTURE := preload(
 	"res://Assets/vfx/licensed/fire_explosions/explosion_ring.png"
 )
@@ -409,7 +406,11 @@ const EFFECTS := {
 	&"storm_strike_05": {"texture": LIGHTNING_STRIKE_TEXTURES[4], "frame_size": Vector2i(128, 128), "frame_count": 48, "columns": 4, "fps": 26.0, "base_scale": 0.66},
 	&"storm_strike_06": {"texture": LIGHTNING_STRIKE_TEXTURES[5], "frame_size": Vector2i(128, 128), "frame_count": 48, "columns": 4, "fps": 26.0, "base_scale": 0.66},
 	&"static_strike": {"texture": STATIC_STRIKE_TEXTURE, "frame_size": Vector2i(128, 128), "frame_count": 48, "columns": 4, "fps": 28.0, "base_scale": 0.70},
-	&"ball_lightning_burst": {"texture": BALL_STRIKE_TEXTURE, "frame_size": Vector2i(128, 128), "frame_count": 48, "columns": 4, "fps": 30.0, "base_scale": 0.72},
+	&"ball_lightning_burst": {
+		"texture": BALL_LIGHTNING_V1_TEXTURE, "frame_size": Vector2i(64, 64),
+		"start_frame": 28, "frame_count": 6, "columns": 6,
+		"fps": 24.0, "base_scale": 1.0,
+	},
 	&"slash_circular": {
 		"texture": PLAYER_COMBAT_TEXTURE,
 		"row": 3,

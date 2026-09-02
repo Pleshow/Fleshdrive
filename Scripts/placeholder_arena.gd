@@ -588,7 +588,8 @@ func _add_obstacle_shadow(
 		))
 	shadow.polygon = points
 	shadow.position = shadow_position + Vector2(0.0, 8.0)
-	shadow.color = Color(0.0, 0.0, 0.0, 0.48)
+	shadow.color = Color.WHITE
+	MinimalistVisualProfile.configure_ground_shadow(shadow)
 	shadow.z_index = -1
 	shadow.name = "GroundShadow"
 	parent.add_child(shadow)

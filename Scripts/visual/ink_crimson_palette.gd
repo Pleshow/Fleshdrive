@@ -12,6 +12,7 @@ const VOID := Color("09010d")
 const TECH_BRIGHT := Color("0ce6f2")
 const TECH := Color("0098db")
 const TECH_DEEP := Color("1e579c")
+const GROUND_SHADOW := Color(0.117647, 0.341176, 0.611765, 0.42)
 
 const COLORS := [
 	ALERT,

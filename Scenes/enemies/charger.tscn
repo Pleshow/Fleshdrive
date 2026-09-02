@@ -111,7 +111,7 @@ death_vfx_scene = ExtResource("13_death_vfx")
 death_vfx_scale = 1.1
 
 [node name="GroundShadow" type="Sprite2D" parent="."]
-modulate = Color(1, 1, 1, 0.64)
+modulate = Color(0.117647, 0.341176, 0.611765, 0.42)
 show_behind_parent = true
 z_index = -2
 position = Vector2(0, 29)

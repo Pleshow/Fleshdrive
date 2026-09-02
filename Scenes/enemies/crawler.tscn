@@ -3,136 +3,56 @@
 [ext_resource type="Script" uid="uid://dhrhuvqn1jdl1" path="res://Scripts/crawler.gd" id="1_script"]
 [ext_resource type="PackedScene" uid="uid://bckafqkqdwb5h" path="res://Scenes/pickups/biomass_pickup.tscn" id="3_biomass"]
 [ext_resource type="PackedScene" path="res://Scenes/enemies/enemy_death_vfx.tscn" id="4_death_vfx"]
-[ext_resource type="Texture2D" uid="uid://c5ysyhf3s8307" path="res://Assets/enemies/crawler/walk.png" id="5_hrmum"]
 [ext_resource type="Texture2D" uid="uid://dmko5km18bny6" path="res://Resources/Visuals/enemy_ground_shadow.tres" id="5_shadow"]
-[ext_resource type="Texture2D" uid="uid://2ljjnv3g4sg" path="res://Assets/enemies/crawler/death.png" id="6_8b3ur"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_8b3ur"]
-atlas = ExtResource("5_hrmum")
-region = Rect2(0, 0, 80, 48)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_vlb5u"]
-atlas = ExtResource("5_hrmum")
-region = Rect2(80, 0, 80, 48)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_cnunl"]
-atlas = ExtResource("5_hrmum")
-region = Rect2(160, 0, 80, 48)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_7vfvm"]
-atlas = ExtResource("5_hrmum")
-region = Rect2(240, 0, 80, 48)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_k3os1"]
-atlas = ExtResource("5_hrmum")
-region = Rect2(320, 0, 80, 48)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ev56n"]
-atlas = ExtResource("5_hrmum")
-region = Rect2(400, 0, 80, 48)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_tbw00"]
-atlas = ExtResource("5_hrmum")
-region = Rect2(480, 0, 80, 48)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_7gh6w"]
-atlas = ExtResource("5_hrmum")
-region = Rect2(560, 0, 80, 48)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_uwojr"]
-atlas = ExtResource("6_8b3ur")
-region = Rect2(0, 0, 112, 80)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_yq3to"]
-atlas = ExtResource("6_8b3ur")
-region = Rect2(112, 0, 112, 80)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_gcvec"]
-atlas = ExtResource("6_8b3ur")
-region = Rect2(224, 0, 112, 80)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_s5e3n"]
-atlas = ExtResource("6_8b3ur")
-region = Rect2(336, 0, 112, 80)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_em3nk"]
-atlas = ExtResource("6_8b3ur")
-region = Rect2(448, 0, 112, 80)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_47p6k"]
-atlas = ExtResource("6_8b3ur")
-region = Rect2(560, 0, 112, 80)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_o7m7i"]
-atlas = ExtResource("6_8b3ur")
-region = Rect2(672, 0, 112, 80)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_djq3s"]
-atlas = ExtResource("6_8b3ur")
-region = Rect2(784, 0, 112, 80)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_vt2dl"]
-atlas = ExtResource("6_8b3ur")
-region = Rect2(896, 0, 112, 80)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_voegv"]
-atlas = ExtResource("5_hrmum")
-region = Rect2(0, 0, 80, 48)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_4bmdw"]
-atlas = ExtResource("5_hrmum")
-region = Rect2(80, 0, 80, 48)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_35x2n"]
-atlas = ExtResource("5_hrmum")
-region = Rect2(160, 0, 80, 48)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_7m6wk"]
-atlas = ExtResource("5_hrmum")
-region = Rect2(240, 0, 80, 48)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_6u2h6"]
-atlas = ExtResource("5_hrmum")
-region = Rect2(320, 0, 80, 48)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_52dao"]
-atlas = ExtResource("5_hrmum")
-region = Rect2(400, 0, 80, 48)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_u0xoa"]
-atlas = ExtResource("5_hrmum")
-region = Rect2(480, 0, 80, 48)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_bdsp3"]
-atlas = ExtResource("5_hrmum")
-region = Rect2(560, 0, 80, 48)
+[ext_resource type="Texture2D" uid="uid://dclgdrw57hfgf" path="res://Assets/enemies/crawler/Snake crawler/walk/east/snake walk1.png" id="6_walk_01"]
+[ext_resource type="Texture2D" uid="uid://0srpcefjt74r" path="res://Assets/enemies/crawler/Snake crawler/walk/east/snake walk2.png" id="7_walk_02"]
+[ext_resource type="Texture2D" uid="uid://db8rpefs6rlpl" path="res://Assets/enemies/crawler/Snake crawler/walk/east/snake walk3.png" id="8_walk_03"]
+[ext_resource type="Texture2D" uid="uid://bxi0opskr4rd0" path="res://Assets/enemies/crawler/Snake crawler/walk/east/snake walk4.png" id="9_walk_04"]
+[ext_resource type="Texture2D" uid="uid://b0yqj6mmteght" path="res://Assets/enemies/crawler/Snake crawler/walk/east/snake walk5.png" id="10_walk_05"]
+[ext_resource type="Texture2D" uid="uid://15r4eiyy2ffw" path="res://Assets/enemies/crawler/Snake crawler/walk/east/snake walk6.png" id="11_walk_06"]
+[ext_resource type="Texture2D" uid="uid://dl76sjbmx8e5b" path="res://Assets/enemies/crawler/Snake crawler/walk/east/snake walk7.png" id="12_walk_07"]
+[ext_resource type="Texture2D" uid="uid://camyabdrbnm8g" path="res://Assets/enemies/crawler/Snake crawler/walk/east/snake walk8.png" id="13_walk_08"]
+[ext_resource type="Texture2D" uid="uid://bsaoen1sitdvi" path="res://Assets/enemies/crawler/Snake crawler/death/east/snake death1.png" id="14_k4ho8"]
+[ext_resource type="Texture2D" uid="uid://bgoek1f6cx6qa" path="res://Assets/enemies/crawler/Snake crawler/walk/east/snake walk9.png" id="14_walk_09"]
+[ext_resource type="Texture2D" uid="uid://cq7il78mgnura" path="res://Assets/enemies/crawler/Snake crawler/death/east/snake death2.png" id="15_1tqti"]
+[ext_resource type="Texture2D" uid="uid://bgkgh4rvwmlhp" path="res://Assets/enemies/crawler/Snake crawler/death/east/snake death3.png" id="16_xgwga"]
+[ext_resource type="Texture2D" uid="uid://bdvhwf367ucfr" path="res://Assets/enemies/crawler/Snake crawler/death/east/snake death4.png" id="17_qaxir"]
+[ext_resource type="Texture2D" uid="uid://bnmgov1p66lj6" path="res://Assets/enemies/crawler/Snake crawler/death/east/snake death5.png" id="18_a8wua"]
+[ext_resource type="Texture2D" uid="uid://dde4kl83wyonw" path="res://Assets/enemies/crawler/Snake crawler/death/east/snake death6.png" id="19_61iop"]
+[ext_resource type="Texture2D" uid="uid://cc6kci8sl4b3h" path="res://Assets/enemies/crawler/Snake crawler/death/east/snake death7.png" id="20_rythb"]
+[ext_resource type="Texture2D" uid="uid://dlxflw4gtamgr" path="res://Assets/enemies/crawler/Snake crawler/death/east/snake death8.png" id="21_2lxjt"]
+[ext_resource type="Texture2D" uid="uid://b05ytnvku756" path="res://Assets/enemies/crawler/Snake crawler/death/east/snake death9.png" id="22_3b8ax"]
+[ext_resource type="Texture2D" uid="uid://o3nfeht1dost" path="res://Assets/enemies/crawler/Snake crawler/death/east/snake death10.png" id="23_jdesg"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_crawler"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_8b3ur")
+"texture": ExtResource("6_walk_01")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_vlb5u")
+"texture": ExtResource("7_walk_02")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_cnunl")
+"texture": ExtResource("8_walk_03")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_7vfvm")
+"texture": ExtResource("9_walk_04")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_k3os1")
+"texture": ExtResource("10_walk_05")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_ev56n")
+"texture": ExtResource("11_walk_06")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_tbw00")
+"texture": ExtResource("12_walk_07")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_7gh6w")
+"texture": ExtResource("13_walk_08")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_walk_09")
 }],
 "loop": 0,
 "name": &"attack",
@@ -140,31 +60,34 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_uwojr")
+"texture": ExtResource("14_k4ho8")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_yq3to")
+"texture": ExtResource("15_1tqti")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_gcvec")
+"texture": ExtResource("16_xgwga")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_s5e3n")
+"texture": ExtResource("17_qaxir")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_em3nk")
+"texture": ExtResource("18_a8wua")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_47p6k")
+"texture": ExtResource("19_61iop")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_o7m7i")
+"texture": ExtResource("20_rythb")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_djq3s")
+"texture": ExtResource("21_2lxjt")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_vt2dl")
+"texture": ExtResource("22_3b8ax")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_jdesg")
 }],
 "loop": 0,
 "name": &"death",
@@ -172,28 +95,31 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_voegv")
+"texture": ExtResource("6_walk_01")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_4bmdw")
+"texture": ExtResource("7_walk_02")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_35x2n")
+"texture": ExtResource("8_walk_03")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_7m6wk")
+"texture": ExtResource("9_walk_04")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_6u2h6")
+"texture": ExtResource("10_walk_05")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_52dao")
+"texture": ExtResource("11_walk_06")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_u0xoa")
+"texture": ExtResource("12_walk_07")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_bdsp3")
+"texture": ExtResource("13_walk_08")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_walk_09")
 }],
 "loop": 1,
 "name": &"walk",
@@ -213,7 +139,7 @@ biomass_pickup_scene = ExtResource("3_biomass")
 death_vfx_scene = ExtResource("4_death_vfx")
 
 [node name="GroundShadow" type="Sprite2D" parent="." unique_id=1420500502]
-modulate = Color(1, 1, 1, 0.62)
+modulate = Color(0.117647, 0.341176, 0.611765, 0.42)
 show_behind_parent = true
 z_index = -2
 position = Vector2(0, 25)
@@ -224,10 +150,10 @@ texture = ExtResource("5_shadow")
 texture_filter = 1
 position = Vector2(0, 5)
 sprite_frames = SubResource("SpriteFrames_crawler")
-animation = &"walk"
+animation = &"attack"
 autoplay = "walk"
-frame = 1
-frame_progress = 0.76737636
+frame = 8
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=414382550]
 position = Vector2(0, 6)

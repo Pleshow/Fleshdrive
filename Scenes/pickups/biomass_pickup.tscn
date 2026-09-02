@@ -1,28 +1,49 @@
-[gd_scene load_steps=8 format=3 uid="uid://bckafqkqdwb5h"]
+[gd_scene load_steps=15 format=3 uid="uid://bckafqkqdwb5h"]
 
-[ext_resource type="Texture2D" path="res://Assets/vfx/biomass_pulse_4f.png" id="1_8ihmx"]
+[ext_resource type="Texture2D" path="res://Assets/pickups/biomass/blue_colored_pulsating_flesh_c-spritesheet/biomass.png" id="1_8ihmx"]
 [ext_resource type="Script" uid="uid://lf3y5qhnkdvm" path="res://Scripts/biomass_pickup.gd" id="1_dqkmi"]
+[ext_resource type="Texture2D" uid="uid://dmko5km18bny6" path="res://Resources/Visuals/enemy_ground_shadow.tres" id="2_shadow"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_biomass_1"]
 atlas = ExtResource("1_8ihmx")
-region = Rect2(0, 0, 128, 128)
+region = Rect2(0, 32, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_biomass_2"]
 atlas = ExtResource("1_8ihmx")
-region = Rect2(128, 0, 128, 128)
+region = Rect2(32, 32, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_biomass_3"]
 atlas = ExtResource("1_8ihmx")
-region = Rect2(256, 0, 128, 128)
+region = Rect2(64, 32, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_biomass_4"]
 atlas = ExtResource("1_8ihmx")
-region = Rect2(384, 0, 128, 128)
+region = Rect2(96, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_biomass_5"]
+atlas = ExtResource("1_8ihmx")
+region = Rect2(128, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_biomass_6"]
+atlas = ExtResource("1_8ihmx")
+region = Rect2(160, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_biomass_7"]
+atlas = ExtResource("1_8ihmx")
+region = Rect2(192, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_biomass_8"]
+atlas = ExtResource("1_8ihmx")
+region = Rect2(224, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_biomass_9"]
+atlas = ExtResource("1_8ihmx")
+region = Rect2(256, 32, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_a8jhk"]
 animations = [{
 "frames": [{
-"duration": 1.25,
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_biomass_1")
 }, {
 "duration": 1.0,
@@ -31,25 +52,48 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_biomass_3")
 }, {
-"duration": 1.25,
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_biomass_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_biomass_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_biomass_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_biomass_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_biomass_8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_biomass_9")
 }],
 "loop": 1,
 "name": &"pulse",
-"speed": 7.0
+"speed": 8.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ge6ft"]
-radius = 12.0
+radius = 7.5
 
 [node name="BiomassPickup" type="Area2D" unique_id=387181933]
 collision_layer = 0
 collision_mask = 4
 script = ExtResource("1_dqkmi")
 
+[node name="GroundShadow" type="Sprite2D" parent="."]
+modulate = Color(0.117647, 0.341176, 0.611765, 0.42)
+show_behind_parent = true
+z_index = -2
+position = Vector2(0, 8)
+scale = Vector2(0.11, 0.032)
+texture = ExtResource("2_shadow")
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=638594271]
 texture_filter = 1
-scale = Vector2(0.32, 0.32)
+scale = Vector2(0.46, 0.46)
 sprite_frames = SubResource("SpriteFrames_a8jhk")
 animation = &"pulse"
 autoplay = "pulse"

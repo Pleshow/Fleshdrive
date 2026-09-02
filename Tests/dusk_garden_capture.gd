@@ -91,7 +91,9 @@ func _capture() -> void:
 	player_sprite.frame = 0
 	player_sprite.pause()
 	await process_frame
-	await process_frame
+	# Let pooled pickup spawn tweens reach their authored display scale before
+	# taking the visual QA frame.
+	await create_timer(0.24).timeout
 	var image := root.get_viewport().get_texture().get_image()
 	if image == null:
 		push_error("Dusk Garden capture requires a rendering display driver.")

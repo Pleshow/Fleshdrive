@@ -6,6 +6,7 @@ extends Area2D
 @export var pickup_delay: float = 0.15
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var ground_shadow: Sprite2D = $GroundShadow
 
 var can_be_collected: bool = false
 var collected: bool = false
@@ -19,6 +20,13 @@ func _ready() -> void:
 	add_to_group("biomass_pickups")
 	if MinimalistVisualProfile.is_active(get_tree()):
 		MinimalistVisualProfile.configure_biomass(sprite)
+		MinimalistVisualProfile.configure_shadow(
+			ground_shadow,
+			Vector2(1.0, 0.5),
+			Vector2(0.0, 8.0)
+		)
+	else:
+		MinimalistVisualProfile.configure_ground_shadow(ground_shadow)
 	if not body_entered.is_connected(on_body_entered):
 		body_entered.connect(on_body_entered)
 	original_scale = sprite.scale
@@ -39,6 +47,8 @@ func prepare_for_reuse() -> void:
 		original_scale = sprite.scale
 	sprite.modulate = Color.WHITE
 	sprite.scale = Vector2.ZERO
+	MinimalistVisualProfile.configure_ground_shadow(ground_shadow)
+	ground_shadow.show()
 
 	spawn_tween = create_tween()
 	spawn_tween.set_parallel(true)
@@ -78,6 +88,7 @@ func prepare_for_pool() -> void:
 	player = null
 	monitoring = false
 	monitorable = false
+	ground_shadow.hide()
 
 
 func _physics_process(delta: float) -> void:
@@ -143,6 +154,13 @@ func on_body_entered(body: Node2D) -> void:
 
 	tween.tween_property(
 		sprite,
+		"modulate:a",
+		0.0,
+		0.12
+	)
+
+	tween.tween_property(
+		ground_shadow,
 		"modulate:a",
 		0.0,
 		0.12

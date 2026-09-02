@@ -104,7 +104,13 @@ func _raise_menu_ui_above_post_process() -> void:
 	background_layer.layer = -110
 	add_child(background_layer)
 	for background_node in [$Background, $LeftShade]:
-		var presentation_copy := background_node.duplicate() as Control
+		# Background may be either a full-rect Control or an AnimatedSprite2D.
+		# Casting the duplicate to Control discarded the animated background,
+		# after which the original was hidden below.
+		var presentation_copy := background_node.duplicate() as Node
+		if presentation_copy == null:
+			push_warning("MainMenu: could not duplicate %s" % background_node.name)
+			continue
 		background_layer.add_child(presentation_copy)
 		background_node.hide()
 	var post_process := get_node_or_null("PostProcess") as CanvasLayer

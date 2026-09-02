@@ -71,6 +71,9 @@ var unshaded_vfx_material: CanvasItemMaterial
 func _ready() -> void:
 	unshaded_vfx_material = CanvasItemMaterial.new()
 	unshaded_vfx_material.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+	MinimalistVisualProfile.configure_ground_shadow(
+		get_node_or_null("GroundShadow") as Sprite2D
+	)
 	_install_consistent_sprite_material()
 	_configure_impact_animation()
 	var balance := get_tree().root.get_node_or_null("BalanceDatabase")

@@ -182,7 +182,7 @@ func _run() -> void:
 	var effect_frame_contracts := {
 		&"storm_strike_01": 48,
 		&"static_strike": 48,
-		&"ball_lightning_burst": 48,
+		&"ball_lightning_burst": 6,
 		&"fire_explosion_spiked": 8,
 		&"slash_heavy": 5,
 		&"status_burn": 16,

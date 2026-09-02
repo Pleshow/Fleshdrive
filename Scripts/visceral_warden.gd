@@ -91,6 +91,9 @@ var last_hunt_position: Vector2
 
 
 func _ready() -> void:
+	MinimalistVisualProfile.configure_ground_shadow(
+		get_node_or_null("GroundShadow") as Sprite2D
+	)
 	var telegraph_material := CanvasItemMaterial.new()
 	telegraph_material.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
 	for telegraph_visual in [
@@ -744,6 +747,21 @@ func get_knockback_resistance() -> float:
 
 func _enter_phase_two() -> void:
 	phase = 2
+	# Reset every phase-one attack state before applying the enrage. Previously
+	# the cooldown was stopped here, but only restarted when the transition
+	# happened during HUNT; an interrupted windup/recovery could therefore leave
+	# the Warden moving forever without selecting another attack.
+	state_timer.stop()
+	attack_cooldown_timer.stop()
+	pending_combo_attack = &""
+	aim_line.hide()
+	charge_line.hide()
+	volley_area.hide()
+	charge_area.hide()
+	slam_telegraph.hide()
+	slam_fill.hide()
+	state = State.HUNT
+	velocity = Vector2.ZERO
 	# Enrage is a real second health phase, not only a speed modifier. Preserve
 	# damage already dealt while adding a substantial fresh health reserve.
 	var old_max_health := max_health
@@ -776,9 +794,7 @@ func _enter_phase_two() -> void:
 	play_sound(&"rush_warning", 1.0, 0.015)
 	play_world_vfx(&"boss_phase", global_position, 1.0)
 	request_combat_feedback(1.0, 0.8)
-	attack_cooldown_timer.stop()
-	if state == State.HUNT:
-		attack_cooldown_timer.start(0.35)
+	attack_cooldown_timer.start(0.35)
 
 
 func _play_hit_feedback() -> void:

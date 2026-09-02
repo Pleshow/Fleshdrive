@@ -13,8 +13,8 @@ const WALL_THICKNESS := 48.0
 const ACTOR_CONSTRAINT_INTERVAL := 0.08
 const SOUTH_WALL_SOURCE_Y := 1024
 const SOUTH_WALL_HEIGHT := 96
-const SOUTH_WALL_UNDERLAY_SOURCE_Y := 944
-const SOUTH_WALL_UNDERLAY_HEIGHT := 80
+const SOUTH_WALL_UNDERLAY_SOURCE_Y := 976
+const SOUTH_WALL_UNDERLAY_HEIGHT := 48
 const SOUTH_WALL_SEGMENT_WIDTH := 64
 const SOUTH_WALL_OCCLUDED_ALPHA := 0.58
 const OCCLUDING_PROP_DATA := [
@@ -133,9 +133,9 @@ func _create_map_visual() -> void:
 
 
 func _create_south_wall_underlay() -> void:
-	# The foreground wall fades to reveal actors. A continuation of the garden
-	# floor must sit behind them; otherwise the NightBackdrop shows through as a
-	# hard black rectangle matching the faded segment.
+	# The foreground wall fades to reveal actors. Continue the garden floor only
+	# as far as the playable bounds; the outer half of the wall must reveal the
+	# NightBackdrop instead of repeating the floor beyond the arena.
 	var floor_region := AtlasTexture.new()
 	floor_region.atlas = MAP_TEXTURE
 	floor_region.region = Rect2(
@@ -149,7 +149,6 @@ func _create_south_wall_underlay() -> void:
 	underlay.texture = floor_region
 	underlay.centered = false
 	underlay.position = MAP_OFFSET + Vector2(0.0, SOUTH_WALL_SOURCE_Y)
-	underlay.scale.y = float(SOUTH_WALL_HEIGHT) / float(SOUTH_WALL_UNDERLAY_HEIGHT)
 	underlay.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	underlay.z_index = -99
 	var unshaded := CanvasItemMaterial.new()

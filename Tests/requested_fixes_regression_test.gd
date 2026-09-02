@@ -68,16 +68,26 @@ func _run() -> void:
 	var wall := arena.get_node_or_null("SouthWallForeground")
 	_check(wall != null and wall.get_child_count() >= 39 and (wall.get_child(0) as Sprite2D).z_index > 0, "South wall is segmented into a true foreground occluder")
 	var wall_underlay := arena.get_node_or_null("SouthWallFloorUnderlay") as Sprite2D
-	_check(wall_underlay != null and wall_underlay.z_index < 0, "South wall transparency reveals a garden-floor underlay instead of a black rectangle")
+	_check(
+		wall_underlay != null
+		and wall_underlay.z_index < 0
+		and wall_underlay.texture.get_height() == 48
+		and wall_underlay.position.y + wall_underlay.texture.get_height()
+		<= arena.get_play_bounds().end.y,
+		"South wall underlay stops at the playable edge instead of repeating floor outside the arena"
+	)
 	player.global_position = Vector2(1000.0, 1195.0)
 	arena.call("_update_south_wall_occlusion")
 	var faded_segment_found := false
 	for child in wall.get_children():
 		var segment := child as Sprite2D
-		if segment.modulate.a < 0.9:
+		if (
+			segment.modulate.a < 0.9
+			and not is_zero_approx(segment.modulate.a)
+		):
 			faded_segment_found = true
 			break
-	_check(faded_segment_found, "Only south-wall segments covering an actor become translucent")
+	_check(faded_segment_found, "Occupied south-wall segments return to the original even transparency")
 
 	var crawler := (load("res://Scenes/enemies/crawler.tscn") as PackedScene).instantiate() as Crawler
 	game.get_node("Entities/Enemies").add_child(crawler)

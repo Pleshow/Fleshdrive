@@ -395,7 +395,7 @@ func _spawn_decoy() -> Node2D:
 		shadow.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		shadow.position = player_shadow.position
 		shadow.scale = player.ground_shadow_base_scale
-		shadow.modulate = Color(0.22, 0.52, 0.72, 0.34)
+		MinimalistVisualProfile.configure_ground_shadow(shadow)
 		shadow.z_index = -1
 		decoy.add_child(shadow)
 	var visual := AnimatedSprite2D.new()

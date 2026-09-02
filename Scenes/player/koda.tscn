@@ -8,7 +8,7 @@
 
 [sub_resource type="Gradient" id="Gradient_koda_shadow"]
 offsets = PackedFloat32Array(0, 0.54, 1)
-colors = PackedColorArray(0.015, 0.018, 0.025, 0.82, 0.015, 0.018, 0.025, 0.46, 0.015, 0.018, 0.025, 0)
+colors = PackedColorArray(1, 1, 1, 0.82, 1, 1, 1, 0.46, 1, 1, 1, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_koda_shadow"]
 gradient = SubResource("Gradient_koda_shadow")
@@ -87,7 +87,7 @@ dash_unlocked = true
 dash_speed = 850.0
 
 [node name="GroundShadow" type="Sprite2D" parent="." unique_id=1770438560]
-modulate = Color(1, 1, 1, 0.72)
+modulate = Color(0.117647, 0.341176, 0.611765, 0.42)
 show_behind_parent = true
 z_index = -2
 position = Vector2(0, 43)
