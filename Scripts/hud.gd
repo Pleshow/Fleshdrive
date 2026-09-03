@@ -3,7 +3,13 @@ extends Control
 const CardSelectionControllerScript := preload("res://Scripts/controllers/card_selection_controller.gd")
 const OrganScreenControllerScript := preload("res://Scripts/controllers/organ_screen_controller.gd")
 const BossPresentationControllerScript := preload("res://Scripts/controllers/boss_presentation_controller.gd")
-const LabNoteIconScript := preload("res://Scripts/ui/lab_note_icon.gd")
+const HorrorUpgradeCardScript := preload(
+	"res://Scripts/ui/horror_upgrade_card.gd"
+)
+const HORROR_CARD_FRAME := preload(
+	"res://Assets/ui/generated/fleshdrive_upgrade_card_frame_v4.png"
+)
+const GENERATED_CARD_ART_ROOT := "res://Assets/ui/generated/skill_art/cards/%s.png"
 const VoltaicBalanceContractScript := preload(
 	"res://Scripts/balance/voltaic_balance_contract.gd"
 )
@@ -1306,13 +1312,15 @@ func _set_upgrade_offer_badge(
 	if badge == null:
 		badge = Label.new()
 		badge.name = "OfferBadge"
-		badge.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
-		badge.position = Vector2(-142.0, 10.0)
-		badge.size = Vector2(132.0, 26.0)
-		badge.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		badge.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+		badge.position = Vector2(22.0, 17.0)
+		badge.size = Vector2(112.0, 24.0)
+		badge.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+		badge.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		badge.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		badge.add_theme_font_size_override("font_size", 11)
-		badge.add_theme_color_override("font_color", Color.WHITE)
+		badge.add_theme_font_size_override("font_size", 12)
+		badge.add_theme_color_override("font_color", Color("ff3150"))
 		badge.add_theme_color_override(
 			"font_shadow_color",
 			Color(0.0, 0.0, 0.0, 0.95)
@@ -1356,51 +1364,79 @@ func _set_upgrade_card_content(
 	if previous != null:
 		card.remove_child(previous)
 		previous.free()
+	if card.has_method("reset_pose"):
+		card.call("reset_pose")
 
-	# Only the three branch-defining Lightning cards use build colors. This
-	# prevents every supporting item from looking like another Ball Lightning.
-	# Organs are pink; all remaining/general cards are neutral gray.
-	var affinity_color := _get_upgrade_card_color(upgrade)
-	if upgrade.rarity == "rare":
-		affinity_color = affinity_color.lightened(0.16)
-
-	var surface := PanelContainer.new()
+	var surface := Control.new()
 	surface.name = "CardSurface"
 	surface.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	surface.clip_contents = true
 	surface.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var surface_style := StyleBoxFlat.new()
-	surface_style.bg_color = Color(0.025, 0.032, 0.038, 0.98)
-	surface_style.border_color = affinity_color.darkened(0.18)
-	surface_style.set_border_width_all(2)
-	surface_style.corner_radius_top_left = 8
-	surface_style.corner_radius_top_right = 8
-	surface_style.corner_radius_bottom_left = 8
-	surface_style.corner_radius_bottom_right = 8
-	surface.add_theme_stylebox_override("panel", surface_style)
 	card.add_child(surface)
 	card.move_child(surface, 0)
 
-	var margin := MarginContainer.new()
-	margin.add_theme_constant_override("margin_left", 14)
-	margin.add_theme_constant_override("margin_top", 10)
-	margin.add_theme_constant_override("margin_right", 14)
-	margin.add_theme_constant_override("margin_bottom", 10)
-	surface.add_child(margin)
-	var stack := VBoxContainer.new()
-	stack.add_theme_constant_override("separation", 5)
-	margin.add_child(stack)
+	var backing := ColorRect.new()
+	backing.name = "CardBacking"
+	backing.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	backing.color = Color("080409")
+	backing.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	surface.add_child(backing)
+
+	var illustration := TextureRect.new()
+	illustration.name = "MainArtwork"
+	illustration.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	illustration.anchor_bottom = 0.625
+	illustration.offset_left = 17.0
+	illustration.offset_top = 17.0
+	illustration.offset_right = -17.0
+	illustration.offset_bottom = -4.0
+	illustration.texture = _get_generated_card_art(upgrade)
+	illustration.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	illustration.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	illustration.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	surface.add_child(illustration)
+
+	var info_backing := ColorRect.new()
+	info_backing.name = "InfoBacking"
+	info_backing.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	info_backing.anchor_top = 0.625
+	info_backing.anchor_bottom = 1.0
+	info_backing.offset_left = 16.0
+	info_backing.offset_right = -16.0
+	info_backing.offset_bottom = -13.0
+	info_backing.color = Color(0.018, 0.012, 0.02, 0.96)
+	info_backing.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	surface.add_child(info_backing)
+
+	var frame := TextureRect.new()
+	frame.name = "CardFrameOverlay"
+	frame.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	frame.texture = HORROR_CARD_FRAME
+	frame.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	frame.stretch_mode = TextureRect.STRETCH_SCALE
+	frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	surface.add_child(frame)
 
 	var title := Label.new()
 	title.name = "CardTitle"
-	title.custom_minimum_size = Vector2(0.0, 42.0)
+	title.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	title.anchor_top = 0.55
+	title.anchor_bottom = 0.635
+	title.offset_left = 18.0
+	title.offset_right = -18.0
 	title.text = _get_upgrade_display_name(upgrade)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	title.add_theme_font_size_override("font_size", 19)
-	title.add_theme_color_override("font_color", affinity_color.lightened(0.2))
-	stack.add_child(title)
+	title.clip_text = true
+	title.add_theme_font_size_override("font_size", _get_card_title_font_size(title.text))
+	title.add_theme_color_override("font_color", Color("ff3150"))
+	title.add_theme_color_override("font_shadow_color", Color(0.0, 0.0, 0.0, 0.95))
+	title.add_theme_constant_override("shadow_offset_x", 2)
+	title.add_theme_constant_override("shadow_offset_y", 2)
+	title.add_theme_font_size_override("outline_size", 1)
+	title.add_theme_color_override("font_outline_color", Color("220008"))
+	surface.add_child(title)
 	var kind_names := [tr("ITEM"), tr("ORGAN"), tr("WEAPON")]
 	var type_line := Label.new()
 	type_line.name = "CardType"
@@ -1410,52 +1446,88 @@ func _set_upgrade_card_content(
 		type_line.text += "  /  " + tr(_get_organ_slot_key(upgrade.organ_slot))
 	elif upgrade.fleshdrive_affinity != "universal":
 		type_line.text += "  /  " + tr(upgrade.fleshdrive_affinity.to_upper())
+	type_line.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	type_line.anchor_top = 0.635
+	type_line.anchor_bottom = 0.68
+	type_line.offset_left = 22.0
+	type_line.offset_right = -22.0
 	type_line.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	type_line.add_theme_font_size_override("font_size", 13)
-	type_line.add_theme_color_override("font_color", affinity_color)
-	stack.add_child(type_line)
-
-	var illustration := LabNoteIconScript.new()
-	illustration.name = "LabNoteIllustration"
-	illustration.custom_minimum_size = Vector2(84.0, 84.0)
-	illustration.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	illustration.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	illustration.call("configure", upgrade, affinity_color)
-	stack.add_child(illustration)
+	type_line.clip_text = true
+	type_line.add_theme_font_size_override("font_size", 12)
+	type_line.add_theme_color_override("font_color", Color("ff6b82"))
+	type_line.add_theme_font_size_override("outline_size", 1)
+	type_line.add_theme_color_override("font_outline_color", Color("180006"))
+	surface.add_child(type_line)
 
 	var description := Label.new()
 	description.name = "Description"
-	description.custom_minimum_size = Vector2(0.0, 76.0)
-	description.text = _get_card_effect_rows(upgrade)
+	description.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	description.anchor_top = 0.68
+	description.anchor_bottom = 0.83
+	description.offset_left = 24.0
+	description.offset_right = -24.0
+	description.text = tr(upgrade.description.strip_edges())
 	description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	description.vertical_alignment = VERTICAL_ALIGNMENT_TOP
-	description.add_theme_font_size_override("font_size", 16)
-	description.add_theme_color_override("font_color", Color(0.82, 0.86, 0.87))
-	stack.add_child(description)
-
-	var next_divider := HSeparator.new()
-	var next_divider_style := StyleBoxLine.new()
-	next_divider_style.color = affinity_color.darkened(0.18)
-	next_divider_style.thickness = 1
-	next_divider.add_theme_stylebox_override(
-		"separator", next_divider_style
+	description.clip_text = true
+	description.add_theme_font_size_override(
+		"font_size", _get_card_body_font_size(description.text)
 	)
-	stack.add_child(next_divider)
+	description.add_theme_color_override("font_color", Color("f2c3c7"))
+	description.add_theme_font_size_override("outline_size", 1)
+	description.add_theme_color_override("font_outline_color", Color("100004"))
+	surface.add_child(description)
+
 	var next_change := Label.new()
 	next_change.name = "NextLevelChange"
-	next_change.custom_minimum_size = Vector2(0.0, 88.0)
+	next_change.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	next_change.anchor_top = 0.83
+	next_change.anchor_bottom = 0.97
+	next_change.offset_left = 24.0
+	next_change.offset_right = -24.0
 	next_change.text = _get_next_level_change(upgrade)
 	next_change.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	next_change.add_theme_font_size_override("font_size", 16)
-	next_change.add_theme_color_override("font_color", affinity_color)
-	stack.add_child(next_change)
+	next_change.clip_text = true
+	next_change.add_theme_font_size_override(
+		"font_size", _get_card_body_font_size(next_change.text)
+	)
+	next_change.add_theme_color_override("font_color", Color("ff3150"))
+	next_change.add_theme_font_size_override("outline_size", 1)
+	next_change.add_theme_color_override("font_outline_color", Color("160005"))
+	surface.add_child(next_change)
 
-	var badge := card.get_node_or_null("OfferBadge")
+	var badge := card.get_node_or_null("OfferBadge") as Label
 	if badge != null:
-		card.move_child(badge, card.get_child_count() - 1)
+		badge.reparent(surface)
+		surface.move_child(badge, surface.get_child_count() - 1)
 	var selection_border := card.get_node_or_null("SelectionBorder")
 	if selection_border != null:
 		card.move_child(selection_border, card.get_child_count() - 1)
+
+
+func _get_generated_card_art(upgrade: UpgradeData) -> Texture2D:
+	if upgrade == null:
+		return null
+	var art_path := GENERATED_CARD_ART_ROOT % String(upgrade.upgrade_id)
+	if ResourceLoader.exists(art_path):
+		return load(art_path) as Texture2D
+	return null
+
+
+func _get_card_title_font_size(text: String) -> int:
+	if text.length() <= 18:
+		return 23
+	if text.length() <= 28:
+		return 20
+	return 17
+
+
+func _get_card_body_font_size(text: String) -> int:
+	if text.length() <= 95:
+		return 13
+	if text.length() <= 145:
+		return 12
+	return 11
 
 
 func _get_upgrade_card_color(upgrade: UpgradeData) -> Color:
@@ -1586,6 +1658,9 @@ func _set_build_card_overlay(card: TextureButton, upgrade: UpgradeData) -> void:
 func _animate_upgrade_card_reveal() -> void:
 	for card_index in range(upgrade_cards.size()):
 		var card := upgrade_cards[card_index]
+		if card.has_method("play_reveal"):
+			card.call("play_reveal", float(card_index) * 0.075)
+			continue
 		card.pivot_offset = card.size * 0.5
 		card.scale = Vector2(0.9, 0.9)
 		card.modulate.a = 0.0
@@ -1636,12 +1711,15 @@ func _accept_selected_upgrade() -> void:
 	upgrade_confirm_button.disabled = true
 	var selected_card := upgrade_cards[card_selection.selected_index]
 	_play_ui_vfx_at_control(&"ui_energy_confirm", selected_card, 0.58)
-	selected_card.pivot_offset = selected_card.size * 0.5
-	var confirm_tween := selected_card.create_tween()
-	confirm_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
-	confirm_tween.tween_property(selected_card, "scale", Vector2.ONE * 1.04, 0.055)
-	confirm_tween.tween_property(selected_card, "scale", Vector2.ONE * 0.98, 0.045)
-	confirm_tween.tween_property(selected_card, "scale", Vector2.ONE, 0.04)
+	if selected_card.has_method("play_confirm"):
+		selected_card.call("play_confirm")
+	else:
+		selected_card.pivot_offset = selected_card.size * 0.5
+		var confirm_tween := selected_card.create_tween()
+		confirm_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+		confirm_tween.tween_property(selected_card, "scale", Vector2.ONE * 1.04, 0.055)
+		confirm_tween.tween_property(selected_card, "scale", Vector2.ONE * 0.98, 0.045)
+		confirm_tween.tween_property(selected_card, "scale", Vector2.ONE, 0.04)
 	for card_index in range(upgrade_cards.size()):
 		if card_index == card_selection.selected_index:
 			continue
@@ -1736,8 +1814,12 @@ func _clear_upgrade_selection() -> void:
 	if is_instance_valid(upgrade_confirm_button):
 		upgrade_confirm_button.disabled = true
 		upgrade_confirm_button.hide()
-	for border in upgrade_selection_borders:
-		border.hide()
+	for index in range(upgrade_selection_borders.size()):
+		upgrade_selection_borders[index].hide()
+		if index < upgrade_cards.size():
+			var card := upgrade_cards[index]
+			if card.has_method("set_selected_visual"):
+				card.call("set_selected_visual", false)
 
 
 func _get_upgrade_reroll_cost() -> int:
@@ -1834,7 +1916,7 @@ func _configure_unstable_genome_card() -> void:
 	)
 	if use_fourth:
 		if not is_instance_valid(bonus_upgrade_card):
-			bonus_upgrade_card = TextureButton.new()
+			bonus_upgrade_card = HorrorUpgradeCardScript.new()
 			bonus_upgrade_card.name = "UpgradeCard4"
 			bonus_upgrade_card.custom_minimum_size = Vector2(276.0, 396.0)
 			bonus_upgrade_card.clip_contents = true
@@ -1888,16 +1970,16 @@ func _refresh_upgrade_selection_borders() -> void:
 	for index in range(upgrade_selection_borders.size()):
 		var border := upgrade_selection_borders[index]
 		border.visible = index == card_selection.selected_index
+		if index < upgrade_cards.size():
+			var card := upgrade_cards[index]
+			if card.has_method("set_selected_visual"):
+				card.call(
+					"set_selected_visual",
+					index == card_selection.selected_index
+				)
 		if not border.visible:
 			continue
-		var kind := UpgradeData.UpgradeKind.ITEM
-		if index < displayed_upgrades.size() and displayed_upgrades[index] != null:
-			kind = displayed_upgrades[index].upgrade_kind
-		var color := Color(0.3, 0.82, 0.62, 0.98)
-		if kind == UpgradeData.UpgradeKind.ORGAN:
-			color = Color(0.76, 0.38, 0.96, 0.98)
-		elif kind == UpgradeData.UpgradeKind.WEAPON:
-			color = Color(1.0, 0.48, 0.18, 0.98)
+		var color := Color("ff3150")
 		var style := StyleBoxFlat.new()
 		style.bg_color = Color.TRANSPARENT
 		style.border_color = color

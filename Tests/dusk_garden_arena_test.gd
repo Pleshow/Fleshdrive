@@ -45,6 +45,10 @@ func _run() -> void:
 	var spawner := game.get_node_or_null("EnemySpawner")
 	var run_manager := game.get_node_or_null("RunManager") as RunManager
 	_check(arena != null, "Selected run instantiates Dusk Garden")
+	_check(
+		game.get_node_or_null("ArenaIdentification") == null,
+		"Dusk Garden starts without the redundant arena identification banner"
+	)
 	if arena == null or player == null or spawner == null:
 		_cleanup(game, flow, original_arena)
 		return
@@ -230,6 +234,7 @@ func _run() -> void:
 		"Biomass scene uses the authored nine-frame pulsating flesh row"
 	)
 	game.add_child(biomass)
+	await process_frame
 	var biomass_texture := biomass.sprite.sprite_frames.get_frame_texture(
 		&"pulse",
 		0
@@ -246,8 +251,19 @@ func _run() -> void:
 		and biomass.ground_shadow.visible
 		and biomass.ground_shadow.modulate.is_equal_approx(
 			InkCrimsonPalette.GROUND_SHADOW
-		),
-		"Biomass preserves authored colors and uses the shared ground shadow"
+		)
+		and biomass.spawn_motion_tween != null
+		and biomass.spawn_motion_tween.is_valid()
+		and biomass.sprite.position.y < 0.0
+		and biomass.popup_height >= 46.0
+		and is_zero_approx(biomass.sprite.position.x)
+		and biomass.pickup_delay
+		>= biomass.popup_launch_duration
+		+ biomass.popup_rise_duration
+		+ biomass.popup_hang_duration
+		+ biomass.popup_fall_duration
+		and not biomass.can_be_collected,
+		"Biomass performs a readable vertical pop before collection"
 	)
 
 	var projectile := PROJECTILE_SCENE.instantiate() as SpitterProjectile

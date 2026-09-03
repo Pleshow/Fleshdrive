@@ -52,17 +52,16 @@ func _run() -> void:
 		"Tooltips and settings sliders use the shared visual language"
 	)
 	_check(
-		theme.get_stylebox(&"normal", &"Button") is StyleBoxFlat
-		and theme.get_stylebox(&"panel", &"Panel") is StyleBoxFlat,
-		"Shared buttons and panels use concrete Godot theme styles"
+		theme.get_stylebox(&"normal", &"Button") is StyleBoxTexture
+		and theme.get_stylebox(&"panel", &"Panel") is StyleBoxTexture,
+		"Shared buttons and panels use Horror UI texture styles"
 	)
-	var theme_button_normal := theme.get_stylebox(&"normal", &"Button") as StyleBoxFlat
+	var theme_button_normal := theme.get_stylebox(&"normal", &"Button") as StyleBoxTexture
 	_check(
-		theme_button_normal.bg_color.a == 0.0
-		and theme_button_normal.get_border_width(SIDE_LEFT) == 0
+		theme_button_normal.texture != null
 		and theme.get_color(&"font_color", &"Button") == Color("9c173b")
 		and theme.get_color(&"font_hover_color", &"Button") == Color("ff0546"),
-		"Shared theme defines frameless crimson text buttons"
+		"Shared theme defines textured Horror UI buttons"
 	)
 
 	var menu := MAIN_MENU.instantiate() as MainMenu
@@ -87,9 +86,9 @@ func _run() -> void:
 		)
 		_check(
 			not button.has_node("BiomechShadow")
-			and button.flat
-			and button.get_theme_stylebox("normal") is StyleBoxEmpty,
-			"Main menu button stays frameless and shadow-free: %s" % button.name
+			and not button.flat
+			and button.get_theme_stylebox("normal") is StyleBoxTexture,
+			"Main menu button uses the Horror UI frame: %s" % button.name
 		)
 		_check(
 			button.size.x <= 420.5
@@ -256,11 +255,85 @@ func _run() -> void:
 		"Operation screen uses the shared Mimichu idle and talk atlas"
 	)
 	_check(
-		(operation.get_node("MimichuPanel").get_theme_stylebox("panel") as StyleBoxFlat).bg_color.get_luminance() < 0.12
-		and (operation.get_node("DetailsPanel").get_theme_stylebox("panel") as StyleBoxFlat).bg_color.get_luminance() < 0.12,
-		"Fleshdrive operation panels use a transparent dark surface"
+		operation.get_node("MimichuPanel").get_theme_stylebox("panel")
+		is StyleBoxTexture
+		and operation.get_node("DetailsPanel").get_theme_stylebox("panel")
+		is StyleBoxTexture,
+		"Fleshdrive operation panels use the Horror UI frame"
 	)
 	var hud := game.get_node("UI/HUD")
+	var upgrade_card := hud.get_node(
+		"LevelUpPanel/CenterContainer/VBoxContainer/Cards/UpgradeCard1"
+	) as TextureButton
+	var sample_upgrade := load(
+		"res://Resources/Upgrades/arc_heart.tres"
+	) as UpgradeData
+	hud._set_upgrade_card_content(upgrade_card, sample_upgrade)
+	await process_frame
+	var dynamic_title := upgrade_card.get_node(
+		"CardSurface/CardTitle"
+	) as Label
+	var dynamic_art := upgrade_card.get_node(
+		"CardSurface/MainArtwork"
+	) as TextureRect
+	var card_frame := upgrade_card.get_node(
+		"CardSurface/CardFrameOverlay"
+	) as TextureRect
+	var card_description := upgrade_card.get_node(
+		"CardSurface/Description"
+	) as Label
+	_check(
+		upgrade_card.has_method("play_reveal"),
+		"Upgrade offers use the animated Horror card controller"
+	)
+	_check(
+		dynamic_title.text == tr(sample_upgrade.display_name),
+		"Upgrade card titles remain dynamic and localizable"
+	)
+	_check(
+		dynamic_art.texture != null
+		and dynamic_art.texture != sample_upgrade.card_texture,
+		"Upgrade cards no longer display legacy baked-text artwork"
+	)
+	_check(
+		dynamic_art.texture != null
+		and "/skill_art/cards/arc_heart.png" in dynamic_art.texture.resource_path,
+		"Each upgrade card loads its generated ability-specific artwork"
+	)
+	_check(
+		upgrade_card.get_node_or_null("CardSurface/CategoryIcon") == null
+		and card_frame.texture.resource_path.ends_with(
+			"fleshdrive_upgrade_card_frame_v4.png"
+		),
+		"Upgrade cards omit the category icon and its top-right socket"
+	)
+	_check(
+		dynamic_title.get_theme_font_size("font_size") >= 17
+		and card_description.get_theme_font_size("font_size") >= 11
+		and card_description.get_theme_font_size("outline_size") >= 1,
+		"Card copy keeps a readable minimum size and contrast outline"
+	)
+	_check(
+		dynamic_title.get_parent() == dynamic_art.get_parent()
+		and upgrade_card.get_node_or_null("CardDepthLayer") == null,
+		"Artwork and text share one surface so all card content moves together"
+	)
+	upgrade_card.call("play_reveal", 0.10)
+	upgrade_card.call("_on_mouse_entered")
+	await create_timer(0.55).timeout
+	_check(
+		is_equal_approx(upgrade_card.modulate.a, 1.0)
+		and upgrade_card.visible,
+		"Hover cannot interrupt reveal and strand a card dark or invisible"
+	)
+	upgrade_card.call("_on_mouse_exited")
+	upgrade_card.call("set_selected_visual", true, false)
+	_check(
+		upgrade_card.scale.x > 1.05
+		and upgrade_card.get_node("SelectionBorder").visible,
+		"Selected upgrade cards receive highlight and scale emphasis"
+	)
+	upgrade_card.call("set_selected_visual", false, false)
 	var player_status := hud.get_node("PlayerStatusPanel") as Control
 	var portrait_frame := player_status.get_node("PortraitFrame") as Control
 	var health_bar := player_status.get_node("HealthBar") as Control

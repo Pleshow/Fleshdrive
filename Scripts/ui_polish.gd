@@ -7,6 +7,42 @@ const CRIMSON_HOVER := Color("ff0546")
 const CRIMSON_PRESSED := Color("660f31")
 const CRIMSON_DISABLED := Color(0.27, 0.012, 0.153, 0.58)
 const UI_VOID := Color(0.035, 0.004, 0.035, 0.92)
+const HORROR_BUTTON_NORMAL := preload(
+	"res://Assets/ui/Horror UI kit/Horror UI Kit/Horror UI Kit/Buttons/HorrorUI-ButtonA_01.png"
+)
+const HORROR_BUTTON_HOVER := preload(
+	"res://Assets/ui/Horror UI kit/Horror UI Kit/Horror UI Kit/Buttons/HorrorUI-ButtonA_02.png"
+)
+const HORROR_BUTTON_PRESSED := preload(
+	"res://Assets/ui/Horror UI kit/Horror UI Kit/Horror UI Kit/Buttons/HorrorUI-ButtonA_03.png"
+)
+const HORROR_PANEL := preload(
+	"res://Assets/ui/Horror UI kit/Horror UI Kit/Horror UI Kit/Panels -slice 9/HorrorUI-Panel_01.png"
+)
+const HORROR_CURSOR := preload(
+	"res://Assets/ui/Horror UI kit/Horror UI Kit/Horror UI Kit/Cursors/F_UI_Cursor1.png"
+)
+const HORROR_CURSOR_ACTIVE := preload(
+	"res://Assets/ui/Horror UI kit/Horror UI Kit/Horror UI Kit/Cursors/F_UI_Cursor2.png"
+)
+const HORROR_SWITCH_OFF := preload(
+	"res://Assets/ui/Horror UI kit/Horror UI Kit/Horror UI Kit/Switches/Big switch/HorrorUI-SwitchA_OFF.png"
+)
+const HORROR_SWITCH_ON := preload(
+	"res://Assets/ui/Horror UI kit/Horror UI Kit/Horror UI Kit/Switches/Big switch/HorrorUI-SwitchA_ON.png"
+)
+const HORROR_SLIDER_HORIZONTAL := preload(
+	"res://Assets/ui/Horror UI kit/Horror UI Kit/Horror UI Kit/Slidebars/HorrorUI-SlidebarA.png"
+)
+const HORROR_SLIDER_VERTICAL := preload(
+	"res://Assets/ui/Horror UI kit/Horror UI Kit/Horror UI Kit/Slidebars/HorrorUI-SlidebarE.png"
+)
+const HORROR_HANDLE_HORIZONTAL := preload(
+	"res://Assets/ui/Horror UI kit/Horror UI Kit/Horror UI Kit/Slidebars/HorrorUI-HorizontalHandle_01.png"
+)
+const HORROR_HANDLE_VERTICAL := preload(
+	"res://Assets/ui/Horror UI kit/Horror UI Kit/Horror UI Kit/Slidebars/HorrorUI-VerticalHandle_01.png"
+)
 
 const MODAL_NAMES: Array[StringName] = [
 	&"SettingsPanel",
@@ -31,6 +67,12 @@ var active_tweens: Dictionary = {}
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	Input.set_custom_mouse_cursor(HORROR_CURSOR, Input.CURSOR_ARROW, Vector2(1.0, 1.0))
+	Input.set_custom_mouse_cursor(
+		HORROR_CURSOR_ACTIVE,
+		Input.CURSOR_POINTING_HAND,
+		Vector2(2.0, 2.0)
+	)
 	get_tree().node_added.connect(_on_node_added)
 	call_deferred("_register_existing_tree")
 
@@ -126,15 +168,28 @@ func _apply_minimal_crimson_style(control: Control) -> void:
 
 
 func _style_text_button(button: BaseButton) -> void:
-	if button is Button:
-		(button as Button).flat = true
-	for style_name in ["normal", "hover", "pressed", "disabled", "focus"]:
-		var empty := StyleBoxEmpty.new()
-		empty.content_margin_left = 8.0
-		empty.content_margin_top = 4.0
-		empty.content_margin_right = 8.0
-		empty.content_margin_bottom = 4.0
-		button.add_theme_stylebox_override(style_name, empty)
+	if button is CheckButton:
+		for style_name in ["normal", "hover", "pressed", "disabled", "focus"]:
+			button.add_theme_stylebox_override(style_name, StyleBoxEmpty.new())
+		button.add_theme_icon_override("checked", HORROR_SWITCH_ON)
+		button.add_theme_icon_override("unchecked", HORROR_SWITCH_OFF)
+		button.add_theme_icon_override("checked_disabled", HORROR_SWITCH_ON)
+		button.add_theme_icon_override("unchecked_disabled", HORROR_SWITCH_OFF)
+	elif button is Button:
+		(button as Button).flat = false
+		button.add_theme_stylebox_override(
+			"normal", _make_horror_style(HORROR_BUTTON_NORMAL, 10.0)
+		)
+		button.add_theme_stylebox_override(
+			"hover", _make_horror_style(HORROR_BUTTON_HOVER, 10.0)
+		)
+		button.add_theme_stylebox_override(
+			"pressed", _make_horror_style(HORROR_BUTTON_PRESSED, 10.0)
+		)
+		button.add_theme_stylebox_override(
+			"disabled", _make_horror_style(HORROR_BUTTON_NORMAL, 10.0)
+		)
+		button.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
 	button.add_theme_color_override("font_color", CRIMSON_TEXT)
 	button.add_theme_color_override("font_focus_color", CRIMSON_TEXT)
 	button.add_theme_color_override("font_hover_color", CRIMSON_HOVER)
@@ -180,22 +235,34 @@ func _style_panel(control: Control) -> void:
 	if control.name in [&"PortraitFrame", &"MenuShell"]:
 		control.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
 		return
-	var style := StyleBoxFlat.new()
-	style.anti_aliasing = false
-	style.set_corner_radius_all(0)
-	style.shadow_size = 0
 	if (
 		String(control.name).contains("SelectionBorder")
 		or control.name == &"SelectedFrame"
 	):
+		var style := StyleBoxFlat.new()
 		style.bg_color = Color.TRANSPARENT
 		style.border_color = CRIMSON_HOVER
 		style.set_border_width_all(2)
+		style.anti_aliasing = false
+		control.add_theme_stylebox_override("panel", style)
 	else:
-		style.bg_color = UI_VOID
-		style.border_color = Color.TRANSPARENT
-		style.set_border_width_all(0)
-	control.add_theme_stylebox_override("panel", style)
+		control.add_theme_stylebox_override(
+			"panel", _make_horror_style(HORROR_PANEL, 26.0)
+		)
+
+
+func _make_horror_style(texture: Texture2D, margin: float) -> StyleBoxTexture:
+	var style := StyleBoxTexture.new()
+	style.texture = texture
+	style.texture_margin_left = margin
+	style.texture_margin_top = margin
+	style.texture_margin_right = margin
+	style.texture_margin_bottom = margin
+	style.content_margin_left = 12.0
+	style.content_margin_top = 8.0
+	style.content_margin_right = 12.0
+	style.content_margin_bottom = 8.0
+	return style
 
 
 func _style_tab_bar(tab_bar: TabBar) -> void:
@@ -239,22 +306,18 @@ func _style_text_edit(text_edit: TextEdit) -> void:
 
 
 func _style_slider(slider: Range) -> void:
-	var track := StyleBoxFlat.new()
-	track.bg_color = Color("17001d")
-	track.border_color = CRIMSON_PRESSED
-	track.border_width_top = 1
-	track.border_width_bottom = 1
-	track.anti_aliasing = false
-	var filled := StyleBoxFlat.new()
-	filled.bg_color = CRIMSON_TEXT
-	filled.border_color = CRIMSON_TEXT
-	filled.anti_aliasing = false
+	var horizontal := slider is HSlider
+	var track_texture := (
+		HORROR_SLIDER_HORIZONTAL if horizontal else HORROR_SLIDER_VERTICAL
+	)
+	var track := _make_horror_style(track_texture, 5.0)
+	var filled := _make_horror_style(track_texture, 5.0)
 	slider.add_theme_stylebox_override("slider", track)
 	slider.add_theme_stylebox_override("grabber_area", filled)
 	slider.add_theme_stylebox_override("grabber_area_highlight", filled)
-	# Slider grabbers are theme icons rather than styleboxes; a direct canvas
-	# tint keeps those authored pixels in the same red family without a shader.
-	(slider as CanvasItem).self_modulate = CRIMSON_HOVER
+	var handle := HORROR_HANDLE_HORIZONTAL if horizontal else HORROR_HANDLE_VERTICAL
+	slider.add_theme_icon_override("grabber", handle)
+	slider.add_theme_icon_override("grabber_highlight", handle)
 
 
 func _style_ui_texture(texture_rect: TextureRect) -> void:

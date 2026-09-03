@@ -3,7 +3,12 @@ extends Area2D
 
 
 @export var biomass_value: float = 10.0
-@export var pickup_delay: float = 0.15
+@export var pickup_delay: float = 0.52
+@export var popup_height: float = 46.0
+@export var popup_launch_duration: float = 0.07
+@export var popup_rise_duration: float = 0.13
+@export var popup_hang_duration: float = 0.045
+@export var popup_fall_duration: float = 0.20
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var ground_shadow: Sprite2D = $GroundShadow
@@ -14,6 +19,7 @@ var original_scale: Vector2
 var player: Node2D
 var reuse_epoch: int = 0
 var spawn_tween: Tween
+var spawn_motion_tween: Tween
 
 
 func _ready() -> void:
@@ -38,6 +44,8 @@ func prepare_for_reuse() -> void:
 	var current_epoch := reuse_epoch
 	if spawn_tween != null and spawn_tween.is_valid():
 		spawn_tween.kill()
+	if spawn_motion_tween != null and spawn_motion_tween.is_valid():
+		spawn_motion_tween.kill()
 	collected = false
 	can_be_collected = false
 	monitoring = true
@@ -47,23 +55,57 @@ func prepare_for_reuse() -> void:
 		original_scale = sprite.scale
 	sprite.modulate = Color.WHITE
 	sprite.scale = Vector2.ZERO
+	sprite.position = Vector2.ZERO
+	sprite.rotation = 0.0
 	MinimalistVisualProfile.configure_ground_shadow(ground_shadow)
 	ground_shadow.show()
 
 	spawn_tween = create_tween()
 	spawn_tween.set_parallel(true)
 	spawn_tween.tween_property(
-	sprite,
-	"scale",
-	original_scale,
-	0.18
-	).set_trans(Tween.TRANS_BACK)
+		sprite,
+		"scale",
+		original_scale,
+		0.24
+	).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 	spawn_tween.tween_property(
 		sprite,
 		"rotation",
-		randf_range(-0.25, 0.25),
-		0.18
+		randf_range(-0.52, 0.52),
+		popup_launch_duration + popup_rise_duration
+	)
+
+	# Pop out from the enemy's body center, hang briefly at the apex, then
+	# settle onto the pickup shadow. Moving only the visual keeps collision and
+	# attraction anchored to the exact drop position throughout the animation.
+	var apex := Vector2(0.0, -popup_height)
+	var launch_point := Vector2(
+		0.0,
+		-popup_height * 0.28
+	)
+	spawn_motion_tween = create_tween()
+	spawn_motion_tween.tween_property(
+		sprite,
+		"position",
+		launch_point,
+		popup_launch_duration
+	).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	spawn_motion_tween.tween_property(
+		sprite,
+		"position",
+		apex,
+		popup_rise_duration
+	).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	spawn_motion_tween.tween_interval(popup_hang_duration)
+	spawn_motion_tween.tween_property(
+		sprite,
+		"position",
+		Vector2.ZERO,
+		popup_fall_duration
+	).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
+	spawn_motion_tween.tween_callback(func() -> void:
+		sprite.rotation = 0.0
 	)
 
 	await get_tree().create_timer(pickup_delay).timeout
@@ -83,6 +125,10 @@ func prepare_for_pool() -> void:
 	reuse_epoch += 1
 	if spawn_tween != null and spawn_tween.is_valid():
 		spawn_tween.kill()
+	if spawn_motion_tween != null and spawn_motion_tween.is_valid():
+		spawn_motion_tween.kill()
+	sprite.position = Vector2.ZERO
+	sprite.rotation = 0.0
 	can_be_collected = false
 	collected = true
 	player = null
