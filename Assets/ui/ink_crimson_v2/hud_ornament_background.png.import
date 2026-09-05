@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b2wk2pi7vafhg"
-path="res://.godot/imported/crawler (1).png-bf64ab59de27c533e51862efcbd53fb6.ctex"
+uid="uid://dw87wo2peawwy"
+path="res://.godot/imported/hud_ornament_background.png-8cea3a9eaebe9da591350bce665be0c3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/enemies/crawler (1).png"
-dest_files=["res://.godot/imported/crawler (1).png-bf64ab59de27c533e51862efcbd53fb6.ctex"]
+source_file="res://Assets/ui/ink_crimson_v2/hud_ornament_background.png"
+dest_files=["res://.godot/imported/hud_ornament_background.png-8cea3a9eaebe9da591350bce665be0c3.ctex"]
 
 [params]
 

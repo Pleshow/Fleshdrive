@@ -7,11 +7,14 @@ const COMPACT_SIZE := Vector2(230.0, 198.0)
 const EXPANDED_POSITION := Vector2(36.0, 36.0)
 const EXPANDED_SIZE := Vector2(1208.0, 648.0)
 
+@export var compact_position: Vector2 = COMPACT_POSITION
+@export var compact_size: Vector2 = COMPACT_SIZE
+
 var summary: Dictionary = {}
 var expanded := false
-var title_label: Label
-var content: VBoxContainer
-var toggle_button: Button
+@onready var title_label: Label = %Title
+@onready var content: VBoxContainer = %Content
+@onready var toggle_button: Button = %ToggleButton
 
 
 func _ready() -> void:
@@ -28,46 +31,18 @@ func _ready() -> void:
 	style.corner_radius_bottom_right = 7
 	add_theme_stylebox_override("panel", style)
 	gui_input.connect(_on_panel_input)
-	var margin := MarginContainer.new()
-	margin.add_theme_constant_override("margin_left", 16)
-	margin.add_theme_constant_override("margin_top", 12)
-	margin.add_theme_constant_override("margin_right", 16)
-	margin.add_theme_constant_override("margin_bottom", 12)
-	add_child(margin)
-	var root_stack := VBoxContainer.new()
-	root_stack.add_theme_constant_override("separation", 7)
-	margin.add_child(root_stack)
-	var header := HBoxContainer.new()
-	root_stack.add_child(header)
-	title_label = Label.new()
 	title_label.text = tr("PREVIOUS RUN STATISTICS")
-	title_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	title_label.clip_text = true
-	title_label.add_theme_font_size_override("font_size", 19)
-	title_label.add_theme_color_override("font_color", Color(0.34, 0.92, 0.96))
-	header.add_child(title_label)
-	toggle_button = Button.new()
 	toggle_button.text = tr("EXPAND")
-	toggle_button.custom_minimum_size = Vector2(76.0, 30.0)
 	toggle_button.pressed.connect(_toggle_expanded)
-	header.add_child(toggle_button)
-	var scroll := ScrollContainer.new()
-	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	root_stack.add_child(scroll)
-	content = VBoxContainer.new()
-	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	content.add_theme_constant_override("separation", 8)
-	scroll.add_child(content)
-	position = COMPACT_POSITION
-	size = COMPACT_SIZE
+	position = compact_position
+	size = compact_size
 
 
 func present(run_summary: Dictionary) -> void:
 	summary = run_summary.duplicate(true)
 	expanded = false
-	position = COMPACT_POSITION
-	size = COMPACT_SIZE
+	position = compact_position
+	size = compact_size
 	z_index = 20
 	_apply_layout_mode()
 	_rebuild()
@@ -76,8 +51,8 @@ func present(run_summary: Dictionary) -> void:
 
 func _toggle_expanded() -> void:
 	expanded = not expanded
-	position = EXPANDED_POSITION if expanded else COMPACT_POSITION
-	size = EXPANDED_SIZE if expanded else COMPACT_SIZE
+	position = EXPANDED_POSITION if expanded else compact_position
+	size = EXPANDED_SIZE if expanded else compact_size
 	_apply_layout_mode()
 	_rebuild()
 
@@ -122,7 +97,7 @@ func _add_metric_strip() -> void:
 	if expanded:
 		var row := Label.new()
 		row.add_theme_font_size_override("font_size", 16)
-		row.add_theme_color_override("font_color", Color(0.74, 0.84, 0.85))
+		row.add_theme_color_override("font_color", Color(0.45, 0.88, 1.0))
 		var parts: Array[String] = []
 		for metric: Array in metrics:
 			parts.append("%s %s" % [metric[0], metric[1]])
@@ -138,13 +113,13 @@ func _add_metric_strip() -> void:
 		name_label.clip_text = true
 		name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		name_label.add_theme_font_size_override("font_size", 12)
-		name_label.add_theme_color_override("font_color", Color(0.58, 0.78, 0.80))
+		name_label.add_theme_color_override("font_color", Color(0.45, 0.88, 1.0))
 		metric_row.add_child(name_label)
 		var value_label := Label.new()
 		value_label.text = String(metric[1])
 		value_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		value_label.add_theme_font_size_override("font_size", 15)
-		value_label.add_theme_color_override("font_color", Color(0.95, 0.31, 0.48))
+		value_label.add_theme_color_override("font_color", Color(0.45, 0.88, 1.0))
 		metric_row.add_child(value_label)
 
 
@@ -152,7 +127,7 @@ func _add_chart(heading: String, values: Dictionary) -> void:
 	var heading_label := Label.new()
 	heading_label.text = heading
 	heading_label.add_theme_font_size_override("font_size", 14 if not expanded else 18)
-	heading_label.add_theme_color_override("font_color", Color(0.92, 0.34, 0.48))
+	heading_label.add_theme_color_override("font_color", Color(0.45, 0.88, 1.0))
 	content.add_child(heading_label)
 	var entries: Array[Dictionary] = []
 	for key in values:
@@ -206,7 +181,7 @@ func _add_details() -> void:
 	var details := Label.new()
 	details.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	details.add_theme_font_size_override("font_size", 15)
-	details.add_theme_color_override("font_color", Color(0.72, 0.86, 0.88))
+	details.add_theme_color_override("font_color", Color(0.45, 0.88, 1.0))
 	details.text = (
 		"%s: %s    %s: %.0f    %s: %.0f    %s: %.1fs"
 		% [

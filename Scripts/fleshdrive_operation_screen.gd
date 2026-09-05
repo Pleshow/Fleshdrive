@@ -32,8 +32,8 @@ var selected_fleshdrive_id: StringName = FleshdriveCatalog.ELECTRIC
 var meta_progression: Node
 var fleshdrive_slots: Array[Button] = []
 var mimichu_talk_generation: int = 0
-var character_sheet_button: Button
-var character_sheet_panel: CharacterSheetPanel
+@onready var character_sheet_button: Button = %CharacterSheetButton
+@onready var character_sheet_panel: CharacterSheetPanel = %CharacterSheetPanel
 
 
 func _ready() -> void:
@@ -77,7 +77,7 @@ func _ready() -> void:
 	)
 	implant_button.pressed.connect(_confirm_selection)
 	back_button.pressed.connect(back_requested.emit)
-	_install_character_sheet()
+	character_sheet_button.pressed.connect(_show_character_sheet)
 	hide()
 
 
@@ -129,24 +129,6 @@ func present(progression: Node) -> void:
 	_animate_card_reveal()
 	_play_mimichu_intro()
 	electric_card.grab_focus()
-
-
-func _install_character_sheet() -> void:
-	character_sheet_button = Button.new()
-	character_sheet_button.name = "CharacterSheetButton"
-	character_sheet_button.text = tr("KODA CHARACTER SHEET")
-	character_sheet_button.position = Vector2(892.0, 636.0)
-	character_sheet_button.size = Vector2(304.0, 64.0)
-	character_sheet_button.process_mode = Node.PROCESS_MODE_ALWAYS
-	character_sheet_button.pressed.connect(_show_character_sheet)
-	add_child(character_sheet_button)
-	character_sheet_panel = CharacterSheetPanel.new()
-	character_sheet_panel.name = "CharacterSheetPanel"
-	character_sheet_panel.position = Vector2(220.0, 76.0)
-	character_sheet_panel.size = Vector2(840.0, 580.0)
-	character_sheet_panel.z_index = 40
-	add_child(character_sheet_panel)
-	character_sheet_panel.hide()
 
 
 func _show_character_sheet() -> void:

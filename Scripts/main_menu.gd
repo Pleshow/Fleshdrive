@@ -1,6 +1,8 @@
 class_name MainMenu
 extends Control
 
+const SettingsTabsScene := preload("res://Scenes/ui/settings_tabs.tscn")
+
 
 const GAME_SCENE_PATH := "res://Scenes/game.tscn"
 const PLAYTEST_VERSION := "0.1.0-playtest.1"
@@ -199,26 +201,14 @@ func _install_gameplay_settings_controls() -> void:
 	var margin := controls.get_parent()
 	if margin.get_node_or_null("SettingsTabs") != null:
 		return
-	var tabs := TabContainer.new()
-	tabs.name = "SettingsTabs"
-	tabs.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	tabs.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	var tabs := SettingsTabsScene.instantiate() as TabContainer
 	# Leave room for the textured outer frame and localized back action at 720p.
 	tabs.custom_minimum_size = Vector2(0.0, 360.0)
 	margin.add_child(tabs)
-	controls.reparent(tabs)
-	controls.name = "DISPLAY & AUDIO"
-	controls.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	controls.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	var gameplay_page := VBoxContainer.new()
-	gameplay_page.name = "GAMEPLAY & ACCESSIBILITY"
-	gameplay_page.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	gameplay_page.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	tabs.add_child(gameplay_page)
-	var gameplay_controls := GameplaySettingsControls.new()
-	gameplay_controls.name = "GameplaySettings"
-	gameplay_controls.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	gameplay_page.add_child(gameplay_controls)
+	var display_page := tabs.get_node("%DISPLAY & AUDIO") as VBoxContainer
+	for child in controls.get_children():
+		child.reparent(display_page)
+	controls.queue_free()
 	fullscreen_toggle.flat = true
 
 

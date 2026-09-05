@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bjshng1r1mrhw" path="res://Assets/ui/fleshdrives/electric_core.png" id="4_electric"]
 [ext_resource type="Texture2D" uid="uid://dhh0b3xwbo3ao" path="res://Assets/ui/fleshdrives/fire_core.png" id="5_fire"]
 [ext_resource type="Texture2D" path="res://Assets/ui/fleshdrives/telekinetic_core.png" id="6_telekinetic"]
+[ext_resource type="PackedScene" path="res://Scenes/ui/character_sheet_panel.tscn" id="7_character_sheet"]
 
 [sub_resource type="StyleBoxFlat" id="Style_panel"]
 bg_color = Color(0.025, 0.032, 0.038, 0.94)
@@ -475,3 +476,21 @@ offset_right = 286.0
 offset_bottom = 700.0
 theme_override_font_sizes/font_size = 14
 text = "BACK TO MAIN MENU  [ESC]"
+
+[node name="CharacterSheetButton" type="Button" parent="."]
+unique_name_in_owner = true
+offset_left = 892.0
+offset_top = 636.0
+offset_right = 1196.0
+offset_bottom = 700.0
+process_mode = 3
+text = "KODA CHARACTER SHEET"
+
+[node name="CharacterSheetPanel" parent="." instance=ExtResource("7_character_sheet")]
+unique_name_in_owner = true
+visible = false
+z_index = 40
+offset_left = 220.0
+offset_top = 76.0
+offset_right = 1060.0
+offset_bottom = 656.0

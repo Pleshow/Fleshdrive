@@ -13,6 +13,9 @@ enum SequenceState {
 }
 
 @export var printing_duration: float = 2.6
+@export_group("Fabrication Subject Placement")
+@export var printing_position: Vector2 = Vector2(640.0, 437.0)
+@export var idle_position: Vector2 = Vector2(640.0, 441.0)
 
 @onready var print_sprite: AnimatedSprite2D = %PrintSprite
 @onready var print_blend_sprite: AnimatedSprite2D = %PrintBlendSprite
@@ -21,7 +24,6 @@ enum SequenceState {
 @onready var run_summary_label: Label = %RunSummaryLabel
 @onready var lifetime_summary_label: Label = %LifetimeSummaryLabel
 @onready var stage_label: Label = %StageLabel
-@onready var skip_button: Button = %SkipButton
 @onready var dialogue_panel: DialoguePanel = %DialoguePanel
 @onready var terminal_panel: Control = $Terminal
 @onready var run_summary_panel: Control = $RunSummaryPanel
@@ -35,19 +37,15 @@ var print_elapsed: float = 0.0
 var current_instance_number: int = 1
 var current_summary: Dictionary = {}
 var current_statistics: Dictionary = {}
-var statistics_panel: RunStatisticsPanel
+@onready var statistics_panel: RunStatisticsPanel = %RunStatisticsPanel
 
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	printer_glass.set_meta("preserve_authored_ui_style", true)
 	printer_glass.set_meta("ui_polish_skip", true)
-	skip_button.pressed.connect(_finish_printing)
 	dialogue_panel.choice_selected.connect(_on_choice_selected)
-	statistics_panel = RunStatisticsPanel.new()
-	statistics_panel.name = "RunStatisticsPanel"
-	add_child(statistics_panel)
-	statistics_panel.hide()
+	dialogue_panel.right_column_width = 390.0
 	# Compact run data sits in the middle column. Mimichu and the dialogue must
 	# always render above it; only the deliberately expanded modal may cover it.
 	dialogue_panel.z_index = 30
@@ -98,13 +96,12 @@ func start(
 	print_blend_sprite.show()
 	idle_sprite.stop()
 	idle_sprite.frame = 0
-	idle_sprite.position = Vector2(425.0, 470.0)
+	_set_subject_position()
 	idle_sprite.hide()
 	terminal_panel.show()
 	run_summary_panel.show()
 	printer_glass.show()
 	dialogue_panel.hide()
-	skip_button.show()
 	stage_label.text = tr("BIOFABRICATION IN PROGRESS")
 	var summaries := _format_run_summary()
 	run_summary_label.text = String(summaries["last_body"])
@@ -112,7 +109,6 @@ func start(
 	statistics_panel.present(current_summary)
 	_update_terminal(0.0)
 	show()
-	skip_button.grab_focus()
 
 
 func _finish_printing() -> void:
@@ -124,9 +120,8 @@ func _finish_printing() -> void:
 	print_sprite.hide()
 	print_blend_sprite.hide()
 	idle_sprite.show()
-	idle_sprite.position = Vector2(425.0, 470.0)
+	_set_subject_position()
 	idle_sprite.play(&"idle")
-	skip_button.hide()
 	terminal_panel.show()
 	run_summary_panel.show()
 	printer_glass.show()
@@ -181,6 +176,12 @@ func _update_print_animation(progress: float) -> void:
 	print_sprite.modulate.a = 1.0 - blend
 	print_blend_sprite.frame = next_frame
 	print_blend_sprite.modulate.a = blend
+
+
+func _set_subject_position() -> void:
+	print_sprite.position = printing_position
+	print_blend_sprite.position = printing_position
+	idle_sprite.position = idle_position
 
 
 func _format_run_summary() -> Dictionary:

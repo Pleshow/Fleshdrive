@@ -7,7 +7,12 @@ const HorrorUpgradeCardScript := preload(
 	"res://Scripts/ui/horror_upgrade_card.gd"
 )
 const CompactCombatHUDScript := preload("res://Scripts/ui/compact_combat_hud.gd")
-const OrganPopupScript := preload("res://Scripts/ui/organ_popup.gd")
+const OrganPopupScene := preload("res://Scenes/ui/organ_popup.tscn")
+const RunStatisticsPanelScene := preload("res://Scenes/ui/run_statistics_panel.tscn")
+const SettingsTabsScene := preload("res://Scenes/ui/settings_tabs.tscn")
+const ActiveSkillHUDScene := preload("res://Scenes/ui/active_skill_hud.tscn")
+const WardenDialogueScene := preload("res://Scenes/ui/warden_dialogue.tscn")
+const VictoryMessageScene := preload("res://Scenes/ui/victory_message.tscn")
 const CompactCombatHUDScene := preload("res://Scenes/ui/compact_combat_hud.tscn")
 const HORROR_CARD_FRAME := preload(
 	"res://Assets/ui/generated/fleshdrive_upgrade_card_frame_v4.png"
@@ -399,7 +404,7 @@ func _ready() -> void:
 	_install_magma_skill_hud()
 	_install_warden_dialogue()
 	_install_run_reward_icon()
-	run_end_statistics_panel = RunStatisticsPanel.new()
+	run_end_statistics_panel = RunStatisticsPanelScene.instantiate() as RunStatisticsPanel
 	run_end_statistics_panel.name = "RunEndStatisticsPanel"
 	run_end_panel.add_child(run_end_statistics_panel)
 	run_end_statistics_panel.hide()
@@ -512,7 +517,7 @@ func _install_compact_ui() -> void:
 	compact_combat_hud = CompactCombatHUDScene.instantiate() as CompactCombatHUD
 	compact_combat_hud.hud = self
 	add_child(compact_combat_hud)
-	organ_popup = OrganPopupScript.new()
+	organ_popup = OrganPopupScene.instantiate() as OrganPopup
 	organ_popup.hud = self
 	organ_screen.add_child(organ_popup)
 	organ_popup.hide()
@@ -529,63 +534,14 @@ func _process(_delta: float) -> void:
 
 
 func _install_magma_skill_hud() -> void:
-	magma_skill_panel = PanelContainer.new()
-	magma_skill_panel.name = "MagmaSpearSkill"
-	# Keep the active skill dock clear of the centered Warden health panel.
-	magma_skill_panel.position = Vector2(1158.0, 26.0)
-	magma_skill_panel.size = Vector2(92.0, 92.0)
-	magma_skill_panel.mouse_filter = Control.MOUSE_FILTER_STOP
+	magma_skill_panel = ActiveSkillHUDScene.instantiate() as PanelContainer
 	magma_skill_panel.tooltip_text = tr("ACTIVE SKILL: Press E / controller X. Aimed skills confirm with Right Mouse / Right Trigger.")
-	var panel_style := StyleBoxFlat.new()
-	panel_style.bg_color = Color(0.012, 0.02, 0.025, 0.94)
-	panel_style.border_color = Color(1.0, 0.18, 0.025, 0.9)
-	panel_style.set_border_width_all(2)
-	panel_style.set_corner_radius_all(7)
-	magma_skill_panel.add_theme_stylebox_override("panel", panel_style)
 	add_child(magma_skill_panel)
-	var icon := TextureRect.new()
-	icon.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT, Control.PRESET_MODE_MINSIZE, 8)
-	var atlas := AtlasTexture.new()
-	atlas.atlas = load(
-		"res://Assets/vfx/projectiles/magma_spear_sheet.png"
-	) as Texture2D
-	atlas.region = Rect2(0.0, 0.0, 192.0, 96.0)
-	icon.texture = atlas
-	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	magma_skill_panel.add_child(icon)
-	active_skill_icon = icon
-	magma_skill_cooldown = ColorRect.new()
-	magma_skill_cooldown.color = Color(0.01, 0.01, 0.015, 0.78)
-	magma_skill_cooldown.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	magma_skill_panel.add_child(magma_skill_cooldown)
-	magma_skill_cooldown_label = Label.new()
-	magma_skill_cooldown_label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	magma_skill_cooldown_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	magma_skill_cooldown_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	magma_skill_cooldown_label.add_theme_font_size_override("font_size", 22)
-	magma_skill_cooldown_label.add_theme_color_override("font_color", Color.WHITE)
-	magma_skill_cooldown_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	magma_skill_panel.add_child(magma_skill_cooldown_label)
-	var key_label := Label.new()
-	key_label.text = "E"
-	key_label.position = Vector2(7.0, 4.0)
-	key_label.size = Vector2(28.0, 28.0)
-	key_label.add_theme_font_size_override("font_size", 24)
-	key_label.add_theme_color_override("font_color", Color(1.0, 0.42, 0.16))
-	key_label.add_theme_color_override("font_outline_color", Color.BLACK)
-	key_label.add_theme_constant_override("outline_size", 5)
-	key_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	magma_skill_panel.add_child(key_label)
-	active_skill_key_label = key_label
-	magma_skill_name_label = Label.new()
-	magma_skill_name_label.position = Vector2(-20.0, 94.0)
-	magma_skill_name_label.size = Vector2(132.0, 28.0)
-	magma_skill_name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	magma_skill_name_label.add_theme_font_size_override("font_size", 11)
-	magma_skill_name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	magma_skill_panel.add_child(magma_skill_name_label)
+	active_skill_icon = magma_skill_panel.get_node("%Icon") as TextureRect
+	magma_skill_cooldown = magma_skill_panel.get_node("%Cooldown") as ColorRect
+	magma_skill_cooldown_label = magma_skill_panel.get_node("%CooldownLabel") as Label
+	active_skill_key_label = magma_skill_panel.get_node("%KeyLabel") as Label
+	magma_skill_name_label = magma_skill_panel.get_node("%SkillName") as Label
 	magma_skill_panel.hide()
 
 
@@ -697,18 +653,11 @@ func _install_pause_gameplay_settings_controls() -> void:
 	center.add_child(pause_settings_frame)
 	pause_settings_panel.reparent(pause_settings_frame)
 	pause_settings_frame.hide()
-	var tabs := TabContainer.new()
-	tabs.name = "SettingsTabs"
-	tabs.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	tabs.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	var tabs := SettingsTabsScene.instantiate() as TabContainer
 	tabs.custom_minimum_size = Vector2(720.0, 460.0)
 	pause_settings_panel.add_child(tabs)
 	pause_settings_panel.move_child(tabs, 1)
-	var display_page := VBoxContainer.new()
-	display_page.name = "DISPLAY & AUDIO"
-	display_page.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	display_page.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	tabs.add_child(display_page)
+	var display_page := tabs.get_node("%DISPLAY & AUDIO") as VBoxContainer
 	for child_name in [
 		"FullscreenToggle",
 		"ResolutionRow",
@@ -723,15 +672,6 @@ func _install_pause_gameplay_settings_controls() -> void:
 		var child := pause_settings_panel.get_node_or_null(child_name)
 		if child != null:
 			child.reparent(display_page)
-	var gameplay_page := VBoxContainer.new()
-	gameplay_page.name = "GAMEPLAY & ACCESSIBILITY"
-	gameplay_page.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	gameplay_page.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	tabs.add_child(gameplay_page)
-	var gameplay_controls := GameplaySettingsControls.new()
-	gameplay_controls.name = "GameplaySettings"
-	gameplay_controls.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	gameplay_page.add_child(gameplay_controls)
 	pause_fullscreen_toggle.flat = true
 
 
@@ -2469,36 +2409,8 @@ func show_boss_phase(phase: int) -> void:
 
 
 func _install_warden_dialogue() -> void:
-	warden_dialogue_panel = PanelContainer.new()
-	warden_dialogue_panel.name = "WardenDialogue"
-	warden_dialogue_panel.process_mode = Node.PROCESS_MODE_ALWAYS
-	warden_dialogue_panel.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
-	warden_dialogue_panel.position = Vector2(-500.0, -214.0)
-	warden_dialogue_panel.size = Vector2(1000.0, 132.0)
-	warden_dialogue_panel.z_index = 92
-	warden_dialogue_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color(0.018, 0.012, 0.02, 0.94)
-	style.border_color = Color(0.95, 0.14, 0.10, 0.92)
-	style.set_border_width_all(3)
-	style.set_corner_radius_all(8)
-	style.content_margin_left = 24.0
-	style.content_margin_right = 24.0
-	style.content_margin_top = 16.0
-	style.content_margin_bottom = 16.0
-	warden_dialogue_panel.add_theme_stylebox_override("panel", style)
-	var content := VBoxContainer.new()
-	warden_dialogue_panel.add_child(content)
-	var speaker := Label.new()
-	speaker.text = tr("VISCERAL WARDEN")
-	speaker.add_theme_font_size_override("font_size", 24)
-	speaker.add_theme_color_override("font_color", Color(1.0, 0.26, 0.16))
-	content.add_child(speaker)
-	warden_dialogue_text = Label.new()
-	warden_dialogue_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	warden_dialogue_text.add_theme_font_size_override("font_size", 22)
-	warden_dialogue_text.add_theme_color_override("font_color", Color(0.96, 0.94, 0.91))
-	content.add_child(warden_dialogue_text)
+	warden_dialogue_panel = WardenDialogueScene.instantiate() as PanelContainer
+	warden_dialogue_text = warden_dialogue_panel.get_node("%DialogueText") as Label
 	add_child(warden_dialogue_panel)
 	warden_dialogue_panel.hide()
 
@@ -2530,30 +2442,7 @@ func on_boss_defeated() -> void:
 
 
 func _install_victory_message() -> void:
-	victory_message = Control.new()
-	victory_message.name = "VictoryMessage"
-	victory_message.process_mode = Node.PROCESS_MODE_ALWAYS
-	victory_message.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	victory_message.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	victory_message.z_index = 95
-	var center := CenterContainer.new()
-	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	center.offset_top = -118.0
-	center.offset_bottom = -118.0
-	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	victory_message.add_child(center)
-	var label := Label.new()
-	label.name = "Label"
-	label.text = tr("YOU WIN")
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	label.add_theme_font_size_override("font_size", 68)
-	label.add_theme_color_override("font_color", Color(0.38, 0.98, 1.0))
-	label.add_theme_color_override(
-		"font_outline_color",
-		Color(0.0, 0.05, 0.08)
-	)
-	label.add_theme_constant_override("outline_size", 10)
-	center.add_child(label)
+	victory_message = VictoryMessageScene.instantiate() as Control
 	add_child(victory_message)
 	victory_message.hide()
 

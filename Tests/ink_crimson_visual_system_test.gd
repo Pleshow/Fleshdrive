@@ -1,5 +1,7 @@
 extends SceneTree
 
+const GameplaySettingsControlsScene := preload("res://Scenes/ui/gameplay_settings_controls.tscn")
+
 
 const Palette = preload("res://Scripts/visual/ink_crimson_palette.gd")
 const MENU_SCENE := preload("res://Scenes/main_menu.tscn")
@@ -102,7 +104,7 @@ func _test_runtime_shader_toggle() -> void:
 		and shader_item.material == test_material,
 		"Shader switch restores every disabled shader material"
 	)
-	var controls := GameplaySettingsControls.new()
+	var controls := GameplaySettingsControlsScene.instantiate() as GameplaySettingsControls
 	root.add_child(controls)
 	await process_frame
 	var shader_toggle_found := false

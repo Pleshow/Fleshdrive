@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://dldqup0m8vc5r" path="res://Assets/ui/ink_crimson_v2/hud_ornament.png" id="2"]
 [ext_resource type="Texture2D" uid="uid://c7u8bupdno2n4" path="res://Assets/ui/ink_crimson_v2/hp_orb_fill.svg" id="3"]
 [ext_resource type="Texture2D" uid="uid://bpc3tm0wd5maa" path="res://Assets/ui/ink_crimson_v2/energy_orb_fill.svg" id="4"]
+[ext_resource type="Texture2D" uid="uid://dw87wo2peawwy" path="res://Assets/ui/ink_crimson_v2/hud_ornament_background.png" id="5_aylxh"]
 
 [node name="CompactCombatHUD" type="Control" unique_id=1261454958]
 layout_mode = 3
@@ -12,8 +13,10 @@ offset_right = 900.0
 offset_bottom = 300.0
 mouse_filter = 2
 script = ExtResource("1")
+screen_offset = Vector2(0, 60)
 
 [node name="AuthoredFrame" type="TextureRect" parent="." unique_id=1935878730]
+z_index = 1
 layout_mode = 0
 offset_right = 900.0
 offset_bottom = 300.0
@@ -22,6 +25,7 @@ texture = ExtResource("2")
 expand_mode = 1
 
 [node name="HP" type="Label" parent="." unique_id=715025436]
+visible = false
 layout_mode = 0
 offset_left = 57.0
 offset_top = 175.0
@@ -31,11 +35,11 @@ horizontal_alignment = 1
 
 [node name="EnergyOrb" type="TextureProgressBar" parent="." unique_id=282328382]
 layout_mode = 0
-offset_left = 716.0
-offset_top = 83.0
-offset_right = 798.0
-offset_bottom = 165.0
-scale = Vector2(1.6, 1.6)
+offset_left = 724.0
+offset_top = 82.0
+offset_right = 806.0
+offset_bottom = 164.0
+scale = Vector2(1.4, 1.4)
 mouse_filter = 2
 value = 100.0
 fill_mode = 3
@@ -44,11 +48,11 @@ texture_progress = ExtResource("4")
 
 [node name="HPOrb" type="TextureProgressBar" parent="." unique_id=1255001199]
 layout_mode = 0
-offset_left = 53.0
+offset_left = 62.0
 offset_top = 83.0
-offset_right = 135.0
+offset_right = 144.0
 offset_bottom = 165.0
-scale = Vector2(1.6, 1.6)
+scale = Vector2(1.4, 1.4)
 mouse_filter = 2
 value = 100.0
 fill_mode = 3
@@ -56,6 +60,7 @@ radial_initial_angle = 270.0
 texture_progress = ExtResource("3")
 
 [node name="Energy" type="Label" parent="." unique_id=955106971]
+visible = false
 layout_mode = 0
 offset_left = 729.0
 offset_top = 177.0
@@ -66,16 +71,20 @@ horizontal_alignment = 1
 [node name="Currency" type="Label" parent="." unique_id=983395148]
 layout_mode = 0
 offset_left = 283.0
-offset_top = 168.0
-offset_right = 469.0
-offset_bottom = 190.0
+offset_top = 160.0
+offset_right = 402.525
+offset_bottom = 182.0
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Level" type="Label" parent="." unique_id=1812079905]
 layout_mode = 0
 offset_left = 500.0
-offset_top = 168.0
-offset_right = 638.0
-offset_bottom = 190.0
+offset_top = 160.0
+offset_right = 612.03
+offset_bottom = 182.0
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="XP" type="ProgressBar" parent="." unique_id=856399709]
 layout_mode = 0
@@ -86,3 +95,12 @@ offset_bottom = 210.0
 mouse_filter = 2
 theme_override_colors/font_color = Color(0, 0.59607846, 0.85882354, 1)
 show_percentage = false
+
+[node name="AuthoredFrame2" type="TextureRect" parent="." unique_id=1728283271]
+z_index = -2
+layout_mode = 0
+offset_right = 900.0
+offset_bottom = 300.0
+mouse_filter = 2
+texture = ExtResource("5_aylxh")
+expand_mode = 1

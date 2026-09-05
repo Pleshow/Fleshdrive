@@ -2,52 +2,23 @@ class_name OrganPopup
 extends Control
 
 var hud
-var shell: Panel
-var stats: GridContainer
-var details: RichTextLabel
-var loadout: RichTextLabel
-var install_button: Button
+@onready var shell: Panel = %SurgeryWindow
+@onready var stats: GridContainer = %Stats
+@onready var details: RichTextLabel = %Details
+@onready var loadout: RichTextLabel = %Loadout
+@onready var install_button: Button = %InstallButton
 var slots: Array[OrganSlotControl] = []
 var signature := ""
 
 func _ready() -> void:
-	name = "OrganPopup"
 	z_index = 1000
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	mouse_filter = Control.MOUSE_FILTER_STOP
-	var shade := ColorRect.new()
-	InkUI.preserve(shade)
-	shade.color = Color(0.035, 0.004, 0.05, 0.82)
-	shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	add_child(shade)
-	shell = Panel.new()
-	shell.name = "SurgeryWindow"
 	InkUI.preserve(shell)
 	shell.add_theme_stylebox_override("panel", InkUI.box(InkUI.VOID, InkUI.BORDER))
-	add_child(shell)
-	var title := InkUI.label(shell, tr("KODA / ORGAN SYSTEM"), Rect2(28, 18, 720, 34), 25)
-	title.name = "SurgeryTitle"
-	InkUI.button(shell, "×", Rect2(904, 14, 42, 40), hud._on_organ_close_pressed)
-	InkUI.label(shell, tr("VITAL SIGNS"), Rect2(26, 77, 234, 26), 18)
-	stats = GridContainer.new()
-	stats.columns = 2
-	stats.position = Vector2(26, 119)
-	stats.size = Vector2(245, 310)
-	stats.add_theme_constant_override("h_separation", 16)
-	stats.add_theme_constant_override("v_separation", 11)
-	shell.add_child(stats)
-	var anatomy := TextureRect.new()
-	anatomy.name = "ShibaSilhouette"
-	InkUI.preserve(anatomy)
-	anatomy.position = Vector2(285, 145)
-	anatomy.size = Vector2(370, 250)
-	anatomy.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	anatomy.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	anatomy.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	if ResourceLoader.exists("res://Assets/ui/ink_crimson_v2/shiba_silhouette.png"):
-		anatomy.texture = load("res://Assets/ui/ink_crimson_v2/shiba_silhouette.png")
-	shell.add_child(anatomy)
+	$SurgeryWindow/TopClose.pressed.connect(hud._on_organ_close_pressed)
+	$SurgeryWindow/PreviousButton.pressed.connect(hud._show_previous_pending_organ)
+	$SurgeryWindow/NextButton.pressed.connect(hud._show_next_pending_organ)
+	install_button.pressed.connect(_install_pending)
 	slots.assign([hud.brain_slot, hud.heart_slot, hud.legs_slot])
 	var positions := [Vector2(300, 96), Vector2(503, 212), Vector2(373, 366)]
 	for index in range(slots.size()):
@@ -87,24 +58,6 @@ func _ready() -> void:
 		slot.gui_input.connect(_slot_input.bind(slot))
 		slot.mouse_entered.connect(_show_slot.bind(slot))
 		slot.focus_entered.connect(_show_slot.bind(slot))
-	InkUI.label(shell, tr("ORGAN DETAILS"), Rect2(682, 77, 260, 27), 18)
-	details = RichTextLabel.new()
-	InkUI.preserve(details)
-	details.position = Vector2(682, 114)
-	details.size = Vector2(254, 292)
-	details.add_theme_font_size_override("normal_font_size", 16)
-	details.add_theme_color_override("default_color", InkUI.TEXT)
-	shell.add_child(details)
-	install_button = InkUI.button(shell, tr("INSTALL ORGAN"), Rect2(682, 418, 254, 42), _install_pending)
-	InkUI.button(shell, "◀", Rect2(682, 469, 48, 34), hud._show_previous_pending_organ)
-	InkUI.button(shell, "▶", Rect2(888, 469, 48, 34), hud._show_next_pending_organ)
-	loadout = RichTextLabel.new()
-	InkUI.preserve(loadout)
-	loadout.position = Vector2(28, 475)
-	loadout.size = Vector2(622, 79)
-	loadout.add_theme_font_size_override("normal_font_size", 14)
-	loadout.add_theme_color_override("default_color", InkUI.TEXT)
-	shell.add_child(loadout)
 	hud.organ_close_button.reparent(shell)
 	InkUI.preserve(hud.organ_close_button)
 	hud.organ_close_button.position = Vector2(682, 522)

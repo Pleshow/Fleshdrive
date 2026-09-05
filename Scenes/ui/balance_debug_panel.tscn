@@ -1,0 +1,131 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/debug/balance_debug_panel.gd" id="1"]
+
+[node name="BalanceDebugLayer" type="CanvasLayer"]
+layer = 500
+script = ExtResource("1")
+
+[node name="BalanceDebugPanel" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+offset_left = 20.0
+offset_top = 150.0
+offset_right = 440.0
+offset_bottom = 552.0
+
+[node name="Margin" type="MarginContainer" parent="BalanceDebugPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 12
+
+[node name="Column" type="VBoxContainer" parent="BalanceDebugPanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="BalanceDebugPanel/Margin/Column"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.12, 0.3, 1)
+text = "BALANCE LAB // F10"
+
+[node name="LevelRow" type="HBoxContainer" parent="BalanceDebugPanel/Margin/Column"]
+layout_mode = 2
+[node name="Label" type="Label" parent="BalanceDebugPanel/Margin/Column/LevelRow"]
+custom_minimum_size = Vector2(86, 0)
+layout_mode = 2
+text = "LEVEL"
+[node name="LevelSpin" type="SpinBox" parent="BalanceDebugPanel/Margin/Column/LevelRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 1.0
+max_value = 40.0
+value = 10.0
+[node name="Action" type="Button" parent="BalanceDebugPanel/Margin/Column/LevelRow"]
+layout_mode = 2
+text = "SET"
+
+[node name="UpgradeRow" type="HBoxContainer" parent="BalanceDebugPanel/Margin/Column"]
+layout_mode = 2
+[node name="Label" type="Label" parent="BalanceDebugPanel/Margin/Column/UpgradeRow"]
+custom_minimum_size = Vector2(86, 0)
+layout_mode = 2
+text = "UPGRADE"
+[node name="UpgradeEdit" type="LineEdit" parent="BalanceDebugPanel/Margin/Column/UpgradeRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "upgrade_id"
+[node name="Action" type="Button" parent="BalanceDebugPanel/Margin/Column/UpgradeRow"]
+layout_mode = 2
+text = "ADD"
+
+[node name="BuildRow" type="HBoxContainer" parent="BalanceDebugPanel/Margin/Column"]
+layout_mode = 2
+[node name="Label" type="Label" parent="BalanceDebugPanel/Margin/Column/BuildRow"]
+custom_minimum_size = Vector2(86, 0)
+layout_mode = 2
+text = "BUILD"
+[node name="BuildOptions" type="OptionButton" parent="BalanceDebugPanel/Margin/Column/BuildRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+[node name="Action" type="Button" parent="BalanceDebugPanel/Margin/Column/BuildRow"]
+layout_mode = 2
+text = "FORCE"
+
+[node name="EnemyRow" type="HBoxContainer" parent="BalanceDebugPanel/Margin/Column"]
+layout_mode = 2
+[node name="Label" type="Label" parent="BalanceDebugPanel/Margin/Column/EnemyRow"]
+custom_minimum_size = Vector2(86, 0)
+layout_mode = 2
+text = "SPAWN"
+[node name="EnemyOptions" type="OptionButton" parent="BalanceDebugPanel/Margin/Column/EnemyRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+[node name="Action" type="Button" parent="BalanceDebugPanel/Margin/Column/EnemyRow"]
+layout_mode = 2
+text = "SPAWN"
+
+[node name="DamageRow" type="HBoxContainer" parent="BalanceDebugPanel/Margin/Column"]
+layout_mode = 2
+[node name="Label" type="Label" parent="BalanceDebugPanel/Margin/Column/DamageRow"]
+custom_minimum_size = Vector2(86, 0)
+layout_mode = 2
+text = "DAMAGE X"
+[node name="DamageSpin" type="SpinBox" parent="BalanceDebugPanel/Margin/Column/DamageRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.1
+max_value = 20.0
+step = 0.1
+value = 1.0
+[node name="Action" type="Button" parent="BalanceDebugPanel/Margin/Column/DamageRow"]
+layout_mode = 2
+text = "APPLY"
+
+[node name="Actions" type="HBoxContainer" parent="BalanceDebugPanel/Margin/Column"]
+layout_mode = 2
+theme_override_constants/separation = 8
+[node name="FastForward" type="Button" parent="BalanceDebugPanel/Margin/Column/Actions"]
+layout_mode = 2
+text = "+60 SEC"
+[node name="Boss" type="Button" parent="BalanceDebugPanel/Margin/Column/Actions"]
+layout_mode = 2
+text = "BOSS"
+[node name="Clear" type="Button" parent="BalanceDebugPanel/Margin/Column/Actions"]
+layout_mode = 2
+text = "CLEAR"
+
+[node name="GodToggle" type="CheckButton" parent="BalanceDebugPanel/Margin/Column"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "GOD MODE"

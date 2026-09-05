@@ -1,0 +1,181 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/ui/gameplay_settings_controls.gd" id="1"]
+
+[node name="GameplaySettings" type="VBoxContainer"]
+theme_override_constants/separation = 5
+script = ExtResource("1")
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.69, 0.95, 1, 1)
+theme_override_font_sizes/font_size = 14
+text = "MIX & ACCESSIBILITY"
+metadata/translation_key = "MIX & ACCESSIBILITY"
+
+[node name="Grid" type="GridContainer" parent="."]
+layout_mode = 2
+theme_override_constants/h_separation = 14
+theme_override_constants/v_separation = 3
+columns = 2
+
+[node name="Music" type="VBoxContainer" parent="Grid"]
+custom_minimum_size = Vector2(178, 45)
+layout_mode = 2
+[node name="Label" type="Label" parent="Grid/Music"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.92, 0.92, 1)
+theme_override_font_sizes/font_size = 11
+text = "MUSIC  100%"
+metadata/translation_key = "MUSIC"
+[node name="Slider" type="HSlider" parent="Grid/Music"]
+custom_minimum_size = Vector2(170, 18)
+layout_mode = 2
+max_value = 100.0
+step = 1.0
+
+[node name="Sfx" type="VBoxContainer" parent="Grid"]
+custom_minimum_size = Vector2(178, 45)
+layout_mode = 2
+[node name="Label" type="Label" parent="Grid/Sfx"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.92, 0.92, 1)
+theme_override_font_sizes/font_size = 11
+text = "SFX  100%"
+metadata/translation_key = "SFX"
+[node name="Slider" type="HSlider" parent="Grid/Sfx"]
+custom_minimum_size = Vector2(170, 18)
+layout_mode = 2
+max_value = 100.0
+step = 1.0
+
+[node name="Shake" type="VBoxContainer" parent="Grid"]
+custom_minimum_size = Vector2(178, 45)
+layout_mode = 2
+[node name="Label" type="Label" parent="Grid/Shake"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.92, 0.92, 1)
+theme_override_font_sizes/font_size = 11
+text = "CAMERA SHAKE  100%"
+metadata/translation_key = "CAMERA SHAKE"
+[node name="Slider" type="HSlider" parent="Grid/Shake"]
+custom_minimum_size = Vector2(170, 18)
+layout_mode = 2
+max_value = 100.0
+step = 1.0
+
+[node name="Vfx" type="VBoxContainer" parent="Grid"]
+custom_minimum_size = Vector2(178, 45)
+layout_mode = 2
+[node name="Label" type="Label" parent="Grid/Vfx"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.92, 0.92, 1)
+theme_override_font_sizes/font_size = 11
+text = "VFX INTENSITY  100%"
+metadata/translation_key = "VFX INTENSITY"
+[node name="Slider" type="HSlider" parent="Grid/Vfx"]
+custom_minimum_size = Vector2(170, 18)
+layout_mode = 2
+max_value = 100.0
+step = 1.0
+
+[node name="Deadzone" type="VBoxContainer" parent="Grid"]
+custom_minimum_size = Vector2(178, 45)
+layout_mode = 2
+[node name="Label" type="Label" parent="Grid/Deadzone"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.92, 0.92, 1)
+theme_override_font_sizes/font_size = 11
+text = "STICK DEADZONE  20%"
+metadata/translation_key = "STICK DEADZONE"
+[node name="Slider" type="HSlider" parent="Grid/Deadzone"]
+custom_minimum_size = Vector2(170, 18)
+layout_mode = 2
+min_value = 5.0
+max_value = 55.0
+step = 1.0
+
+[node name="Crosshair" type="VBoxContainer" parent="Grid"]
+custom_minimum_size = Vector2(178, 45)
+layout_mode = 2
+[node name="Label" type="Label" parent="Grid/Crosshair"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.92, 0.92, 1)
+theme_override_font_sizes/font_size = 11
+text = "CROSSHAIR SIZE  100%"
+metadata/translation_key = "CROSSHAIR SIZE"
+[node name="Slider" type="HSlider" parent="Grid/Crosshair"]
+custom_minimum_size = Vector2(170, 18)
+layout_mode = 2
+min_value = 65.0
+max_value = 175.0
+step = 1.0
+
+[node name="Flash" type="VBoxContainer" parent="Grid"]
+custom_minimum_size = Vector2(178, 45)
+layout_mode = 2
+[node name="Label" type="Label" parent="Grid/Flash"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.92, 0.92, 1)
+theme_override_font_sizes/font_size = 11
+text = "HIT FLASH  100%"
+metadata/translation_key = "HIT FLASH"
+[node name="Slider" type="HSlider" parent="Grid/Flash"]
+custom_minimum_size = Vector2(170, 18)
+layout_mode = 2
+max_value = 100.0
+step = 1.0
+
+[node name="AimAssist" type="VBoxContainer" parent="Grid"]
+custom_minimum_size = Vector2(178, 45)
+layout_mode = 2
+[node name="Label" type="Label" parent="Grid/AimAssist"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.92, 0.92, 1)
+theme_override_font_sizes/font_size = 11
+text = "AIM ASSIST  100%"
+metadata/translation_key = "AIM ASSIST"
+[node name="Slider" type="HSlider" parent="Grid/AimAssist"]
+custom_minimum_size = Vector2(170, 18)
+layout_mode = 2
+max_value = 100.0
+step = 1.0
+
+[node name="Toggles" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 14
+[node name="DamageNumbers" type="CheckButton" parent="Toggles"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+text = "DAMAGE NUMBERS"
+flat = true
+metadata/ui_polish_skip = true
+metadata/translation_key = "DAMAGE NUMBERS"
+[node name="Tutorials" type="CheckButton" parent="Toggles"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+text = "TUTORIALS"
+flat = true
+metadata/ui_polish_skip = true
+metadata/translation_key = "TUTORIALS"
+[node name="Shaders" type="CheckButton" parent="Toggles"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+text = "SHADERS"
+flat = true
+metadata/ui_polish_skip = true
+metadata/translation_key = "SHADERS"
+
+[node name="ActiveSkillBind" type="Button" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 42)
+layout_mode = 2
+text = "ACTIVE SKILL"
+[node name="SecondaryActiveSkillBind" type="Button" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 42)
+layout_mode = 2
+text = "SECONDARY ACTIVE SKILL"

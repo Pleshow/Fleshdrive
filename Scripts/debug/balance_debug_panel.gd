@@ -9,19 +9,19 @@ const ENEMY_SCENES := {
 	&"charger": preload("res://Scenes/enemies/charger.tscn"),
 }
 
-var panel: PanelContainer
-var level_spin: SpinBox
-var upgrade_edit: LineEdit
-var build_options: OptionButton
-var enemy_options: OptionButton
-var damage_spin: SpinBox
-var god_toggle: CheckButton
+@onready var panel: PanelContainer = %BalanceDebugPanel
+@onready var level_spin: SpinBox = %LevelSpin
+@onready var upgrade_edit: LineEdit = %UpgradeEdit
+@onready var build_options: OptionButton = %BuildOptions
+@onready var enemy_options: OptionButton = %EnemyOptions
+@onready var damage_spin: SpinBox = %DamageSpin
+@onready var god_toggle: CheckButton = %GodToggle
 
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	layer = 500
-	_build_panel()
+	_style_and_connect_panel()
 	panel.hide()
 
 
@@ -32,99 +32,28 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 
 
-func _build_panel() -> void:
-	panel = PanelContainer.new()
-	panel.name = "BalanceDebugPanel"
-	panel.position = Vector2(20.0, 150.0)
-	panel.custom_minimum_size = Vector2(420.0, 0.0)
+func _style_and_connect_panel() -> void:
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color(0.015, 0.018, 0.025, 0.97)
 	style.border_color = Color(0.85, 0.08, 0.24, 0.95)
 	style.set_border_width_all(2)
 	style.set_corner_radius_all(4)
 	panel.add_theme_stylebox_override("panel", style)
-	add_child(panel)
-	var margin := MarginContainer.new()
-	margin.add_theme_constant_override("margin_left", 14)
-	margin.add_theme_constant_override("margin_top", 12)
-	margin.add_theme_constant_override("margin_right", 14)
-	margin.add_theme_constant_override("margin_bottom", 12)
-	panel.add_child(margin)
-	var column := VBoxContainer.new()
-	column.add_theme_constant_override("separation", 8)
-	margin.add_child(column)
-	var title := Label.new()
-	title.text = "BALANCE LAB // F10"
-	title.add_theme_color_override("font_color", Color(1.0, 0.12, 0.30))
-	column.add_child(title)
-
-	level_spin = SpinBox.new()
-	level_spin.min_value = 1
-	level_spin.max_value = 40
-	level_spin.value = 10
-	_add_control_row(column, "LEVEL", level_spin, "SET", _set_level)
-
-	upgrade_edit = LineEdit.new()
-	upgrade_edit.placeholder_text = "upgrade_id"
-	_add_control_row(column, "UPGRADE", upgrade_edit, "ADD", _add_upgrade)
-
-	build_options = OptionButton.new()
 	for build_id in BuildLoadouts.LOADOUTS:
 		build_options.add_item(String(build_id).to_upper())
 		build_options.set_item_metadata(build_options.item_count - 1, build_id)
-	_add_control_row(column, "BUILD", build_options, "FORCE", _force_build)
-
-	enemy_options = OptionButton.new()
 	for enemy_id in ENEMY_SCENES:
 		enemy_options.add_item(String(enemy_id).to_upper())
 		enemy_options.set_item_metadata(enemy_options.item_count - 1, enemy_id)
-	_add_control_row(column, "SPAWN", enemy_options, "SPAWN", _spawn_enemy)
-
-	damage_spin = SpinBox.new()
-	damage_spin.min_value = 0.1
-	damage_spin.max_value = 20.0
-	damage_spin.step = 0.1
-	damage_spin.value = 1.0
-	_add_control_row(column, "DAMAGE X", damage_spin, "APPLY", _set_damage_multiplier)
-
-	var action_row := HBoxContainer.new()
-	action_row.add_theme_constant_override("separation", 8)
-	column.add_child(action_row)
-	_add_button(action_row, "+60 SEC", _fast_forward)
-	_add_button(action_row, "BOSS", _start_boss)
-	_add_button(action_row, "CLEAR", _clear_enemies)
-
-	god_toggle = CheckButton.new()
-	god_toggle.text = "GOD MODE"
+	$BalanceDebugPanel/Margin/Column/LevelRow/Action.pressed.connect(_set_level)
+	$BalanceDebugPanel/Margin/Column/UpgradeRow/Action.pressed.connect(_add_upgrade)
+	$BalanceDebugPanel/Margin/Column/BuildRow/Action.pressed.connect(_force_build)
+	$BalanceDebugPanel/Margin/Column/EnemyRow/Action.pressed.connect(_spawn_enemy)
+	$BalanceDebugPanel/Margin/Column/DamageRow/Action.pressed.connect(_set_damage_multiplier)
+	$BalanceDebugPanel/Margin/Column/Actions/FastForward.pressed.connect(_fast_forward)
+	$BalanceDebugPanel/Margin/Column/Actions/Boss.pressed.connect(_start_boss)
+	$BalanceDebugPanel/Margin/Column/Actions/Clear.pressed.connect(_clear_enemies)
 	god_toggle.toggled.connect(_set_god_mode)
-	column.add_child(god_toggle)
-
-
-func _add_control_row(
-	parent: VBoxContainer,
-	label_text: String,
-	control: Control,
-	button_text: String,
-	callback: Callable
-) -> void:
-	var row := HBoxContainer.new()
-	row.add_theme_constant_override("separation", 8)
-	parent.add_child(row)
-	var label := Label.new()
-	label.text = label_text
-	label.custom_minimum_size.x = 86.0
-	row.add_child(label)
-	control.custom_minimum_size.x = 190.0
-	control.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	row.add_child(control)
-	_add_button(row, button_text, callback)
-
-
-func _add_button(parent: Control, text_value: String, callback: Callable) -> void:
-	var button := Button.new()
-	button.text = text_value
-	button.pressed.connect(callback)
-	parent.add_child(button)
 
 
 func _player() -> Koda:

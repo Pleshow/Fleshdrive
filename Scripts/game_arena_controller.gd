@@ -5,8 +5,8 @@ extends Node2D
 const DUSK_GARDEN_SCENE: PackedScene = preload(
 	"res://Scenes/dusk_garden_arena.tscn"
 )
-const BalanceDebugPanelScript := preload(
-	"res://Scripts/debug/balance_debug_panel.gd"
+const BalanceDebugPanelScene := preload(
+	"res://Scenes/ui/balance_debug_panel.tscn"
 )
 
 
@@ -17,7 +17,7 @@ func _ready() -> void:
 
 	_activate_dusk_garden_arena()
 	if OS.is_debug_build():
-		add_child(BalanceDebugPanelScript.new())
+		add_child(BalanceDebugPanelScene.instantiate())
 
 
 func _activate_dusk_garden_arena() -> void:

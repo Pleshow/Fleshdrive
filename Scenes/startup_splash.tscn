@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://Scripts/startup_splash.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://icon.svg" id="2_icon"]
 
 [node name="StartupSplash" type="Control"]
 layout_mode = 3
@@ -10,3 +11,75 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_script")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="GodotStage" type="CenterContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Column" type="VBoxContainer" parent="GodotStage"]
+layout_mode = 2
+theme_override_constants/separation = 22
+alignment = 1
+
+[node name="Logo" type="TextureRect" parent="GodotStage/Column"]
+custom_minimum_size = Vector2(132, 132)
+layout_mode = 2
+texture = ExtResource("2_icon")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="GodotCredit" type="Label" parent="GodotStage/Column"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 23
+text = "MADE WITH GODOT GAME ENGINE"
+horizontal_alignment = 1
+metadata/preserve_authored_ui_style = true
+
+[node name="StudioStage" type="CenterContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Column" type="VBoxContainer" parent="StudioStage"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="RevealClip" type="Control" parent="StudioStage/Column"]
+custom_minimum_size = Vector2(444, 300)
+layout_mode = 2
+clip_contents = true
+
+[node name="StudioLogo" type="AnimatedSprite2D" parent="StudioStage/Column/RevealClip"]
+unique_name_in_owner = true
+position = Vector2(222, 146)
+scale = Vector2(0.66, 0.66)
+
+[node name="StudioName" type="Label" parent="StudioStage/Column"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 30
+text = "PLESHOW SOFT"
+horizontal_alignment = 1
+metadata/preserve_authored_ui_style = true

@@ -6,6 +6,7 @@ signal choice_selected(choice_id: StringName)
 
 @export var characters_per_second: float = 42.0
 @export var use_right_column_layout: bool = false
+@export var right_column_width: float = 390.0
 
 @onready var speaker_label: Label = %SpeakerLabel
 @onready var body_label: RichTextLabel = %BodyLabel
@@ -38,7 +39,7 @@ func _apply_screen_layout() -> void:
 	portrait_texture.custom_minimum_size = Vector2.ZERO
 	var safe_margin := clampf(size.x * 0.025, 18.0, 36.0)
 	if use_right_column_layout:
-		var column_width := clampf(size.x * 0.344, 420.0, 450.0)
+		var column_width := clampf(right_column_width, 320.0, 520.0)
 		var column_x := size.x - safe_margin - column_width
 		var portrait_size := clampf(size.y * 0.27, 174.0, 202.0)
 		portrait_frame.position = Vector2(
@@ -172,6 +173,9 @@ func _show_choices() -> void:
 		button.alignment = HORIZONTAL_ALIGNMENT_CENTER
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		button.add_theme_font_size_override("font_size", 14)
+		button.add_theme_color_override("font_color", Color(0.45, 0.88, 1.0))
+		button.add_theme_color_override("font_hover_color", Color(0.68, 0.96, 1.0))
+		button.add_theme_color_override("font_pressed_color", Color(0.68, 0.96, 1.0))
 		button.pressed.connect(
 			_on_choice_pressed.bind(
 				StringName(choice.get("id", "continue"))

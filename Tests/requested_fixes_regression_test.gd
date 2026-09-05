@@ -178,7 +178,7 @@ func _run() -> void:
 	}, {"runs": 1, "deaths": 1})
 	await process_frame
 	var stats_panel := bio.get_node_or_null("RunStatisticsPanel") as RunStatisticsPanel
-	_check(stats_panel != null and stats_panel.visible and stats_panel.title_label.text == tr("RUN STATISTICS") and stats_panel.position == RunStatisticsPanel.COMPACT_POSITION and stats_panel.size.x <= 240.0 and stats_panel.size.y <= 205.0, "Refabrication installs a compact previous-run statistics card in the middle column")
+	_check(stats_panel != null and stats_panel.visible and stats_panel.title_label.text == tr("RUN STATISTICS") and stats_panel.position == stats_panel.compact_position and stats_panel.size.x <= 260.0 and stats_panel.size.y <= 310.0, "Refabrication installs a wider, taller previous-run statistics card beside the fabrication platform")
 	_check(stats_panel.find_children("*", "ProgressBar", true, false).is_empty() and bio.dialogue_panel.z_index > stats_panel.z_index, "Compact statistics show only headline numbers and never cover Mimichu dialogue")
 	stats_panel.call("_toggle_expanded")
 	_check(stats_panel.expanded and stats_panel.size == RunStatisticsPanel.EXPANDED_SIZE, "Run statistics expand into a detailed chart view")

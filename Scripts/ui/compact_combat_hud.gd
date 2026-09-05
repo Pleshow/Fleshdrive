@@ -1,6 +1,9 @@
 class_name CompactCombatHUD
 extends Control
 
+@export_group("Screen Placement")
+@export var screen_offset: Vector2 = Vector2.ZERO
+
 var hud: Control
 var hp: Label
 var hp_orb: TextureProgressBar
@@ -93,7 +96,10 @@ func _layout() -> void:
 	scale = Vector2.ONE * factor
 	# Bottom edge is flush with the viewport; the scene itself owns the
 	# ornament padding, so no extra runtime margin is added here.
-	position = Vector2((viewport.x - 900.0 * factor) * 0.5, viewport.y - size.y * factor)
+	position = Vector2(
+		(viewport.x - 900.0 * factor) * 0.5,
+		viewport.y - size.y * factor
+	) + screen_offset
 
 func _process(_delta: float) -> void:
 	if hud == null or hud.player == null:
@@ -130,7 +136,10 @@ func _process(_delta: float) -> void:
 	if hp != null: hp.text = "%d / %d" % [ceili(player.current_health), ceili(player.max_health)]
 	if level != null: level.text = "%s %d" % [tr("LEVEL"), player.current_level]
 	var meta := get_tree().root.get_node_or_null("MetaProgression")
-	if currency != null: currency.text = "%s  %d" % [tr("BLOOD MEMORY"), int(meta.get("red_gems")) if meta != null else 0]
+	if currency != null:
+		currency.text = tr("Blood: %d") % (
+			int(meta.get("red_gems")) if meta != null else 0
+		)
 	if clock_label != null: clock_label.text = tr("DEFEAT THE WARDEN") if hud.run_manager.boss_spawned else hud.format_duration(hud.run_manager.get_remaining_seconds())
 	if xp != null:
 		xp.max_value = maxf(player.biomass_required, 1.0)

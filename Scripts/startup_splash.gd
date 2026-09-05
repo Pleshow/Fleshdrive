@@ -3,22 +3,21 @@ extends Control
 
 
 const MAIN_MENU_SCENE := "res://Scenes/main_menu.tscn"
-const GODOT_ICON := preload("res://icon.svg")
 const PLESHOW_LOGO_SHEET := preload(
 	"res://Assets/ui/screens/pleshow_soft_logo_animation.png"
 )
 
 var sequence_finished: bool = false
 var allow_skip: bool = false
-var godot_stage: Control
-var studio_stage: Control
-var studio_logo: AnimatedSprite2D
+@onready var godot_stage: Control = %GodotStage
+@onready var studio_stage: Control = %StudioStage
+@onready var studio_logo: AnimatedSprite2D = %StudioLogo
 
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	mouse_filter = Control.MOUSE_FILTER_STOP
-	_build_ui()
+	studio_logo.sprite_frames = _make_studio_logo_frames()
 	_play_sequence.call_deferred()
 
 
@@ -29,62 +28,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		or event is InputEventMouseButton and event.pressed
 	):
 		_finish()
-
-
-func _build_ui() -> void:
-	var background := ColorRect.new()
-	background.color = Color.BLACK
-	background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	add_child(background)
-
-	godot_stage = CenterContainer.new()
-	godot_stage.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	add_child(godot_stage)
-	var godot_column := VBoxContainer.new()
-	godot_column.alignment = BoxContainer.ALIGNMENT_CENTER
-	godot_column.add_theme_constant_override("separation", 22)
-	godot_stage.add_child(godot_column)
-	var godot_logo := TextureRect.new()
-	godot_logo.custom_minimum_size = Vector2(132.0, 132.0)
-	godot_logo.texture = GODOT_ICON
-	godot_logo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	godot_logo.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	godot_column.add_child(godot_logo)
-	var godot_text := Label.new()
-	godot_text.name = "GodotCredit"
-	godot_text.text = "MADE WITH GODOT GAME ENGINE"
-	godot_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	godot_text.add_theme_font_size_override("font_size", 23)
-	godot_text.add_theme_color_override("font_color", Color.WHITE)
-	godot_text.set_meta("preserve_authored_ui_style", true)
-	godot_column.add_child(godot_text)
-
-	studio_stage = CenterContainer.new()
-	studio_stage.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	studio_stage.hide()
-	add_child(studio_stage)
-	var studio_column := VBoxContainer.new()
-	studio_column.alignment = BoxContainer.ALIGNMENT_CENTER
-	studio_column.add_theme_constant_override("separation", 10)
-	studio_stage.add_child(studio_column)
-	var reveal_clip := Control.new()
-	reveal_clip.custom_minimum_size = Vector2(444.0, 300.0)
-	reveal_clip.clip_contents = true
-	studio_column.add_child(reveal_clip)
-	studio_logo = AnimatedSprite2D.new()
-	studio_logo.position = Vector2(222.0, 146.0)
-	studio_logo.scale = Vector2.ONE * 0.66
-	studio_logo.sprite_frames = _make_studio_logo_frames()
-	reveal_clip.add_child(studio_logo)
-	var studio_name := Label.new()
-	studio_name.name = "StudioName"
-	studio_name.text = "PLESHOW SOFT"
-	studio_name.modulate.a = 0.0
-	studio_name.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	studio_name.add_theme_font_size_override("font_size", 30)
-	studio_name.add_theme_color_override("font_color", Color.WHITE)
-	studio_name.set_meta("preserve_authored_ui_style", true)
-	studio_column.add_child(studio_name)
 
 
 func _play_sequence() -> void:
