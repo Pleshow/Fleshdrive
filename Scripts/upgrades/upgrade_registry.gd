@@ -92,7 +92,9 @@ static func _append_universal_mutations(pool: Array[UpgradeData], known: Diction
 		upgrade.display_name = String(definition.get("name", String(upgrade_id).to_upper()))
 		upgrade.description = String(definition.get("desc", ""))
 		upgrade.upgrade_kind = int(definition.get("kind", UpgradeData.UpgradeKind.ITEM))
-		upgrade.card_texture = UNIVERSAL_WEAPON_ICON if upgrade.upgrade_kind == UpgradeData.UpgradeKind.WEAPON else UNIVERSAL_ITEM_ICON
+		# Universal entries have no authored card art; leave the illustration empty
+		# instead of reusing the obsolete generic icon.
+		upgrade.card_texture = null
 		upgrade.fleshdrive_affinity = "universal"
 		upgrade.rarity = String(definition.get("rarity", "common"))
 		upgrade.minimum_player_level = int(definition.get("min", 1))
@@ -116,7 +118,7 @@ static func _append_kinetic_extensions(pool: Array[UpgradeData], known: Dictiona
 		upgrade.upgrade_id = upgrade_id
 		upgrade.display_name = String(definition["name"])
 		upgrade.description = String(definition["desc"])
-		upgrade.card_texture = UNIVERSAL_ITEM_ICON
+		upgrade.card_texture = null
 		upgrade.upgrade_kind = UpgradeData.UpgradeKind.ITEM
 		upgrade.fleshdrive_affinity = "electric"
 		upgrade.rarity = String(definition["rarity"])

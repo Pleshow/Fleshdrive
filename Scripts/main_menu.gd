@@ -4,7 +4,7 @@ extends Control
 
 const GAME_SCENE_PATH := "res://Scenes/game.tscn"
 const PLAYTEST_VERSION := "0.1.0-playtest.1"
-@export var minimum_loading_seconds: float = 5.0
+@export var minimum_loading_seconds: float = 1.2
 
 @onready var main_panel: VBoxContainer = %MainPanel
 @onready var settings_panel: VBoxContainer = %SettingsPanel
@@ -125,10 +125,10 @@ func _update_responsive_layout() -> void:
 		return
 	var viewport_size := get_viewport_rect().size
 	if settings_panel.visible:
-		shell_margin.add_theme_constant_override("margin_left", 54)
-		shell_margin.add_theme_constant_override("margin_top", 52)
-		shell_margin.add_theme_constant_override("margin_right", 54)
-		shell_margin.add_theme_constant_override("margin_bottom", 46)
+		shell_margin.add_theme_constant_override("margin_left", 40)
+		shell_margin.add_theme_constant_override("margin_top", 34)
+		shell_margin.add_theme_constant_override("margin_right", 40)
+		shell_margin.add_theme_constant_override("margin_bottom", 32)
 		var settings_size := Vector2(
 			minf(viewport_size.x - 80.0, 900.0),
 			minf(viewport_size.y - 44.0, 672.0)

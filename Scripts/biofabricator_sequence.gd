@@ -40,6 +40,8 @@ var statistics_panel: RunStatisticsPanel
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	printer_glass.set_meta("preserve_authored_ui_style", true)
+	printer_glass.set_meta("ui_polish_skip", true)
 	skip_button.pressed.connect(_finish_printing)
 	dialogue_panel.choice_selected.connect(_on_choice_selected)
 	statistics_panel = RunStatisticsPanel.new()

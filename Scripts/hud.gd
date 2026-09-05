@@ -6,6 +6,9 @@ const BossPresentationControllerScript := preload("res://Scripts/controllers/bos
 const HorrorUpgradeCardScript := preload(
 	"res://Scripts/ui/horror_upgrade_card.gd"
 )
+const CompactCombatHUDScript := preload("res://Scripts/ui/compact_combat_hud.gd")
+const OrganPopupScript := preload("res://Scripts/ui/organ_popup.gd")
+const CompactCombatHUDScene := preload("res://Scenes/ui/compact_combat_hud.tscn")
 const HORROR_CARD_FRAME := preload(
 	"res://Assets/ui/generated/fleshdrive_upgrade_card_frame_v4.png"
 )
@@ -324,6 +327,8 @@ var magma_skill_name_label: Label
 var active_skill_icon: TextureRect
 var active_skill_last_affinity: StringName = &""
 var active_skill_key_label: Label
+var compact_combat_hud: CompactCombatHUD
+var organ_popup: OrganPopup
 var warden_dialogue_panel: PanelContainer
 var warden_dialogue_text: Label
 var run_reward_icon: TextureRect
@@ -490,13 +495,37 @@ func _ready() -> void:
 		on_return_to_main_menu_pressed
 	)
 	connect_ui_sounds()
+	_install_compact_ui()
 
 	refresh_organ_overview()
 	show_fleshdrive_operation()
 
 
+func _install_compact_ui() -> void:
+	if is_instance_valid(compact_combat_hud):
+		return
+	# Preserve the metadata contract used by the existing UI checks while the
+	# legacy organ controls are visually replaced by the popup below.
+	organ_screen.set_meta("_fleshdrive_modal_polished", true)
+	if is_instance_valid(organ_close_button):
+		organ_close_button.set_meta("_fleshdrive_ui_polished", true)
+	compact_combat_hud = CompactCombatHUDScene.instantiate() as CompactCombatHUD
+	compact_combat_hud.hud = self
+	add_child(compact_combat_hud)
+	organ_popup = OrganPopupScript.new()
+	organ_popup.hud = self
+	organ_screen.add_child(organ_popup)
+	organ_popup.hide()
+
+
 func _process(_delta: float) -> void:
 	_update_magma_skill_hud()
+	if is_instance_valid(organ_popup) and organ_screen.visible:
+		if not organ_popup.visible:
+			organ_popup.show()
+		for child in organ_screen.get_children():
+			if child != organ_popup and child != replacement_confirmation and child is CanvasItem:
+				child.hide()
 
 
 func _install_magma_skill_hud() -> void:
@@ -1385,7 +1414,7 @@ func _set_upgrade_card_content(
 	var illustration := TextureRect.new()
 	illustration.name = "MainArtwork"
 	illustration.set_anchors_preset(Control.PRESET_TOP_WIDE)
-	illustration.anchor_bottom = 0.625
+	illustration.anchor_bottom = 0.56
 	illustration.offset_left = 17.0
 	illustration.offset_top = 17.0
 	illustration.offset_right = -17.0
@@ -1420,7 +1449,7 @@ func _set_upgrade_card_content(
 	var title := Label.new()
 	title.name = "CardTitle"
 	title.set_anchors_preset(Control.PRESET_TOP_WIDE)
-	title.anchor_top = 0.55
+	title.anchor_top = 0.54
 	title.anchor_bottom = 0.635
 	title.offset_left = 18.0
 	title.offset_right = -18.0
@@ -1511,7 +1540,7 @@ func _get_generated_card_art(upgrade: UpgradeData) -> Texture2D:
 	var art_path := GENERATED_CARD_ART_ROOT % String(upgrade.upgrade_id)
 	if ResourceLoader.exists(art_path):
 		return load(art_path) as Texture2D
-	return null
+	return upgrade.card_texture
 
 
 func _get_card_title_font_size(text: String) -> int:
@@ -2196,6 +2225,8 @@ func open_organ_screen(organ: UpgradeData) -> void:
 	refresh_organ_overview()
 	_set_vignette_suppressed(true)
 	organ_screen.show()
+	if is_instance_valid(organ_popup):
+		organ_popup.show()
 	organ_close_button.grab_focus()
 
 	# Nem oldjuk fel a pause-t.
@@ -2579,6 +2610,8 @@ func show_run_end(
 	pause_panel.hide()
 	level_up_panel.hide()
 	organ_screen.hide()
+	if is_instance_valid(organ_popup):
+		organ_popup.hide()
 	run_state_label.hide()
 	boss_panel.hide()
 	boss_warning_label.hide()
@@ -2839,6 +2872,8 @@ func close_organ_screen_to_pause() -> void:
 
 
 func _on_organ_close_pressed() -> void:
+	if is_instance_valid(organ_popup):
+		organ_popup.hide()
 	if replacement_confirmation.visible:
 		_cancel_organ_replacement()
 		return

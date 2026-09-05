@@ -31,7 +31,7 @@ func set_resource_progress(value: float) -> void:
 
 func _process(delta: float) -> void:
 	elapsed_seconds += delta
-	var presentation_progress := minf(elapsed_seconds / 5.0, 0.96)
+	var presentation_progress := minf(elapsed_seconds / 1.2, 0.96)
 	progress_bar.value = minf(
 		maxf(resource_progress, presentation_progress) * 100.0,
 		100.0

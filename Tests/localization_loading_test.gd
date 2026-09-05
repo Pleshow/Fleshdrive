@@ -23,8 +23,8 @@ func _run() -> void:
 	root.add_child(menu)
 	await process_frame
 	_check(
-		is_equal_approx(menu.minimum_loading_seconds, 5.0),
-		"Start Run has a five-second minimum loading presentation"
+		is_equal_approx(menu.minimum_loading_seconds, 1.2),
+		"Start Run uses a short readable loading presentation"
 	)
 	_check(
 		menu.get_node("LoadingScreen") is LoadingScreen,

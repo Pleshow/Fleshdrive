@@ -1015,7 +1015,7 @@ grow_vertical = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/HUD/PausePanel/CenterContainer" unique_id=415923241]
 custom_minimum_size = Vector2(280, 0)
 layout_mode = 2
-theme_override_constants/separation = 14
+theme_override_constants/separation = 10
 
 [node name="TitleLabel" type="Label" parent="UI/HUD/PausePanel/CenterContainer/VBoxContainer" unique_id=959363701]
 layout_mode = 2
@@ -1025,32 +1025,32 @@ text = "PAUSED"
 horizontal_alignment = 1
 
 [node name="ResumeButton" type="Button" parent="UI/HUD/PausePanel/CenterContainer/VBoxContainer" unique_id=39054251]
-custom_minimum_size = Vector2(0, 48)
+custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 text = "RESUME"
 
 [node name="RestartButton" type="Button" parent="UI/HUD/PausePanel/CenterContainer/VBoxContainer" unique_id=1673224857]
-custom_minimum_size = Vector2(0, 48)
+custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 text = "START NEW RUN"
 
 [node name="SettingsButton" type="Button" parent="UI/HUD/PausePanel/CenterContainer/VBoxContainer" unique_id=585022155]
-custom_minimum_size = Vector2(0, 48)
+custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 text = "SETTINGS"
 
 [node name="OrganScreenButton" type="Button" parent="UI/HUD/PausePanel/CenterContainer/VBoxContainer" unique_id=387394483]
-custom_minimum_size = Vector2(0, 48)
+custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 text = "ORGAN SCREEN"
 
 [node name="MainMenuButton" type="Button" parent="UI/HUD/PausePanel/CenterContainer/VBoxContainer" unique_id=1262583971]
-custom_minimum_size = Vector2(0, 48)
+custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 text = "RETURN TO MAIN MENU"
 
 [node name="QuitButton" type="Button" parent="UI/HUD/PausePanel/CenterContainer/VBoxContainer" unique_id=13668016]
-custom_minimum_size = Vector2(0, 48)
+custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 text = "QUIT GAME"
 
@@ -1058,7 +1058,7 @@ text = "QUIT GAME"
 visible = false
 custom_minimum_size = Vector2(430, 0)
 layout_mode = 2
-theme_override_constants/separation = 9
+theme_override_constants/separation = 6
 
 [node name="TitleLabel" type="Label" parent="UI/HUD/PausePanel/CenterContainer/SettingsContainer" unique_id=790272820]
 layout_mode = 2

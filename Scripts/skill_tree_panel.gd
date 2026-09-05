@@ -56,6 +56,8 @@ func _install_viewport_frame() -> void:
 		return
 	var frame := Panel.new()
 	frame.name = "VisibleViewportFrame"
+	frame.set_meta("preserve_authored_ui_style", true)
+	frame.set_meta("ui_polish_skip", true)
 	frame.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	frame.z_index = 200

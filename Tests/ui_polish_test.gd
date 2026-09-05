@@ -38,6 +38,13 @@ func _run() -> void:
 		"res://Resources/Themes/fleshdrive_theme.tres"
 	) as Theme
 	_check(theme != null, "Unified Fleshdrive theme loads")
+	var readable_font := theme.default_font as FontVariation
+	_check(
+		readable_font != null
+		and readable_font.spacing_glyph == 1
+		and readable_font.spacing_space == 1,
+		"Shared horror font uses subtle global letter spacing"
+	)
 	_check(
 		theme.has_stylebox(&"normal", &"Button")
 		and theme.has_stylebox(&"hover", &"Button")
@@ -149,6 +156,11 @@ func _run() -> void:
 		and menu.menu_shell.position.y >= 24.0
 		and menu.version_label.anchor_bottom == 1.0,
 		"Main menu uses safe responsive margins and bottom anchoring"
+	)
+	_check(
+		menu.shell_margin.get_theme_constant("margin_left") <= 40
+		and menu.shell_margin.get_theme_constant("margin_top") <= 34,
+		"Settings content uses compact margins without wasting screen space"
 	)
 	menu.queue_free()
 	await process_frame
@@ -383,11 +395,19 @@ func _run() -> void:
 	)
 	hud.pause_panel.show()
 	await create_timer(0.28, true).timeout
+	var pause_stack := hud.pause_panel.get_node(
+		"CenterContainer/VBoxContainer"
+	) as VBoxContainer
 	_check(
 		hud.pause_panel.has_meta("_fleshdrive_modal_polished")
 		and hud.pause_panel.modulate.a > 0.98
 		and hud.resume_button.has_meta("_fleshdrive_ui_polished"),
 		"Pause and modal screens animate with the shared chrome"
+	)
+	_check(
+		pause_stack.get_theme_constant("separation") <= 10
+		and hud.resume_button.custom_minimum_size.y <= 44.0,
+		"Pause actions are compact while retaining usable hit targets"
 	)
 	hud.organ_screen.show()
 	await process_frame
